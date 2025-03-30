@@ -1,0 +1,315 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+body {
+    font-family: 'Comic Neue', cursive;
+    background-image: url('../img/bg1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(76, 76, 212, 0.7);
+    z-index: 1;
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    text-align: center;
+    padding: 20px; /* Reduced padding */
+}
+
+.logo-container {
+    width: 150px; /* Reduced size */
+    height: 150px; /* Reduced size */
+    border-radius: 50%;
+    background-color: #14163f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px; /* Reduced margin */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    animation: bounce 2s infinite;
+    overflow: hidden;
+}
+
+.logo {
+    width: 135px; /* Adjusted to maintain proportion */
+    height: 135px; /* Adjusted to maintain proportion */
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); } /* Reduced bounce height */
+}
+
+h1 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 2.8rem; /* Reduced font size */
+    margin-bottom: 10px; /* Reduced margin */
+    color: #fff;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    animation: colorChange 5s infinite;
+}
+
+@keyframes colorChange {
+    0% { color: #fff; }
+    25% { color: #ffff99; }
+    50% { color: #99ffff; }
+    75% { color: #ff99ff; }
+    100% { color: #fff; }
+}
+
+.subtitle {
+    font-size: 1.2rem; /* Reduced font size */
+    margin-bottom: 20px; /* Reduced margin */
+    max-width: 800px;
+    line-height: 1.4; /* Reduced line height */
+}
+
+.buttons {
+    display: flex;
+    gap: 15px; /* Reduced gap */
+    margin-top: 10px; /* Reduced margin */
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.btn {
+    padding: 12px 25px; /* Reduced padding */
+    font-family: 'Comic Neue', cursive;
+    font-size: 1.1rem; /* Reduced font size */
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Reduced gap */
+}
+
+.btn-website {
+    background-color: #FF9E43;
+    color: #333;
+}
+
+.btn-website:hover {
+    background-color: #FFB773;
+    transform: translateY(-3px); /* Reduced transform */
+}
+
+.btn-portal {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-portal:hover {
+    background-color: #66BB6A;
+    transform: translateY(-3px); /* Reduced transform */
+}
+
+.additional-info {
+    font-size: 1.1rem; /* Reduced font size */
+    font-weight: bold;
+    color: #ffff99;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    margin-top: 5px; /* Reduced margin */
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); } /* Reduced scale */
+}
+
+.clouds {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px; /* Reduced height */
+    background: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
+    opacity: 0.2;
+    z-index: 1;
+}
+
+.floating-items {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.floating-item {
+    position: absolute;
+    opacity: 0.7;
+    animation: float 15s linear infinite;
+}
+
+.item1 {
+    top: 10%;
+    left: 10%;
+    font-size: 2.5rem; /* Reduced size */
+    animation-duration: 20s;
+}
+
+.item2 {
+    top: 20%;
+    right: 15%;
+    font-size: 2rem; /* Reduced size */
+    animation-duration: 15s;
+    animation-delay: 2s;
+}
+
+.item3 {
+    bottom: 15%;
+    left: 20%;
+    font-size: 3rem; /* Reduced size */
+    animation-duration: 25s;
+    animation-delay: 5s;
+}
+
+.item4 {
+    bottom: 25%;
+    right: 10%;
+    font-size: 2.5rem; /* Reduced size */
+    animation-duration: 18s;
+    animation-delay: 3s;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0.7;
+    }
+}
+
+.footer {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    z-index: 3;
+    font-size: 0.8rem; /* Reduced font size */
+    color: rgba(255, 255, 255, 0.7);
+    padding: 8px 0; /* Reduced padding */
+    background-color: rgba(20, 22, 63, 0.5);
+    margin-top: auto;
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.2rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+    
+    .logo-container {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 10px;
+    }
+    
+    .logo {
+        width: 108px;
+        height: 108px;
+    }
+    
+    .buttons {
+        flex-direction: row; /* Keep buttons side by side on mobile */
+        gap: 10px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .additional-info {
+        font-size: 0.9rem;
+    }
+}
+
+/* For very small screens */
+@media (max-height: 600px) {
+    .logo-container {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 8px;
+    }
+    
+    .logo {
+        width: 90px;
+        height: 90px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+    }
+    
+    .subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+        line-height: 1.3;
+    }
+    
+    .buttons {
+        margin-top: 5px;
+        margin-bottom: 8px;
+    }
+    
+    .btn {
+        padding: 8px 15px;
+        font-size: 0.8rem;
+    }
+    
+    .additional-info {
+        font-size: 0.8rem;
+    }
+    
+    .footer {
+        padding: 5px 0;
+        font-size: 0.7rem;
+    }
+}

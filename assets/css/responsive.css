@@ -1,0 +1,99 @@
+/* Responsive fixes for contact page */
+
+/* Reset to original styles but fix dropdown functionality */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  /* Container adjustments */
+  .container {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+  }
+  
+  /* Hamburger menu - ensure it's visible */
+  .hamburger {
+    display: block;
+    cursor: pointer;
+    z-index: 1001;
+  }
+  
+  /* Nav items in mobile view */
+  .nav-items {
+    position: fixed;
+    top: 80px; /* Adjust based on your navbar height */
+    left: -100%;
+    width: 80%;
+    height: calc(100vh - 80px);
+    background-color: #fff;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-items.active {
+    left: 0;
+  }
+  
+  /* Fix dropdown behavior */
+  .dropdown-content,
+  .nested-content {
+    position: static;
+    display: none;
+    box-shadow: none;
+    width: 100%;
+    padding-left: 15px;
+  }
+  
+  .dropdown-content.active,
+  .nested-content.active {
+    display: block;
+  }
+  
+  /* Other responsive adjustments */
+  .contact-info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-form-map,
+  .admission-container,
+  .appointment-container,
+  .social-media-container,
+  .footer-content {
+    flex-direction: column;
+  }
+  
+  .contact-form-container,
+  .map-container,
+  .admission-content,
+  .admission-image,
+  .appointment-form-container,
+  .appointment-info,
+  .social-media-content,
+  .newsletter-container,
+  .footer-section {
+    width: 100%;
+  }
+  
+  .form-row {
+    flex-direction: column;
+  }
+  
+  .form-row .form-group {
+    width: 100%;
+  }
+  
+  .map-container iframe {
+    width: 100%;
+  }
+}

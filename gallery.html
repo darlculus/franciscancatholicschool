@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Gallery & Events - Franciscan Catholic Nursery and Primary School
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/franciscan.css" />
+  </head>
+  <body>
+    <!-- Navbar begins -->
+    <nav class="navbar">
+      <div class="date-display" id="currentDate">
+        <span class="day"></span>
+        <div class="month-year">
+          <span class="month"></span>
+          <span class="year"></span>
+        </div>
+      </div>
+      <div class="logo">
+        <div class="logo-circle">
+          <a href="index.html"
+            ><img
+              src="assets/img/logo.jpg"
+              alt="Franciscan Catholic School Logo"
+          /></a>
+        </div>
+        <span>Franciscan Catholic School</span>
+      </div>
+      <div class="nav-items">
+        <a href="index.html">Home</a>
+        <div class="dropdown">
+          <a href="about.html" class="dropdown-trigger"
+            >About <i class="fas fa-chevron-down"></i
+          ></a>
+          <div class="dropdown-content">
+            <a href="welcome.html">Welcome Note</a>
+            <a href="corevalues.html">Our Core Values</a>
+            <a href="history.html">Our History</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <a href="programme.html" class="dropdown-trigger"
+            >Programmes <i class="fas fa-chevron-down"></i
+          ></a>
+          <div class="dropdown-content">
+            <div class="nested-dropdown">
+              <a href="earlyyear.html" class="nested-trigger"
+                >Early Years <i class="fas fa-chevron-right"></i
+              ></a>
+              <div class="nested-content">
+                <a href="creche.html">Creche</a>
+                <a href="preschool.html">PreSchool</a>
+              </div>
+            </div>
+            <a href="primary.html">Primary</a>
+            <a href="curriculum.html">Curriculum</a>
+          </div>
+        </div>
+        <a href="gallery.html" class="active">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="portal.html" class="portal-btn">Student Portal</a>
+      </div>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+    <!-- Navbar ends -->
+
+    <!-- Page Header begins -->
+    <section class="page-header gallery-header">
+      <div class="page-header-overlay"></div>
+      <div class="container">
+        <h1>Gallery & Events</h1>
+        <div class="breadcrumb">
+          <a href="index.html">Home</a>
+          <i class="fas fa-angle-right"></i>
+          <span>Gallery & Events</span>
+        </div>
+      </div>
+    </section>
+    <!-- Page Header ends -->
+
+    <!-- Gallery Navigation begins -->
+    <section class="gallery-navigation">
+      <div class="container">
+        <div class="gallery-tabs">
+          <button class="gallery-tab active" data-target="photos">
+            Photo Gallery
+          </button>
+          <button class="gallery-tab" data-target="events">
+            Upcoming Events
+          </button>
+          <button class="gallery-tab" data-target="past-events">
+            Past Events
+          </button>
+        </div>
+
+        <div class="gallery-filter">
+          <label for="filter-category">Filter by Category:</label>
+          <select id="filter-category">
+            <option value="all">All Categories</option>
+            <option value="academic">Academic Activities</option>
+            <option value="sports">Sports & Physical Education</option>
+            <option value="cultural">Cultural Celebrations</option>
+            <option value="religious">Religious Events</option>
+            <option value="field-trips">Field Trips</option>
+            <option value="special-days">Special Days</option>
+          </select>
+        </div>
+      </div>
+    </section>
+    <!-- Gallery Navigation ends -->
+
+    <!-- Photo Gallery Section begins -->
+    <section class="gallery-section active" id="photos">
+      <div class="container">
+        <div class="gallery-grid">
+          <!-- Gallery items will be populated dynamically with JavaScript -->
+          <!-- Sample items for demonstration -->
+          <div class="gallery-item" data-category="academic">
+            <div class="gallery-image">
+              <img
+                src="assets/img/science.jpg"
+                alt="Science Class Experiment"
+              />
+              <div class="gallery-overlay">
+                <div class="gallery-info">
+                  <h3>Science Class Experiment</h3>
+                  <p>Primary 4 students learning about chemical reactions</p>
+                  <span class="gallery-date">October 2024</span>
+                </div>
+                <button class="gallery-zoom">
+                  <i class="fas fa-search-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-category="sports">
+            <div class="gallery-image">
+              <img
+                src="assets/img/sports.jpg"
+                alt="Annual Sports Day"
+              />
+              <div class="gallery-overlay">
+                <div class="gallery-info">
+                  <h3>Annual Sports Day</h3>
+                  <p>Students participating in track and field events</p>
+                  <span class="gallery-date">March 2024</span>
+                </div>
+                <button class="gallery-zoom">
+                  <i class="fas fa-search-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-category="cultural">
+            <div class="gallery-image">
+              <img
+                src="assets/img/cultural day.jpg"
+                alt="Cultural Day Celebration"
+              />
+              <div class="gallery-overlay">
+                <div class="gallery-info">
+                  <h3>Cultural Day Celebration</h3>
+                  <p>Students showcasing Nigeria's diverse cultural heritage</p>
+                  <span class="gallery-date">May 2024</span>
+                </div>
+                <button class="gallery-zoom">
+                  <i class="fas fa-search-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-category="religious">
+            <div class="gallery-image">
+              <img
+                src="assets/img/first holy communion.jpg"
+                alt="First Holy Communion"
+              />
+              <div class="gallery-overlay">
+                <div class="gallery-info">
+                  <h3>First Holy Communion</h3>
+                  <p>Primary 3 students receiving their First Holy Communion</p>
+                  <span class="gallery-date">June 2024</span>
+                </div>
+                <button class="gallery-zoom">
+                  <i class="fas fa-search-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-category="field-trips">
+            <div class="gallery-image">
+              <img
+                src="assets/img/excursions.jpg"
+                alt="Museum Field Trip"
+              />
+              <div class="gallery-overlay">
+                <div class="gallery-info">
+                  <h3>Museum Field Trip</h3>
+                  <p>Primary 5 students visiting the National Museum</p>
+                  <span class="gallery-date">February 2024</span>
+                </div>
+                <button class="gallery-zoom">
+                  <i class="fas fa-search-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-category="special-days">
+            <div class="gallery-image">
+              <img
+                src="assets/img/graduate.jpg"
+                alt="Graduation Ceremony"
+              />
+              <div class="gallery-overlay">
+                <div class="gallery-info">
+                  <h3>Graduation Ceremony</h3>
+                  <p>Primary 6 students celebrating their graduation</p>
+                  <span class="gallery-date">July 2024</span>
+                </div>
+                <button class="gallery-zoom">
+                  <i class="fas fa-search-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add more gallery items as needed -->
+        </div>
+
+        <div class="gallery-pagination">
+          <button class="pagination-prev">
+            <i class="fas fa-chevron-left"></i> Previous
+          </button>
+          <div class="pagination-numbers">
+            <span class="pagination-number active">1</span>
+            <span class="pagination-number">2</span>
+            <span class="pagination-number">3</span>
+            <span class="pagination-dots">...</span>
+            <span class="pagination-number">8</span>
+          </div>
+          <button class="pagination-next">
+            Next <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Photo Gallery Section ends -->
+
+    <!-- Upcoming Events Section begins -->
+    <section class="gallery-section" id="events">
+      <div class="container">
+        <div class="events-container">
+          <div class="event-card featured">
+            <div class="event-image">
+              <img
+                src="assets/img/science.jpg"
+                alt="Annual Science Fair"
+              />
+              <div class="event-date">
+                <span class="day">15</span>
+                <span class="month">Mar</span>
+              </div>
+            </div>
+            <div class="event-content">
+              <div class="event-meta">
+                <span class="event-time"
+                  ><i class="fas fa-clock"></i> 9:00 AM - 3:00 PM</span
+                >
+                <span class="event-location"
+                  ><i class="fas fa-map-marker-alt"></i> School Auditorium</span
+                >
+              </div>
+              <h3>Annual Science Fair</h3>
+              <p>
+                Students will showcase innovative projects and experiments at
+                our yearly science exhibition. Parents and community members are
+                invited to witness the creativity and scientific inquiry of our
+                young scientists.
+              </p>
+              <div class="event-actions">
+                <a href="#" class="btn-event-details">View Details</a>
+                <a href="#" class="btn-event-calendar"
+                  ><i class="fas fa-calendar-plus"></i> Add to Calendar</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="events-grid">
+            <div class="event-card">
+              <div class="event-image">
+                <img
+                  src="assets/img/sports.jpg"
+                  alt="Sports Day 2025"
+                />
+                <div class="event-date">
+                  <span class="day">22</span>
+                  <span class="month">Apr</span>
+                </div>
+              </div>
+              <div class="event-content">
+                <div class="event-meta">
+                  <span class="event-time"
+                    ><i class="fas fa-clock"></i> 8:00 AM - 2:00 PM</span
+                  >
+                  <span class="event-location"
+                    ><i class="fas fa-map-marker-alt"></i> School Sports
+                    Field</span
+                  >
+                </div>
+                <h3>Sports Day 2025</h3>
+                <p>
+                  Join us for a day of friendly competition and physical
+                  activities for all age groups. Students will participate in
+                  various sports and track events.
+                </p>
+                <a href="#" class="btn-event-details">View Details</a>
+              </div>
+            </div>
+
+            <div class="event-card">
+              <div class="event-image">
+                <img
+                  src="assets/img/pta.jpg"
+                  alt="Parent-Teacher Conference"
+                />
+                <div class="event-date">
+                  <span class="day">10</span>
+                  <span class="month">May</span>
+                </div>
+              </div>
+              <div class="event-content">
+                <div class="event-meta">
+                  <span class="event-time"
+                    ><i class="fas fa-clock"></i> 10:00 AM - 4:00 PM</span
+                  >
+                  <span class="event-location"
+                    ><i class="fas fa-map-marker-alt"></i> Classrooms</span
+                  >
+                </div>
+                <h3>Parent-Teacher Conference</h3>
+                <p>
+                  Schedule your appointment for our upcoming parent-teacher
+                  meetings to discuss student progress and address any concerns.
+                </p>
+                <a href="#" class="btn-event-details">View Details</a>
+              </div>
+            </div>
+
+            <div class="event-card">
+              <div class="event-image">
+                <img
+                  src="assets/img/cultural day.jpg"
+                  alt="Cultural Day Celebration"
+                />
+                <div class="event-date">
+                  <span class="day">05</span>
+                  <span class="month">Jun</span>
+                </div>
+              </div>
+              <div class="event-content">
+                <div class="event-meta">
+                  <span class="event-time"
+                    ><i class="fas fa-clock"></i> 11:00 AM - 3:00 PM</span
+                  >
+                  <span class="event-location"
+                    ><i class="fas fa-map-marker-alt"></i> School Hall</span
+                  >
+                </div>
+                <h3>Cultural Day Celebration</h3>
+                <p>
+                  A celebration of Nigeria's rich cultural heritage with
+                  traditional dances, music, food, and costumes from various
+                  ethnic groups.
+                </p>
+                <a href="#" class="btn-event-details">View Details</a>
+              </div>
+            </div>
+
+            <div class="event-card">
+              <div class="event-image">
+                <img
+                  src="assets/img/graduate.jpg"
+                  alt="Graduation Ceremony"
+                />
+                <div class="event-date">
+                  <span class="day">20</span>
+                  <span class="month">Jul</span>
+                </div>
+              </div>
+              <div class="event-content">
+                <div class="event-meta">
+                  <span class="event-time"
+                    ><i class="fas fa-clock"></i> 10:00 AM - 1:00 PM</span
+                  >
+                  <span class="event-location"
+                    ><i class="fas fa-map-marker-alt"></i> School
+                    Auditorium</span
+                  >
+                </div>
+                <h3>Graduation Ceremony</h3>
+                <p>
+                  Join us as we celebrate the achievements of our Primary 6
+                  students as they prepare to move on to secondary education.
+                </p>
+                <a href="#" class="btn-event-details">View Details</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="events-calendar">
+            <div class="calendar-header">
+              <h3>Events Calendar</h3>
+              <div class="calendar-navigation">
+                <button class="calendar-prev">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <span class="calendar-month">March 2025</span>
+                <button class="calendar-next">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="calendar-grid">
+              <!-- Calendar will be generated with JavaScript -->
+              <!-- This is a placeholder structure -->
+              <div class="calendar-days">
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+              </div>
+              <div class="calendar-dates">
+                <!-- Dates will be populated by JavaScript -->
+              </div>
+            </div>
+            <div class="calendar-legend">
+              <div class="legend-item">
+                <span class="legend-color academic"></span>
+                <span>Academic Events</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-color sports"></span>
+                <span>Sports Events</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-color cultural"></span>
+                <span>Cultural Events</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-color religious"></span>
+                <span>Religious Events</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Upcoming Events Section ends -->
+
+    <!-- Past Events Section begins -->
+    <section class="gallery-section" id="past-events">
+      <div class="container">
+        <div class="past-events-container">
+          <div class="past-events-filter">
+            <label for="past-events-year">Filter by Year:</label>
+            <select id="past-events-year">
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+            </select>
+
+            <label for="past-events-category">Filter by Category:</label>
+            <select id="past-events-category">
+              <option value="all">All Categories</option>
+              <option value="academic">Academic</option>
+              <option value="sports">Sports</option>
+              <option value="cultural">Cultural</option>
+              <option value="religious">Religious</option>
+            </select>
+          </div>
+
+          <div class="past-events-grid">
+            <div
+              class="past-event-card"
+              data-year="2024"
+              data-category="academic"
+            >
+              <div class="past-event-image">
+                <img
+                  src="assets/img/literacy day.jpg"
+                  alt="World Literacy Day Celebration"
+                />
+              </div>
+              <div class="past-event-content">
+                <div class="past-event-date">
+                  <i class="fas fa-calendar-alt"></i> January 15, 2024
+                </div>
+                <h3>World Literacy Day Celebration</h3>
+                <p>
+                  Students participated in various reading and writing
+                  activities to celebrate World Literacy Day, including a book
+                  fair and reading competition.
+                </p>
+                <div class="past-event-gallery">
+                  <span>Photo Gallery: </span>
+                  <a href="#" class="view-gallery"
+                    >View Photos (24) <i class="fas fa-images"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="past-event-card"
+              data-year="2024"
+              data-category="religious"
+            >
+              <div class="past-event-image">
+                <img
+                  src="assets/img/Ash Wednesday.jpg"
+                  alt="Ash Wednesday Service"
+                />
+              </div>
+              <div class="past-event-content">
+                <div class="past-event-date">
+                  <i class="fas fa-calendar-alt"></i> February 14, 2024
+                </div>
+                <h3>Ash Wednesday Service</h3>
+                <p>
+                  Students and staff participated in the Ash Wednesday service,
+                  marking the beginning of the Lenten season with prayer and
+                  reflection.
+                </p>
+                <div class="past-event-gallery">
+                  <span>Photo Gallery: </span>
+                  <a href="#" class="view-gallery"
+                    >View Photos (18) <i class="fas fa-images"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="past-event-card"
+              data-year="2023"
+              data-category="cultural"
+            >
+              <div class="past-event-image">
+                <img
+                  src="assets/img/Christmas concert.jpg"
+                  alt="Christmas Concert"
+                />
+              </div>
+              <div class="past-event-content">
+                <div class="past-event-date">
+                  <i class="fas fa-calendar-alt"></i> December 15, 2023
+                </div>
+                <h3>Annual Christmas Concert</h3>
+                <p>
+                  Students performed Christmas carols, nativity plays, and
+                  cultural dances to celebrate the festive season with parents
+                  and community members.
+                </p>
+                <div class="past-event-gallery">
+                  <span>Photo Gallery: </span>
+                  <a href="#" class="view-gallery"
+                    >View Photos (42) <i class="fas fa-images"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="past-event-card"
+              data-year="2023"
+              data-category="sports"
+            >
+              <div class="past-event-image">
+                <img
+                  src="assets/img/soccer club.jpg"
+                  alt="Inter-School Sports Competition"
+                />
+              </div>
+              <div class="past-event-content">
+                <div class="past-event-date">
+                  <i class="fas fa-calendar-alt"></i> November 10, 2023
+                </div>
+                <h3>Inter-School Sports Competition</h3>
+                <p>
+                  Our students competed against other schools in various
+                  sporting events, winning several medals and trophies in
+                  football, athletics, and swimming.
+                </p>
+                <div class="past-event-gallery">
+                  <span>Photo Gallery: </span>
+                  <a href="#" class="view-gallery"
+                    >View Photos (36) <i class="fas fa-images"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add more past events as needed -->
+          </div>
+
+          <div class="past-events-pagination">
+            <button class="pagination-prev">
+              <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <div class="pagination-numbers">
+              <span class="pagination-number active">1</span>
+              <span class="pagination-number">2</span>
+              <span class="pagination-number">3</span>
+              <span class="pagination-dots">...</span>
+              <span class="pagination-number">5</span>
+            </div>
+            <button class="pagination-next">
+              Next <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Past Events Section ends -->
+
+    <!-- Image Modal begins -->
+    <div class="gallery-modal" id="galleryModal">
+      <span class="modal-close">&times;</span>
+      <div class="modal-content">
+        <div class="modal-image-container">
+          <img src="" id="modalImage" alt="Gallery Image" />
+        </div>
+        <div class="modal-caption">
+          <h3 id="modalTitle"></h3>
+          <p id="modalDescription"></p>
+          <span id="modalDate"></span>
+        </div>
+        <div class="modal-navigation">
+          <button class="modal-prev">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="modal-next">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Image Modal ends -->
+
+    <!-- Submit Photos CTA begins -->
+    <section class="submit-photos-section">
+      <div class="container">
+        <div class="submit-photos-container">
+          <div class="submit-photos-content">
+            <h2>Share Your Memories</h2>
+            <p>
+              Do you have photos from school events or activities? We'd love to
+              include them in our gallery! Submit your photos to help us
+              document the wonderful moments at Franciscan Catholic School.
+            </p>
+            <a href="#" class="cta-button">Submit Photos</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Submit Photos CTA ends -->
+
+    <!-- Footer section begins -->
+    <footer class="footer">
+      <div class="footer-top">
+        <div class="container">
+          <div class="footer-content">
+            <div class="footer-section about">
+              <div class="footer-logo">
+                <div class="logo-circle">
+                  <img
+                    src="assets/img/logo.jpg"
+                    alt="Franciscan Catholic School Logo"
+                  />
+                </div>
+                <h3>Franciscan Catholic School</h3>
+              </div>
+              <p>
+                Providing quality Catholic education since 1995. Building faith,
+                knowledge, and character in young minds.
+              </p>
+              <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+              </div>
+            </div>
+
+            <div class="footer-section links">
+              <h4>Quick Links</h4>
+              <ul>
+                <li>
+                  <a href="about.html"
+                    ><i class="fas fa-angle-right"></i> About Us</a
+                  >
+                </li>
+                <li>
+                  <a href="programme.html"
+                    ><i class="fas fa-angle-right"></i> Our Programmes</a
+                  >
+                </li>
+                <li>
+                  <a href="gallery.html"
+                    ><i class="fas fa-angle-right"></i> Gallery</a
+                  >
+                </li>
+                <li>
+                  <a href="news.html"
+                    ><i class="fas fa-angle-right"></i> News & Events</a
+                  >
+                </li>
+                <li>
+                  <a href="contact.html"
+                    ><i class="fas fa-angle-right"></i> Contact Us</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="footer-section programmes">
+              <h4>Our Programmes</h4>
+              <ul>
+                <li>
+                  <a href="creche.html"
+                    ><i class="fas fa-angle-right"></i> Creche</a
+                  >
+                </li>
+                <li>
+                  <a href="preschool.html"
+                    ><i class="fas fa-angle-right"></i> Pre-School</a
+                  >
+                </li>
+                <li>
+                  <a href="primary.html"
+                    ><i class="fas fa-angle-right"></i> Primary School</a
+                  >
+                </li>
+                <li>
+                  <a href="afterschool.html"
+                    ><i class="fas fa-angle-right"></i> After School
+                    Programme</a
+                  >
+                </li>
+                <li>
+                  <a href="holiday.html"
+                    ><i class="fas fa-angle-right"></i> Holiday Programme</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="footer-section contact">
+              <h4>Contact Information</h4>
+              <ul>
+                <li>
+                  <i class="fas fa-map-marker-alt"></i> 15 Francis Avenue, Lekki
+                  Phase 1, Lagos, Nigeria
+                </li>
+                <li>
+                  <i class="fas fa-phone"></i> +234 803 456 7890, +234 802 345
+                  6789
+                </li>
+                <li>
+                  <i class="fas fa-envelope"></i>
+                  info@franciscancatholicschool.edu.ng
+                </li>
+                <li>
+                  <i class="fas fa-clock"></i> Monday - Friday: 7:30 AM - 3:30
+                  PM
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="container">
+          <p>
+            &copy; 2025 Franciscan Catholic Nursery and Primary School. All
+            Rights Reserved.
+          </p>
+          <p>
+            Designed by
+            <a href="https://darlingtonodom-portfolio.vercel.app/">Darlculus</a>
+          </p>
+        </div>
+      </div>
+
+      <button id="scrollToTop" class="scroll-to-top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+    </footer>
+    <!-- Footer section ends -->
+
+    <script src="assets/js/franciscan.js"></script>
+  </body>
+</html>
