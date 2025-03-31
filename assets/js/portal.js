@@ -41,6 +41,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Test user database (in a real application, this would be server-side)
+    const testUsers = {
+        students: [
+            { id: 'STU001', password: 'password123', name: 'John Doe', grade: 'Primary 5', role: 'student' },
+            { id: 'STU002', password: 'password123', name: 'Jane Smith', grade: 'Primary 6', role: 'student' },
+            { id: 'STU003', password: 'password123', name: 'Michael Johnson', grade: 'Primary 4', role: 'student' }
+        ],
+        teachers: [
+            { id: 'TCH001', password: 'teacher123', name: 'Mrs. Elizabeth Brown', subject: 'Mathematics', role: 'teacher' },
+            { id: 'TCH002', password: 'teacher123', name: 'Mr. Robert Wilson', subject: 'Science', role: 'teacher' },
+            { id: 'TCH003', password: 'teacher123', name: 'Ms. Sarah Davis', subject: 'English', role: 'teacher' }
+        ],
+        admin: [
+            { id: 'ADM001', password: 'admin123', name: 'Dr. James Anderson', position: 'Principal', role: 'admin' }
+        ]
+    };
+    
     // Form submission (for demonstration - would connect to backend in real app)
     const formElements = document.querySelectorAll('form');
     
@@ -53,26 +70,70 @@ document.addEventListener('DOMContentLoaded', function() {
             const isStudent = formId === 'student-login';
             
             // Get username and password
-            const username = isStudent ? 
+            const userId = isStudent ? 
                 document.getElementById('student-id').value : 
                 document.getElementById('teacher-id').value;
                 
             const password = isStudent ? 
                 document.getElementById('student-password').value : 
                 document.getElementById('teacher-password').value;
+                
+            const rememberMe = isStudent ?
+                document.getElementById('student-remember').checked :
+                document.getElementById('teacher-remember').checked;
             
             // Simple validation
-            if (!username || !password) {
+            if (!userId || !password) {
                 alert('Please enter both ID and password');
                 return;
             }
             
-            // In a real application, you would send this data to a server for authentication
-            // For demonstration, just show an alert
-            alert(`${isStudent ? 'Student' : 'Teacher'} login attempt with ID: ${username}`);
-            
-            // Redirect to appropriate dashboard (in a real app)
-            // window.location.href = isStudent ? 'student-dashboard.html' : 'teacher-dashboard.html';
+            // Authenticate user
+            if (isStudent) {
+                // Find student in test database
+                const student = testUsers.students.find(user => user.id === userId);
+                
+                if (student && student.password === password) {
+                    // Store user info in session storage or local storage based on remember me
+                    const storage = rememberMe ? localStorage : sessionStorage;
+                    storage.setItem('currentUser', JSON.stringify({
+                        id: student.id,
+                        name: student.name,
+                        grade: student.grade,
+                        role: student.role
+                    }));
+                    
+                    // Redirect to student dashboard
+                    window.location.href = 'student-dashboard.html';
+                } else {
+                    alert('Invalid student ID or password. Please try again.');
+                }
+            } else {
+                // Find teacher or admin in test database
+                const teacher = testUsers.teachers.find(user => user.id === userId);
+                const admin = testUsers.admin.find(user => user.id === userId);
+                const user = teacher || admin;
+                
+                if (user && user.password === password) {
+                    // Store user info in session storage or local storage based on remember me
+                    const storage = rememberMe ? localStorage : sessionStorage;
+                    storage.setItem('currentUser', JSON.stringify({
+                        id: user.id,
+                        name: user.name,
+                        role: user.role,
+                        ...(user.role === 'teacher' ? { subject: user.subject } : { position: user.position })
+                    }));
+                    
+                    // Redirect to appropriate dashboard
+                    if (user.role === 'teacher') {
+                        window.location.href = 'teacher-dashboard.html';
+                    } else {
+                        window.location.href = 'admin-dashboard.html';
+                    }
+                } else {
+                    alert('Invalid staff ID or password. Please try again.');
+                }
+            }
         });
     });
 });

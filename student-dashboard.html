@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Franciscan Catholic School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/franciscan.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-circle">
+                    <img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo">
+                </div>
+                <h3>Student Portal</h3>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <h4 id="student-name">Loading...</h4>
+                    <p id="student-grade">Loading...</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="#assignments"><i class="fas fa-book"></i> Assignments</a>
+                    </li>
+                    <li>
+                        <a href="#grades"><i class="fas fa-chart-line"></i> Grades</a>
+                    </li>
+                    <li>
+                        <a href="#timetable"><i class="fas fa-calendar-alt"></i> Timetable</a>
+                    </li>
+                    <li>
+                        <a href="#attendance"><i class="fas fa-clipboard-check"></i> Attendance</a>
+                    </li>
+                    <li>
+                        <a href="#resources"><i class="fas fa-folder"></i> Resources</a>
+                    </li>
+                    <li>
+                        <a href="#messages"><i class="fas fa-envelope"></i> Messages</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="mobile-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                
+                <div class="header-actions">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="date-display">
+                        <i class="fas fa-calendar"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="dashboard-content">
+                <div class="welcome-banner">
+                    <div class="welcome-text">
+                        <h1>Welcome back, <span id="welcome-name">Student</span>!</h1>
+                        <p>Here's what's happening with your academic progress</p>
+                    </div>
+                    <div class="welcome-image">
+                        <img src="assets/img/student-illustration.png" alt="Student Illustration">
+                    </div>
+                </div>
+                
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>4</h3>
+                            <p>Pending Assignments</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>85%</h3>
+                            <p>Average Grade</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>95%</h3>
+                            <p>Attendance Rate</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>3</h3>
+                            <p>Achievements</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card upcoming-assignments">
+                        <div class="card-header">
+                            <h2>Upcoming Assignments</h2>
+                            <a href="#assignments" class="view-all">View All</a>
+                        </div>
+                        <div class="card-content">
+                            <ul class="assignment-list">
+                                <li class="assignment-item">
+                                    <div class="assignment-info">
+                                        <h4>Mathematics - Fractions Exercise</h4>
+                                        <p>Complete exercises 1-10 on page 45</p>
+                                    </div>
+                                    <div class="assignment-meta">
+                                        <span class="due-date">Due: Tomorrow</span>
+                                        <span class="priority high">High Priority</span>
+                                    </div>
+                                </li>
+                                <li class="assignment-item">
+                                    <div class="assignment-info">
+                                        <h4>Science - Plant Life Cycle</h4>
+                                        <p>Draw and label the stages of plant growth</p>
+                                    </div>
+                                    <div class="assignment-meta">
+                                        <span class="due-date">Due: 3 days</span>
+                                        <span class="priority medium">Medium Priority</span>
+                                    </div>
+                                </li>
+                                <li class="assignment-item">
+                                    <div class="assignment-info">
+                                        <h4>English - Book Report</h4>
+                                        <p>Write a 2-page report on "The Lion, the Witch and the Wardrobe"</p>
+                                    </div>
+                                    <div class="assignment-meta">
+                                        <span class="due-date">Due: 1 week</span>
+                                        <span class="priority medium">Medium Priority</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card recent-grades">
+                        <div class="card-header">
+                            <h2>Recent Grades</h2>
+                            <a href="#grades" class="view-all">View All</a>
+                        </div>
+                        <div class="card-content">
+                            <ul class="grades-list">
+                                <li class="grade-item">
+                                    <div class="grade-info">
+                                        <h4>Mathematics Quiz</h4>
+                                        <p>Multiplication and Division</p>
+                                    </div>
+                                    <div class="grade-score excellent">
+                                        <span>92%</span>
+                                    </div>
+                                </li>
+                                <li class="grade-item">
+                                    <div class="grade-info">
+                                        <h4>English Spelling Test</h4>
+                                        <p>Weekly vocabulary</p>
+                                    </div>
+                                    <div class="grade-score good">
+                                        <span>85%</span>
+                                    </div>
+                                </li>
+                                <li class="grade-item">
+                                    <div class="grade-info">
+                                        <h4>Science Project</h4>
+                                        <p>Solar System Model</p>
+                                    </div>
+                                    <div class="grade-score excellent">
+                                        <span>95%</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card announcements">
+                        <div class="card-header">
+                            <h2>School Announcements</h2>
+                        </div>
+                        <div class="card-content">
+                            <ul class="announcement-list">
+                                <li class="announcement-item">
+                                    <div class="announcement-header">
+                                        <h4 class="announcement-title">Annual Science Fair</h4>
+                                        <span class="announcement-date">Posted: 2 days ago</span>
+                                    </div>
+                                    <p class="announcement-content">
+                                        The Annual Science Fair will be held on March 15th. All students are encouraged to prepare projects demonstrating scientific principles. Registration forms are available from your science teacher.
+                                    </p>
+                                    <div class="announcement-footer">
+                                        <span class="announcement-author">Posted by: Mrs. Elizabeth Brown</span>
+                                    </div>
+                                </li>
+                                <li class="announcement-item">
+                                    <div class="announcement-header">
+                                        <h4 class="announcement-title">Parent-Teacher Conference</h4>
+                                        <span class="announcement-date">Posted: 5 days ago</span>
+                                    </div>
+                                    <p class="announcement-content">
+                                        Parent-Teacher conferences will be held on May 10th. Please have your parents schedule an appointment through the school office.
+                                    </p>
+                                    <div class="announcement-footer">
+                                        <span class="announcement-author">Posted by: Dr. James Anderson</span>
+                                    </div>
+                                </li>
+                                <li class="announcement-item">
+                                    <div class="announcement-header">
+                                        <h4 class="announcement-title">School Holiday Reminder</h4>
+                                        <span class="announcement-date">Posted: 1 week ago</span>
+                                    </div>
+                                    <p class="announcement-content">
+                                        Please note that the school will be closed on April 22nd for Staff Development Day. Classes will resume on April 23rd.
+                                    </p>
+                                    <div class="announcement-footer">
+                                        <span class="announcement-author">Posted by: School Administration</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/student-dashboard.js"></script>
+</body>
+</html>
