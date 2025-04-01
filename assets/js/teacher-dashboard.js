@@ -35,30 +35,32 @@ document.addEventListener('DOMContentLoaded', function() {
     
     teacherSubjectElements.forEach(element => {
         if (currentUser.role === 'teacher') {
-            element.textContent = currentUser.subject;
+            element.textContent = currentUser.subject || 'Subject Teacher';
         } else {
             element.textContent = currentUser.position;
         }
     });
     
-    // Mobile sidebar toggle
+    // Mobile sidebar toggle functionality
     const sidebarToggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.querySelector('.dashboard-sidebar');
+    const dashboardSidebar = document.querySelector('.dashboard-sidebar');
+    const dashboardContainer = document.querySelector('.dashboard-container');
     
-    if (sidebarToggle && sidebar) {
+    if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('active');
+            dashboardSidebar.classList.toggle('active');
+            dashboardContainer.classList.toggle('sidebar-open');
         });
     }
     
     // Close sidebar when clicking outside on mobile
     document.addEventListener('click', function(event) {
-        if (window.innerWidth <= 768 && 
-            sidebar && 
-            sidebar.classList.contains('active') && 
-            !sidebar.contains(event.target) && 
-            event.target !== sidebarToggle) {
-            sidebar.classList.remove('active');
+        const isClickInsideSidebar = dashboardSidebar.contains(event.target);
+        const isClickOnToggle = sidebarToggle.contains(event.target);
+        
+        if (!isClickInsideSidebar && !isClickOnToggle && window.innerWidth < 768 && dashboardSidebar.classList.contains('active')) {
+            dashboardSidebar.classList.remove('active');
+            dashboardContainer.classList.remove('sidebar-open');
         }
     });
     

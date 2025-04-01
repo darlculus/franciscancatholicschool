@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const dateString = now.toLocaleDateString('en-US', options);
     
-    const currentDateElement = document.getElementById('current-date');
-    if (currentDateElement) {
-        currentDateElement.querySelector('span').textContent = dateString;
-    }
+    const currentDateElements = document.querySelectorAll('#current-date');
+    currentDateElements.forEach(element => {
+        element.textContent = dateString;
+    });
     
     // Update admin information
     const adminNameElements = document.querySelectorAll('#admin-name, #welcome-name');
@@ -41,24 +41,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Mobile sidebar toggle
+    // Mobile sidebar toggle functionality
     const sidebarToggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.querySelector('.dashboard-sidebar');
+    const dashboardSidebar = document.querySelector('.dashboard-sidebar');
+    const dashboardContainer = document.querySelector('.dashboard-container');
     
-    if (sidebarToggle && sidebar) {
+    if (sidebarToggle && dashboardSidebar) {
         sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('active');
+            dashboardSidebar.classList.toggle('active');
+            dashboardContainer.classList.toggle('sidebar-open');
         });
     }
     
     // Close sidebar when clicking outside on mobile
     document.addEventListener('click', function(event) {
-        if (window.innerWidth <= 768 && 
-            sidebar && 
-            sidebar.classList.contains('active') && 
-            !sidebar.contains(event.target) && 
-            event.target !== sidebarToggle) {
-            sidebar.classList.remove('active');
+        if (dashboardSidebar && sidebarToggle) {
+            const isClickInsideSidebar = dashboardSidebar.contains(event.target);
+            const isClickOnToggle = sidebarToggle.contains(event.target);
+            
+            if (!isClickInsideSidebar && !isClickOnToggle && window.innerWidth < 768 && dashboardSidebar.classList.contains('active')) {
+                dashboardSidebar.classList.remove('active');
+                dashboardContainer.classList.remove('sidebar-open');
+            }
         }
     });
     
@@ -129,6 +133,15 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(`${this.textContent.trim()} feature will be implemented in the future.`);
         });
     });
+    
+    // Notification bell functionality
+    const notificationBell = document.querySelector('.notification-bell');
+    
+    if (notificationBell) {
+        notificationBell.addEventListener('click', function() {
+            alert('Notifications feature will be implemented in the future.');
+        });
+    }
     
     // Add animation to the welcome banner
     const welcomeBanner = document.querySelector('.welcome-banner');
