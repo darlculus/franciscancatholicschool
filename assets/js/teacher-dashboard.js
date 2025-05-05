@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Navigation functionality
+    // Navigation functionality - Updated to handle real page navigation
     const navLinks = document.querySelectorAll('.sidebar-nav a');
     
     navLinks.forEach(link => {
@@ -89,16 +89,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.getAttribute('href').startsWith('#')) {
                 e.preventDefault();
                 
-                // Remove active class from all links
-                navLinks.forEach(l => l.parentElement.classList.remove('active'));
+                // Get the section name from the href
+                const section = this.getAttribute('href').substring(1);
                 
-                // Add active class to clicked link
-                this.parentElement.classList.add('active');
-                
-                // Here you would typically load the corresponding content
-                // For now, we'll just show an alert
+                // Show alert for sections that don't have dedicated pages yet
                 alert(`Navigating to ${this.textContent.trim()} page. This functionality will be implemented in the future.`);
             }
+            // Otherwise, let the browser handle the navigation to the actual page
         });
     });
     
@@ -127,7 +124,24 @@ document.addEventListener('DOMContentLoaded', function() {
     classActionButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
-            alert(`${this.textContent.trim()} feature will be implemented in the future.`);
+            
+            // Get the class name from the parent element
+            const classItem = this.closest('.class-item');
+            const className = classItem.querySelector('h4').textContent;
+            
+            // Get the action text
+            const actionText = this.textContent.trim();
+            
+            alert(`${actionText} feature for ${className} will be implemented in the future.`);
         });
     });
+    
+    // "View All" link for My Classes
+    const viewAllClassesLink = document.querySelector('.my-classes .view-all');
+    
+    if (viewAllClassesLink) {
+        viewAllClassesLink.addEventListener('click', function(e) {
+            // No need to prevent default, let it navigate to my-classes.html
+        });
+    }
 });
