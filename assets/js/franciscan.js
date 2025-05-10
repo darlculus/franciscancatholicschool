@@ -45,6 +45,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Testimonial Slider
     initTestimonialSlider();
     
+    // Tab Switching Functionality
+    initTabs();
+    
     // Scroll to Top Button
     const scrollToTopBtn = document.getElementById('scrollToTop');
     
@@ -77,6 +80,29 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   });
+  
+  // Initialize Tab Functionality
+  function initTabs() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    if (tabButtons.length === 0) return;
+    
+    tabButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        // Remove active class from all buttons and contents
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+        
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        // Show corresponding tab content
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+  }
   
   // Update Date Display
   function updateDateDisplay() {
