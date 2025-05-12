@@ -87,4 +87,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // Logout functionality
+    const logoutBtn = document.getElementById('logout-btn');
+    
+    logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Clear any authentication tokens/session data from localStorage
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        
+        // Show logout message
+        alert('You have been successfully logged out.');
+        
+        // Redirect to login page
+        window.location.href = 'admin-login.html';
+    });
 });
