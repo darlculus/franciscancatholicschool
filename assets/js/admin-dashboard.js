@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show logout message
         alert('You have been successfully logged out.');
         
-        // Redirect to login page
-        window.location.href = 'admin-login.html';
+        // Redirect to portal page instead of admin-login.html
+        window.location.href = 'portal.html';
     });
 });
