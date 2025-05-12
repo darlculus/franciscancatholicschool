@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings - Franciscan Catholic Nursery & Primary School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin-dashboard.css">
+    <link rel="stylesheet" href="assets/css/settings.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
+                <h3>Admin Portal</h3>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="#teachers"><i class="fas fa-chalkboard-teacher"></i> Teachers</a>
+                    </li>
+                    <li>
+                        <a href="#students"><i class="fas fa-user-graduate"></i> Students</a>
+                    </li>
+                    <li>
+                        <a href="#classes"><i class="fas fa-school"></i> Classes</a>
+                    </li>
+                    <li>
+                        <a href="#subjects"><i class="fas fa-book"></i> Subjects</a>
+                    </li>
+                    <li>
+                        <a href="#attendance"><i class="fas fa-calendar-check"></i> Attendance</a>
+                    </li>
+                    <li>
+                        <a href="#exams"><i class="fas fa-file-alt"></i> Exams</a>
+                    </li>
+                    <li>
+                        <a href="#reports"><i class="fas fa-chart-bar"></i> Reports</a>
+                    </li>
+                    <li class="active">
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Top Navigation -->
+            <nav class="dashboard-nav">
+                <button id="sidebar-toggle" class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-right">
+                    <div class="date-display">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                    <div class="admin-profile">
+                        <img src="assets/images/admin-avatar.png" alt="Admin" id="nav-profile-image" class="avatar">
+                        <div class="admin-info">
+                            <span id="admin-name">Admin User</span>
+                            <span id="admin-role">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Settings Content -->
+            <div class="dashboard-content">
+                <div class="settings-header">
+                    <h1>Settings</h1>
+                    <p>Manage your account settings and preferences</p>
+                </div>
+
+                <div class="settings-container">
+                    <!-- Settings Navigation -->
+                    <div class="settings-nav">
+                        <ul>
+                            <li class="active" data-tab="profile"><i class="fas fa-user"></i> Profile</li>
+                            <li data-tab="account"><i class="fas fa-lock"></i> Account</li>
+                            <li data-tab="notifications"><i class="fas fa-bell"></i> Notifications</li>
+                            <li data-tab="appearance"><i class="fas fa-palette"></i> Appearance</li>
+                            <li data-tab="system"><i class="fas fa-server"></i> System</li>
+                        </ul>
+                    </div>
+
+                    <!-- Settings Content -->
+                    <div class="settings-content">
+                        <!-- Profile Settings -->
+                        <div class="settings-tab active" id="profile-tab">
+                            <h2>Profile Settings</h2>
+                            
+                            <div class="profile-picture-section">
+                                <h3>Profile Picture</h3>
+                                <div class="profile-picture-container">
+                                    <div class="profile-picture">
+                                        <img src="assets/images/admin-avatar.png" id="profile-image" alt="Profile Picture">
+                                        <div class="profile-picture-overlay">
+                                            <i class="fas fa-camera"></i>
+                                        </div>
+                                    </div>
+                                    <div class="profile-picture-actions">
+                                        <input type="file" id="profile-picture-upload" accept="image/*" style="display: none;">
+                                        <button id="upload-picture-btn" class="btn-primary"><i class="fas fa-upload"></i> Upload New Picture</button>
+                                        <button id="remove-picture-btn" class="btn-secondary"><i class="fas fa-trash-alt"></i> Remove</button>
+                                    </div>
+                                </div>
+                                <p class="help-text">Recommended size: 200x200 pixels. Maximum file size: 2MB.</p>
+                            </div>
+
+                            <form id="profile-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="admin-fullname">Full Name</label>
+                                        <input type="text" id="admin-fullname" name="admin-fullname" value="Admin User">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="admin-title">Job Title</label>
+                                        <input type="text" id="admin-title" name="admin-title" value="School Administrator">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="admin-email">Email Address</label>
+                                        <input type="email" id="admin-email" name="admin-email" value="admin@franciscanschool.edu">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="admin-phone">Phone Number</label>
+                                        <input type="tel" id="admin-phone" name="admin-phone" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="admin-bio">Bio</label>
+                                    <textarea id="admin-bio" name="admin-bio" rows="4" placeholder="Tell us about yourself"></textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Save Changes</button>
+                                    <button type="reset" class="btn-secondary">Reset</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Account Settings -->
+                        <div class="settings-tab" id="account-tab">
+                            <h2>Account Settings</h2>
+                            <form id="account-form">
+                                <div class="form-group">
+                                    <label for="current-password">Current Password</label>
+                                    <input type="password" id="current-password" name="current-password">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="new-password">New Password</label>
+                                        <input type="password" id="new-password" name="new-password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirm-password">Confirm New Password</label>
+                                        <input type="password" id="confirm-password" name="confirm-password">
+                                    </div>
+                                </div>
+                                <div class="password-requirements">
+                                    <h4>Password Requirements:</h4>
+                                    <ul>
+                                        <li>At least 8 characters long</li>
+                                        <li>Contains at least one uppercase letter</li>
+                                        <li>Contains at least one number</li>
+                                        <li>Contains at least one special character</li>
+                                    </ul>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Update Password</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Notifications Settings -->
+                        <div class="settings-tab" id="notifications-tab">
+                            <h2>Notification Settings</h2>
+                            <form id="notifications-form">
+                                <div class="notification-option">
+                                    <div class="notification-info">
+                                        <h3>Email Notifications</h3>
+                                        <p>Receive email notifications for important updates</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="notification-option">
+                                    <div class="notification-info">
+                                        <h3>System Alerts</h3>
+                                        <p>Receive alerts about system updates and maintenance</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="notification-option">
+                                    <div class="notification-info">
+                                        <h3>Student Registrations</h3>
+                                        <p>Receive notifications when new students register</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="notification-option">
+                                    <div class="notification-info">
+                                        <h3>Teacher Updates</h3>
+                                        <p>Receive notifications about teacher activities</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Save Preferences</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Appearance Settings -->
+                        <div class="settings-tab" id="appearance-tab">
+                            <h2>Appearance Settings</h2>
+                            <form id="appearance-form">
+                                <div class="theme-options">
+                                    <h3>Theme</h3>
+                                    <div class="theme-selector">
+                                        <div class="theme-option active" data-theme="light">
+                                            <div class="theme-preview light-theme"></div>
+                                            <span>Light</span>
+                                        </div>
+                                        <div class="theme-option" data-theme="dark">
+                                            <div class="theme-preview dark-theme"></div>
+                                            <span>Dark</span>
+                                        </div>
+                                        <div class="theme-option" data-theme="system">
+                                            <div class="theme-preview system-theme"></div>
+                                            <span>System</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <h3>Font Size</h3>
+                                    <div class="font-size-selector">
+                                        <button type="button" class="font-size-btn" data-size="small">Small</button>
+                                        <button type="button" class="font-size-btn active" data-size="medium">Medium</button>
+                                        <button type="button" class="font-size-btn" data-size="large">Large</button>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Save Preferences</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- System Settings -->
+                        <div class="settings-tab" id="system-tab">
+                            <h2>System Settings</h2>
+                            <div class="system-info">
+                                <h3>System Information</h3>
+                                <div class="info-item">
+                                    <span class="info-label">Version:</span>
+                                    <span class="info-value">1.0.0</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Last Updated:</span>
+                                    <span class="info-value">June 15, 2023</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Server Status:</span>
+                                    <span class="info-value status-online">Online</span>
+                                </div>
+                            </div>
+                            <div class="system-actions">
+                                <h3>System Actions</h3>
+                                <button class="btn-secondary"><i class="fas fa-sync-alt"></i> Check for Updates</button>
+                                <button class="btn-secondary"><i class="fas fa-database"></i> Backup Database</button>
+                                <button class="btn-danger"><i class="fas fa-trash-alt"></i> Clear Cache</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/admin-dashboard.js"></script>
+    <script src="assets/js/settings.js"></script>
+</body>
+</html>
