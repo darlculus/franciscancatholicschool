@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Franciscan Catholic Nursery & Primary School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin-dashboard.css">
+    <link rel="stylesheet" href="assets/css/reports.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
+                <h3>Admin Portal</h3>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+                    </li>
+                    <li>
+                        <a href="#teachers"><i class="fas fa-chalkboard-teacher"></i> <span>Teachers</span></a>
+                    </li>
+                    <li>
+                        <a href="#students"><i class="fas fa-user-graduate"></i> <span>Students</span></a>
+                    </li>
+                    <li>
+                        <a href="#classes"><i class="fas fa-school"></i> <span>Classes</span></a>
+                    </li>
+                    <li>
+                        <a href="#subjects"><i class="fas fa-book"></i> <span>Subjects</span></a>
+                    </li>
+                    <li>
+                        <a href="attendance.html"><i class="fas fa-calendar-check"></i> <span>Attendance</span></a>
+                    </li>
+                    <li>
+                        <a href="exams.html"><i class="fas fa-file-alt"></i> <span>Exams</span></a>
+                    </li>
+                    <li class="active">
+                        <a href="reports.html"><i class="fas fa-chart-bar"></i> <span>Reports</span></a>
+                    </li>
+                    <li>
+                        <a href="#settings"><i class="fas fa-cog"></i> <span>Settings</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Top Navigation -->
+            <nav class="dashboard-nav">
+                <button id="sidebar-toggle" class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-right">
+                    <div class="date-display">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                    <div class="admin-profile">
+                        <img src="assets/images/admin-avatar.png" alt="Admin" class="avatar">
+                        <div class="admin-info">
+                            <span id="admin-name">Admin User</span>
+                            <span id="admin-role">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Reports Content -->
+            <div class="dashboard-content">
+                <div class="page-header">
+                    <h1>Reports Management</h1>
+                    <p>Generate, view, and manage student reports and academic records</p>
+                </div>
+
+                <!-- Tabs Navigation -->
+                <div class="tabs-container">
+                    <div class="tabs-nav">
+                        <button class="tab-btn active" data-tab="generate">
+                            <i class="fas fa-file-alt"></i> Generate Reports
+                        </button>
+                        <button class="tab-btn" data-tab="view">
+                            <i class="fas fa-eye"></i> View Reports
+                        </button>
+                        <button class="tab-btn" data-tab="templates">
+                            <i class="fas fa-file-invoice"></i> Report Templates
+                        </button>
+                        <button class="tab-btn" data-tab="archive">
+                            <i class="fas fa-archive"></i> Archives
+                        </button>
+                    </div>
+
+                    <!-- Generate Reports Tab -->
+                    <div id="generate-tab" class="tab-pane active">
+                        <div class="tab-header">
+                            <h2>Generate Student Reports</h2>
+                            <button class="btn-primary" id="batch-generate-btn">
+                                <i class="fas fa-file-export"></i> Batch Generate
+                            </button>
+                        </div>
+
+                        <div class="filter-container">
+                            <div class="filter-group">
+                                <label for="report-class">Class</label>
+                                <select id="report-class" name="report-class">
+                                    <option value="">Select Class</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="report-term">Term</label>
+                                <select id="report-term" name="report-term">
+                                    <option value="">Select Term</option>
+                                    <option value="First Term">First Term</option>
+                                    <option value="Second Term">Second Term</option>
+                                    <option value="Third Term">Third Term</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="report-year">Academic Year</label>
+                                <select id="report-year" name="report-year">
+                                    <option value="">Select Year</option>
+                                    <option value="2023/2024">2023/2024</option>
+                                    <option value="2022/2023">2022/2023</option>
+                                    <option value="2021/2022">2021/2022</option>
+                                </select>
+                            </div>
+                            <div class="filter-actions">
+                                <button class="btn-primary" id="load-students-btn">
+                                    <i class="fas fa-search"></i> Load Students
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-header">
+                                <div class="bulk-actions">
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" id="select-all-students">
+                                        <label for="select-all-students">Select All</label>
+                                    </div>
+                                    <button class="btn-secondary" id="generate-selected-btn" disabled>
+                                        <i class="fas fa-file-export"></i> Generate Selected
+                                    </button>
+                                </div>
+                                <div class="search-box">
+                                    <input type="text" placeholder="Search students...">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox" id="select-all-header">
+                                        </th>
+                                        <th>Student ID</th>
+                                        <th>Student Name</th>
+                                        <th>Gender</th>
+                                        <th>Report Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="students-list">
+                                    <tr class="empty-state">
+                                        <td colspan="6" class="text-center">
+                                            <div class="empty-state-container">
+                                                <i class="fas fa-user-graduate empty-icon"></i>
+                                                <p>Select a class and term to load students</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- View Reports Tab -->
+                    <div id="view-tab" class="tab-pane">
+                        <div class="tab-header">
+                            <h2>View Student Reports</h2>
+                            <div class="header-actions">
+                                <button class="btn-secondary" id="bulk-download-btn" disabled>
+                                    <i class="fas fa-download"></i> Download Selected
+                                </button>
+                                <button class="btn-secondary" id="bulk-print-btn" disabled>
+                                    <i class="fas fa-print"></i> Print Selected
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="filter-container">
+                            <div class="filter-group">
+                                <label for="view-term">Term</label>
+                                <select id="view-term" name="view-term">
+                                    <option value="">All Terms</option>
+                                    <option value="First Term">First Term</option>
+                                    <option value="Second Term">Second Term</option>
+                                    <option value="Third Term">Third Term</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="view-class">Class</label>
+                                <select id="view-class" name="view-class">
+                                    <option value="">All Classes</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="view-year">Academic Year</label>
+                                <select id="view-year" name="view-year">
+                                    <option value="">All Years</option>
+                                    <option value="2023/2024">2023/2024</option>
+                                    <option value="2022/2023">2022/2023</option>
+                                    <option value="2021/2022">2021/2022</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="view-search">Search</label>
+                                <input type="text" id="view-search" name="view-search" placeholder="Student name or ID...">
+                            </div>
+                            <div class="filter-actions">
+                                <button class="btn-primary" id="search-reports-btn">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-header">
+                                <div class="bulk-actions">
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" id="select-all-reports">
+                                        <label for="select-all-reports">Select All</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox">
+                                        </th>
+                                        <th>Student Name</th>
+                                        <th>Class</th>
+                                        <th>Term</th>
+                                        <th>Academic Year</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reports-list">
+                                    <tr class="empty-state">
+                                        <td colspan="8" class="text-center">
+                                            <div class="empty-state-container">
+                                                <i class="fas fa-file-alt empty-icon"></i>
+                                                <p>Use the search filters to find reports</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Report Templates Tab -->
+                    <div id="templates-tab" class="tab-pane">
+                        <div class="tab-header">
+                            <h2>Report Templates</h2>
+                            <button class="btn-primary" id="create-template-btn">
+                                <i class="fas fa-plus"></i> Create New Template
+                            </button>
+                        </div>
+
+                        <div class="templates-grid">
+                            <div class="template-card">
+                                <div class="template-header">
+                                    <h3>Standard Report Card</h3>
+                                    <span class="badge active">Active</span>
+                                </div>
+                                <div class="template-preview">
+                                    <img src="assets/images/report-template-1.jpg" alt="Standard Report Card">
+                                </div>
+                                <div class="template-footer">
+                                    <p>Last modified: 2023-08-20</p>
+                                    <div class="template-actions">
+                                        <button class="action-btn preview-template" data-id="2">
+                                            <i class="fas fa-eye"></i> Preview
+                                        </button>
+                                        <button class="action-btn">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="template-card">
+                                <div class="template-header">
+                                    <h3>Nursery Report Card</h3>
+                                    <span class="badge">Inactive</span>
+                                </div>
+                                <div class="template-preview">
+                                    <img src="assets/images/report-template-2.jpg" alt="Nursery Report Card">
+                                </div>
+                                <div class="template-footer">
+                                    <p></p>
+                                </div>
+                            </div>
+
+                            <div class="template-card">
+                                <div class="template-header">
+                                    <h3>Primary Report Card</h3>
+                                    <span class="badge">Inactive</span>
+                                </div>
+                                <div class="template-preview">
+                                    <img src="assets/images/report-template-3.jpg" alt="Primary Report Card">
+                                </div>
+                                <div class="template-footer">
+                                    <p>Last modified: 2023-07-10</p>
+                                    <div class="template-actions">
+                                        <button class="action-btn preview-template" data-id="3">
+                                            <i class="fas fa-eye"></i> Preview
+                                        </button>
+                                        <button class="action-btn">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="template-card add-template">
+                                <div class="add-template-content">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <p>Create New Template</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Report Archive Tab -->
+                    <div id="archive-tab" class="tab-pane">
+                        <div class="tab-header">
+                            <h2>Academic Archives</h2>
+                            <button class="btn-secondary" id="export-archive-btn" disabled>
+                                <i class="fas fa-file-export"></i> Export Selected
+                            </button>
+                        </div>
+
+                        <div class="filter-container">
+                            <div class="filter-group">
+                                <label for="archive-year">Academic Year</label>
+                                <select id="archive-year" name="archive-year">
+                                    <option value="">Select Year</option>
+                                    <option value="2022/2023">2022/2023</option>
+                                    <option value="2021/2022">2021/2022</option>
+                                    <option value="2020/2021">2020/2021</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="archive-term">Term</label>
+                                <select id="archive-term" name="archive-term">
+                                    <option value="">All Terms</option>
+                                    <option value="First Term">First Term</option>
+                                    <option value="Second Term">Second Term</option>
+                                    <option value="Third Term">Third Term</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="archive-class">Class</label>
+                                <select id="archive-class" name="archive-class">
+                                    <option value="">All Classes</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="archive-student">Student</label>
+                                <input type="text" id="archive-student" name="archive-student" placeholder="Student name...">
+                            </div>
+                            <div class="filter-actions">
+                                <button class="btn-primary" id="search-archive-btn">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-header">
+                                <div class="bulk-actions">
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" id="select-all-archives">
+                                        <label for="select-all-archives">Select All</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox">
+                                        </th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Student</th>
+                                        <th>Class</th>
+                                        <th>Term</th>
+                                        <th>Academic Year</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="archive-results-list">
+                                    <tr class="empty-state">
+                                        <td colspan="9" class="text-center">
+                                            <div class="empty-state-container">
+                                                <i class="fas fa-archive empty-icon"></i>
+                                                <p>Select an academic year to search archives</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Report Review Modal -->
+    <div id="report-review-modal" class="modal">
+        <div class="modal-content report-modal">
+            <span class="close-modal">&times;</span>
+            <div class="report-modal-header">
+                <h2>Student Report Review</h2>
+                <div class="report-status pending">Pending Admin Review</div>
+            </div>
+            
+            <div class="report-info">
+                <div class="report-info-group">
+                    <div class="info-item">
+                        <span class="info-label">Student:</span>
+                        <span id="report-student-name" class="info-value">John Doe</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Class:</span>
+                        <span id="report-class" class="info-value">Primary 3</span>
+                    </div>
+                </div>
+                <div class="report-info-group">
+                    <div class="info-item">
+                        <span class="info-label">Term:</span>
+                        <span id="report-term" class="info-value">First Term</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Academic Year:</span>
+                        <span id="report-academic-year" class="info-value">2023/2024</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="report-content">
+                <div class="report-section">
+                    <h3>Academic Performance</h3>
+                    <div class="grades-table-container">
+                        <table class="grades-table">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>CA Score (40%)</th>
+                                    <th>Exam Score (60%)</th>
+                                    <th>Total Score</th>
+                                    <th>Grade</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="grades-list">
+                                <!-- Subject grades will be populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="performance-summary">
+                        <div class="summary-item">
+                            <span class="summary-label">Total Score:</span>
+                            <span id="total-score" class="summary-value">0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Average Score:</span>
+                            <span id="average-score" class="summary-value">0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Class Position:</span>
+                            <span id="class-position" class="summary-value">N/A</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Character Development</h3>
+                    <div class="character-traits">
+                        <div class="trait-group">
+                            <div class="trait-item">
+                                <span class="trait-label">Punctuality:</span>
+                                <span id="trait-punctuality" class="trait-value">Excellent</span>
+                            </div>
+                            <div class="trait-item">
+                                <span class="trait-label">Neatness:</span>
+                                <span id="trait-neatness" class="trait-value">Very Good</span>
+                            </div>
+                            <div class="trait-item">
+                                <span class="trait-label">Behavior:</span>
+                                <span id="trait-behavior" class="trait-value">Good</span>
+                            </div>
+                        </div>
+                        <div class="trait-group">
+                            <div class="trait-item">
+                                <span class="trait-label">Attentiveness:</span>
+                                <span id="trait-attentiveness" class="trait-value">Very Good</span>
+                            </div>
+                            <div class="trait-item">
+                                <span class="trait-label">Cooperation:</span>
+                                <span id="trait-cooperation" class="trait-value">Excellent</span>
+                            </div>
+                            <div class="trait-item">
+                                <span class="trait-label">Creativity:</span>
+                                <span id="trait-creativity" class="trait-value">Good</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Attendance Record</h3>
+                    <div class="attendance-record">
+                        <div class="attendance-item">
+                            <span class="attendance-label">School Days:</span>
+                            <span id="school-days" class="attendance-value">62</span>
+                        </div>
+                        <div class="attendance-item">
+                            <span class="attendance-label">Days Present:</span>
+                            <span id="days-present" class="attendance-value">58</span>
+                        </div>
+                        <div class="attendance-item">
+                            <span class="attendance-label">Days Absent:</span>
+                            <span id="days-absent" class="attendance-value">4</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Teacher's Comments</h3>
+                    <div class="comment-box teacher-comment">
+                        <div class="comment-header">
+                            <div class="comment-author">
+                                <img src="assets/images/teacher-avatar.png" alt="Teacher" class="comment-avatar">
+                                <div class="author-info">
+                                    <span id="teacher-name" class="author-name">Mrs. Johnson</span>
+                                    <span class="author-role">Class Teacher</span>
+                                </div>
+                            </div>
+                            <div class="comment-date" id="teacher-comment-date">June 15, 2023</div>
+                        </div>
+                        <div class="comment-content" id="teacher-comment">
+                            John is a hardworking student who has shown significant improvement this term. He excels in Mathematics and Science but needs to put more effort into English Language. He actively participates in class discussions and is always willing to help his classmates. Keep up the good work, John!
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Administrator's Comments</h3>
+                    <div id="admin-comment-container">
+                        <!-- If admin has already commented, show this -->
+                        <div class="comment-box admin-comment" id="existing-admin-comment" style="display: none;">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <img src="assets/images/admin-avatar.png" alt="Admin" class="comment-avatar" id="admin-comment-avatar">
+                                    <div class="author-info">
+                                        <span id="admin-comment-name" class="author-name">Principal Smith</span>
+                                        <span class="author-role">School Administrator</span>
+                                    </div>
+                                </div>
+                                <div class="comment-date" id="admin-comment-date">June 16, 2023</div>
+                            </div>
+                            <div class="comment-content" id="admin-comment-text">
+                                John has demonstrated commendable academic performance this term. His character development is also noteworthy. I encourage him to maintain this standard and strive for excellence in all subjects. Well done!
+                            </div>
+                            <div class="comment-actions">
+                                <button id="edit-admin-comment" class="btn-secondary"><i class="fas fa-edit"></i> Edit Comment</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Form for adding/editing admin comment -->
+                        <form id="admin-comment-form">
+                            <div class="form-group">
+                                <label for="admin-comment-input">Add your comments and observations:</label>
+                                <textarea id="admin-comment-input" rows="4" placeholder="Enter your comments about the student's performance and areas for improvement..."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Comment</button>
+                                <button type="button" id="cancel-comment" class="btn-secondary" style="display: none;"><i class="fas fa-times"></i> Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="report-actions">
+                <div class="status-actions">
+                    <button id="publish-report" class="btn-success"><i class="fas fa-check-circle"></i> Publish Report</button>
+                    <button id="return-to-teacher" class="btn-warning"><i class="fas fa-undo"></i> Return to Teacher</button>
+                </div>
+                <div class="general-actions">
+                    <button id="print-report" class="btn-secondary"><i class="fas fa-print"></i> Print</button>
+                    <button id="close-report" class="btn-secondary close-modal"><i class="fas fa-times"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Publish Confirmation Modal -->
+    <div id="publish-confirmation-modal" class="modal confirmation-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Publish Reports</h2>
+            <p>You are about to publish the following reports. This will make them visible to parents and students.</p>
+            
+            <div class="report-list" id="publish-report-list">
+                <!-- Reports will be listed here -->
+            </div>
+            
+            <p>Are you sure you want to continue?</p>
+            
+            <div class="form-actions">
+                <button id="confirm-publish" class="btn-primary">
+                    <i class="fas fa-check"></i> Publish Reports
+                </button>
+                <button class="btn-secondary close-modal">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generate Report Modal -->
+    <div id="generate-report-modal" class="modal">
+        <div class="modal-content large-modal">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2>Generate Report for <span id="student-name-title">Student Name</span></h2>
+                <div class="student-meta">
+                    <span><strong>ID:</strong> <span id="student-id-display">FCS/2023/001</span></span>
+                    <span><strong>Class:</strong> <span id="student-class-display">Primary 3</span></span>
+                    <span><strong>Term:</strong> <span id="student-term-display">First Term</span></span>
+                </div>
+            </div>
+            
+            <form id="report-form">
+                <div class="tabs-container">
+                    <div class="tabs-nav">
+                        <button type="button" class="tab-btn active" data-tab="academic">
+                            <i class="fas fa-book"></i> Academic Performance
+                        </button>
+                        <button type="button" class="tab-btn" data-tab="character">
+                            <i class="fas fa-user"></i> Character Development
+                        </button>
+                        <button type="button" class="tab-btn" data-tab="comments">
+                            <i class="fas fa-comment"></i> Comments
+                        </button>
+                    </div>
+                    
+                    <!-- Academic Performance Tab -->
+                    <div id="academic-tab" class="tab-pane active">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>CA Score (40%)</th>
+                                        <th>Exam Score (60%)</th>
+                                        <th>Total Score</th>
+                                        <th>Grade</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subjects-list">
+                                    <!-- Subjects will be populated dynamically -->
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3">Total</td>
+                                        <td id="total-score">0</td>
+                                        <td colspan="2">Average: <span id="average-score">0</span> (<span id="average-grade">-</span>)</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Character Development Tab -->
+                    <div id="character-tab" class="tab-pane">
+                        <div class="traits-grid">
+                            <div class="trait-item">
+                                <label for="punctuality">Punctuality</label>
+                                <select id="punctuality" name="punctuality" required>
+                                    <option value="">Select Rating</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Very Good">Very Good</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Fair">Fair</option>
+                                    <option value="Poor">Poor</option>
+                                </select>
+                            </div>
+                            <div class="trait-item">
+                                <label for="neatness">Neatness</label>
+                                <select id="neatness" name="neatness" required>
+                                    <option value="">Select Rating</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Very Good">Very Good</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Fair">Fair</option>
+                                    <option value="Poor">Poor</option>
+                                </select>
+                            </div>
+                            <div class="trait-item">
+                                <label for="behavior">Behavior</label>
+                                <select id="behavior" name="behavior" required>
+                                    <option value="">Select Rating</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Very Good">Very Good</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Fair">Fair</option>
+                                    <option value="Poor">Poor</option>
+                                </select>
+                            </div>
+                            <div class="trait-item">
+                                <label for="leadership">Leadership</label>
+                                <select id="leadership" name="leadership" required>
+                                    <option value="">Select Rating</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Very Good">Very Good</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Fair">Fair</option>
+                                    <option value="Poor">Poor</option>
+                                </select>
+                            </div>
+                            <div class="trait-item">
+                                <label for="cooperation">Cooperation</label>
+                                <select id="cooperation" name="cooperation" required>
+                                    <option value="">Select Rating</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Very Good">Very Good</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Fair">Fair</option>
+                                    <option value="Poor">Poor</option>
+                                </select>
+                            </div>
+                            <div class="trait-item">
+                                <label for="creativity">Creativity</label>
+                                <select id="creativity" name="creativity" required>
+                                    <option value="">Select Rating</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Very Good">Very Good</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Fair">Fair</option>
+                                    <option value="Poor">Poor</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Comments Tab -->
+                    <div id="comments-tab" class="tab-pane">
+                        <div class="form-group">
+                            <label for="teacher-comment">Class Teacher's Comment</label>
+                            <textarea id="teacher-comment" name="teacher-comment" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="head-comment">Head Teacher's Comment</label>
+                            <textarea id="head-comment" name="head-comment" rows="4" required></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary preview-report">
+                        <i class="fas fa-eye"></i> Preview Report
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Generate Report
+                    </button>
+                    <button type="button" class="btn-secondary cancel-modal">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Report Modal -->
+    <div id="view-report-modal" class="modal">
+        <div class="modal-content large-modal">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2>Student Report</h2>
+                <div class="report-actions">
+                    <button id="download-report-btn" class="btn-secondary">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <button id="print-report-btn" class="btn-secondary">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                    <button id="share-report-btn" class="btn-secondary">
+                    <button id="publish-report-btn" class="btn-secondary">
+                        <i class="fas fa-upload"></i> Publish
+                    </button>
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+            </div>
+            
+            <div id="report-view-container" class="report-container">
+                <!-- Report content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Preview Modal -->
+    <div id="template-preview-modal" class="modal">
+        <div class="modal-content large-modal">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2>Template Preview: <span id="template-name">Template Name</span></h2>
+                <div class="template-actions">
+                    <button id="use-template-btn" class="btn-primary">
+                        <i class="fas fa-check"></i> Use This Template
+                    </button>
+                    <button id="edit-template-btn" class="btn-secondary">
+                        <i class="fas fa-edit"></i> Edit Template
+                    </button>
+                </div>
+            </div>
+            
+            <div id="template-preview-container" class="report-container">
+                <!-- Template preview will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Archive Item Modal -->
+    <div id="archive-item-modal" class="modal">
+        <div class="modal-content large-modal">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <div class="archive-item-title">
+                    <h2 id="archive-item-title">Archive Item</h2>
+                    <span id="archive-item-type" class="badge">Type</span>
+                </div>
+                <div class="archive-actions">
+                    <button id="download-item-btn" class="btn-secondary">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <button id="print-item-btn" class="btn-secondary">
+                                                <i class="fas fa-print"></i> Print
+                    </button>
+                </div>
+            </div>
+            
+            <div id="archive-item-info" class="archive-item-info">
+                <!-- Archive item info will be loaded here -->
+            </div>
+            
+            <div id="archive-item-content" class="archive-item-content">
+                <!-- Archive item content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/reports.js"></script>
+</body>
+</html>
+
