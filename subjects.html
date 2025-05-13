@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Management - Franciscan Catholic Nursery & Primary School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin-dashboard.css">
+    <link rel="stylesheet" href="assets/css/subjects.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
+                <h3>Admin Portal</h3>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a>
+                    </li>
+                    <li>
+                        <a href="students.html"><i class="fas fa-user-graduate"></i> Students</a>
+                    </li>
+                    <li>
+                        <a href="classes.html"><i class="fas fa-school"></i> Classes</a>
+                    </li>
+                    <li class="active">
+                        <a href="subjects.html"><i class="fas fa-book"></i> Subjects</a>
+                    </li>
+                    <li>
+                        <a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a>
+                    </li>
+                    <li>
+                        <a href="exams.html"><i class="fas fa-file-alt"></i> Exams</a>
+                    </li>
+                    <li>
+                        <a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a>
+                    </li>
+                    <li>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Top Navigation -->
+            <nav class="dashboard-nav">
+                <button id="sidebar-toggle" class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-right">
+                    <div class="date-display">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                    <div class="admin-profile">
+                        <img src="assets/images/admin-avatar.png" alt="Admin" class="avatar">
+                        <div class="admin-info">
+                            <span id="admin-name">Admin User</span>
+                            <span id="admin-role">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Subjects Content -->
+            <div class="dashboard-content">
+                <div class="page-header">
+                    <h1>Subject Management</h1>
+                    <p>Manage all academic subjects offered in the school</p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-tab="subjects-list">
+                            <i class="fas fa-list"></i> All Subjects
+                        </button>
+                        <button class="tab-btn" data-tab="subject-categories">
+                            <i class="fas fa-tags"></i> Categories
+                        </button>
+                        <button class="tab-btn" data-tab="subject-assignments">
+                            <i class="fas fa-user-check"></i> Teacher Assignments
+                        </button>
+                        <button class="tab-btn" data-tab="subject-settings">
+                            <i class="fas fa-cog"></i> Settings
+                        </button>
+                    </div>
+
+                    <!-- Subjects List Tab -->
+                    <div id="subjects-list-tab" class="tab-pane active">
+                        <div class="action-bar">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="subject-search" placeholder="Search subjects...">
+                            </div>
+                            <div class="filter-box">
+                                <select id="level-filter">
+                                    <option value="">All Levels</option>
+                                    <option value="Nursery">Nursery</option>
+                                    <option value="Primary">Primary</option>
+                                    <option value="Junior Secondary">Junior Secondary</option>
+                                    <option value="Senior Secondary">Senior Secondary</option>
+                                </select>
+                                <select id="category-filter">
+                                    <option value="">All Categories</option>
+                                    <option value="Core">Core Subjects</option>
+                                    <option value="Elective">Elective Subjects</option>
+                                    <option value="Vocational">Vocational Subjects</option>
+                                </select>
+                            </div>
+                            <button id="add-subject-btn" class="btn-primary">
+                                <i class="fas fa-plus"></i> Add Subject
+                            </button>
+                        </div>
+
+                        <div class="subjects-grid">
+                            <!-- Subjects will be loaded here dynamically -->
+                        </div>
+
+                        <div class="empty-state" id="no-subjects-message" style="display: none;">
+                            <i class="fas fa-book"></i>
+                            <h3>No Subjects Found</h3>
+                            <p>There are no subjects matching your search criteria.</p>
+                            <button id="add-first-subject-btn" class="btn-primary">
+                                <i class="fas fa-plus"></i> Add Your First Subject
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Subject Categories Tab -->
+                    <div id="subject-categories-tab" class="tab-pane">
+                        <div class="action-bar">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="category-search" placeholder="Search categories...">
+                            </div>
+                            <button id="add-category-btn" class="btn-primary">
+                                <i class="fas fa-plus"></i> Add Category
+                            </button>
+                        </div>
+
+                        <div class="categories-container">
+                            <!-- Categories will be loaded here dynamically -->
+                        </div>
+
+                        <div class="empty-state" id="no-categories-message" style="display: none;">
+                            <i class="fas fa-tags"></i>
+                            <h3>No Categories Found</h3>
+                            <p>There are no subject categories defined yet.</p>
+                            <button id="add-first-category-btn" class="btn-primary">
+                                <i class="fas fa-plus"></i> Add Your First Category
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Subject Assignments Tab -->
+                    <div id="subject-assignments-tab" class="tab-pane">
+                        <div class="action-bar">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="assignment-search" placeholder="Search assignments...">
+                            </div>
+                            <div class="filter-box">
+                                <select id="class-filter">
+                                    <option value="">All Classes</option>
+                                    <!-- Classes will be populated dynamically -->
+                                </select>
+                                <select id="teacher-filter">
+                                    <option value="">All Teachers</option>
+                                    <!-- Teachers will be populated dynamically -->
+                                </select>
+                            </div>
+                            <button id="assign-subject-btn" class="btn-primary">
+                                <i class="fas fa-user-plus"></i> Assign Subject
+                            </button>
+                        </div>
+
+                        <div class="assignments-container">
+                            <table class="data-table" id="assignments-table">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Class</th>
+                                        <th>Teacher</th>
+                                        <th>Schedule</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Assignments will be loaded here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="empty-state" id="no-assignments-message" style="display: none;">
+                            <i class="fas fa-user-check"></i>
+                            <h3>No Assignments Found</h3>
+                            <p>There are no subject assignments defined yet.</p>
+                            <button id="create-first-assignment-btn" class="btn-primary">
+                                <i class="fas fa-user-plus"></i> Create Your First Assignment
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Subject Settings Tab -->
+                    <div id="subject-settings-tab" class="tab-pane">
+                        <div class="settings-container">
+                            <div class="settings-card">
+                                <h3>General Settings</h3>
+                                <form id="general-settings-form">
+                                    <div class="form-group">
+                                        <label for="max-subjects-per-class">Maximum Subjects Per Class</label>
+                                        <input type="number" id="max-subjects-per-class" min="1" max="20" value="12">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="min-subjects-per-class">Minimum Subjects Per Class</label>
+                                        <input type="number" id="min-subjects-per-class" min="1" max="15" value="6">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default-subject-duration">Default Subject Duration (minutes)</label>
+                                        <input type="number" id="default-subject-duration" min="30" max="120" step="15" value="45">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="grading-system">Grading System</label>
+                                        <select id="grading-system">
+                                            <option value="percentage">Percentage (0-100%)</option>
+                                            <option value="letter">Letter Grade (A-F)</option>
+                                            <option value="points">Points System (1-10)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-primary">Save Settings</button>
+                                        <button type="button" id="reset-settings-btn" class="btn-secondary">Reset to Default</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="settings-card">
+                                <h3>Subject Weighting</h3>
+                                <form id="subject-weighting-form">
+                                    <div class="form-group">
+                                        <label for="core-subject-weight">Core Subject Weight</label>
+                                        <input type="number" id="core-subject-weight" min="1" max="5" step="0.5" value="1.5">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="elective-subject-weight">Elective Subject Weight</label>
+                                        <input type="number" id="elective-subject-weight" min="0.5" max="2" step="0.5" value="1.0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="vocational-subject-weight">Vocational Subject Weight</label>
+                                        <input type="number" id="vocational-subject-weight" min="0.5" max="2" step="0.5" value="1.0">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-primary">Save Weights</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Subject Modal -->
+    <div id="add-subject-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Add New Subject</h2>
+            <form id="add-subject-form">
+                <div class="form-group">
+                    <label for="subject-name">Subject Name</label>
+                    <input type="text" id="subject-name" name="subject-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject-code">Subject Code</label>
+                    <input type="text" id="subject-code" name="subject-code" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject-category">Category</label>
+                    <select id="subject-category" name="subject-category" required>
+                        <option value="">Select Category</option>
+                        <option value="Core">Core Subject</option>
+                        <option value="Elective">Elective Subject</option>
+                        <option value="Vocational">Vocational Subject</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subject-level">Subject Level</label>
+                    <select id="subject-level" name="subject-level" required>
+                        <option value="">Select Level</option>
+                        <option value="Nursery">Nursery</option>
+                        <option value="Primary">Primary</option>
+                        <option value="Junior Secondary">Junior Secondary</option>
+                        <option value="Senior Secondary">Senior Secondary</option>
+                        <option value="All Levels">All Levels</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subject-description">Description</label>
+                    <textarea id="subject-description" name="subject-description" rows="3"></textarea>
+                </div>
+                                <div class="form-group">
+                    <label>Subject Color</label>
+                    <div class="color-options">
+                        <div class="color-option" data-color="#4CAF50" style="background-color: #4CAF50;"></div>
+                        <div class="color-option" data-color="#2196F3" style="background-color: #2196F3;"></div>
+                        <div class="color-option" data-color="#FF9800" style="background-color: #FF9800;"></div>
+                        <div class="color-option" data-color="#9C27B0" style="background-color: #9C27B0;"></div>
+                        <div class="color-option" data-color="#F44336" style="background-color: #F44336;"></div>
+                        <div class="color-option" data-color="#009688" style="background-color: #009688;"></div>
+                        <div class="color-option" data-color="#673AB7" style="background-color: #673AB7;"></div>
+                        <div class="color-option" data-color="#3F51B5" style="background-color: #3F51B5;"></div>
+                    </div>
+                    <input type="hidden" id="subject-color" name="subject-color" value="#4CAF50">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Add Subject</button>
+                    <button type="button" class="btn-secondary cancel-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Subject Modal -->
+    <div id="edit-subject-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Edit Subject</h2>
+            <form id="edit-subject-form">
+                <input type="hidden" id="edit-subject-id">
+                <div class="form-group">
+                    <label for="edit-subject-name">Subject Name</label>
+                    <input type="text" id="edit-subject-name" name="edit-subject-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-subject-code">Subject Code</label>
+                    <input type="text" id="edit-subject-code" name="edit-subject-code" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-subject-category">Category</label>
+                    <select id="edit-subject-category" name="edit-subject-category" required>
+                        <option value="">Select Category</option>
+                        <option value="Core">Core Subject</option>
+                        <option value="Elective">Elective Subject</option>
+                        <option value="Vocational">Vocational Subject</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-subject-level">Subject Level</label>
+                    <select id="edit-subject-level" name="edit-subject-level" required>
+                        <option value="">Select Level</option>
+                        <option value="Nursery">Nursery</option>
+                        <option value="Primary">Primary</option>
+                        <option value="Junior Secondary">Junior Secondary</option>
+                        <option value="Senior Secondary">Senior Secondary</option>
+                        <option value="All Levels">All Levels</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-subject-description">Description</label>
+                    <textarea id="edit-subject-description" name="edit-subject-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Subject Color</label>
+                    <div class="color-options">
+                        <div class="color-option" data-color="#4CAF50" style="background-color: #4CAF50;"></div>
+                        <div class="color-option" data-color="#2196F3" style="background-color: #2196F3;"></div>
+                        <div class="color-option" data-color="#FF9800" style="background-color: #FF9800;"></div>
+                        <div class="color-option" data-color="#9C27B0" style="background-color: #9C27B0;"></div>
+                        <div class="color-option" data-color="#F44336" style="background-color: #F44336;"></div>
+                        <div class="color-option" data-color="#009688" style="background-color: #009688;"></div>
+                        <div class="color-option" data-color="#673AB7" style="background-color: #673AB7;"></div>
+                        <div class="color-option" data-color="#3F51B5" style="background-color: #3F51B5;"></div>
+                    </div>
+                    <input type="hidden" id="edit-subject-color" name="edit-subject-color" value="#4CAF50">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                    <button type="button" class="btn-secondary cancel-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div id="add-category-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Add New Category</h2>
+            <form id="add-category-form">
+                <div class="form-group">
+                    <label for="category-name">Category Name</label>
+                    <input type="text" id="category-name" name="category-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="category-description">Description</label>
+                    <textarea id="category-description" name="category-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="category-weight">Weight Factor</label>
+                    <input type="number" id="category-weight" name="category-weight" min="0.5" max="2" step="0.1" value="1.0">
+                    <small>Weight factor affects how this category contributes to overall grade calculations.</small>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Add Category</button>
+                    <button type="button" class="btn-secondary cancel-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Assign Subject Modal -->
+    <div id="assign-subject-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Assign Subject to Teacher</h2>
+            <form id="assign-subject-form">
+                <div class="form-group">
+                    <label for="assign-subject">Subject</label>
+                    <select id="assign-subject" name="assign-subject" required>
+                        <option value="">Select Subject</option>
+                        <!-- Subjects will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assign-class">Class</label>
+                    <select id="assign-class" name="assign-class" required>
+                        <option value="">Select Class</option>
+                        <!-- Classes will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assign-teacher">Teacher</label>
+                    <select id="assign-teacher" name="assign-teacher" required>
+                        <option value="">Select Teacher</option>
+                        <!-- Teachers will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Schedule</label>
+                    <div class="schedule-grid">
+                        <div class="schedule-day">
+                            <label><input type="checkbox" name="schedule-day" value="monday"> Monday</label>
+                            <div class="time-slots">
+                                <select name="monday-time">
+                                    <option value="">Select Time</option>
+                                    <option value="08:00-08:45">08:00 - 08:45</option>
+                                    <option value="08:45-09:30">08:45 - 09:30</option>
+                                    <option value="09:45-10:30">09:45 - 10:30</option>
+                                    <option value="10:30-11:15">10:30 - 11:15</option>
+                                    <option value="11:30-12:15">11:30 - 12:15</option>
+                                    <option value="12:15-13:00">12:15 - 13:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="schedule-day">
+                            <label><input type="checkbox" name="schedule-day" value="tuesday"> Tuesday</label>
+                            <div class="time-slots">
+                                <select name="tuesday-time">
+                                    <option value="">Select Time</option>
+                                    <option value="08:00-08:45">08:00 - 08:45</option>
+                                    <option value="08:45-09:30">08:45 - 09:30</option>
+                                    <option value="09:45-10:30">09:45 - 10:30</option>
+                                    <option value="10:30-11:15">10:30 - 11:15</option>
+                                    <option value="11:30-12:15">11:30 - 12:15</option>
+                                    <option value="12:15-13:00">12:15 - 13:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="schedule-day">
+                            <label><input type="checkbox" name="schedule-day" value="wednesday"> Wednesday</label>
+                            <div class="time-slots">
+                                <select name="wednesday-time">
+                                    <option value="">Select Time</option>
+                                    <option value="08:00-08:45">08:00 - 08:45</option>
+                                    <option value="08:45-09:30">08:45 - 09:30</option>
+                                    <option value="09:45-10:30">09:45 - 10:30</option>
+                                    <option value="10:30-11:15">10:30 - 11:15</option>
+                                    <option value="11:30-12:15">11:30 - 12:15</option>
+                                    <option value="12:15-13:00">12:15 - 13:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="schedule-day">
+                            <label><input type="checkbox" name="schedule-day" value="thursday"> Thursday</label>
+                            <div class="time-slots">
+                                <select name="thursday-time">
+                                    <option value="">Select Time</option>
+                                    <option value="08:00-08:45">08:00 - 08:45</option>
+                                    <option value="08:45-09:30">08:45 - 09:30</option>
+                                    <option value="09:45-10:30">09:45 - 10:30</option>
+                                    <option value="10:30-11:15">10:30 - 11:15</option>
+                                    <option value="11:30-12:15">11:30 - 12:15</option>
+                                    <option value="12:15-13:00">12:15 - 13:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="schedule-day">
+                            <label><input type="checkbox" name="schedule-day" value="friday"> Friday</label>
+                            <div class="time-slots">
+                                <select name="friday-time">
+                                    <option value="">Select Time</option>
+                                    <option value="08:00-08:45">08:00 - 08:45</option>
+                                    <option value="08:45-09:30">08:45 - 09:30</option>
+                                    <option value="09:45-10:30">09:45 - 10:30</option>
+                                    <option value="10:30-11:15">10:30 - 11:15</option>
+                                    <option value="11:30-12:15">11:30 - 12:15</option>
+                                    <option value="12:15-13:00">12:15 - 13:00</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="assignment-notes">Notes</label>
+                    <textarea id="assignment-notes" name="assignment-notes" rows="2"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Assign Subject</button>
+                    <button type="button" class="btn-secondary cancel-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirmation-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Confirm Deletion</h2>
+            <p id="delete-confirmation-message">Are you sure you want to delete this item?</p>
+            <div class="form-actions">
+                <button id="confirm-delete-btn" class="btn-danger">Delete</button>
+                <button class="btn-secondary cancel-modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/subjects.js"></script>
+</body>
+</html>
