@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Management - Franciscan Catholic Nursery & Primary School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin-dashboard.css">
+    <link rel="stylesheet" href="assets/css/teachers.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
+                <h3>Admin Portal</h3>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a>
+                    </li>
+                    <li>
+                        <a href="students.html"><i class="fas fa-user-graduate"></i> Students</a>
+                    </li>
+                    <li>
+                        <a href="classes.html"><i class="fas fa-school"></i> Classes</a>
+                    </li>
+                    <li>
+                        <a href="subjects.html"><i class="fas fa-book"></i> Subjects</a>
+                    </li>
+                    <li>
+                        <a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a>
+                    </li>
+                    <li>
+                        <a href="exams.html"><i class="fas fa-file-alt"></i> Exams</a>
+                    </li>
+                    <li>
+                        <a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a>
+                    </li>
+                    <li>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Top Navigation -->
+            <nav class="dashboard-nav">
+                <button id="sidebar-toggle" class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-right">
+                    <div class="date-display">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                    <div class="admin-profile">
+                        <img src="assets/images/admin-avatar.png" alt="Admin" class="avatar">
+                        <div class="admin-info">
+                            <span id="admin-name">Admin User</span>
+                            <span id="admin-role">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Page Content -->
+            <div class="dashboard-content">
+                <div class="page-header">
+                    <h1>Teacher Management</h1>
+                    <p>Manage all teachers, assignments, and performance</p>
+                </div>
+
+                <!-- Tabs Container -->
+                <div class="tabs-container">
+                    <div class="tab-navigation">
+                        <button class="tab-btn active" data-tab="overview">
+                            <i class="fas fa-th-large"></i> Overview
+                        </button>
+                        <button class="tab-btn" data-tab="teachers">
+                            <i class="fas fa-chalkboard-teacher"></i> Teachers
+                        </button>
+                        <button class="tab-btn" data-tab="assignments">
+                            <i class="fas fa-tasks"></i> Assignments
+                        </button>
+                        <button class="tab-btn" data-tab="performance">
+                            <i class="fas fa-chart-line"></i> Performance
+                        </button>
+                        <button class="tab-btn" data-tab="reports">
+                            <i class="fas fa-file-alt"></i> Reports
+                        </button>
+                    </div>
+
+                    <!-- Overview Tab -->
+                    <div id="overview-tab" class="tab-pane active">
+                        <div class="overview-stats">
+                            <div class="stat-card">
+                                <div class="stat-icon" style="background-color: #4CAF50;">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h3>Total Teachers</h3>
+                                    <p class="stat-count" id="total-teachers">0</p>
+                                    <p class="stat-label">Active and Inactive</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon" style="background-color: #2196F3;">
+                                    <i class="fas fa-user-check"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h3>Active Teachers</h3>
+                                    <p class="stat-count" id="active-teachers">0</p>
+                                    <p class="stat-label">Currently Teaching</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon" style="background-color: #FF9800;">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h3>Subjects Covered</h3>
+                                    <p class="stat-count" id="subjects-covered">0</p>
+                                    <p class="stat-label">Total Subjects</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon" style="background-color: #9C27B0;">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <h3>New Teachers</h3>
+                                    <p class="stat-count" id="new-teachers">0</p>
+                                    <p class="stat-label">Last 30 Days</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="overview-charts">
+                            <div class="chart-card">
+                                <h3>Teacher Distribution by Subject</h3>
+                                <div class="chart-container">
+                                    <canvas id="subject-distribution-chart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-card">
+                                <h3>Teacher Experience</h3>
+                                <div class="chart-container">
+                                    <canvas id="experience-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="recent-activities">
+                            <h3>Recent Activities</h3>
+                            <div class="activity-list">
+                                <div class="empty-state">
+                                    <i class="fas fa-history"></i>
+                                    <h4>No Recent Activities</h4>
+                                    <p>Teacher activities will appear here once they start using the system.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quick-actions">
+                            <h3>Quick Actions</h3>
+                            <div class="action-buttons">
+                                <button id="add-teacher-quick-btn" class="action-btn">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Add Teacher</span>
+                                </button>
+                                <button id="assign-class-btn" class="action-btn">
+                                    <i class="fas fa-school"></i>
+                                    <span>Assign Class</span>
+                                </button>
+                                <button id="assign-subject-btn" class="action-btn">
+                                    <i class="fas fa-book"></i>
+                                    <span>Assign Subject</span>
+                                </button>
+                                <button id="send-notification-btn" class="action-btn">
+                                    <i class="fas fa-bell"></i>
+                                    <span>Send Notification</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Teachers Tab -->
+                    <div id="teachers-tab" class="tab-pane">
+                        <div class="action-bar">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="teacher-search" placeholder="Search teachers...">
+                            </div>
+                            <div class="filter-box">
+                                <select id="subject-filter">
+                                    <option value="">All Subjects</option>
+                                    <option value="Mathematics">Mathematics</option>
+                                    <option value="English">English</option>
+                                    <option value="Science">Science</option>
+                                    <option value="Social Studies">Social Studies</option>
+                                    <option value="Religious Studies">Religious Studies</option>
+                                    <option value="Physical Education">Physical Education</option>
+                                    <option value="Art">Art</option>
+                                    <option value="Music">Music</option>
+                                </select>
+                                <select id="status-filter">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                                <button id="add-teacher-btn" class="btn-primary">
+                                    <i class="fas fa-plus"></i> Add Teacher
+                                </button>
+                                <button id="import-teachers-btn" class="btn-secondary">
+                                    <i class="fas fa-file-import"></i> Import
+                                </button>
+                                <button id="export-teachers-btn" class="btn-secondary">
+                                    <i class="fas fa-file-export"></i> Export
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="teachers-container">
+                            <table class="data-table" id="teachers-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Subject</th>
+                                        <th>Class</th>
+                                        <th>Contact</th>
+                                        <th>Joined Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Teacher rows will be populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="no-teachers-message" class="empty-state">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <h3>No Teachers Found</h3>
+                            <p>There are no teachers in the system yet. Click the button below to add your first teacher.</p>
+                            <button id="add-first-teacher-btn" class="btn-primary">
+                                <i class="fas fa-plus"></i> Add First Teacher
+                            </button>
+                        </div>
+
+                        <div class="pagination">
+                            <button id="prev-page" class="pagination-btn" disabled>
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </button>
+                            <span id="pagination-info">Page 1 of 1</span>
+                            <button id="next-page" class="pagination-btn" disabled>
+                                Next <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Assignments Tab -->
+                    <div id="assignments-tab" class="tab-pane">
+                        <div class="action-bar">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="assignment-search" placeholder="Search assignments...">
+                            </div>
+                            <div class="filter-box">
+                                <select id="assignment-class-filter">
+                                    <option value="">All Classes</option>
+                                    <option value="Nursery 1">Nursery 1</option>
+                                    <option value="Nursery 2">Nursery 2</option>
+                                    <option value="Primary 1">Primary 1</option>
+                                    <option value="Primary 2">Primary 2</option>
+                                    <option value="Primary 3">Primary 3</option>
+                                    <option value="Primary 4">Primary 4</option>
+                                    <option value="Primary 5">Primary 5</option>
+                                    <option value="Primary 6">Primary 6</option>
+                                </select>
+                                <button id="new-assignment-btn" class="btn-primary">
+                                    <i class="fas fa-plus"></i> New Assignment
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="assignments-container">
+                            <div class="empty-state">
+                                <i class="fas fa-tasks"></i>
+                                <h3>No Assignments Found</h3>
+                                <p>There are no teacher assignments in the system yet. Click the button below to create your first assignment.</p>
+                                <button id="create-first-assignment-btn" class="btn-primary">
+                                    <i class="fas fa-plus"></i> Create First Assignment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Tab -->
+                    <div id="performance-tab" class="tab-pane">
+                        <div class="action-bar">
+                            <div class="filter-box">
+                                <select id="performance-teacher-filter">
+                                    <option value="">All Teachers</option>
+                                    <!-- Teachers will be populated dynamically -->
+                                </select>
+                                <select id="performance-period-filter">
+                                    <option value="current">Current Term</option>
+                                    <option value="last">Last Term</option>
+                                    <option value="year">Academic Year</option>
+                                </select>
+                                <button id="evaluate-teacher-btn" class="btn-primary">
+                                    <i class="fas fa-clipboard-check"></i> Evaluate Teacher
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="performance-container">
+                                                        <div class="empty-state">
+                                <i class="fas fa-chart-line"></i>
+                                <h3>No Performance Data</h3>
+                                <p>There is no teacher performance data available yet. Performance metrics will appear here after evaluations are completed.</p>
+                                <button id="setup-evaluation-btn" class="btn-primary">
+                                    <i class="fas fa-cog"></i> Setup Evaluation Criteria
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Tab -->
+                    <div id="reports-tab" class="tab-pane">
+                        <div class="reports-filters">
+                            <div class="form-group">
+                                <label for="report-type">Report Type</label>
+                                <select id="report-type">
+                                    <option value="">Select Report Type</option>
+                                    <option value="summary">Teacher Summary</option>
+                                    <option value="attendance">Teacher Attendance</option>
+                                    <option value="performance">Performance Analysis</option>
+                                    <option value="workload">Workload Distribution</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="report-period">Period</label>
+                                <select id="report-period">
+                                    <option value="current">Current Term</option>
+                                    <option value="last">Last Term</option>
+                                    <option value="year">Academic Year</option>
+                                </select>
+                            </div>
+                            <div class="form-group teacher-filter" style="display: none;">
+                                <label for="report-teacher">Teacher</label>
+                                <select id="report-teacher">
+                                    <option value="">All Teachers</option>
+                                    <!-- Teachers will be populated dynamically -->
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button id="generate-report-btn" class="btn-primary">
+                                    <i class="fas fa-file-alt"></i> Generate Report
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="report-container" style="display: none;">
+                            <div class="reports-actions">
+                                <button id="print-report-btn" class="btn-secondary" disabled>
+                                    <i class="fas fa-print"></i> Print
+                                </button>
+                                <button id="export-pdf-btn" class="btn-secondary" disabled>
+                                    <i class="fas fa-file-pdf"></i> Export PDF
+                                </button>
+                                <button id="export-excel-btn" class="btn-secondary" disabled>
+                                    <i class="fas fa-file-excel"></i> Export Excel
+                                </button>
+                            </div>
+                            <div id="report-content">
+                                <!-- Report content will be generated dynamically -->
+                            </div>
+                        </div>
+
+                        <div id="no-report-message" class="empty-state">
+                            <i class="fas fa-file-alt"></i>
+                            <h3>No Report Generated</h3>
+                            <p>Select a report type and click "Generate Report" to view teacher reports.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Teacher Modal -->
+    <div id="add-teacher-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Add New Teacher</h2>
+            <form id="add-teacher-form">
+                <div class="form-tabs">
+                    <button type="button" class="form-tab active" data-tab="personal">Personal Info</button>
+                    <button type="button" class="form-tab" data-tab="professional">Professional Info</button>
+                    <button type="button" class="form-tab" data-tab="account">Account Info</button>
+                </div>
+                
+                <!-- Personal Info Tab -->
+                <div id="personal-tab-content" class="tab-content">
+                    <div class="form-group">
+                        <label for="first-name">First Name <span class="required">*</span></label>
+                        <input type="text" id="first-name" name="first-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name <span class="required">*</span></label>
+                        <input type="text" id="last-name" name="last-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender <span class="required">*</span></label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" name="dob">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" rows="2"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Professional Info Tab -->
+                <div id="professional-tab-content" class="tab-content" style="display: none;">
+                    <div class="form-group">
+                        <label for="qualification">Highest Qualification <span class="required">*</span></label>
+                        <select id="qualification" name="qualification" required>
+                            <option value="">Select Qualification</option>
+                            <option value="NCE">NCE</option>
+                            <option value="Diploma">Diploma</option>
+                            <option value="Bachelor">Bachelor's Degree</option>
+                            <option value="Master">Master's Degree</option>
+                            <option value="Doctorate">Doctorate</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="specialization">Specialization/Subject <span class="required">*</span></label>
+                        <select id="specialization" name="specialization" required>
+                            <option value="">Select Subject</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="English">English</option>
+                            <option value="Science">Science</option>
+                            <option value="Social Studies">Social Studies</option>
+                            <option value="Religious Studies">Religious Studies</option>
+                            <option value="Physical Education">Physical Education</option>
+                            <option value="Art">Art</option>
+                            <option value="Music">Music</option>
+                            <option value="Computer">Computer</option>
+                            <option value="Early Childhood">Early Childhood Education</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="experience">Years of Experience</label>
+                        <input type="number" id="experience" name="experience" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="join-date">Join Date <span class="required">*</span></label>
+                        <input type="date" id="join-date" name="join-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="assigned-class">Assigned Class</label>
+                        <select id="assigned-class" name="assigned-class">
+                            <option value="">Select Class (Optional)</option>
+                            <option value="Nursery 1">Nursery 1</option>
+                            <option value="Nursery 2">Nursery 2</option>
+                            <option value="Primary 1">Primary 1</option>
+                            <option value="Primary 2">Primary 2</option>
+                            <option value="Primary 3">Primary 3</option>
+                            <option value="Primary 4">Primary 4</option>
+                            <option value="Primary 5">Primary 5</option>
+                            <option value="Primary 6">Primary 6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="employment-type">Employment Type <span class="required">*</span></label>
+                        <select id="employment-type" name="employment-type" required>
+                            <option value="">Select Type</option>
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Contract">Contract</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Account Info Tab -->
+                <div id="account-tab-content" class="tab-content" style="display: none;">
+                    <div class="form-group">
+                        <label for="username">Username <span class="required">*</span></label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password <span class="required">*</span></label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password <span class="required">*</span></label>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role <span class="required">*</span></label>
+                        <select id="role" name="role" required>
+                            <option value="Teacher">Teacher</option>
+                            <option value="Head Teacher">Head Teacher</option>
+                            <option value="Subject Coordinator">Subject Coordinator</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status <span class="required">*</span></label>
+                        <select id="status" name="status" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-navigation">
+                    <button type="button" class="prev-tab-btn" style="display: none;" data-tab="personal">Previous</button>
+                    <button type="button" class="next-tab-btn" data-tab="professional">Next</button>
+                    <button type="submit" class="submit-form-btn" style="display: none;">Add Teacher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Teacher Modal -->
+    <div id="edit-teacher-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Edit Teacher</h2>
+            <form id="edit-teacher-form">
+                <input type="hidden" id="edit-teacher-id">
+                <div class="form-tabs">
+                    <button type="button" class="form-tab active" data-tab="personal">Personal Info</button>
+                    <button type="button" class="form-tab" data-tab="professional">Professional Info</button>
+                    <button type="button" class="form-tab" data-tab="account">Account Info</button>
+                </div>
+                
+                <!-- Personal Info Tab -->
+                <div id="edit-personal-tab-content" class="tab-content">
+                    <div class="form-group">
+                        <label for="edit-first-name">First Name <span class="required">*</span></label>
+                        <input type="text" id="edit-first-name" name="edit-first-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-last-name">Last Name <span class="required">*</span></label>
+                        <input type="text" id="edit-last-name" name="edit-last-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-gender">Gender <span class="required">*</span></label>
+                        <select id="edit-gender" name="edit-gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-dob">Date of Birth</label>
+                        <input type="date" id="edit-dob" name="edit-dob">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="edit-phone" name="edit-phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="edit-email" name="edit-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-address">Address</label>
+                        <textarea id="edit-address" name="edit-address" rows="2"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Professional Info Tab -->
+                <div id="edit-professional-tab-content" class="tab-content" style="display: none;">
+                    <div class="form-group">
+                        <label for="edit-qualification">Highest Qualification <span class="required">*</span></label>
+                        <select id="edit-qualification" name="edit-qualification" required>
+                            <option value="">Select Qualification</option>
+                            <option value="NCE">NCE</option>
+                            <option value="Diploma">Diploma</option>
+                            <option value="Bachelor">Bachelor's Degree</option>
+                            <option value="Master">Master's Degree</option>
+                            <option value="Doctorate">Doctorate</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-specialization">Specialization/Subject <span class="required">*</span></label>
+                        <select id="edit-specialization" name="edit-specialization" required>
+                            <option value="">Select Subject</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="English">English</option>
+                            <option value="Science">Science</option>
+                            <option value="Social Studies">Social Studies</option>
+                            <option value="Religious Studies">Religious Studies</option>
+                                                        <option value="Physical Education">Physical Education</option>
+                            <option value="Art">Art</option>
+                            <option value="Music">Music</option>
+                            <option value="Computer">Computer</option>
+                            <option value="Early Childhood">Early Childhood Education</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-experience">Years of Experience</label>
+                        <input type="number" id="edit-experience" name="edit-experience" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-join-date">Join Date <span class="required">*</span></label>
+                        <input type="date" id="edit-join-date" name="edit-join-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-assigned-class">Assigned Class</label>
+                        <select id="edit-assigned-class" name="edit-assigned-class">
+                            <option value="">Select Class (Optional)</option>
+                            <option value="Nursery 1">Nursery 1</option>
+                            <option value="Nursery 2">Nursery 2</option>
+                            <option value="Primary 1">Primary 1</option>
+                            <option value="Primary 2">Primary 2</option>
+                            <option value="Primary 3">Primary 3</option>
+                            <option value="Primary 4">Primary 4</option>
+                            <option value="Primary 5">Primary 5</option>
+                            <option value="Primary 6">Primary 6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-employment-type">Employment Type <span class="required">*</span></label>
+                        <select id="edit-employment-type" name="edit-employment-type" required>
+                            <option value="">Select Type</option>
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Contract">Contract</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Account Info Tab -->
+                <div id="edit-account-tab-content" class="tab-content" style="display: none;">
+                    <div class="form-group">
+                        <label for="edit-username">Username <span class="required">*</span></label>
+                        <input type="text" id="edit-username" name="edit-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-password">Password</label>
+                        <input type="password" id="edit-password" name="edit-password" placeholder="Leave blank to keep current password">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-confirm-password">Confirm Password</label>
+                        <input type="password" id="edit-confirm-password" name="edit-confirm-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-role">Role <span class="required">*</span></label>
+                        <select id="edit-role" name="edit-role" required>
+                            <option value="Teacher">Teacher</option>
+                            <option value="Head Teacher">Head Teacher</option>
+                            <option value="Subject Coordinator">Subject Coordinator</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-status">Status <span class="required">*</span></label>
+                        <select id="edit-status" name="edit-status" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-navigation">
+                    <button type="button" class="prev-tab-btn" style="display: none;" data-tab="personal">Previous</button>
+                    <button type="button" class="next-tab-btn" data-tab="professional">Next</button>
+                    <button type="submit" class="submit-form-btn" style="display: none;">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Teacher Modal -->
+    <div id="view-teacher-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Teacher Profile</h2>
+            <div class="teacher-profile">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h3 id="view-teacher-name">Teacher Name</h3>
+                        <p id="view-teacher-subject">Subject</p>
+                        <p id="view-teacher-id">ID: TCH001</p>
+                    </div>
+                    <div class="profile-status">
+                        <span id="view-teacher-status" class="status-badge status-active">Active</span>
+                    </div>
+                </div>
+                
+                <div class="profile-tabs">
+                    <button class="profile-tab active" data-tab="info">Personal Info</button>
+                    <button class="profile-tab" data-tab="professional">Professional</button>
+                    <button class="profile-tab" data-tab="classes">Classes & Subjects</button>
+                </div>
+                
+                <div id="info-tab-content" class="profile-tab-content active">
+                    <div class="info-group">
+                        <div class="info-item">
+                            <span class="info-label">Full Name</span>
+                            <span id="view-full-name" class="info-value">John Doe</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Gender</span>
+                            <span id="view-gender" class="info-value">Male</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Date of Birth</span>
+                            <span id="view-dob" class="info-value">01/01/1980</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Phone</span>
+                            <span id="view-phone" class="info-value">+1234567890</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Email</span>
+                            <span id="view-email" class="info-value">john.doe@example.com</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Address</span>
+                            <span id="view-address" class="info-value">123 Main St, City, Country</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="professional-tab-content" class="profile-tab-content">
+                    <div class="info-group">
+                        <div class="info-item">
+                            <span class="info-label">Qualification</span>
+                            <span id="view-qualification" class="info-value">Bachelor's Degree</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Specialization</span>
+                            <span id="view-specialization" class="info-value">Mathematics</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Experience</span>
+                            <span id="view-experience" class="info-value">5 years</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Join Date</span>
+                            <span id="view-join-date" class="info-value">01/01/2020</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Employment Type</span>
+                            <span id="view-employment-type" class="info-value">Full-time</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Role</span>
+                            <span id="view-role" class="info-value">Teacher</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="classes-tab-content" class="profile-tab-content">
+                    <div class="assigned-classes">
+                        <h4>Assigned Class</h4>
+                        <p id="view-assigned-class">Primary 3</p>
+                    </div>
+                    
+                    <div class="assigned-subjects">
+                        <h4>Teaching Subjects</h4>
+                        <ul id="view-subjects-list">
+                            <li>Mathematics</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="teaching-schedule">
+                        <h4>Teaching Schedule</h4>
+                        <p class="empty-message">No schedule information available.</p>
+                    </div>
+                </div>
+                
+                <div class="profile-actions">
+                    <button id="edit-profile-btn" class="btn-primary">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                    <button id="print-profile-btn" class="btn-secondary">
+                        <i class="fas fa-print"></i> Print Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Class Modal -->
+    <div id="assign-class-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Assign Class Teacher</h2>
+            <form id="assign-class-form">
+                <div class="form-group">
+                    <label for="assign-teacher">Teacher <span class="required">*</span></label>
+                    <select id="assign-teacher" name="assign-teacher" required>
+                        <option value="">Select Teacher</option>
+                        <!-- Teachers will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assign-class">Class <span class="required">*</span></label>
+                    <select id="assign-class" name="assign-class" required>
+                        <option value="">Select Class</option>
+                        <option value="Nursery 1">Nursery 1</option>
+                        <option value="Nursery 2">Nursery 2</option>
+                        <option value="Primary 1">Primary 1</option>
+                        <option value="Primary 2">Primary 2</option>
+                        <option value="Primary 3">Primary 3</option>
+                        <option value="Primary 4">Primary 4</option>
+                        <option value="Primary 5">Primary 5</option>
+                        <option value="Primary 6">Primary 6</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assign-academic-year">Academic Year <span class="required">*</span></label>
+                    <select id="assign-academic-year" name="assign-academic-year" required>
+                        <option value="">Select Academic Year</option>
+                        <option value="2023-2024">2023-2024</option>
+                        <option value="2024-2025">2024-2025</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assign-notes">Notes</label>
+                    <textarea id="assign-notes" name="assign-notes" rows="2"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Assign Class</button>
+                    <button type="button" class="btn-secondary cancel-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Assign Subject Modal -->
+    <div id="assign-subject-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Assign Subject</h2>
+            <form id="assign-subject-form">
+                <div class="form-group">
+                    <label for="subject-teacher">Teacher <span class="required">*</span></label>
+                    <select id="subject-teacher" name="subject-teacher" required>
+                        <option value="">Select Teacher</option>
+                        <!-- Teachers will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subject-name">Subject <span class="required">*</span></label>
+                    <select id="subject-name" name="subject-name" required>
+                        <option value="">Select Subject</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="English">English</option>
+                        <option value="Science">Science</option>
+                        <option value="Social Studies">Social Studies</option>
+                        <option value="Religious Studies">Religious Studies</option>
+                        <option value="Physical Education">Physical Education</option>
+                        <option value="Art">Art</option>
+                        <option value="Music">Music</option>
+                        <option value="Computer">Computer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subject-classes">Classes <span class="required">*</span></label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="class-nursery1" name="classes" value="Nursery 1">
+                            <label for="class-nursery1">Nursery 1</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="class-nursery2" name="classes" value="Nursery 2">
+                            <label for="class-nursery2">Nursery 2</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="class-primary1" name="classes" value="Primary 1">
+                            <label for="class-primary1">Primary 1</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="class-primary2" name="classes" value="Primary 2">
+                            <label for="class-primary2">Primary 2</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="class-primary3" name="classes" value="Primary 3">
+                            <label for="class-primary3">Primary 3</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="class-primary4" name="classes" value="Primary 4">
+                            <label for="class-primary4">Primary 4</label>
+                        </div>
+                        <div class="checkbox-item">
+                                                        <input type="checkbox" id="class-primary5" name="classes" value="Primary 5">
+                            <label for="class-primary5">Primary 5</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="class-primary6" name="classes" value="Primary 6">
+                            <label for="class-primary6">Primary 6</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="subject-academic-year">Academic Year <span class="required">*</span></label>
+                    <select id="subject-academic-year" name="subject-academic-year" required>
+                        <option value="">Select Academic Year</option>
+                        <option value="2023-2024">2023-2024</option>
+                        <option value="2024-2025">2024-2025</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Assign Subject</button>
+                    <button type="button" class="btn-secondary cancel-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Send Notification Modal -->
+    <div id="notification-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Send Notification</h2>
+            <form id="notification-form">
+                <div class="form-group">
+                    <label for="notification-recipients">Recipients <span class="required">*</span></label>
+                    <select id="notification-recipients" name="notification-recipients" required>
+                        <option value="all">All Teachers</option>
+                        <option value="active">Active Teachers Only</option>
+                        <option value="specific">Specific Teachers</option>
+                    </select>
+                </div>
+                <div class="form-group" id="specific-teachers-group" style="display: none;">
+                    <label for="specific-teachers">Select Teachers</label>
+                    <div class="checkbox-group" id="teachers-checkbox-group">
+                        <!-- Will be populated dynamically -->
+                        <div class="empty-state small">
+                            <p>No teachers available to select.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="notification-subject">Subject <span class="required">*</span></label>
+                    <input type="text" id="notification-subject" name="notification-subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="notification-message">Message <span class="required">*</span></label>
+                    <textarea id="notification-message" name="notification-message" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="notification-type">Notification Type <span class="required">*</span></label>
+                    <select id="notification-type" name="notification-type" required>
+                        <option value="email">Email</option>
+                        <option value="sms">SMS</option>
+                        <option value="both">Both Email & SMS</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Send Notification</button>
+                    <button type="button" class="btn-secondary cancel-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirmation-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Confirm Deletion</h2>
+            <p id="delete-confirmation-message">Are you sure you want to delete this teacher? This action cannot be undone.</p>
+            <div class="form-actions">
+                <button id="confirm-delete-btn" class="btn-danger">Delete</button>
+                <button class="btn-secondary cancel-modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="notification-toast">
+        <div class="notification-content">
+            <i class="notification-icon fas fa-info-circle"></i>
+            <div class="notification-message">Notification message</div>
+        </div>
+        <button class="notification-close">&times;</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/js/teachers.js"></script>
+</body>
+</html>
+
+
