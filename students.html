@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management - Franciscan Catholic Nursery & Primary School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin-dashboard.css">
+    <link rel="stylesheet" href="assets/css/students.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
+                <h3>Admin Portal</h3>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a>
+                    </li>
+                    <li class="active">
+                        <a href="students.html"><i class="fas fa-user-graduate"></i> Students</a>
+                    </li>
+                    <li>
+                        <a href="classes.html"><i class="fas fa-school"></i> Classes</a>
+                    </li>
+                    <li>
+                        <a href="subjects.html"><i class="fas fa-book"></i> Subjects</a>
+                    </li>
+                    <li>
+                        <a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a>
+                    </li>
+                    <li>
+                        <a href="exams.html"><i class="fas fa-file-alt"></i> Exams</a>
+                    </li>
+                    <li>
+                        <a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a>
+                    </li>
+                    <li>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Top Navigation -->
+            <nav class="dashboard-nav">
+                <button id="sidebar-toggle" class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-right">
+                    <div class="date-display">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                    <div class="admin-profile">
+                        <img src="assets/images/admin-avatar.png" alt="Admin" class="avatar">
+                        <div class="admin-info">
+                            <span id="admin-name">Admin User</span>
+                            <span id="admin-role">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Page Content -->
+            <div class="dashboard-content">
+                <div class="page-header">
+                    <h1>Student Management</h1>
+                    <p>Manage all student records, profiles, and academic information</p>
+                </div>
+
+                <!-- Stats Overview -->
+                <div class="stats-overview">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #4CAF50;">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Total Students</h3>
+                            <p class="stat-count" id="student-count">0</p>
+                            <p class="stat-label">Enrolled Students</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #2196F3;">
+                            <i class="fas fa-male"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Male Students</h3>
+                            <p class="stat-count" id="male-count">0</p>
+                            <p class="stat-label">Enrolled Boys</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #FF9800;">
+                            <i class="fas fa-female"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Female Students</h3>
+                            <p class="stat-count" id="female-count">0</p>
+                            <p class="stat-label">Enrolled Girls</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #9C27B0;">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Classes</h3>
+                            <p class="stat-count" id="class-count">0</p>
+                            <p class="stat-label">Active Classes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs Container -->
+                <div class="tabs-container">
+                    <div class="tab-navigation">
+                        <button class="tab-btn active" data-tab="students">
+                            <i class="fas fa-list"></i> Student List
+                        </button>
+                        <button class="tab-btn" data-tab="enrollment">
+                            <i class="fas fa-user-plus"></i> Enrollment
+                        </button>
+                        <button class="tab-btn" data-tab="academic">
+                            <i class="fas fa-graduation-cap"></i> Academic Records
+                        </button>
+                        <button class="tab-btn" data-tab="reports">
+                            <i class="fas fa-chart-pie"></i> Reports
+                        </button>
+                    </div>
+
+                    <!-- Students List Tab -->
+                    <div id="students-tab" class="tab-pane active">
+                        <div class="search-filter-bar">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="student-search" placeholder="Search students by name, ID, or parent...">
+                            </div>
+                            <div class="filter-group">
+                                <select id="class-filter">
+                                    <option value="">All Classes</option>
+                                    <!-- Classes will be populated dynamically -->
+                                </select>
+                                <select id="status-filter">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="action-group">
+                                <button id="add-student-btn" class="btn-primary">
+                                    <i class="fas fa-plus"></i> Add Student
+                                </button>
+                                <button id="export-students-btn" class="btn-secondary">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                                <button id="import-students-btn" class="btn-secondary">
+                                    <i class="fas fa-upload"></i> Import
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table id="students-table" class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Student</th>
+                                        <th>Class</th>
+                                        <th>Parent/Guardian</th>
+                                        <th>Enrollment Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Student rows will be populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="pagination">
+                            <button class="pagination-btn" id="prev-page" disabled>
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </button>
+                            <span class="pagination-info">Page <span id="current-page">1</span> of <span id="total-pages">1</span></span>
+                            <button class="pagination-btn" id="next-page" disabled>
+                                Next <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Enrollment Tab -->
+                    <div id="enrollment-tab" class="tab-pane">
+                        <div class="enrollment-stats">
+                            <div class="enrollment-chart">
+                                <h3>Enrollment Trends</h3>
+                                <div class="chart-container">
+                                    <canvas id="enrollment-chart"></canvas>
+                                </div>
+                            </div>
+                            <div class="enrollment-summary">
+                                <h3>Enrollment Summary</h3>
+                                <div class="summary-cards">
+                                    <div class="summary-card">
+                                        <div class="summary-title">This Year</div>
+                                        <div class="summary-value" id="enrollment-this-year">0</div>
+                                        <div class="summary-change positive">+0% from last year</div>
+                                    </div>
+                                    <div class="summary-card">
+                                        <div class="summary-title">This Month</div>
+                                        <div class="summary-value" id="enrollment-this-month">0</div>
+                                        <div class="summary-change positive">+0% from last month</div>
+                                    </div>
+                                    <div class="summary-card">
+                                        <div class="summary-title">Average Age</div>
+                                        <div class="summary-value" id="average-age">0</div>
+                                        <div class="summary-label">years</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="enrollment-by-class">
+                            <h3>Enrollment by Class</h3>
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <th>Total Students</th>
+                                            <th>Male</th>
+                                            <th>Female</th>
+                                            <th>Capacity</th>
+                                            <th>Utilization</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="enrollment-by-class-table">
+                                        <!-- Data will be populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Academic Records Tab -->
+                    <div id="academic-tab" class="tab-pane">
+                        <div class="search-filter-bar">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="academic-search" placeholder="Search student by name or ID...">
+                            </div>
+                            <div class="filter-group">
+                                <select id="academic-class-filter">
+                                    <option value="">All Classes</option>
+                                    <!-- Classes will be populated dynamically -->
+                                </select>
+                                <select id="term-filter">
+                                    <option value="">All Terms</option>
+                                    <option value="First Term">First Term</option>
+                                    <option value="Second Term">Second Term</option>
+                                    <option value="Third Term">Third Term</option>
+                                </select>
+                                <select id="academic-year-filter">
+                                    <option value="">All Years</option>
+                                    <option value="2023-2024">2023-2024</option>
+                                    <option value="2022-2023">2022-2023</option>
+                                    <option value="2021-2022">2021-2022</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="academic-records-container">
+                            <div class="empty-state" id="academic-empty-state">
+                                <i class="fas fa-graduation-cap"></i>
+                                <h3>Select a Student</h3>
+                                <p>Please search for a student to view their academic records.</p>
+                            </div>
+
+                            <div class="student-academic-profile" id="student-academic-profile" style="display: none;">
+                                <!-- Student academic profile will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Tab -->
+                    <div id="reports-tab" class="tab-pane">
+                        <div class="reports-actions">
+                            <div class="report-type-selector">
+                                <label for="report-type">Report Type:</label>
+                                <select id="report-type">
+                                    <option value="enrollment">Enrollment Report</option>
+                                    <option value="demographic">Demographic Report</option>
+                                    <option value="performance">Performance Report</option>
+                                    <option value="attendance">Attendance Report</option>
+                                </select>
+                            </div>
+                            <div class="report-filters">
+                                <select id="report-class-filter">
+                                    <option value="">All Classes</option>
+                                    <!-- Classes will be populated dynamically -->
+                                </select>
+                                <select id="report-period-filter">
+                                    <option value="current">Current Academic Year</option>
+                                    <option value="previous">Previous Academic Year</option>
+                                    <option value="custom">Custom Period</option>
+                                </select>
+                            </div>
+                            <div class="report-actions">
+                                <button id="generate-report-btn" class="btn-primary">
+                                    <i class="fas fa-file-alt"></i> Generate Report
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="report-preview">
+                            <div class="empty-state" id="report-empty-state">
+                                <i class="fas fa-chart-bar"></i>
+                                <h3>No Report Generated</h3>
+                                <p>Select a report type and click "Generate Report" to view the report.</p>
+                            </div>
+
+                                                        <div id="report-content" class="report-content" style="display: none;">
+                                <!-- Report content will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div id="add-student-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Add New Student</h2>
+            <form id="add-student-form">
+                <div class="form-tabs">
+                    <button type="button" class="form-tab active" data-tab="personal">Personal Info</button>
+                    <button type="button" class="form-tab" data-tab="academic">Academic Info</button>
+                    <button type="button" class="form-tab" data-tab="parent">Parent/Guardian</button>
+                    <button type="button" class="form-tab" data-tab="medical">Medical Info</button>
+                </div>
+                
+                <div id="personal-info-tab" class="form-tab-content active">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <input type="text" id="first-name" name="first-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" id="last-name" name="last-name" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" id="dob" name="dob" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" rows="2"></textarea>
+                    </div>
+                </div>
+                
+                <div id="academic-info-tab" class="form-tab-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="class">Class</label>
+                            <select id="class" name="class" required>
+                                <option value="">Select Class</option>
+                                <!-- Classes will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="enrollment-date">Enrollment Date</label>
+                            <input type="date" id="enrollment-date" name="enrollment-date" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="previous-school">Previous School (if any)</label>
+                        <input type="text" id="previous-school" name="previous-school">
+                    </div>
+                </div>
+                
+                <div id="parent-info-tab" class="form-tab-content">
+                    <div class="form-group">
+                        <label for="parent-name">Parent/Guardian Name</label>
+                        <input type="text" id="parent-name" name="parent-name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="parent-phone">Phone Number</label>
+                            <input type="tel" id="parent-phone" name="parent-phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="parent-email">Email</label>
+                            <input type="email" id="parent-email" name="parent-email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="relationship">Relationship to Student</label>
+                        <select id="relationship" name="relationship">
+                            <option value="Parent">Parent</option>
+                            <option value="Guardian">Guardian</option>
+                            <option value="Sibling">Sibling</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="medical-info-tab" class="form-tab-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="blood-group">Blood Group</label>
+                            <select id="blood-group" name="blood-group">
+                                <option value="">Select Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="Unknown">Unknown</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="emergency-contact">Emergency Contact</label>
+                            <input type="tel" id="emergency-contact" name="emergency-contact">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="medical-conditions">Medical Conditions</label>
+                        <textarea id="medical-conditions" name="medical-conditions" rows="2" placeholder="List any medical conditions, allergies, or special needs"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="prev-tab-btn" class="btn-secondary" disabled>Previous</button>
+                    <button type="button" id="next-tab-btn" class="btn-secondary">Next</button>
+                    <button type="submit" id="submit-student-btn" class="btn-primary" style="display: none;">Add Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div id="edit-student-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Edit Student</h2>
+            <form id="edit-student-form">
+                <input type="hidden" id="edit-student-id">
+                <div class="form-tabs">
+                    <button type="button" class="form-tab active" data-tab="edit-personal">Personal Info</button>
+                    <button type="button" class="form-tab" data-tab="edit-academic">Academic Info</button>
+                    <button type="button" class="form-tab" data-tab="edit-parent">Parent/Guardian</button>
+                    <button type="button" class="form-tab" data-tab="edit-medical">Medical Info</button>
+                </div>
+                
+                <div id="edit-personal-info-tab" class="form-tab-content active">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-first-name">First Name</label>
+                            <input type="text" id="edit-first-name" name="edit-first-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-last-name">Last Name</label>
+                            <input type="text" id="edit-last-name" name="edit-last-name" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-gender">Gender</label>
+                            <select id="edit-gender" name="edit-gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-dob">Date of Birth</label>
+                            <input type="date" id="edit-dob" name="edit-dob" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-address">Address</label>
+                        <textarea id="edit-address" name="edit-address" rows="2"></textarea>
+                    </div>
+                </div>
+                
+                <div id="edit-academic-info-tab" class="form-tab-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-class">Class</label>
+                            <select id="edit-class" name="edit-class" required>
+                                <option value="">Select Class</option>
+                                <!-- Classes will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-enrollment-date">Enrollment Date</label>
+                            <input type="date" id="edit-enrollment-date" name="edit-enrollment-date" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-previous-school">Previous School (if any)</label>
+                            <input type="text" id="edit-previous-school" name="edit-previous-school">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-status">Status</label>
+                            <select id="edit-status" name="edit-status" required>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="edit-parent-info-tab" class="form-tab-content">
+                    <div class="form-group">
+                        <label for="edit-parent-name">Parent/Guardian Name</label>
+                        <input type="text" id="edit-parent-name" name="edit-parent-name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-parent-phone">Phone Number</label>
+                            <input type="tel" id="edit-parent-phone" name="edit-parent-phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-parent-email">Email</label>
+                            <input type="email" id="edit-parent-email" name="edit-parent-email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-relationship">Relationship to Student</label>
+                        <select id="edit-relationship" name="edit-relationship">
+                            <option value="Parent">Parent</option>
+                            <option value="Guardian">Guardian</option>
+                            <option value="Sibling">Sibling</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="edit-medical-info-tab" class="form-tab-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-blood-group">Blood Group</label>
+                            <select id="edit-blood-group" name="edit-blood-group">
+                                <option value="">Select Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="Unknown">Unknown</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-emergency-contact">Emergency Contact</label>
+                            <input type="tel" id="edit-emergency-contact" name="edit-emergency-contact">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-medical-conditions">Medical Conditions</label>
+                        <textarea id="edit-medical-conditions" name="edit-medical-conditions" rows="2" placeholder="List any medical conditions, allergies, or special needs"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="edit-prev-tab-btn" class="btn-secondary" disabled>Previous</button>
+                    <button type="button" id="edit-next-tab-btn" class="btn-secondary">Next</button>
+                    <button type="submit" id="update-student-btn" class="btn-primary" style="display: none;">Update Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Student Modal -->
+    <div id="view-student-modal" class="modal">
+        <div class="modal-content">
+            <!-- Content will be dynamically generated -->
+        </div>
+    </div>
+
+    <!-- Import Students Modal -->
+    <div id="import-students-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Import Students</h2>
+            <form id="import-students-form">
+                <div class="form-group">
+                    <label for="import-file">Select File</label>
+                    <input type="file" id="import-file" name="import-file" accept=".json,.csv" required>
+                    <small>Accepted formats: JSON, CSV</small>
+                </div>
+                <div class="import-instructions">
+                    <h4>Instructions</h4>
+                    <ol>
+                        <li>Prepare your data in JSON or CSV format</li>
+                        <li>Make sure your file includes required fields: first name, last name, gender, date of birth, class</li>
+                        <li>Select your file using the file input above</li>
+                        <li>Click "Import Students" to begin the import process</li>
+                    </ol>
+                    <p>Need a template? <a href="#" id="download-template">Download template</a></p>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Import Students</button>
+                    <button type="button" class="btn-secondary cancel-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+        <!-- Include Chart.js for charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    
+    <!-- Main JavaScript -->
+    <script src="assets/js/students.js"></script>
+</body>
+</html>
+
