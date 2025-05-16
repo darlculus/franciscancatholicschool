@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard - Franciscan Catholic School</title>
+    <title>Teacher Dashboard - Franciscan Catholic Nursery and Primary School</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -44,10 +44,13 @@
                         <a href="#assignments"><i class="fas fa-book"></i> Assignments</a>
                     </li>
                     <li>
-                        <a href="#grades"><i class="fas fa-chart-line"></i> Grades</a>
+                        <a href="#e-learning"><i class="fas fa-laptop"></i> E-Learning</a>
                     </li>
                     <li>
-                        <a href="#attendance"><i class="fas fa-clipboard-check"></i> Attendance</a>
+                        <a href="#staff-appraisal"><i class="fas fa-chart-bar"></i> Staff Appraisal</a>
+                    </li>
+                    <li>
+                        <a href="#leave-application"><i class="fas fa-calendar-alt"></i> Leave Application</a>
                     </li>
                     <li>
                         <a href="#resources"><i class="fas fa-folder"></i> Resources</a>
@@ -201,102 +204,91 @@
                         </div>
                     </div>
                     
+                    <div class="dashboard-card school-events">
+                        <div class="card-header">
+                            <h2>School Events</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="video-container">
+                                <iframe id="event-video" width="100%" height="200" src="https://www.youtube.com/embed/placeholder" frameborder="0" allowfullscreen></iframe>
+                                <div class="video-controls">
+                                    <button id="prev-video" class="video-nav-btn"><i class="fas fa-chevron-left"></i> Previous</button>
+                                    <button id="next-video" class="video-nav-btn">Next <i class="fas fa-chevron-right"></i></button>
+                                </div>
+                                <p id="video-title" class="video-title">Latest School Event</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card school-documents">
+                        <div class="card-header">
+                            <h2>School Documents</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="document-grid">
+                                <a href="#" class="document-item">
+                                    <i class="fas fa-calendar-alt document-icon"></i>
+                                    <span class="document-name">Term Planner</span>
+                                </a>
+                                <a href="#" class="document-item">
+                                    <i class="fas fa-newspaper document-icon"></i>
+                                    <span class="document-name">Newsletter</span>
+                                </a>
+                                <a href="#" class="document-item">
+                                    <i class="fas fa-utensils document-icon"></i>
+                                    <span class="document-name">Lunch Menu</span>
+                                </a>
+                                <a href="#" class="document-item">
+                                    <i class="fas fa-file-alt document-icon"></i>
+                                    <span class="document-name">School Policies</span>
+                                </a>
+                                <a href="#" class="document-item">
+                                    <i class="fas fa-bus document-icon"></i>
+                                    <span class="document-name">Bus Policies</span>
+                                </a>
+                                <a href="#" class="document-item">
+                                    <i class="fas fa-child document-icon"></i>
+                                    <span class="document-name">Behavior Policies</span>
+                                </a>
+                                <a href="#" class="document-item">
+                                    <i class="fas fa-clipboard document-icon"></i>
+                                    <span class="document-name">Meeting Minutes</span>
+                                </a>
+                                <a href="#" class="document-item">
+                                    <i class="fas fa-folder-open document-icon"></i>
+                                    <span class="document-name">All Documents</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="dashboard-card pending-tasks">
                         <div class="card-header">
                             <h2>Pending Tasks</h2>
-                            <a href="#tasks" class="view-all">View All</a>
+                            <a href="#" class="btn-add-task"><i class="fas fa-plus"></i> Add Task</a>
                         </div>
                         <div class="card-content">
-                            <ul class="task-list">
-                                <li class="task-item">
-                                    <div class="task-info">
-                                        <h4>Grade Mathematics Quiz</h4>
-                                        <p>Primary 5 - Multiplication and Division</p>
-                                    </div>
-                                    <div class="task-meta">
-                                        <span class="due-date">Due: Today</span>
-                                        <span class="priority high">High Priority</span>
-                                    </div>
-                                </li>
-                                <li class="task-item">
-                                    <div class="task-info">
-                                        <h4>Prepare Lesson Plan</h4>
-                                        <p>Primary 6 - Algebra Introduction</p>
-                                    </div>
-                                    <div class="task-meta">
-                                        <span class="due-date">Due: Tomorrow</span>
-                                        <span class="priority medium">Medium Priority</span>
-                                    </div>
-                                </li>
-                                <li class="task-item">
-                                    <div class="task-info">
-                                        <h4>Submit Term Progress Report</h4>
-                                        <p>All classes - Mid-term evaluation</p>
-                                    </div>
-                                    <div class="task-meta">
-                                        <span class="due-date">Due: 3 days</span>
-                                        <span class="priority high">High Priority</span>
-                                    </div>
-                                </li>
-                            </ul>
+                            <div class="empty-state">
+                                <i class="fas fa-tasks empty-icon"></i>
+                                <h3>No Pending Tasks</h3>
+                                <p>You don't have any pending tasks at the moment. When the school year begins, your tasks will appear here.</p>
+                                <button class="btn-create-task">Create a Task</button>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="dashboard-card today-schedule">
                         <div class="card-header">
                             <h2>Today's Schedule</h2>
+                            <a href="#" class="btn-view-calendar"><i class="fas fa-calendar-alt"></i> View Calendar</a>
                         </div>
                         <div class="card-content">
-                            <ul class="schedule-list">
-                                <li class="schedule-item">
-                                    <div class="schedule-time">
-                                        <span>8:00 AM - 9:00 AM</span>
-                                    </div>
-                                    <div class="schedule-details">
-                                        <h4>Primary 5 - Mathematics</h4>
-                                        <p>Classroom 5A</p>
-                                    </div>
-                                    <div class="schedule-status">
-                                        <span class="status completed">Completed</span>
-                                    </div>
-                                </li>
-                                <li class="schedule-item">
-                                    <div class="schedule-time">
-                                        <span>10:00 AM - 11:00 AM</span>
-                                    </div>
-                                    <div class="schedule-details">
-                                        <h4>Primary 6 - Mathematics</h4>
-                                        <p>Classroom 6B</p>
-                                    </div>
-                                    <div class="schedule-status">
-                                        <span class="status current">Current</span>
-                                    </div>
-                                </li>
-                                <li class="schedule-item">
-                                    <div class="schedule-time">
-                                        <span>12:30 PM - 1:30 PM</span>
-                                    </div>
-                                    <div class="schedule-details">
-                                        <h4>Staff Meeting</h4>
-                                        <p>Staff Room</p>
-                                    </div>
-                                    <div class="schedule-status">
-                                        <span class="status upcoming">Upcoming</span>
-                                    </div>
-                                </li>
-                                <li class="schedule-item">
-                                    <div class="schedule-time">
-                                        <span>2:00 PM - 3:00 PM</span>
-                                    </div>
-                                    <div class="schedule-details">
-                                        <h4>Primary 4 - Mathematics</h4>
-                                        <p>Classroom 4A</p>
-                                    </div>
-                                    <div class="schedule-status">
-                                        <span class="status upcoming">Upcoming</span>
-                                    </div>
-                                </li>
-                            </ul>
+                            <div class="empty-state">
+                                <i class="fas fa-calendar-day empty-icon"></i>
+                                <h3>No Scheduled Classes</h3>
+                                <p>Your teaching schedule will appear here once the school year begins and classes are assigned.</p>
+                                <button class="btn-view-academic-calendar">View Academic Calendar</button>
+                            </div>
                         </div>
                     </div>
                     

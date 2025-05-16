@@ -16,6 +16,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Set current date
+    updateDateDisplay();
+    
+    // Update teacher/admin information
+    updateTeacherInfo(currentUser);
+    
+    // Initialize sidebar toggle functionality
+    initSidebarToggle();
+    
+    // Initialize YouTube event videos
+    initEventVideos();
+    
+    // Initialize document downloads
+    initDocumentDownloads();
+    
+    // Navigation functionality - Updated to handle real page navigation
+    initNavigation();
+    
+    // Initialize notification bell functionality
+    initNotificationBell();
+    
+    // Initialize announcement creation
+    initAnnouncementCreation();
+    
+    // Initialize class action buttons
+    initClassActionButtons();
+    
+    // Initialize task management
+    initTaskManagement();
+    
+    // Initialize schedule management
+    initScheduleManagement();
+});
+
+// Update date display
+function updateDateDisplay() {
     const now = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const dateString = now.toLocaleDateString('en-US', options);
@@ -24,8 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
     currentDateElements.forEach(element => {
         element.textContent = dateString;
     });
-    
-    // Update teacher/admin information
+}
+
+// Update teacher information
+function updateTeacherInfo(currentUser) {
     const teacherNameElements = document.querySelectorAll('#teacher-name, #welcome-name');
     const teacherSubjectElements = document.querySelectorAll('#teacher-subject');
     
@@ -40,8 +77,10 @@ document.addEventListener('DOMContentLoaded', function() {
             element.textContent = currentUser.position;
         }
     });
-    
-    // Mobile sidebar toggle functionality
+}
+
+// Initialize sidebar toggle for mobile
+function initSidebarToggle() {
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const dashboardSidebar = document.querySelector('.dashboard-sidebar');
     const dashboardContainer = document.querySelector('.dashboard-container');
@@ -63,24 +102,70 @@ document.addEventListener('DOMContentLoaded', function() {
             dashboardContainer.classList.remove('sidebar-open');
         }
     });
+}
+
+// Initialize YouTube event videos
+function initEventVideos() {
+    const prevButton = document.getElementById('prev-video');
+    const nextButton = document.getElementById('next-video');
+    const videoFrame = document.getElementById('event-video');
+    const videoTitle = document.getElementById('video-title');
     
-    // Logout functionality
-    const logoutBtn = document.getElementById('logout-btn');
+    // Sample video data - would normally come from a database or API
+    const videos = [
+        { id: 'placeholder1', title: 'Annual Sports Day Highlights' },
+        { id: 'placeholder2', title: 'School Cultural Festival' },
+        { id: 'placeholder3', title: 'Science Fair Projects' },
+        { id: 'placeholder4', title: 'Graduation Ceremony' }
+    ];
     
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Clear user data from storage
-            localStorage.removeItem('currentUser');
-            sessionStorage.removeItem('currentUser');
-            
-            // Redirect to login page
-            window.location.href = 'portal.html';
+    let currentVideoIndex = 0;
+    
+    // Function to update the video
+    function updateVideo() {
+        if (videoFrame && videoTitle) {
+            videoFrame.src = `https://www.youtube.com/embed/${videos[currentVideoIndex].id}`;
+            videoTitle.textContent = videos[currentVideoIndex].title;
+        }
+    }
+    
+    // Initialize with first video
+    updateVideo();
+    
+    // Add event listeners for navigation buttons
+    if (prevButton) {
+        prevButton.addEventListener('click', function() {
+            currentVideoIndex = (currentVideoIndex - 1 + videos.length) % videos.length;
+            updateVideo();
         });
     }
     
-    // Navigation functionality - Updated to handle real page navigation
+    if (nextButton) {
+        nextButton.addEventListener('click', function() {
+            currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+            updateVideo();
+        });
+    }
+}
+
+// Initialize document downloads
+function initDocumentDownloads() {
+    const documentItems = document.querySelectorAll('.document-item');
+    
+    documentItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const documentName = this.querySelector('.document-name').textContent;
+            
+            // This would normally trigger a download from the server
+            // For now, just show a notification
+            alert(`Downloading ${documentName}... This feature will be available when the system launches.`);
+        });
+    });
+}
+
+// Initialize navigation
+function initNavigation() {
     const navLinks = document.querySelectorAll('.sidebar-nav a');
     
     navLinks.forEach(link => {
@@ -98,8 +183,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Otherwise, let the browser handle the navigation to the actual page
         });
     });
-    
-    // Notification bell functionality
+}
+
+// Initialize notification bell functionality
+function initNotificationBell() {
     const notificationBell = document.querySelector('.notification-bell');
     
     if (notificationBell) {
@@ -107,8 +194,10 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Notifications feature will be implemented in the future.');
         });
     }
-    
-    // Create announcement button (for teacher dashboard)
+}
+
+// Initialize announcement creation
+function initAnnouncementCreation() {
     const createAnnouncementBtn = document.querySelector('.btn-create-announcement');
     
     if (createAnnouncementBtn) {
@@ -117,8 +206,10 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Create announcement feature will be implemented in the future.');
         });
     }
-    
-    // Class action buttons (for teacher dashboard)
+}
+
+// Initialize class action buttons
+function initClassActionButtons() {
     const classActionButtons = document.querySelectorAll('.btn-class-action');
     
     classActionButtons.forEach(button => {
@@ -135,13 +226,20 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(`${actionText} feature for ${className} will be implemented in the future.`);
         });
     });
-    
-    // "View All" link for My Classes
-    const viewAllClassesLink = document.querySelector('.my-classes .view-all');
-    
-    if (viewAllClassesLink) {
-        viewAllClassesLink.addEventListener('click', function(e) {
-            // No need to prevent default, let it navigate to my-classes.html
-        });
-    }
-});
+}
+
+// Logout functionality
+const logoutBtn = document.getElementById('logout-btn');
+
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Clear user data from storage
+        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('currentUser');
+        
+        // Redirect to login page
+        window.location.href = 'portal.html';
+    });
+}
