@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Settings - Franciscan Catholic Nursery and Primary School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/franciscan.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/teacher-settings.css">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-circle">
+                    <img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo">
+                </div>
+                <h3>Teacher Portal</h3>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <h4 id="teacher-name">Loading...</h4>
+                    <p id="teacher-subject">Loading...</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="teacher-dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="my-classes.html"><i class="fas fa-users"></i> My Classes</a>
+                    </li>
+                    <li>
+                        <a href="assignments.html"><i class="fas fa-book"></i> Assignments</a>
+                    </li>
+                    <li>
+                        <a href="e-learning.html"><i class="fas fa-laptop"></i> E-Learning</a>
+                    </li>
+                    <li>
+                        <a href="staff-appraisal.html"><i class="fas fa-chart-bar"></i> Staff Appraisal</a>
+                    </li>
+                    <li>
+                        <a href="leave-application.html"><i class="fas fa-calendar-alt"></i> Leave Application</a>
+                    </li>
+                    <li>
+                        <a href="resources.html"><i class="fas fa-folder"></i> Resources</a>
+                    </li>
+                    <li>
+                        <a href="teacher-messages.html"><i class="fas fa-envelope"></i> Messages</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="teacher-settings.html" class="active"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="mobile-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                
+                <div class="header-actions">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="date-display">
+                        <i class="fas fa-calendar"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="dashboard-content">
+                <div class="page-header">
+                    <h1>Teacher Settings</h1>
+                    <p>Manage your account settings and preferences</p>
+                </div>
+                
+                <div class="settings-container">
+                    <div class="settings-sidebar">
+                        <ul class="settings-nav">
+                            <li class="active" data-tab="profile"><i class="fas fa-user"></i> Profile</li>
+                            <li data-tab="account"><i class="fas fa-lock"></i> Account Security</li>
+                            <li data-tab="notifications"><i class="fas fa-bell"></i> Notifications</li>
+                            <li data-tab="appearance"><i class="fas fa-palette"></i> Appearance</li>
+                            <li data-tab="preferences"><i class="fas fa-sliders-h"></i> Teaching Preferences</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <!-- Profile Settings Tab -->
+                        <div id="profile-tab" class="settings-tab active">
+                            <h2>Profile Settings</h2>
+                            
+                            <div class="profile-picture-section">
+                                <div class="profile-picture">
+                                    <img id="profile-image" src="assets/img/team-3.jpg" alt="Profile Picture">
+                                </div>
+                                <div class="profile-picture-actions">
+                                    <button id="upload-picture-btn" class="btn-primary"><i class="fas fa-upload"></i> Upload Picture</button>
+                                    <button id="remove-picture-btn" class="btn-outline"><i class="fas fa-trash"></i> Remove</button>
+                                    <input type="file" id="profile-picture-upload" accept="image/*" style="display: none;">
+                                </div>
+                                <p class="help-text">Recommended size: 300x300px. Max file size: 2MB.</p>
+                            </div>
+                            
+                            <form id="profile-form" class="settings-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="first-name">First Name</label>
+                                        <input type="text" id="first-name" name="first-name" placeholder="Your first name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="last-name">Last Name</label>
+                                        <input type="text" id="last-name" name="last-name" placeholder="Your last name">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" name="email" placeholder="Your email address">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="Your phone number">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="bio">Professional Bio</label>
+                                    <textarea id="bio" name="bio" rows="4" placeholder="A brief description of your professional background and teaching philosophy"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="qualifications">Qualifications</label>
+                                    <textarea id="qualifications" name="qualifications" rows="3" placeholder="List your academic qualifications and certifications"></textarea>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Save Changes</button>
+                                    <button type="reset" class="btn-outline">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Account Security Tab -->
+                        <div id="account-tab" class="settings-tab">
+                            <h2>Account Security</h2>
+                            
+                            <form id="password-form" class="settings-form">
+                                <div class="form-group">
+                                    <label for="current-password">Current Password</label>
+                                    <div class="password-input-container">
+                                        <input type="password" id="current-password" name="current-password" placeholder="Enter your current password">
+                                        <button type="button" class="toggle-password"><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="new-password">New Password</label>
+                                    <div class="password-input-container">
+                                        <input type="password" id="new-password" name="new-password" placeholder="Enter your new password">
+                                        <button type="button" class="toggle-password"><i class="fas fa-eye"></i></button>
+                                    </div>
+                                    <div class="password-strength">
+                                        <div class="strength-meter">
+                                            <div class="strength-segment"></div>
+                                            <div class="strength-segment"></div>
+                                            <div class="strength-segment"></div>
+                                            <div class="strength-segment"></div>
+                                        </div>
+                                        <span class="strength-text">Password strength: Weak</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="confirm-password">Confirm New Password</label>
+                                    <div class="password-input-container">
+                                        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your new password">
+                                        <button type="button" class="toggle-password"><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Update Password</button>
+                                    <button type="reset" class="btn-outline">Cancel</button>
+                                </div>
+                            </form>
+                            
+                            <div class="security-section">
+                                <h3>Two-Factor Authentication</h3>
+                                <p>Add an extra layer of security to your account by enabling two-factor authentication.</p>
+                                
+                                <div class="toggle-switch-container">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="two-factor-toggle">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-label">Enable Two-Factor Authentication</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notifications Tab -->
+                        <div id="notifications-tab" class="settings-tab">
+                            <h2>Notification Settings</h2>
+                            
+                            <div class="notification-settings">
+                                <div class="notification-group">
+                                    <h3>Email Notifications</h3>
+                                    
+                                    <div class="notification-option">
+                                        <div class="notification-info">
+                                            <h4>Assignment Submissions</h4>
+                                            <p>Receive email notifications when students submit assignments</p>
+                                        </div>
+                                        <div class="toggle-switch-container">
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="notification-option">
+                                        <div class="notification-info">
+                                            <h4>School Announcements</h4>
+                                            <p>Receive email notifications for new school announcements</p>
+                                        </div>
+                                        <div class="toggle-switch-container">
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="notification-option">
+                                        <div class="notification-info">
+                                            <h4>Staff Meetings</h4>
+                                            <p>Receive email reminders for upcoming staff meetings</p>
+                                        </div>
+                                        <div class="toggle-switch-container">
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="notification-group">
+                                    <h3>In-App Notifications</h3>
+                                    
+                                    <div class="notification-option">
+                                        <div class="notification-info">
+                                            <h4>Student Messages</h4>
+                                            <p>Receive notifications when students send you messages</p>
+                                        </div>
+                                        <div class="toggle-switch-container">
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="notification-option">
+                                        <div class="notification-info">
+                                            <h4>Assignment Deadlines</h4>
+                                            <p>Receive reminders for upcoming assignment deadlines</p>
+                                        </div>
+                                        <div class="toggle-switch-container">
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="notification-option">
+                                        <div class="notification-info">
+                                            <h4>Class Schedule Changes</h4>
+                                            <p>Receive notifications for any changes to your class schedule</p>
+                                        </div>
+                                        <div class="toggle-switch-container">
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn-primary">Save Preferences</button>
+                                <button type="button" class="btn-outline">Reset to Default</button>
+                            </div>
+                        </div>
+                        
+                                                <!-- Appearance Tab -->
+                        <div id="appearance-tab" class="settings-tab">
+                            <h2>Appearance Settings</h2>
+                            
+                            <div class="appearance-settings">
+                                <div class="theme-section">
+                                    <h3>Theme</h3>
+                                    <div class="theme-options">
+                                        <div class="theme-option active">
+                                            <div class="theme-preview light-theme"></div>
+                                            <span>Light</span>
+                                        </div>
+                                        <div class="theme-option">
+                                            <div class="theme-preview dark-theme"></div>
+                                            <span>Dark</span>
+                                        </div>
+                                        <div class="theme-option">
+                                            <div class="theme-preview system-theme"></div>
+                                            <span>System</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="color-section">
+                                    <h3>Accent Color</h3>
+                                    <div class="color-options">
+                                        <div class="color-option active" style="--color: #4a6da7;">
+                                            <div class="color-preview"></div>
+                                            <span>Blue</span>
+                                        </div>
+                                        <div class="color-option" style="--color: #28a745;">
+                                            <div class="color-preview"></div>
+                                            <span>Green</span>
+                                        </div>
+                                        <div class="color-option" style="--color: #dc3545;">
+                                            <div class="color-preview"></div>
+                                            <span>Red</span>
+                                        </div>
+                                        <div class="color-option" style="--color: #fd7e14;">
+                                            <div class="color-preview"></div>
+                                            <span>Orange</span>
+                                        </div>
+                                        <div class="color-option" style="--color: #6f42c1;">
+                                            <div class="color-preview"></div>
+                                            <span>Purple</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="font-section">
+                                    <h3>Font Size</h3>
+                                    <div class="font-size-slider">
+                                        <span class="font-size-label">A</span>
+                                        <input type="range" min="1" max="5" value="3" class="slider" id="font-size-slider">
+                                        <span class="font-size-label large">A</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="layout-section">
+                                    <h3>Dashboard Layout</h3>
+                                    <div class="layout-options">
+                                        <div class="layout-option active">
+                                            <div class="layout-preview grid-layout"></div>
+                                            <span>Grid</span>
+                                        </div>
+                                        <div class="layout-option">
+                                            <div class="layout-preview list-layout"></div>
+                                            <span>List</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn-primary">Save Preferences</button>
+                                <button type="button" class="btn-outline">Reset to Default</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Teaching Preferences Tab -->
+                        <div id="preferences-tab" class="settings-tab">
+                            <h2>Teaching Preferences</h2>
+                            
+                            <form id="teaching-preferences-form" class="settings-form">
+                                <div class="form-group">
+                                    <label for="preferred-subjects">Preferred Subjects</label>
+                                    <select id="preferred-subjects" name="preferred-subjects" multiple>
+                                        <option value="mathematics">Mathematics</option>
+                                        <option value="english">English Language</option>
+                                        <option value="science">Science</option>
+                                        <option value="social-studies">Social Studies</option>
+                                        <option value="computer">Computer Studies</option>
+                                        <option value="arts">Creative Arts</option>
+                                        <option value="physical-education">Physical Education</option>
+                                        <option value="religious-studies">Religious Studies</option>
+                                    </select>
+                                    <p class="help-text">Hold Ctrl (or Cmd) to select multiple subjects</p>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="preferred-classes">Preferred Classes</label>
+                                    <select id="preferred-classes" name="preferred-classes" multiple>
+                                        <option value="nursery-1">Nursery 1</option>
+                                        <option value="nursery-2">Nursery 2</option>
+                                        <option value="primary-1">Primary 1</option>
+                                        <option value="primary-2">Primary 2</option>
+                                        <option value="primary-3">Primary 3</option>
+                                        <option value="primary-4">Primary 4</option>
+                                        <option value="primary-5">Primary 5</option>
+                                        <option value="primary-6">Primary 6</option>
+                                    </select>
+                                    <p class="help-text">Hold Ctrl (or Cmd) to select multiple classes</p>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Teaching Schedule Preferences</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="schedule-preference" value="morning">
+                                            <span>Morning Classes (8:00 AM - 12:00 PM)</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="schedule-preference" value="afternoon">
+                                            <span>Afternoon Classes (12:00 PM - 3:00 PM)</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="schedule-preference" value="consecutive">
+                                            <span>Prefer consecutive classes</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="schedule-preference" value="breaks">
+                                            <span>Prefer breaks between classes</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Extracurricular Activities Interest</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="extracurricular" value="sports">
+                                            <span>Sports Coaching</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="extracurricular" value="music">
+                                            <span>Music/Choir</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="extracurricular" value="drama">
+                                            <span>Drama/Theatre</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="extracurricular" value="debate">
+                                            <span>Debate Club</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="extracurricular" value="science">
+                                            <span>Science Club</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="extracurricular" value="art">
+                                            <span>Art Club</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="teaching-philosophy">Teaching Philosophy</label>
+                                    <textarea id="teaching-philosophy" name="teaching-philosophy" rows="4" placeholder="Briefly describe your teaching philosophy and approach"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="professional-goals">Professional Development Goals</label>
+                                    <textarea id="professional-goals" name="professional-goals" rows="4" placeholder="Describe your professional development goals for this academic year"></textarea>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Save Preferences</button>
+                                    <button type="reset" class="btn-outline">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/teacher-settings.js"></script>
+</body>
+</html>
