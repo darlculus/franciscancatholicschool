@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments - Franciscan Catholic Nursery and Primary School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/franciscan.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/assignments.css">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-circle">
+                    <img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo">
+                </div>
+                <h3>Teacher Portal</h3>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <h4 id="teacher-name">Loading...</h4>
+                    <p id="teacher-subject">Loading...</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="teacher-dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="my-classes.html"><i class="fas fa-users"></i> My Classes</a>
+                    </li>
+                    <li class="active">
+                        <a href="assignments.html"><i class="fas fa-book"></i> Assignments</a>
+                    </li>
+                    <li>
+                        <a href="e-learning.html"><i class="fas fa-laptop"></i> E-Learning</a>
+                    </li>
+                    <li>
+                        <a href="staff-appraisal.html"><i class="fas fa-chart-bar"></i> Staff Appraisal</a>
+                    </li>
+                    <li>
+                        <a href="leave-application.html"><i class="fas fa-calendar-alt"></i> Leave Application</a>
+                    </li>
+                    <li>
+                        <a href="resources.html"><i class="fas fa-folder"></i> Resources</a>
+                    </li>
+                    <li>
+                        <a href="#messages"><i class="fas fa-envelope"></i> Messages</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="mobile-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search assignments...">
+                </div>
+                
+                <div class="header-actions">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="date-display">
+                        <i class="fas fa-calendar"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="dashboard-content">
+                <div class="page-header">
+                    <h1>Assignments</h1>
+                    <p>Prepare assignments for the upcoming school year</p>
+                </div>
+                
+                <div class="pre-launch-banner">
+                    <div class="banner-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <div class="banner-content">
+                        <h2>Prepare for School Launch</h2>
+                        <p>Create and organize assignments before the school opens. Students will be able to access and submit assignments once classes begin.</p>
+                    </div>
+                    <div class="banner-actions">
+                        <button class="btn-outline" id="view-guide-btn">
+                            <i class="fas fa-book-open"></i> View Assignment Guide
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="assignments-dashboard">
+                    <div class="assignments-actions">
+                        <button id="create-assignment-btn" class="btn-primary">
+                            <i class="fas fa-plus"></i> Create New Assignment
+                        </button>
+                        <button id="assignment-templates-btn" class="btn-outline">
+                            <i class="fas fa-clipboard-list"></i> Assignment Templates
+                        </button>
+                        <button id="import-assignments-btn" class="btn-outline">
+                            <i class="fas fa-file-import"></i> Import Assignments
+                        </button>
+                    </div>
+                    
+                    <div class="assignments-tabs">
+                        <div class="tab-header">
+                            <button class="tab-btn active" data-tab="preparation">Preparation</button>
+                            <button class="tab-btn" data-tab="drafts">Drafts</button>
+                            <button class="tab-btn" data-tab="scheduled">Scheduled</button>
+                            <button class="tab-btn" data-tab="grading">Grading</button>
+                            <button class="tab-btn" data-tab="completed">Completed</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div id="preparation-tab" class="tab-pane active">
+                                <div class="preparation-container">
+                                    <div class="preparation-header">
+                                        <h2>Prepare Assignments for the New School Year</h2>
+                                        <p>Follow these steps to set up your assignments before classes begin</p>
+                                    </div>
+                                    
+                                    <div class="preparation-steps">
+                                        <div class="preparation-step">
+                                            <div class="step-number">1</div>
+                                            <div class="step-content">
+                                                <h3>Plan Your Assignment Schedule</h3>
+                                                <p>Create a timeline for assignments throughout the term</p>
+                                                <div class="step-progress">
+                                                    <div class="progress-bar">
+                                                        <div class="progress" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0% Complete</span>
+                                                </div>
+                                                <button class="btn-step-action">
+                                                    <i class="fas fa-calendar-alt"></i> Create Schedule
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="preparation-step">
+                                            <div class="step-number">2</div>
+                                            <div class="step-content">
+                                                <h3>Create Assignment Templates</h3>
+                                                <p>Design reusable templates for different types of assignments</p>
+                                                <div class="step-progress">
+                                                    <div class="progress-bar">
+                                                        <div class="progress" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0% Complete</span>
+                                                </div>
+                                                <button class="btn-step-action">
+                                                    <i class="fas fa-clipboard-list"></i> Create Templates
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="preparation-step">
+                                            <div class="step-number">3</div>
+                                            <div class="step-content">
+                                                <h3>Prepare Assignment Content</h3>
+                                                <p>Create questions, instructions, and resources for assignments</p>
+                                                <div class="step-progress">
+                                                    <div class="progress-bar">
+                                                        <div class="progress" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0% Complete</span>
+                                                </div>
+                                                <button class="btn-step-action">
+                                                    <i class="fas fa-edit"></i> Create Content
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="preparation-step">
+                                            <div class="step-number">4</div>
+                                            <div class="step-content">
+                                                <h3>Set Up Grading Rubrics</h3>
+                                                <p>Create evaluation criteria for consistent grading</p>
+                                                <div class="step-progress">
+                                                    <div class="progress-bar">
+                                                        <div class="progress" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0% Complete</span>
+                                                </div>
+                                                <button class="btn-step-action">
+                                                    <i class="fas fa-list-ol"></i> Create Rubrics
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="preparation-step">
+                                            <div class="step-number">5</div>
+                                            <div class="step-content">
+                                                <h3>Schedule Assignments</h3>
+                                                <p>Set release dates and deadlines for your assignments</p>
+                                                <div class="step-progress">
+                                                    <div class="progress-bar">
+                                                        <div class="progress" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0% Complete</span>
+                                                </div>
+                                                <button class="btn-step-action disabled">
+                                                    <i class="fas fa-clock"></i> Schedule Assignments
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="preparation-resources">
+                                        <h3>Assignment Resources</h3>
+                                        <div class="resources-grid">
+                                            <a href="#" class="resource-card">
+                                                <div class="resource-icon">
+                                                    <i class="fas fa-lightbulb"></i>
+                                                </div>
+                                                <div class="resource-content">
+                                                    <h4>Effective Assignment Design</h4>
+                                                    <p>Best practices for creating engaging assignments</p>
+                                                </div>
+                                            </a>
+                                            
+                                            <a href="#" class="resource-card">
+                                                <div class="resource-icon">
+                                                    <i class="fas fa-check-square"></i>
+                                                </div>
+                                                <div class="resource-content">
+                                                    <h4>Assessment Strategies</h4>
+                                                    <p>Different ways to evaluate student learning</p>
+                                                </div>
+                                            </a>
+                                            
+                                            <a href="#" class="resource-card">
+                                                <div class="resource-icon">
+                                                    <i class="fas fa-comments"></i>
+                                                </div>
+                                                <div class="resource-content">
+                                                    <h4>Providing Effective Feedback</h4>
+                                                    <p>How to give constructive feedback to students</p>
+                                                </div>
+                                            </a>
+                                            
+                                            <a href="#" class="resource-card">
+                                                <div class="resource-icon">
+                                                    <i class="fas fa-clock"></i>
+                                                </div>
+                                                <div class="resource-content">
+                                                    <h4>Time Management for Grading</h4>
+                                                    <p>Strategies to grade efficiently and effectively</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="drafts-tab" class="tab-pane">
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <h3>No Draft Assignments</h3>
+                                    <p>You haven't created any draft assignments yet. Start by creating your first assignment for the upcoming school year.</p>
+                                    <button class="btn-primary" id="create-first-assignment-btn">
+                                        <i class="fas fa-plus"></i> Create Your First Assignment
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="scheduled-tab" class="tab-pane">
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <h3>No Scheduled Assignments</h3>
+                                    <p>You haven't scheduled any assignments yet. Assignments will appear here once they are scheduled for release.</p>
+                                    <div class="empty-state-actions">
+                                        <button class="btn-primary" id="schedule-assignment-btn">
+                                            <i class="fas fa-calendar-plus"></i> Schedule Assignment
+                                        </button>
+                                        <button class="btn-outline" id="view-academic-calendar-btn">
+                                            <i class="fas fa-calendar"></i> View Academic Calendar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="grading-tab" class="tab-pane">
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-tasks"></i>
+                                    </div>
+                                    <h3>No Assignments to Grade</h3>
+                                    <p>There are no assignments waiting to be graded. Student submissions will appear here once the school year begins.</p>
+                                    <button class="btn-outline" id="setup-grading-rubrics-btn">
+                                        <i class="fas fa-list-ol"></i> Set Up Grading Rubrics</button>
+                                </div>
+                            </div>
+                            
+                            <div id="completed-tab" class="tab-pane">
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-clipboard-check"></i>
+                                    </div>
+                                    <h3>No Completed Assignments</h3>
+                                    <p>You haven't completed any assignments yet. Graded assignments will appear here once the school year begins.</p>
+                                    <button class="btn-outline" id="view-sample-completed-btn">
+                                        <i class="fas fa-eye"></i> View Sample Completed Assignment
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="assignments-grid">
+                        <div class="dashboard-card assignment-types">
+                            <div class="card-header">
+                                <h2>Assignment Types</h2>
+                                <a href="#" class="view-all">View All</a>
+                            </div>
+                            <div class="card-content">
+                                <div class="assignment-type-list">
+                                    <div class="assignment-type-item">
+                                        <div class="type-icon homework">
+                                            <i class="fas fa-home"></i>
+                                        </div>
+                                        <div class="type-details">
+                                            <h4>Homework</h4>
+                                            <p>Regular practice assignments</p>
+                                        </div>
+                                        <button class="btn-create-type">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="assignment-type-item">
+                                        <div class="type-icon quiz">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                        <div class="type-details">
+                                            <h4>Quiz</h4>
+                                            <p>Short knowledge checks</p>
+                                        </div>
+                                        <button class="btn-create-type">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="assignment-type-item">
+                                        <div class="type-icon project">
+                                            <i class="fas fa-project-diagram"></i>
+                                        </div>
+                                        <div class="type-details">
+                                            <h4>Project</h4>
+                                            <p>Extended learning activities</p>
+                                        </div>
+                                        <button class="btn-create-type">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="assignment-type-item">
+                                        <div class="type-icon test">
+                                            <i class="fas fa-file-alt"></i>
+                                        </div>
+                                        <div class="type-details">
+                                            <h4>Test</h4>
+                                            <p>Comprehensive assessments</p>
+                                        </div>
+                                        <button class="btn-create-type">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="assignment-type-item">
+                                        <div class="type-icon custom">
+                                            <i class="fas fa-plus"></i>
+                                        </div>
+                                        <div class="type-details">
+                                            <h4>Custom Type</h4>
+                                            <p>Create your own assignment type</p>
+                                        </div>
+                                        <button class="btn-create-type">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card assignment-templates">
+                            <div class="card-header">
+                                <h2>Assignment Templates</h2>
+                                <a href="#" class="btn-add-template">Create Template</a>
+                            </div>
+                            <div class="card-content">
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-clipboard-list"></i>
+                                    </div>
+                                    <h3>No Templates Yet</h3>
+                                    <p>Create reusable templates to save time when creating assignments</p>
+                                    <button class="btn-primary" id="create-template-btn">
+                                        <i class="fas fa-plus"></i> Create Template
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card assignment-calendar">
+                            <div class="card-header">
+                                <h2>Assignment Calendar</h2>
+                                <div class="calendar-controls">
+                                    <button class="btn-calendar-nav" id="prev-month">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <span id="calendar-month">September 2023</span>
+                                    <button class="btn-calendar-nav" id="next-month">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div class="mini-calendar">
+                                    <div class="calendar-header">
+                                        <div>Sun</div>
+                                        <div>Mon</div>
+                                        <div>Tue</div>
+                                        <div>Wed</div>
+                                        <div>Thu</div>
+                                        <div>Fri</div>
+                                        <div>Sat</div>
+                                    </div>
+                                    <div class="calendar-days" id="calendar-days">
+                                        <!-- Calendar days will be generated by JavaScript -->
+                                    </div>
+                                </div>
+                                <div class="calendar-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-color homework"></span>
+                                        <span>Homework</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color quiz"></span>
+                                        <span>Quiz</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color project"></span>
+                                        <span>Project</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color test"></span>
+                                        <span>Test</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card grading-stats">
+                            <div class="card-header">
+                                <h2>Grading Statistics</h2>
+                                <a href="#" class="view-all">View Details</a>
+                            </div>
+                            <div class="card-content">
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <h3>No Grading Data</h3>
+                                    <p>Grading statistics will be available once assignments are graded</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Create Assignment Modal -->
+    <div id="create-assignment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Assignment</h2>
+                <button class="modal-close" id="close-assignment-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="assignment-form">
+                    <div class="form-group">
+                        <label for="assignment-title">Assignment Title</label>
+                        <input type="text" id="assignment-title" name="assignment-title" placeholder="Enter assignment title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="assignment-description">Description</label>
+                        <textarea id="assignment-description" name="assignment-description" rows="4" placeholder="Enter assignment description" required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="assignment-type">Assignment Type</label>
+                            <select id="assignment-type" name="assignment-type" required>
+                                <option value="">Select Type</option>
+                                <option value="homework">Homework</option>
+                                <option value="quiz">Quiz</option>
+                                <option value="project">Project</option>
+                                <option value="test">Test</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="assignment-class">Class</label>
+                            <select id="assignment-class" name="assignment-class" required>
+                                <option value="">Select Class</option>
+                                <option value="nursery1">Nursery 1</option>
+                                <option value="nursery2">Nursery 2</option>
+                                <option value="primary1">Primary 1</option>
+                                <option value="primary2">Primary 2</option>
+                                <option value="primary3">Primary 3</option>
+                                <option value="primary4">Primary 4</option>
+                                <option value="primary5">Primary 5</option>
+                                <option value="primary6">Primary 6</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="assignment-subject">Subject</label>
+                            <select id="assignment-subject" name="assignment-subject" required>
+                                <option value="">Select Subject</option>
+                                <option value="mathematics">Mathematics</option>
+                                <option value="english">English Language</option>
+                                <option value="science">Basic Science</option>
+                                <option value="social">Social Studies</option>
+                                <option value="religious">Religious Studies</option>
+                                <option value="computer">Computer Studies</option>
+                                <option value="creative">Creative Arts</option>
+                                <option value="physical">Physical Education</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="assignment-points">Total Points</label>
+                            <input type="number" id="assignment-points" name="assignment-points" min="1" max="100" value="10" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="assignment-release-date">Release Date</label>
+                            <input type="date" id="assignment-release-date" name="assignment-release-date">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="assignment-due-date">Due Date</label>
+                            <input type="date" id="assignment-due-date" name="assignment-due-date">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="assignment-instructions">Instructions</label>
+                        <textarea id="assignment-instructions" name="assignment-instructions" rows="6" placeholder="Enter detailed instructions for students" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Submission Type</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="submission-online" name="submission-type" value="online" checked>
+                                <label for="submission-online">
+                                    <i class="fas fa-laptop"></i>
+                                    <div class="radio-content">
+                                        <span class="radio-title">Online Submission</span>
+                                        <span class="radio-description">Students submit work through the portal</span>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="radio-option">
+                                <input type="radio" id="submission-physical" name="submission-type" value="physical">
+                                <label for="submission-physical">
+                                    <i class="fas fa-file-alt"></i>
+                                    <div class="radio-content">
+                                        <span class="radio-title">Physical Submission</span>
+                                        <span class="radio-description">Students submit printed or handwritten work</span>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="radio-option">
+                                <input type="radio" id="submission-both" name="submission-type" value="both">
+                                <label for="submission-both">
+                                    <i class="fas fa-copy"></i>
+                                    <div class="radio-content">
+                                        <span class="radio-title">Both</span>
+                                        <span class="radio-description">Students can submit either online or physically</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="attachment-container">
+                        <label>Attachments</label>
+                        <div class="file-upload-area">
+                            <input type="file" id="assignment-attachments" name="assignment-attachments" multiple>
+                            <label for="assignment-attachments" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Click to upload or drag files here</span>
+                            </label>
+                        </div>
+                        <div id="file-list" class="file-list"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Save As</label>
+                        <div class="radio-group horizontal">
+                            <div class="radio-option">
+                                <input type="radio" id="save-draft" name="save-type" value="draft" checked>
+                                <label for="save-draft">Draft</label>
+                            </div>
+                            
+                            <div class="radio-option">
+                                <input type="radio" id="save-template" name="save-type" value="template">
+                                <label for="save-template">Template</label>
+                            </div>
+                            
+                            <div class="radio-option">
+                                <input type="radio" id="save-publish" name="save-type" value="publish">
+                                <label for="save-publish">Publish</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancel-assignment" class="btn-outline">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Assignment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Assignment Guide Modal -->
+    <div id="guide-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Assignment Creation Guide</h2>
+                <button class="modal-close" id="close-guide-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="guide-section">
+                    <h3>Best Practices for Creating Effective Assignments</h3>
+                    <p>Follow these guidelines to create engaging and educational assignments for your students.</p>
+                    
+                    <div class="guide-tips">
+                        <div class="guide-tip">
+                            <div class="tip-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Set Clear Objectives</h4>
+                                <p>Define what students should learn or demonstrate through the assignment. Link objectives to curriculum standards.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="guide-tip">
+                            <div class="tip-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Provide Clear Instructions</h4>
+                                <p>Write step-by-step instructions that are easy to follow. Include examples when possible.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="guide-tip">
+                            <div class="tip-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Consider Time Requirements</h4>
+                                <p>Ensure the assignment can be completed in a reasonable amount of time for the age group.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="guide-tip">
+                            <div class="tip-icon">
+                                <i class="fas fa-list-ol"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Create Clear Rubrics</h4>
+                                <p>Develop grading criteria that clearly communicate expectations to students.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="guide-tip">
+                            <div class="tip-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Consider Differentiation</h4>
+                                <p>Provide options or modifications to accommodate different learning needs and abilities.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="guide-tip">
+                            <div class="tip-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Plan for Feedback</h4>
+                                <p>Consider how and when you will provide feedback on the assignment.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="guide-section">
+                    <h3>Assignment Types and Their Uses</h3>
+                    
+                    <div class="assignment-type-guide">
+                        <div class="type-guide-item">
+                            <div class="type-icon homework">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="type-guide-content">
+                                <h4>Homework</h4>
+                                <p>Regular practice to reinforce classroom learning. Best for skill development and concept reinforcement.</p>
+                                <ul>
+                                    <li>Keep it brief and focused</li>
+                                    <li>Provide clear examples</li>
+                                    <li>Make it relevant to classroom learning</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="type-guide-item">
+                            <div class="type-icon quiz">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <div class="type-guide-content">
+                                <h4>Quiz</h4>
+                                <p>Short assessments to check understanding of specific concepts or lessons.</p>
+                                <ul>
+                                    <li>Focus on key concepts</li>
+                                    <li>Use a variety of question types</li>
+                                    <li>Keep time requirements reasonable</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="type-guide-item">
+                            <div class="type-icon project">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div class="type-guide-content">
+                                <h4>Project</h4>
+                                <p>Extended learning activities that allow for deeper exploration of topics.</p>
+                                <ul>
+                                    <li>Break into manageable milestones</li>
+                                    <li>Provide checkpoints for feedback</li>
+                                    <li>Allow for creativity and personalization</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="type-guide-item">
+                            <div class="type-icon test">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="type-guide-content">
+                                <h4>Test</h4>
+                                <p>Comprehensive assessments covering multiple lessons or units.</p>
+                                <ul>
+                                    <li>Provide study guides in advance</li>
+                                    <li>Include a variety of question types</li>
+                                    <li>Balance difficulty levels</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="guide-actions">
+                    <button id="download-guide-btn" class="btn-outline">
+                        <i class="fas fa-download"></i> Download Complete Guide
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Template Modal -->
+    <div id="template-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Assignment Templates</h2>
+                <button class="modal-close" id="close-template-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="template-categories">
+                    <button class="template-category active" data-category="all">All Templates</button>
+                    <button class="template-category" data-category="homework">Homework</button>
+                    <button class="template-category" data-category="quiz">Quiz</button>
+                    <button class="template-category" data-category="project">Project</button>
+                    <button class="template-category" data-category="test">Test</button>
+                </div>
+                
+                <div class="template-grid">
+                    <div class="template-card">
+                        <div class="template-header">
+                            <div class="template-icon homework">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <h3>Basic Homework</h3>
+                        </div>
+                        <div class="template-content">
+                            <p>A simple homework template with instructions and submission guidelines.</p>
+                            <div class="template-meta">
+                                <span><i class="fas fa-clock"></i> 30 minutes</span>
+                                <span><i class="fas fa-graduation-cap"></i> All grades</span>
+                            </div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn-outline btn-preview-template">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn-primary btn-use-template">
+                                <i class="fas fa-plus"></i> Use
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card">
+                        <div class="template-header">
+                            <div class="template-icon quiz">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <h3>Multiple Choice Quiz</h3>
+                        </div>
+                        <div class="template-content">
+                            <p>A quiz template with multiple choice questions and automatic grading.</p>
+                            <div class="template-meta">
+                                <span><i class="fas fa-clock"></i> 20 minutes</span>
+                                <span><i class="fas fa-graduation-cap"></i> All grades</span>
+                            </div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn-outline btn-preview-template">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn-primary btn-use-template">
+                                <i class="fas fa-plus"></i> Use
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card">
+                        <div class="template-header">
+                            <div class="template-icon project">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <h3>Research Project</h3>
+                        </div>
+                        <div class="template-content">
+                            <p>A comprehensive project template with milestones and submission guidelines.</p>
+                            <div class="template-meta">
+                                <span><i class="fas fa-clock"></i> 2 weeks</span>
+                                <span><i class="fas fa-graduation-cap"></i> Primary 4-6</span>
+                            </div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn-outline btn-preview-template">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn-primary btn-use-template">
+                                <i class="fas fa-plus"></i> Use
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card">
+                        <div class="template-header">
+                            <div class="template-icon test">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <h3>End of Unit Test</h3>
+                        </div>
+                        <div class="template-content">
+                            <p>A comprehensive test template with various question types and sections.</p>
+                            <div class="template-meta">
+                                <span><i class="fas fa-clock"></i> 45 minutes</span>
+                                <span><i class="fas fa-graduation-cap"></i> All grades</span>
+                            </div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn-outline btn-preview-template">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn-primary btn-use-template">
+                                <i class="fas fa-plus"></i> Use
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card">
+                        <div class="template-header">
+                            <div class="template-icon homework">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <h3>Reading Assignment</h3>
+                        </div>
+                        <div class="template-content">
+                            <p>A template for reading assignments with comprehension questions.</p>
+                            <div class="template-meta">
+                                <span><i class="fas fa-clock"></i> 40 minutes</span>
+                                <span><i class="fas fa-graduation-cap"></i> Primary 3-6</span>
+                            </div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn-outline btn-preview-template">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn-primary btn-use-template">
+                                <i class="fas fa-plus"></i> Use
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card">
+                        <div class="template-header">
+                            <div class="template-icon project">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <h3>Group Project</h3>
+                        </div>
+                        <div class="template-content">
+                            <p>A template for collaborative projects with group roles and responsibilities.</p>
+                            <div class="template-meta">
+                                <span><i class="fas fa-clock"></i> 1 week</span>
+                                <span><i class="fas fa-graduation-cap"></i> Primary 4-6</span>
+                            </div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn-outline btn-preview-template">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button class="btn-primary btn-use-template">
+                                <i class="fas fa-plus"></i> Use
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Rubric Modal -->
+    <div id="rubric-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Grading Rubric</h2>
+                <button class="modal-close" id="close-rubric-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="rubric-form">
+                    <div class="form-group">
+                        <label for="rubric-title">Rubric Title</label>
+                        <input type="text" id="rubric-title" name="rubric-title" placeholder="Enter rubric title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rubric-description">Description</label>
+                        <textarea id="rubric-description" name="rubric-description" rows="2" placeholder="Enter rubric description"></textarea>
+                    </div>
+                    
+                    <div class="rubric-criteria">
+                        <h3>Criteria</h3>
+                        <p>Add criteria to evaluate student work</p>
+                        
+                        <div class="criteria-list" id="criteria-list">
+                            <div class="criteria-item">
+                                <div class="criteria-header">
+                                    <input type="text" class="criteria-name" placeholder="Criteria Name (e.g., Content)" required>
+                                    <input type="number" class="criteria-points" min="1" max="100" value="10" required>
+                                    <button type="button" class="btn-remove-criteria">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="criteria-levels">
+                                    <div class="level-item">
+                                        <div class="level-header">
+                                            <input type="text" class="level-name" placeholder="Excellent" required>
+                                            <input type="number" class="level-points" min="1" max="100" value="10" required>
+                                        </div>
+                                        <textarea class="level-description" placeholder="Description of this achievement level" required></textarea>
+                                    </div>
+                                    <div class="level-item">
+                                        <div class="level-header">
+                                            <input type="text" class="level-name" placeholder="Good" required>
+                                            <input type="number" class="level-points" min="1" max="100" value="8" required>
+                                        </div>
+                                        <textarea class="level-description" placeholder="Description of this achievement level" required></textarea>
+                                    </div>
+                                    <div class="level-item">
+                                        <div class="level-header">
+                                            <input type="text" class="level-name" placeholder="Satisfactory" required>
+                                            <input type="number" class="level-points" min="1" max="100" value="6" required>
+                                        </div>
+                                        <textarea class="level-description" placeholder="Description of this achievement level" required></textarea>
+                                    </div>
+                                    <div class="level-item">
+                                        <div class="level-header">
+                                            <input type="text" class="level-name" placeholder="Needs Improvement" required>
+                                            <input type="number" class="level-points" min="1" max="100" value="4" required>
+                                        </div>
+                                        <textarea class="level-description" placeholder="Description of this achievement level" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="criteria-actions">
+                                    <button type="button" class="btn-add-level">
+                                        <i class="fas fa-plus"></i> Add Level
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="add-criteria-btn" class="btn-outline">
+                            <i class="fas fa-plus"></i> Add Criteria
+                        </button>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancel-rubric" class="btn-outline">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Rubric</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/assignments.js"></script>
+</body>
+</html>

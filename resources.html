@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources - Franciscan Catholic Nursery and Primary School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/franciscan.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/resources.css">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-circle">
+                    <img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo">
+                </div>
+                <h3>Teacher Portal</h3>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <h4 id="teacher-name">Loading...</h4>
+                    <p id="teacher-subject">Loading...</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="teacher-dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="my-classes.html"><i class="fas fa-users"></i> My Classes</a>
+                    </li>
+                    <li>
+                        <a href="assignments.html"><i class="fas fa-book"></i> Assignments</a>
+                    </li>
+                    <li>
+                        <a href="e-learning.html"><i class="fas fa-laptop"></i> E-Learning</a>
+                    </li>
+                    <li>
+                        <a href="staff-appraisal.html"><i class="fas fa-chart-bar"></i> Staff Appraisal</a>
+                    </li>
+                    <li>
+                        <a href="leave-application.html"><i class="fas fa-calendar-alt"></i> Leave Application</a>
+                    </li>
+                    <li class="active">
+                        <a href="resources.html"><i class="fas fa-folder"></i> Resources</a>
+                    </li>
+                    <li>
+                        <a href="teacher-messages.html"><i class="fas fa-envelope"></i> Messages</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="teacher-settings.html"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="mobile-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search resources...">
+                </div>
+                
+                <div class="header-actions">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">0</span>
+                    </div>
+                    <div class="date-display">
+                        <i class="fas fa-calendar"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="dashboard-content">
+                <div class="page-header">
+                    <h1>Teaching Resources</h1>
+                    <p>Access and share educational materials for your classes</p>
+                </div>
+                
+                <div class="resources-container">
+                    <div class="resources-sidebar">
+                        <div class="resources-actions">
+                            <button class="btn-upload" id="upload-btn">
+                                <i class="fas fa-upload"></i> Upload Resource
+                            </button>
+                            <button class="btn-create-folder" id="create-folder-btn">
+                                <i class="fas fa-folder-plus"></i> New Folder
+                            </button>
+                        </div>
+                        
+                        <div class="resources-navigation">
+                            <h3>Browse</h3>
+                            <ul>
+                                <li class="active">
+                                    <a href="#all-resources">
+                                        <i class="fas fa-folder"></i>
+                                        <span>All Resources</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#my-uploads">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>My Uploads</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#shared-with-me">
+                                        <i class="fas fa-share-alt"></i>
+                                        <span>Shared with Me</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#starred">
+                                        <i class="fas fa-star"></i>
+                                        <span>Starred</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#recent">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Recent</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#trash">
+                                        <i class="fas fa-trash"></i>
+                                        <span>Trash</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="resources-categories">
+                            <h3>Categories</h3>
+                            <ul>
+                                <li>
+                                    <a href="#lesson-plans">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>Lesson Plans</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#worksheets">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <span>Worksheets</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#presentations">
+                                        <i class="fas fa-file-powerpoint"></i>
+                                        <span>Presentations</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#assessments">
+                                        <i class="fas fa-file-contract"></i>
+                                        <span>Assessments</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#videos">
+                                        <i class="fas fa-file-video"></i>
+                                        <span>Videos</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#images">
+                                        <i class="fas fa-file-image"></i>
+                                        <span>Images</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#audio">
+                                        <i class="fas fa-file-audio"></i>
+                                        <span>Audio</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="storage-info">
+                            <h3>Storage</h3>
+                            <div class="storage-progress">
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 0%"></div>
+                                </div>
+                                <div class="storage-text">
+                                    <span>0 MB used</span>
+                                    <span>5 GB available</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resources-content">
+                        <div class="resources-toolbar">
+                            <div class="toolbar-left">
+                                <div class="view-options">
+                                    <button class="view-option active" data-view="grid">
+                                        <i class="fas fa-th-large"></i>
+                                    </button>
+                                    <button class="view-option" data-view="list">
+                                        <i class="fas fa-list"></i>
+                                    </button>
+                                </div>
+                                <div class="sort-options">
+                                    <select id="sort-resources">
+                                        <option value="name-asc">Name (A-Z)</option>
+                                        <option value="name-desc">Name (Z-A)</option>
+                                        <option value="date-newest">Date (Newest)</option>
+                                        <option value="date-oldest">Date (Oldest)</option>
+                                        <option value="size-largest">Size (Largest)</option>
+                                        <option value="size-smallest">Size (Smallest)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="toolbar-right">
+                                <button class="btn-refresh" id="refresh-btn">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <div class="filter-dropdown">
+                                    <button class="btn-filter" id="filter-btn">
+                                        <i class="fas fa-filter"></i> Filter
+                                    </button>
+                                    <div class="filter-menu" id="filter-menu">
+                                        <div class="filter-group">
+                                            <h4>File Type</h4>
+                                            <label class="filter-checkbox">
+                                                <input type="checkbox" value="document"> Documents
+                                            </label>
+                                            <label class="filter-checkbox">
+                                                <input type="checkbox" value="spreadsheet"> Spreadsheets
+                                            </label>
+                                            <label class="filter-checkbox">
+                                                <input type="checkbox" value="presentation"> Presentations
+                                            </label>
+                                            <label class="filter-checkbox">
+                                                <input type="checkbox" value="pdf"> PDFs
+                                            </label>
+                                            <label class="filter-checkbox">
+                                                <input type="checkbox" value="image"> Images
+                                            </label>
+                                            <label class="filter-checkbox">
+                                                <input type="checkbox" value="video"> Videos
+                                            </label>
+                                            <label class="filter-checkbox">
+                                                <input type="checkbox" value="audio"> Audio
+                                            </label>
+                                        </div>
+                                        <div class="filter-group">
+                                            <h4>Date Modified</h4>
+                                            <label class="filter-checkbox">
+                                                <input type="checkbox" value="today"> Today
+                                            </label>
+                                            <label class="filter-checkbox">
+                                                <input type="checkbox" value="yesterday"> Yesterday
+                                            </label>
+                                            <label class="filter-checkbox">
+                                                <input type="checkbox" value="last-week"> Last 7 days
+                                            </label>
+                                            <label class="filter-checkbox">
+                                                <input type="checkbox" value="last-month"> Last 30 days
+                                            </label>
+                                        </div>
+                                        <div class="filter-actions">
+                                            <button class="btn-apply-filter">Apply</button>
+                                            <button class="btn-clear-filter">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="resources-breadcrumb">
+                            <ul>
+                                <li><a href="#"><i class="fas fa-home"></i></a></li>
+                                <li><a href="#">All Resources</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="resources-empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <h2>No Resources Available Yet</h2>
+                            <p>Your teaching resources will appear here once the school year begins.</p>
+                            <p class="empty-state-tip">You can start uploading your materials to prepare for the upcoming school year.</p>
+                            <div class="empty-state-actions">
+                                <button class="btn-upload-empty" id="upload-empty-btn">
+                                    <i class="fas fa-upload"></i> Upload Resource
+                                </button>
+                                <button class="btn-explore-templates" id="explore-templates-btn">
+                                    <i class="fas fa-lightbulb"></i> Explore Templates
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Upload Resource Modal -->
+                <div class="modal" id="upload-modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Upload Resource</h2>
+                            <button class="modal-close" id="close-upload-modal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="upload-form">
+                                <div class="upload-area" id="upload-area">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <h3>Drag & Drop Files Here</h3>
+                                    <p>or</p>
+                                    <button type="button" class="btn-browse-files" id="browse-files-btn">Browse Files</button>
+                                    <input type="file" id="file-upload" multiple style="display: none;">
+                                    <p class="upload-info">Maximum file size: 100MB</p>
+                                </div>
+                                
+                                <div class="upload-preview" id="upload-preview">
+                                    <h3>Selected Files</h3>
+                                    <ul class="file-list" id="file-list">
+                                        <!-- Files will be listed here -->
+                                    </ul>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="resource-category">Category:</label>
+                                    <select id="resource-category">
+                                        <option value="">Select a category</option>
+                                        <option value="lesson-plans">Lesson Plans</option>
+                                        <option value="worksheets">Worksheets</option>
+                                        <option value="presentations">Presentations</option>
+                                        <option value="assessments">Assessments</option>
+                                        <option value="videos">Videos</option>
+                                        <option value="images">Images</option>
+                                        <option value="audio">Audio</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="resource-description">Description (optional):</label>
+                                    <textarea id="resource-description" rows="3" placeholder="Add a description for your resource..."></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Share with:</label>
+                                    <div class="sharing-options">
+                                        <label class="radio-option">
+                                            <input type="radio" name="sharing" value="private" checked>
+                                            <span class="radio-label">Only me</span>
+                                        </label>
+                                        <label class="radio-option">
+                                            <input type="radio" name="sharing" value="specific">
+                                            <span class="radio-label">Specific teachers</span>
+                                        </label>
+                                        <label class="radio-option">
+                                            <input type="radio" name="sharing" value="all">
+                                            <span class="radio-label">All teachers</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary" id="submit-upload">
+                                        <i class="fas fa-upload"></i> Upload
+                                    </button>
+                                    <button type="button" class="btn-outline" id="cancel-upload">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Create Folder Modal -->
+                <div class="modal" id="folder-modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Create New Folder</h2>
+                            <button class="modal-close" id="close-folder-modal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="folder-form">
+                                <div class="form-group">
+                                    <label for="folder-name">Folder Name:</label>
+                                    <input type="text" id="folder-name" placeholder="Enter folder name">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="folder-description">Description (optional):</label>
+                                    <textarea id="folder-description" rows="3" placeholder="Add a description for your folder..."></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Color:</label>
+                                    <div class="folder-colors">
+                                        <label class="color-option">
+                                            <input type="radio" name="folder-color" value="blue" checked>
+                                            <span class="color-circle" style="background-color: #4a6da7;"></span>
+                                        </label>
+                                        <label class="color-option">
+                                            <input type="radio" name="folder-color" value="green">
+                                            <span class="color-circle" style="background-color: #28a745;"></span>
+                                        </label>
+                                        <label class="color-option">
+                                            <input type="radio" name="folder-color" value="red">
+                                            <span class="color-circle" style="background-color: #dc3545;"></span>
+                                        </label>
+                                        <label class="color-option">
+                                            <input type="radio" name="folder-color" value="orange">
+                                            <span class="color-circle" style="background-color: #fd7e14;"></span>
+                                        </label>
+                                        <label class="color-option">
+                                            <input type="radio" name="folder-color" value="purple">
+                                            <span class="color-circle" style="background-color: #6f42c1;"></span>
+                                        </label>
+                                        <label class="color-option">
+                                            <input type="radio" name="folder-color" value="teal">
+                                            <span class="color-circle" style="background-color: #20c997;"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary" id="submit-folder">
+                                        <i class="fas fa-folder-plus"></i> Create Folder
+                                    </button>
+                                    <button type="button" class="btn-outline" id="cancel-folder">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Templates Modal -->
+                <div class="modal" id="templates-modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Resource Templates</h2>
+                            <button class="modal-close" id="close-templates-modal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="templates-categories">
+                                <button class="template-category active" data-category="all">All Templates</button>
+                                <button class="template-category" data-category="lesson-plans">Lesson Plans</button>
+                                <button class="template-category" data-category="worksheets">Worksheets</button>
+                                <button class="template-category" data-category="assessments">Assessments</button>
+                                <button class="template-category" data-category="presentations">Presentations</button>
+                            </div>
+                            
+                            <div class="templates-grid">
+                                <div class="template-card" data-category="lesson-plans">
+                                    <div class="template-preview">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="template-info">
+                                        <h3>Daily Lesson Plan</h3>
+                                        <p>Standard template for daily lesson planning</p>
+                                    </div>
+                                    <div class="template-actions">
+                                        <button class="btn-use-template">Use Template</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="template-card" data-category="lesson-plans">
+                                    <div class="template-preview">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="template-info">
+                                        <h3>Weekly Lesson Plan</h3>
+                                        <p>Comprehensive weekly planning template</p>
+                                    </div>
+                                    <div class="template-actions">
+                                        <button class="btn-use-template">Use Template</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="template-card" data-category="worksheets">
+                                    <div class="template-preview">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="template-info">
+                                        <h3>Math Worksheet</h3>
+                                        <p>Template for creating math practice worksheets</p>
+                                    </div>
+                                    <div class="template-actions">
+                                        <button class="btn-use-template">Use Template</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="template-card" data-category="worksheets">
+                                    <div class="template-preview">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="template-info">
+                                        <h3>Reading Comprehension</h3>
+                                        <p>Template for reading exercises and questions</p>
+                                    </div>
+                                    <div class="template-actions">
+                                        <button class="btn-use-template">Use Template</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="template-card" data-category="assessments">
+                                    <div class="template-preview">
+                                        <i class="fas fa-file-contract"></i>
+                                    </div>
+                                    <div class="template-info">
+                                        <h3>Quiz Template</h3>
+                                        <p>Standard format for creating quizzes</p>
+                                    </div>
+                                    <div class="template-actions">
+                                        <button class="btn-use-template">Use Template</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="template-card" data-category="assessments">
+                                    <div class="template-preview">
+                                        <i class="fas fa-file-contract"></i>
+                                    </div>
+                                    <div class="template-info">
+                                        <h3>Exam Template</h3>
+                                        <p>Comprehensive exam format with various question types</p>
+                                    </div>
+                                    <div class="template-actions">
+                                        <button class="btn-use-template">Use Template</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="template-card" data-category="presentations">
+                                    <div class="template-preview">
+                                        <i class="fas fa-file-powerpoint"></i>
+                                    </div>
+                                    <div class="template-info">
+                                        <h3>Lesson Presentation</h3>
+                                        <p>Slide template for classroom presentations</p>
+                                    </div>
+                                    <div class="template-actions">
+                                        <button class="btn-use-template">Use Template</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="template-card" data-category="presentations">
+                                    <div class="template-preview">
+                                        <i class="fas fa-file-powerpoint"></i>
+                                    </div>
+                                    <div class="template-info">
+                                        <h3>Interactive Slides</h3>
+                                        <p>Template with interactive elements for student engagement</p>
+                                    </div>
+                                    <div class="template-actions">
+                                        <button class="btn-use-template">Use Template</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/resources.js"></script>
+</body>
+</html>
