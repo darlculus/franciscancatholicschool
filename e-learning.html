@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Learning - Franciscan Catholic Nursery and Primary School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/franciscan.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/e-learning.css">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-circle">
+                    <img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo">
+                </div>
+                <h3>Teacher Portal</h3>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <h4 id="teacher-name">Loading...</h4>
+                    <p id="teacher-subject">Loading...</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="teacher-dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="my-classes.html"><i class="fas fa-users"></i> My Classes</a>
+                    </li>
+                    <li>
+                        <a href="assignments.html"><i class="fas fa-book"></i> Assignments</a>
+                    </li>
+                    <li class="active">
+                        <a href="e-learning.html"><i class="fas fa-laptop"></i> E-Learning</a>
+                    </li>
+                    <li>
+                        <a href="staff-appraisal.html"><i class="fas fa-chart-bar"></i> Staff Appraisal</a>
+                    </li>
+                    <li>
+                        <a href="leave-application.html"><i class="fas fa-calendar-alt"></i> Leave Application</a>
+                    </li>
+                    <li>
+                        <a href="resources.html"><i class="fas fa-folder"></i> Resources</a>
+                    </li>
+                    <li>
+                        <a href="#messages"><i class="fas fa-envelope"></i> Messages</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="mobile-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search courses, lessons...">
+                </div>
+                
+                <div class="header-actions">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="date-display">
+                        <i class="fas fa-calendar"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="dashboard-content">
+                <div class="page-header">
+                    <h1>E-Learning Platform</h1>
+                    <p>Prepare digital learning content for the upcoming school year</p>
+                </div>
+                
+                <div class="pre-launch-banner">
+                    <div class="banner-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="banner-content">
+                        <h2>Prepare for School Launch</h2>
+                        <p>The e-learning platform is available for you to create and organize content before the school opens. Students will be able to access your materials once classes begin.</p>
+                    </div>
+                    <div class="banner-actions">
+                        <button class="btn-outline" id="view-tutorial-btn">
+                            <i class="fas fa-play-circle"></i> View Tutorial
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="e-learning-dashboard">
+                    <div class="e-learning-actions">
+                        <button id="create-course-btn" class="btn-primary">
+                            <i class="fas fa-plus"></i> Create New Course
+                        </button>
+                        <button id="import-content-btn" class="btn-outline">
+                            <i class="fas fa-file-import"></i> Import Content
+                        </button>
+                        <button id="view-templates-btn" class="btn-outline">
+                            <i class="fas fa-th-large"></i> View Templates
+                        </button>
+                    </div>
+                    
+                    <div class="e-learning-tabs">
+                        <div class="tab-header">
+                            <button class="tab-btn active" data-tab="preparation">Preparation</button>
+                            <button class="tab-btn" data-tab="courses">My Courses</button>
+                            <button class="tab-btn" data-tab="content">Content Library</button>
+                            <button class="tab-btn" data-tab="settings">Settings</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div id="preparation-tab" class="tab-pane active">
+                                <div class="preparation-container">
+                                    <div class="preparation-header">
+                                        <h2>Prepare for the New School Year</h2>
+                                        <p>Follow these steps to set up your e-learning content before classes begin</p>
+                                    </div>
+                                    
+                                    <div class="preparation-steps">
+                                        <div class="preparation-step">
+                                            <div class="step-number">1</div>
+                                            <div class="step-content">
+                                                <h3>Create Your Courses</h3>
+                                                <p>Set up course shells for each subject and class you'll be teaching</p>
+                                                <div class="step-progress">
+                                                    <div class="progress-bar">
+                                                        <div class="progress" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0% Complete</span>
+                                                </div>
+                                                <button class="btn-step-action">
+                                                    <i class="fas fa-plus"></i> Create Course
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="preparation-step">
+                                            <div class="step-number">2</div>
+                                            <div class="step-content">
+                                                <h3>Upload Learning Materials</h3>
+                                                <p>Add videos, documents, presentations, and other learning resources</p>
+                                                <div class="step-progress">
+                                                    <div class="progress-bar">
+                                                        <div class="progress" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0% Complete</span>
+                                                </div>
+                                                <button class="btn-step-action">
+                                                    <i class="fas fa-upload"></i> Upload Materials
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="preparation-step">
+                                            <div class="step-number">3</div>
+                                            <div class="step-content">
+                                                <h3>Create Assessments</h3>
+                                                <p>Develop quizzes, assignments, and other assessment activities</p>
+                                                <div class="step-progress">
+                                                    <div class="progress-bar">
+                                                        <div class="progress" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0% Complete</span>
+                                                </div>
+                                                <button class="btn-step-action">
+                                                    <i class="fas fa-tasks"></i> Create Assessment
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="preparation-step">
+                                            <div class="step-number">4</div>
+                                            <div class="step-content">
+                                                <h3>Organize Course Structure</h3>
+                                                <p>Arrange materials into modules, units, or weekly lessons</p>
+                                                <div class="step-progress">
+                                                    <div class="progress-bar">
+                                                        <div class="progress" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0% Complete</span>
+                                                </div>
+                                                <button class="btn-step-action">
+                                                    <i class="fas fa-th-list"></i> Organize Content
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="preparation-step">
+                                            <div class="step-number">5</div>
+                                            <div class="step-content">
+                                                <h3>Preview Student Experience</h3>
+                                                <p>Test your courses from a student's perspective</p>
+                                                <div class="step-progress">
+                                                    <div class="progress-bar">
+                                                        <div class="progress" style="width: 0%"></div>
+                                                    </div>
+                                                    <span>0% Complete</span>
+                                                </div>
+                                                <button class="btn-step-action disabled">
+                                                    <i class="fas fa-eye"></i> Preview Course
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="preparation-resources">
+                                        <h3>Helpful Resources</h3>
+                                        <div class="resources-grid">
+                                            <a href="#" class="resource-card">
+                                                <div class="resource-icon">
+                                                    <i class="fas fa-book"></i>
+                                                </div>
+                                                <div class="resource-content">
+                                                    <h4>E-Learning Best Practices</h4>
+                                                    <p>Learn strategies for effective online teaching</p>
+                                                </div>
+                                            </a>
+                                            
+                                            <a href="#" class="resource-card">
+                                                <div class="resource-icon">
+                                                    <i class="fas fa-video"></i>
+                                                </div>
+                                                <div class="resource-content">
+                                                    <h4>Video Creation Guide</h4>
+                                                    <p>Tips for creating engaging educational videos</p>
+                                                </div>
+                                            </a>
+                                            
+                                            <a href="#" class="resource-card">
+                                                <div class="resource-icon">
+                                                    <i class="fas fa-question-circle"></i>
+                                                </div>
+                                                <div class="resource-content">
+                                                    <h4>Assessment Design</h4>
+                                                    <p>Create effective online quizzes and assignments</p>
+                                                </div>
+                                            </a>
+                                            
+                                            <a href="#" class="resource-card">
+                                                <div class="resource-icon">
+                                                    <i class="fas fa-users"></i>
+                                                </div>
+                                                <div class="resource-content">
+                                                    <h4>Student Engagement</h4>
+                                                    <p>Strategies to keep students engaged online</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="courses-tab" class="tab-pane">
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-book-open"></i>
+                                    </div>
+                                    <h3>No Courses Created Yet</h3>
+                                    <p>You haven't created any courses yet. Start by creating your first course for the upcoming school year.</p>
+                                    <button class="btn-primary" id="create-first-course-btn">
+                                        <i class="fas fa-plus"></i> Create Your First Course
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="content-tab" class="tab-pane">
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-folder-open"></i>
+                                    </div>
+                                    <h3>Your Content Library is Empty</h3>
+                                    <p>Upload or create learning materials to build your content library for the upcoming school year.</p>
+                                    <div class="empty-state-actions">
+                                        <button class="btn-primary" id="upload-content-btn">
+                                            <i class="fas fa-upload"></i> Upload Content
+                                        </button>
+                                        <button class="btn-outline" id="browse-templates-btn">
+                                            <i class="fas fa-th-large"></i> Browse Templates
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="settings-tab" class="tab-pane">
+                                <div class="settings-container">
+                                    <div class="settings-section">
+                                        <h3>Course Settings</h3>
+                                        <div class="settings-form">
+                                            <div class="form-group">
+                                                <label for="default-visibility">Default Course Visibility</label>
+                                                <select id="default-visibility">
+                                                    <option value="draft">Draft (Only visible to you)</option>
+                                                    <option value="private">Private (Visible to enrolled students only)</option>
+                                                    <option value="public">Public (Visible to all students)</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="content-download">Allow Content Downloads</label>
+                                                <div class="toggle-switch">
+                                                    <input type="checkbox" id="content-download" checked>
+                                                    <label for="content-download"></label>
+                                                </div>
+                                                <p class="setting-description">Allow students to download course materials</p>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="student-progress">Track Student Progress</label>
+                                                <div class="toggle-switch">
+                                                    <input type="checkbox" id="student-progress" checked>
+                                                    <label for="student-progress"></label>
+                                                </div>
+                                                <p class="setting-description">Monitor student engagement and completion</p>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="auto-enroll">Auto-Enroll Students</label>
+                                                <div class="toggle-switch">
+                                                    <input type="checkbox" id="auto-enroll">
+                                                    <label for="auto-enroll"></label>
+                                                </div>
+                                                <p class="setting-description">Automatically enroll students in your class</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="settings-section">
+                                        <h3>Notification Settings</h3>
+                                        <div class="settings-form">
+                                            <div class="form-group">
+                                                <label for="student-completion">Student Completion Notifications</label>
+                                                <div class="toggle-switch">
+                                                    <input type="checkbox" id="student-completion" checked>
+                                                    <label for="student-completion"></label>
+                                                </div>
+                                                <p class="setting-description">Receive notifications when students complete courses</p>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="quiz-submission">Quiz Submission Notifications</label>
+                                                <div class="toggle-switch">
+                                                    <input type="checkbox" id="quiz-submission" checked>
+                                                    <label for="quiz-submission"></label>
+                                                </div>
+                                                <p class="setting-description">Receive notifications when students submit quizzes</p>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="student-question">Student Question Notifications</label>
+                                                <div class="toggle-switch">
+                                                    <input type="checkbox" id="student-question" checked>
+                                                    <label for="student-question"></label>
+                                                </div>
+                                                <p class="setting-description">Receive notifications when students ask questions</p>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="email-digest">Email Digest Frequency</label>
+                                                <select id="email-digest">
+                                                    <option value="daily">Daily</option>
+                                                    <option value="weekly" selected>Weekly</option>
+                                                    <option value="never">Never</option>
+                                                </select>
+                                                <p class="setting-description">Frequency of email summaries about your courses</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="settings-section">
+                                        <h3>Display Settings</h3>
+                                        <div class="settings-form">
+                                            <div class="form-group">
+                                                <label for="course-layout">Default Course Layout</label>
+                                                <select id="course-layout">
+                                                    <option value="grid">Grid View</option>
+                                                    <option value="list">List View</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="items-per-page">Items Per Page</label>
+                                                <select id="items-per-page">
+                                                    <option value="10">10</option>
+                                                    <option value="20" selected>20</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="theme-preference">Theme Preference</label>
+                                                <select id="theme-preference">
+                                                    <option value="light">Light</option>
+                                                    <option value="dark">Dark</option>
+                                                    <option value="system">System Default</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="settings-actions">
+                                        <button class="btn-outline">Cancel</button>
+                                        <button class="btn-primary">Save Settings</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Create Course Modal -->
+    <div id="create-course-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Course</h2>
+                <button class="modal-close" id="close-course-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="course-form">
+                    <div class="form-group">
+                        <label for="course-title">Course Title</label>
+                        <input type="text" id="course-title" name="course-title" placeholder="Enter course title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="course-description">Course Description</label>
+                        <textarea id="course-description" name="course-description" rows="4" placeholder="Enter course description" required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="course-subject">Subject</label>
+                            <select id="course-subject" name="course-subject" required>
+                                <option value="">Select Subject</option>
+                                <option value="mathematics">Mathematics</option>
+                                <option value="science">Basic Science</option>
+                                <option value="english">English Language</option>
+                                <option value="social">Social Studies</option>
+                                <option value="religious">Religious Studies</option>
+                                <option value="computer">Computer Studies</option>
+                                <option value="creative">Creative Arts</option>
+                                <option value="physical">Physical Education</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="course-grade">Grade Level</label>
+                            <select id="course-grade" name="course-grade" required>
+                                <option value="">Select Grade</option>
+                                <option value="nursery1">Nursery 1</option>
+                                <option value="nursery2">Nursery 2</option>
+                                <option value="primary1">Primary 1</option>
+                                <option value="primary2">Primary 2</option>
+                                <option value="primary3">Primary 3</option>
+                                <option value="primary4">Primary 4</option>
+                                <option value="primary5">Primary 5</option>
+                                <option value="primary6">Primary 6</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="course-thumbnail">Course Thumbnail</label>
+                        <div class="file-upload-area">
+                            <input type="file" id="course-thumbnail" name="course-thumbnail" accept="image/*">
+                            <label for="course-thumbnail" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Click to upload or drag image here</span>
+                            </label>
+                        </div>
+                        <div id="thumbnail-preview" class="thumbnail-preview"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Course Visibility</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="visibility-draft" name="course-visibility" value="draft" checked>
+                                <label for="visibility-draft">
+                                    <i class="fas fa-eye-slash"></i>
+                                    <div class="radio-content">
+                                        <span class="radio-title">Draft</span>
+                                        <span class="radio-description">Only visible to you</span>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="radio-option">
+                                <input type="radio" id="visibility-private" name="course-visibility" value="private">
+                                <label for="visibility-private">
+                                    <i class="fas fa-lock"></i>
+                                    <div class="radio-content">
+                                        <span class="radio-title">Private</span>
+                                        <span class="radio-description">Visible to enrolled students only</span>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="radio-option">
+                                <input type="radio" id="visibility-public" name="course-visibility" value="public">
+                                <label for="visibility-public">
+                                    <i class="fas fa-globe"></i>
+                                    <div class="radio-content">
+                                        <span class="radio-title">Public</span>
+                                        <span class="radio-description">Visible to all students</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancel-course" class="btn-outline">Cancel</button>
+                        <button type="submit" class="btn-primary">Create Course</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tutorial Modal -->
+    <div id="tutorial-modal" class="modal">
+        <div class="modal-content video-modal-content">
+            <div class="modal-header">
+                <h2>E-Learning Platform Tutorial</h2>
+                <button class="modal-close" id="close-tutorial-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="video-container">
+                    <iframe width="100%" height="450" src="https://www.youtube.com/embed/placeholder" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="tutorial-steps">
+                    <h3>Quick Start Guide</h3>
+                    <ol class="tutorial-list">
+                        <li>
+                            <strong>Create a course</strong> - Set up the basic structure for your class
+                        </li>
+                        <li>
+                            <strong>Add content</strong> - Upload videos, documents, and other learning materials
+                        </li>
+                        <li>
+                            <strong>Create assessments</strong> - Build quizzes and assignments to test knowledge
+                        </li>
+                        <li>
+                            <strong>Organize modules</strong> - Structure your content into logical learning units
+                        </li>
+                        <li>
+                            <strong>Preview and test</strong> - Experience your course as students will see it
+                        </li>
+                    </ol>
+                    <div class="tutorial-actions">
+                        <button class="btn-outline" id="download-guide-btn">
+                            <i class="fas fa-file-pdf"></i> Download Complete Guide
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/e-learning.js"></script>
+</body>
+</html>

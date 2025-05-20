@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Staff Appraisal - Franciscan Catholic Nursery and Primary School
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/franciscan.css" />
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <link rel="stylesheet" href="assets/css/staff-appraisal.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body class="dashboard-body">
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+          <div class="logo-circle">
+            <img
+              src="assets/img/logo.jpg"
+              alt="Franciscan Catholic School Logo"
+            />
+          </div>
+          <h3>Teacher Portal</h3>
+        </div>
+
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="user-details">
+            <h4 id="teacher-name">Loading...</h4>
+            <p id="teacher-subject">Loading...</p>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="teacher-dashboard.html"
+                ><i class="fas fa-th-large"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="my-classes.html"
+                ><i class="fas fa-users"></i> My Classes</a
+              >
+            </li>
+            <li>
+              <a href="assignments.html"
+                ><i class="fas fa-book"></i> Assignments</a
+              >
+            </li>
+            <li>
+              <a href="e-learning.html"
+                ><i class="fas fa-laptop"></i> E-Learning</a
+              >
+            </li>
+            <li class="active">
+              <a href="staff-appraisal.html"
+                ><i class="fas fa-chart-bar"></i> Staff Appraisal</a
+              >
+            </li>
+            <li>
+              <a href="leave-application.html"
+                ><i class="fas fa-calendar-alt"></i> Leave Application</a
+              >
+            </li>
+            <li>
+              <a href="resources.html"
+                ><i class="fas fa-folder"></i> Resources</a
+              >
+            </li>
+            <li>
+              <a href="#messages"><i class="fas fa-envelope"></i> Messages</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+          <a href="#" id="logout-btn"
+            ><i class="fas fa-sign-out-alt"></i> Logout</a
+          >
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="dashboard-main">
+        <header class="dashboard-header">
+          <div class="mobile-toggle" id="sidebar-toggle">
+            <i class="fas fa-bars"></i>
+          </div>
+
+          <div class="header-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search..." />
+          </div>
+
+          <div class="header-actions">
+            <div class="notification-bell">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge">3</span>
+            </div>
+            <div class="date-display">
+              <i class="fas fa-calendar"></i>
+              <span id="current-date">Loading...</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="dashboard-content">
+          <div class="page-header">
+            <h1>Staff Appraisal</h1>
+            <p>Self-assessment and performance evaluation</p>
+          </div>
+
+          <div class="appraisal-dashboard">
+            <div class="appraisal-stats">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-clipboard-check"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="completed-appraisals">0</h3>
+                  <p>Completed Appraisals</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="pending-appraisals">0</h3>
+                  <p>Pending Appraisals</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="average-rating">N/A</h3>
+                  <p>Average Rating</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="next-appraisal">Sep 2025</h3>
+                  <p>Next Appraisal</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="appraisal-actions">
+              <button id="start-self-appraisal-btn" class="btn-primary">
+                <i class="fas fa-edit"></i> Start Self-Appraisal
+              </button>
+              <button id="view-guidelines-btn" class="btn-outline">
+                <i class="fas fa-book"></i> View Appraisal Guidelines
+              </button>
+            </div>
+
+            <div class="appraisal-tabs">
+              <div class="tab-header">
+                <button class="tab-btn active" data-tab="overview">
+                  Overview
+                </button>
+                <button class="tab-btn" data-tab="self">Self-Appraisal</button>
+                <button class="tab-btn" data-tab="supervisor">
+                  Supervisor Appraisal
+                </button>
+                <button class="tab-btn" data-tab="history">History</button>
+              </div>
+
+              <div class="tab-content">
+                <!-- Overview Tab -->
+                <div id="overview-tab" class="tab-pane active">
+                  <div class="overview-grid">
+                    <div class="overview-card appraisal-status">
+                      <div class="card-header">
+                        <h3>Appraisal Status</h3>
+                      </div>
+                      <div class="card-content">
+                        <div class="empty-state">
+                          <div class="empty-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                          </div>
+                          <h3>No Active Appraisal Cycle</h3>
+                          <p>
+                            The appraisal cycle for the new academic year has
+                            not started yet. You will be notified when it's time
+                            to complete your self-appraisal.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="overview-card performance-summary">
+                      <div class="card-header">
+                        <h3>Performance Summary</h3>
+                      </div>
+                      <div class="card-content">
+                        <div class="empty-state">
+                          <div class="empty-icon">
+                            <i class="fas fa-chart-line"></i>
+                          </div>
+                          <h3>No Performance Data</h3>
+                          <p>
+                            Your performance data will appear here after your
+                            first appraisal cycle is completed.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="overview-card department-progress">
+                      <div class="card-header">
+                        <h3>Department Progress</h3>
+                      </div>
+                      <div class="card-content">
+                        <div class="empty-state">
+                          <div class="empty-icon">
+                            <i class="fas fa-users"></i>
+                          </div>
+                          <h3>No Department Data</h3>
+                          <p>
+                            Department appraisal progress will be displayed here
+                            once the appraisal cycle begins.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="overview-card upcoming-deadlines">
+                      <div class="card-header">
+                        <h3>Upcoming Deadlines</h3>
+                      </div>
+                      <div class="card-content">
+                        <div class="timeline">
+                          <div class="timeline-item">
+                            <div class="timeline-icon">
+                              <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div class="timeline-content">
+                              <h4>Self-Appraisal Submission</h4>
+                              <p>September 30, 2025</p>
+                            </div>
+                          </div>
+                          <div class="timeline-item">
+                            <div class="timeline-icon">
+                              <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="timeline-content">
+                              <h4>Supervisor Review</h4>
+                              <p>October 15, 2025</p>
+                            </div>
+                          </div>
+                          <div class="timeline-item">
+                            <div class="timeline-icon">
+                              <i class="fas fa-handshake"></i>
+                            </div>
+                            <div class="timeline-content">
+                              <h4>Appraisal Discussion</h4>
+                              <p>October 20-30, 2025</p>
+                            </div>
+                          </div>
+                          <div class="timeline-item">
+                            <div class="timeline-icon">
+                              <i class="fas fa-file-signature"></i>
+                            </div>
+                            <div class="timeline-content">
+                              <h4>Final Submission</h4>
+                              <p>November 5, 2025</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Self-Appraisal Tab -->
+                <div id="self-tab" class="tab-pane">
+                  <div class="empty-state">
+                    <div class="empty-icon">
+                      <i class="fas fa-edit"></i>
+                    </div>
+                    <h3>No Self-Appraisal Forms Available</h3>
+                    <p>
+                      Self-appraisal forms will be available when the new
+                      academic year begins. You will be notified when it's time
+                      to complete your self-assessment.
+                    </p>
+                    <button class="btn-view-sample">View Sample Form</button>
+                  </div>
+                </div>
+
+                <!-- Supervisor Appraisal Tab -->
+                <div id="supervisor-tab" class="tab-pane">
+                  <div class="empty-state">
+                    <div class="empty-icon">
+                      <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>No Supervisor Appraisals</h3>
+                    <p>
+                      Your supervisor's evaluation will appear here after they
+                      complete their assessment of your performance.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- History Tab -->
+                <div id="history-tab" class="tab-pane">
+                  <div class="empty-state">
+                    <div class="empty-icon">
+                      <i class="fas fa-history"></i>
+                    </div>
+                    <h3>No Appraisal History</h3>
+                    <p>
+                      Your appraisal history will be displayed here after your
+                      first appraisal cycle is completed.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Self-Appraisal Modal -->
+    <div id="self-appraisal-modal" class="modal">
+      <div class="modal-content appraisal-modal-content">
+        <div class="modal-header">
+          <h2>Self-Appraisal Form</h2>
+          <button class="modal-close" id="close-self-appraisal-modal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="appraisal-form-container">
+            <div class="form-section">
+              <h3>Section 1: Teaching Effectiveness</h3>
+              <p class="section-description">
+                Evaluate your teaching methods, student engagement, and
+                classroom management.
+              </p>
+
+              <div class="rating-group">
+                <label>1.1 Lesson Planning and Preparation</label>
+                <p class="question-description">
+                  Rate your effectiveness in preparing comprehensive lesson
+                  plans that align with curriculum standards.
+                </p>
+                <div class="rating-scale">
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="lesson_planning"
+                      id="lesson_planning_1"
+                      value="1"
+                    />
+                    <label for="lesson_planning_1"
+                      >1<span>Needs Improvement</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="lesson_planning"
+                      id="lesson_planning_2"
+                      value="2"
+                    />
+                    <label for="lesson_planning_2">2<span>Fair</span></label>
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="lesson_planning"
+                      id="lesson_planning_3"
+                      value="3"
+                    />
+                    <label for="lesson_planning_3"
+                      >3<span>Satisfactory</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="lesson_planning"
+                      id="lesson_planning_4"
+                      value="4"
+                    />
+                    <label for="lesson_planning_4">4<span>Good</span></label>
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="lesson_planning"
+                      id="lesson_planning_5"
+                      value="5"
+                    />
+                    <label for="lesson_planning_5"
+                      >5<span>Excellent</span></label
+                    >
+                  </div>
+                </div>
+                <div class="rating-comment">
+                  <label for="lesson_planning_comment"
+                    >Comments/Examples:</label
+                  >
+                  <textarea
+                    id="lesson_planning_comment"
+                    name="lesson_planning_comment"
+                    rows="3"
+                    placeholder="Provide specific examples or areas for improvement..."
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="rating-group">
+                <label>1.2 Classroom Management</label>
+                <p class="question-description">
+                  Rate your ability to maintain discipline and create a positive
+                  learning environment.
+                </p>
+                <div class="rating-scale">
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="classroom_management"
+                      id="classroom_management_1"
+                      value="1"
+                    />
+                    <label for="classroom_management_1"
+                      >1<span>Needs Improvement</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="classroom_management"
+                      id="classroom_management_2"
+                      value="2"
+                    />
+                    <label for="classroom_management_2"
+                      >2<span>Fair</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="classroom_management"
+                      id="classroom_management_3"
+                      value="3"
+                    />
+                    <label for="classroom_management_3"
+                      >3<span>Satisfactory</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="classroom_management"
+                      id="classroom_management_4"
+                      value="4"
+                    />
+                    <label for="classroom_management_4"
+                      >4<span>Good</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="classroom_management"
+                      id="classroom_management_5"
+                      value="5"
+                    />
+                    <label for="classroom_management_5"
+                      >5<span>Excellent</span></label
+                    >
+                  </div>
+                </div>
+                <div class="rating-comment">
+                  <label for="classroom_management_comment"
+                    >Comments/Examples:</label
+                  >
+                  <textarea
+                    id="classroom_management_comment"
+                    name="classroom_management_comment"
+                    rows="3"
+                    placeholder="Provide specific examples or areas for improvement..."
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="rating-group">
+                <label>1.3 Student Engagement</label>
+                <p class="question-description">
+                  Rate your effectiveness in engaging students and promoting
+                  active participation.
+                </p>
+                <div class="rating-scale">
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="student_engagement"
+                      id="student_engagement_1"
+                      value="1"
+                    />
+                    <label for="student_engagement_1"
+                      >1<span>Needs Improvement</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="student_engagement"
+                      id="student_engagement_2"
+                      value="2"
+                    />
+                    <label for="student_engagement_2">2<span>Fair</span></label>
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="student_engagement"
+                      id="student_engagement_3"
+                      value="3"
+                    />
+                    <label for="student_engagement_3"
+                      >3<span>Satisfactory</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="student_engagement"
+                      id="student_engagement_4"
+                      value="4"
+                    />
+                    <label for="student_engagement_4">4<span>Good</span></label>
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="student_engagement"
+                      id="student_engagement_5"
+                      value="5"
+                    />
+                    <label for="student_engagement_5"
+                      >5<span>Excellent</span></label
+                    >
+                  </div>
+                </div>
+                <div class="rating-comment">
+                  <label for="student_engagement_comment"
+                    >Comments/Examples:</label
+                  >
+                  <textarea
+                    id="student_engagement_comment"
+                    name="student_engagement_comment"
+                    rows="3"
+                    placeholder="Provide specific examples or areas for improvement..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Section 2: Professional Development</h3>
+              <p class="section-description">
+                Evaluate your growth as an educator and participation in
+                professional development activities.
+              </p>
+
+              <div class="rating-group">
+                <label>2.1 Continuous Learning</label>
+                <p class="question-description">
+                  Rate your commitment to improving your teaching skills through
+                  workshops, courses, or other learning opportunities.
+                </p>
+                <div class="rating-scale">
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="continuous_learning"
+                      id="continuous_learning_1"
+                      value="1"
+                    />
+                    <label for="continuous_learning_1"
+                      >1<span>Needs Improvement</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="continuous_learning"
+                      id="continuous_learning_2"
+                      value="2"
+                    />
+                    <label for="continuous_learning_2"
+                      >2<span>Fair</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="continuous_learning"
+                      id="continuous_learning_3"
+                      value="3"
+                    />
+                    <label for="continuous_learning_3"
+                      >3<span>Satisfactory</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="continuous_learning"
+                      id="continuous_learning_4"
+                      value="4"
+                    />
+                    <label for="continuous_learning_4"
+                      >4<span>Good</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="continuous_learning"
+                      id="continuous_learning_5"
+                      value="5"
+                    />
+                    <label for="continuous_learning_5"
+                      >5<span>Excellent</span></label
+                    >
+                  </div>
+                </div>
+                <div class="rating-comment">
+                  <label for="continuous_learning_comment"
+                    >Comments/Examples:</label
+                  >
+                  <textarea
+                    id="continuous_learning_comment"
+                    name="continuous_learning_comment"
+                    rows="3"
+                    placeholder="List professional development activities you've participated in..."
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="rating-group">
+                <label>2.2 Application of New Knowledge</label>
+                <p class="question-description">
+                  Rate your effectiveness in applying new teaching methods or
+                  technologies in your classroom.
+                </p>
+                <div class="rating-scale">
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="knowledge_application"
+                      id="knowledge_application_1"
+                      value="1"
+                    />
+                    <label for="knowledge_application_1"
+                      >1<span>Needs Improvement</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="knowledge_application"
+                      id="knowledge_application_2"
+                      value="2"
+                    />
+                    <label for="knowledge_application_2"
+                      >2<span>Fair</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="knowledge_application"
+                      id="knowledge_application_3"
+                      value="3"
+                    />
+                    <label for="knowledge_application_3"
+                      >3<span>Satisfactory</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="knowledge_application"
+                      id="knowledge_application_4"
+                      value="4"
+                    />
+                    <label for="knowledge_application_4"
+                      >4<span>Good</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="knowledge_application"
+                      id="knowledge_application_5"
+                      value="5"
+                    />
+                    <label for="knowledge_application_5"
+                      >5<span>Excellent</span></label
+                    >
+                  </div>
+                </div>
+                <div class="rating-comment">
+                  <label for="knowledge_application_comment"
+                    >Comments/Examples:</label
+                  >
+                  <textarea
+                    id="knowledge_application_comment"
+                    name="knowledge_application_comment"
+                    rows="3"
+                    placeholder="Provide examples of how you've applied new knowledge..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Section 3: Collaboration and School Community</h3>
+              <p class="section-description">
+                Evaluate your contributions to the school community and
+                collaboration with colleagues.
+              </p>
+
+              <div class="rating-group">
+                <label>3.1 Teamwork and Collaboration</label>
+                <p class="question-description">
+                  Rate your effectiveness in working with colleagues and
+                  contributing to team efforts.
+                </p>
+                <div class="rating-scale">
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="teamwork"
+                      id="teamwork_1"
+                      value="1"
+                    />
+                    <label for="teamwork_1"
+                      >1<span>Needs Improvement</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="teamwork"
+                      id="teamwork_2"
+                      value="2"
+                    />
+                    <label for="teamwork_2">2<span>Fair</span></label>
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="teamwork"
+                      id="teamwork_3"
+                      value="3"
+                    />
+                    <label for="teamwork_3">3<span>Satisfactory</span></label>
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="teamwork"
+                      id="teamwork_4"
+                      value="4"
+                    />
+                    <label for="teamwork_4">4<span>Good</span></label>
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="teamwork"
+                      id="teamwork_5"
+                      value="5"
+                    />
+                    <label for="teamwork_5">5<span>Excellent</span></label>
+                  </div>
+                </div>
+                <div class="rating-comment">
+                  <label for="teamwork_comment">Comments/Examples:</label>
+                  <textarea
+                    id="teamwork_comment"
+                    name="teamwork_comment"
+                    rows="3"
+                    placeholder="Provide examples of collaborative projects or initiatives..."
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="rating-group">
+                <label>3.2 Communication with Parents</label>
+                <p class="question-description">
+                  Rate your effectiveness in communicating with parents and
+                  involving them in their child's education.
+                </p>
+                <div class="rating-scale">
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="parent_communication"
+                      id="parent_communication_1"
+                      value="1"
+                    />
+                    <label for="parent_communication_1"
+                      >1<span>Needs Improvement</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="parent_communication"
+                      id="parent_communication_2"
+                      value="2"
+                    />
+                    <label for="parent_communication_2"
+                      >2<span>Fair</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="parent_communication"
+                      id="parent_communication_3"
+                      value="3"
+                    />
+                    <label for="parent_communication_3"
+                      >3<span>Satisfactory</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="parent_communication"
+                      id="parent_communication_4"
+                      value="4"
+                    />
+                    <label for="parent_communication_4"
+                      >4<span>Good</span></label
+                    >
+                  </div>
+                  <div class="rating-option">
+                    <input
+                      type="radio"
+                      name="parent_communication"
+                      id="parent_communication_5"
+                      value="5"
+                    />
+                    <label for="parent_communication_5"
+                      >5<span>Excellent</span></label
+                    >
+                  </div>
+                </div>
+                <div class="rating-comment">
+                  <label for="parent_communication_comment"
+                    >Comments/Examples:</label
+                  >
+                  <textarea
+                    id="parent_communication_comment"
+                    name="parent_communication_comment"
+                    rows="3"
+                    placeholder="Describe your approach to parent communication..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Section 4: Goals and Development Plan</h3>
+              <p class="section-description">
+                Reflect on your achievements and set goals for the upcoming
+                academic year.
+              </p>
+
+              <div class="text-question">
+                <label for="achievements">4.1 Key Achievements</label>
+                <p class="question-description">
+                  List your major accomplishments from the previous academic
+                  year.
+                </p>
+                <textarea
+                  id="achievements"
+                  name="achievements"
+                  rows="4"
+                  placeholder="Describe your key achievements..."
+                ></textarea>
+              </div>
+
+              <div class="text-question">
+                <label for="challenges">4.2 Challenges Faced</label>
+                <p class="question-description">
+                  Describe any significant challenges you encountered and how
+                  you addressed them.
+                </p>
+                <textarea
+                  id="challenges"
+                  name="challenges"
+                  rows="4"
+                  placeholder="Describe challenges and your response..."
+                ></textarea>
+              </div>
+
+              <div class="text-question">
+                <label for="goals">4.3 Professional Goals</label>
+                <p class="question-description">
+                  Outline your professional development goals for the upcoming
+                  academic year.
+                </p>
+                <textarea
+                  id="goals"
+                  name="goals"
+                  rows="4"
+                  placeholder="List your professional goals..."
+                ></textarea>
+              </div>
+
+              <div class="text-question">
+                <label for="support_needed">4.4 Support Needed</label>
+                <p class="question-description">
+                  Describe any support, resources, or training you need to
+                  achieve your goals.
+                </p>
+                <textarea
+                  id="support_needed"
+                  name="support_needed"
+                  rows="4"
+                  placeholder="Describe the support you need..."
+                ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+  <!-- Guidelines Modal -->
+  <div id="guidelines-modal" class="modal">
+      <div class="modal-content guidelines-modal-content">
+          <div class="modal-header">
+              <h2>Appraisal Guidelines</h2>
+              <button class="modal-close" id="close-guidelines-modal">
+                  <i class="fas fa-times"></i>
+              </button>
+          </div>
+          <div class="modal-body">
+              <div class="guidelines-container">
+                  <div class="guidelines-section">
+                      <h3>Purpose of Staff Appraisal</h3>
+                      <p>The staff appraisal process at Franciscan Catholic Nursery and Primary School is designed to:</p>
+                      <ul>
+                          <li>Recognize and celebrate teaching excellence</li>
+                          <li>Identify areas for professional growth and development</li>
+                          <li>Align individual goals with school objectives</li>
+                          <li>Provide constructive feedback for continuous improvement</li>
+                          <li>Support career development and progression</li>
+                      </ul>
+                  </div>
+                    
+                  <div class="guidelines-section">
+                      <h3>Appraisal Process Timeline</h3>
+                      <div class="process-timeline">
+                          <div class="timeline-step">
+                              <div class="step-number">1</div>
+                              <div class="step-content">
+                                  <h4>Self-Appraisal</h4>
+                                  <p>Complete your self-assessment form by September 30, 2025</p>
+                              </div>
+                          </div>
+                          <div class="timeline-step">
+                              <div class="step-number">2</div>
+                              <div class="step-content">
+                                  <h4>Supervisor Review</h4>
+                                  <p>Your supervisor will review your self-appraisal and provide their assessment by October 15, 2025</p>
+                              </div>
+                          </div>
+                          <div class="timeline-step">
+                              <div class="step-number">3</div>
+                              <div class="step-content">
+                                  <h4>Appraisal Discussion</h4>
+                                  <p>Meet with your supervisor to discuss the appraisal between October 20-30, 2025</p>
+                              </div>
+                          </div>
+                          <div class="timeline-step">
+                              <div class="step-number">4</div>
+                              <div class="step-content">
+                                  <h4>Final Submission</h4>
+                                  <p>Review and sign the final appraisal document by November 5, 2025</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                    
+                  <div class="guidelines-section">
+                      <h3>Rating Scale Explanation</h3>
+                      <div class="rating-explanation">
+                          <div class="rating-level">
+                              <div class="rating-number">1</div>
+                              <div class="rating-details">
+                                  <h4>Needs Improvement</h4>
+                                  <p>Performance does not meet expected standards. Significant improvement is required in this area.</p>
+                              </div>
+                          </div>
+                          <div class="rating-level">
+                              <div class="rating-number">2</div>
+                              <div class="rating-details">
+                                  <h4>Fair</h4>
+                                  <p>Performance occasionally meets expected standards but is inconsistent. Development is needed in this area.</p>
+                              </div>
+                          </div>
+                          <div class="rating-level">
+                              <div class="rating-number">3</div>
+                              <div class="rating-details">
+                                  <h4>Satisfactory</h4>
+                                  <p>Performance consistently meets expected standards. This represents solid, effective performance.</p>
+                              </div>
+                          </div>
+                          <div class="rating-level">
+                              <div class="rating-number">4</div>
+                              <div class="rating-details">
+                                  <h4>Good</h4>
+                                  <p>Performance frequently exceeds expected standards. This represents strong, consistent performance.</p>
+                              </div>
+                          </div>
+                          <div class="rating-level">
+                              <div class="rating-number">5</div>
+                              <div class="rating-details">
+                                  <h4>Excellent</h4>
+                                  <p>Performance consistently exceeds expected standards by a significant margin. This represents exceptional performance.</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                    
+                  <div class="guidelines-section">
+                      <h3>Tips for Effective Self-Appraisal</h3>
+                      <ul>
+                          <li><strong>Be honest and objective</strong> in your self-assessment</li>
+                          <li><strong>Provide specific examples</strong> to support your ratings</li>
+                          <li><strong>Focus on both strengths and areas for improvement</strong></li>
+                          <li><strong>Set SMART goals</strong> (Specific, Measurable, Achievable, Relevant, Time-bound)</li>
+                          <li><strong>Reflect on your professional growth</strong> over the past academic year</li>
+                          <li><strong>Consider feedback</strong> from students, parents, and colleagues</li>
+                      </ul>
+                  </div>
+                    
+                  <div class="guidelines-section">
+                      <h3>Confidentiality</h3>
+                      <p>All information shared during the appraisal process is confidential and will only be accessible to you, your supervisor, and authorized administrative personnel. The information will be used solely for professional development purposes and will not be shared with unauthorized individuals.</p>
+                  </div>
+                    
+                  <div class="guidelines-footer">
+                      <p>For any questions regarding the appraisal process, please contact the Human Resources Department.</p>
+                      <button id="download-guidelines-btn" class="btn-outline">
+                          <i class="fas fa-download"></i> Download Guidelines PDF
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+    
+  <!-- Sample Form Modal -->
+  <div id="sample-form-modal" class="modal">
+      <div class="modal-content sample-form-modal-content">
+          <div class="modal-header">
+              <h2>Sample Appraisal Form</h2>
+              <button class="modal-close" id="close-sample-form-modal">
+                  <i class="fas fa-times"></i>
+              </button>
+          </div>
+          <div class="modal-body">
+              <div class="sample-form-container">
+                  <div class="sample-notice">
+                      <i class="fas fa-info-circle"></i>
+                      <p>This is a sample form for reference only. The actual form may vary slightly when the appraisal cycle begins.</p>
+                  </div>
+                    
+                  <div class="sample-section">
+                      <h3>Teaching Effectiveness</h3>
+                      <div class="sample-question">
+                          <div class="question-header">
+                              <h4>Lesson Planning and Preparation</h4>
+                              <div class="sample-rating">
+                                  <span class="rating-dot"></span>
+                                  <span class="rating-dot"></span>
+                                  <span class="rating-dot"></span>
+                                  <span class="rating-dot filled"></span>
+                                  <span class="rating-dot"></span>
+                              </div>
+                          </div>
+                          <div class="sample-comment">
+                              <p><strong>Sample Comment:</strong> "I develop detailed lesson plans that align with curriculum standards and include differentiated activities to meet diverse learning needs. I could improve by incorporating more technology-based resources."</p>
+                          </div>
+                      </div>
+                  </div>
+                    
+                  <div class="sample-section">
+                      <h3>Professional Development</h3>
+                      <div class="sample-question">
+                          <div class="question-header">
+                              <h4>Continuous Learning</h4>
+                              <div class="sample-rating">
+                                  <span class="rating-dot"></span>
+                                  <span class="rating-dot"></span>
+                                  <span class="rating-dot"></span>
+                                  <span class="rating-dot"></span>
+                                  <span class="rating-dot filled"></span>
+                              </div>
+                          </div>
+                          <div class="sample-comment">
+                              <p><strong>Sample Comment:</strong> "I attended three professional development workshops this year, including 'Innovative Teaching Methods' and 'Technology in the Classroom.' I also completed an online course on inclusive education and shared the resources with colleagues."</p>
+                          </div>
+                      </div>
+                  </div>
+                    
+                  <div class="sample-section">
+                      <h3>Goals and Development Plan</h3>
+                      <div class="sample-question">
+                          <div class="question-header">
+                              <h4>Professional Goals</h4>
+                          </div>
+                          <div class="sample-comment">
+                              <p><strong>Sample Response:</strong> "1. Implement project-based learning in at least one unit per term. 2. Develop expertise in educational technology by completing two relevant courses. 3. Mentor a new teacher in our department."</p>
+                          </div>
+                      </div>
+                  </div>
+                    
+                  <div class="sample-actions">
+                      <button id="close-sample-btn" class="btn-primary">
+                          <i class="fas fa-check"></i> Got It
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <script src="assets/js/staff-appraisal.js"></script>
+</body>
+</html>

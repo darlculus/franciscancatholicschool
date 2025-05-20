@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Classes - Franciscan Catholic Nursery and Primary School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/franciscan.css" />
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <link rel="stylesheet" href="assets/css/my-classes.css" />
+  </head>
+  <body class="dashboard-body">
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+          <div class="logo-circle">
+            <img
+              src="assets/img/logo.jpg"
+              alt="Franciscan Catholic School Logo"
+            />
+          </div>
+          <h3>Teacher Portal</h3>
+        </div>
+
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="user-details">
+            <h4 id="teacher-name">Loading...</h4>
+            <p id="teacher-subject">Loading...</p>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="teacher-dashboard.html"
+                ><i class="fas fa-th-large"></i> Dashboard</a
+              >
+            </li>
+            <li class="active">
+              <a href="my-classes.html"
+                ><i class="fas fa-users"></i> My Classes</a
+              >
+            </li>
+            <li>
+              <a href="assignments.html"
+                ><i class="fas fa-book"></i> Assignments</a
+              >
+            </li>
+            <li>
+              <a href="e-learning.html"
+                ><i class="fas fa-laptop"></i> E-Learning</a
+              >
+            </li>
+            <li>
+              <a href="staff-appraisal.html"
+                ><i class="fas fa-chart-bar"></i> Staff Appraisal</a
+              >
+            </li>
+            <li>
+              <a href="leave-application.html"
+                ><i class="fas fa-calendar-alt"></i> Leave Application</a
+              >
+            </li>
+            <li>
+              <a href="resources.html"
+                ><i class="fas fa-folder"></i> Resources</a
+              >
+            </li>
+            <li>
+              <a href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+          <a href="#" id="logout-btn"
+            ><i class="fas fa-sign-out-alt"></i> Logout</a
+          >
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="dashboard-main">
+        <header class="dashboard-header">
+          <div class="mobile-toggle" id="sidebar-toggle">
+            <i class="fas fa-bars"></i>
+          </div>
+
+          <div class="header-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search classes..." />
+          </div>
+
+          <div class="header-actions">
+            <div class="notification-bell">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge">3</span>
+            </div>
+            <div class="date-display">
+              <i class="fas fa-calendar"></i>
+              <span id="current-date">Loading...</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="dashboard-content">
+          <div class="page-header">
+            <h1>My Classes</h1>
+            <p>Manage your classes, students, and teaching schedule</p>
+          </div>
+
+          <div class="classes-overview">
+            <div class="overview-card">
+              <div class="overview-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <div class="overview-info">
+                <h3 id="total-classes">3</h3>
+                <p>Total Classes</p>
+              </div>
+            </div>
+
+            <div class="overview-card">
+              <div class="overview-icon">
+                <i class="fas fa-user-graduate"></i>
+              </div>
+              <div class="overview-info">
+                <h3 id="total-students">0</h3>
+                <p>Total Students</p>
+              </div>
+            </div>
+
+            <div class="overview-card">
+              <div class="overview-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="overview-info">
+                <h3 id="weekly-hours">18</h3>
+                <p>Weekly Hours</p>
+              </div>
+            </div>
+
+            <div class="overview-card">
+              <div class="overview-icon">
+                <i class="fas fa-calendar-check"></i>
+              </div>
+              <div class="overview-info">
+                <h3 id="today-classes">0</h3>
+                <p>Classes Today</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="classes-actions">
+            <div class="filter-controls">
+              <div class="filter-group">
+                <label for="class-filter">Filter by:</label>
+                <select id="class-filter">
+                  <option value="all">All Classes</option>
+                  <option value="primary">Primary</option>
+                  <option value="nursery">Nursery</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label for="sort-by">Sort by:</label>
+                <select id="sort-by">
+                  <option value="name">Class Name</option>
+                  <option value="students">Number of Students</option>
+                  <option value="recent">Recently Updated</option>
+                </select>
+              </div>
+            </div>
+
+            <button id="view-timetable-btn" class="btn-outline">
+              <i class="fas fa-calendar-alt"></i> View Timetable
+            </button>
+          </div>
+
+          <div class="classes-grid">
+            <!-- Class Card - Primary 5 Mathematics -->
+            <div class="class-card">
+              <div class="class-header">
+                <h3>Primary 5 - Mathematics</h3>
+                <span class="class-badge primary">Primary</span>
+              </div>
+
+              <div class="class-info">
+                <div class="info-item">
+                  <i class="fas fa-user-graduate"></i>
+                  <span>0 students</span>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-clock"></i>
+                  <span>6 Hours/Week</span>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-calendar-day"></i>
+                  <span>Mon, Wed, Fri</span>
+                </div>
+              </div>
+
+              <div class="class-progress">
+                <div class="progress-label">
+                  <span>Curriculum Progress</span>
+                  <span>0%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="class-actions">
+                <button
+                  class="btn-class-action"
+                  data-class="primary-5-math"
+                  data-action="attendance"
+                >
+                  <i class="fas fa-clipboard-check"></i> Attendance
+                </button>
+                <button
+                  class="btn-class-action"
+                  data-class="primary-5-math"
+                  data-action="lesson-plan"
+                >
+                  <i class="fas fa-book"></i> Lesson Plan
+                </button>
+                <button
+                  class="btn-class-action"
+                  data-class="primary-5-math"
+                  data-action="view-details"
+                >
+                  <i class="fas fa-eye"></i> View Details
+                </button>
+              </div>
+            </div>
+
+            <!-- Class Card - Primary 6 Mathematics -->
+            <div class="class-card">
+              <div class="class-header">
+                <h3>Primary 6 - Mathematics</h3>
+                <span class="class-badge primary">Primary</span>
+              </div>
+
+              <div class="class-info">
+                <div class="info-item">
+                  <i class="fas fa-user-graduate"></i>
+                  <span>22 Students</span>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-clock"></i>
+                  <span>6 Hours/Week</span>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-calendar-day"></i>
+                  <span>Mon, Tue, Thu</span>
+                </div>
+              </div>
+
+              <div class="class-progress">
+                <div class="progress-label">
+                  <span>Curriculum Progress</span>
+                  <span>60%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress" style="width: 60%"></div>
+                </div>
+              </div>
+
+              <div class="class-actions">
+                <button
+                  class="btn-class-action"
+                  data-class="primary-6-math"
+                  data-action="attendance"
+                >
+                  <i class="fas fa-clipboard-check"></i> Attendance
+                </button>
+                <button
+                  class="btn-class-action"
+                  data-class="primary-6-math"
+                  data-action="lesson-plan"
+                >
+                  <i class="fas fa-book"></i> Lesson Plan
+                </button>
+                <button
+                  class="btn-class-action"
+                  data-class="primary-6-math"
+                  data-action="view-details"
+                >
+                  <i class="fas fa-eye"></i> View Details
+                </button>
+              </div>
+            </div>
+
+            <!-- Class Card - Primary 4 Mathematics -->
+            <div class="class-card">
+              <div class="class-header">
+                <h3>Primary 4 - Mathematics</h3>
+                <span class="class-badge primary">Primary</span>
+              </div>
+
+              <div class="class-info">
+                <div class="info-item">
+                  <i class="fas fa-user-graduate"></i>
+                  <span>28 Students</span>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-clock"></i>
+                  <span>6 Hours/Week</span>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-calendar-day"></i>
+                  <span>Tue, Wed, Fri</span>
+                </div>
+              </div>
+
+              <div class="class-progress">
+                <div class="progress-label">
+                  <span>Curriculum Progress</span>
+                  <span>85%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress" style="width: 85%"></div>
+                </div>
+              </div>
+
+              <div class="class-actions">
+                <button
+                  class="btn-class-action"
+                  data-class="primary-4-math"
+                  data-action="attendance"
+                >
+                  <i class="fas fa-clipboard-check"></i> Attendance
+                </button>
+                <button
+                  class="btn-class-action"
+                  data-class="primary-4-math"
+                  data-action="lesson-plan"
+                >
+                  <i class="fas fa-book"></i> Lesson Plan
+                </button>
+                <button
+                  class="btn-class-action"
+                  data-class="primary-4-math"
+                  data-action="view-details"
+                >
+                  <i class="fas fa-eye"></i> View Details
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="upcoming-classes">
+            <div class="section-header">
+              <h2>Today's Schedule</h2>
+              <button id="view-full-schedule" class="btn-link">
+                View Full Schedule <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <div class="schedule-timeline">
+              <div class="timeline-item active">
+                <div class="timeline-time">
+                  <span class="time">8:00 AM</span>
+                  <span class="duration">45 min</span>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-header">
+                    <h4>Primary 5 - Mathematics</h4>
+                    <span class="status-badge completed">Completed</span>
+                  </div>
+                  <p>Topic: Fractions and Decimals</p>
+                  <div class="timeline-actions">
+                    <button class="btn-timeline-action">
+                      <i class="fas fa-clipboard-check"></i> Attendance
+                    </button>
+                    <button class="btn-timeline-action">
+                      <i class="fas fa-book"></i> Lesson Notes
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="timeline-item current">
+                <div class="timeline-time">
+                  <span class="time">10:15 AM</span>
+                  <span class="duration">45 min</span>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-header">
+                    <h4>Primary 6 - Mathematics</h4>
+                    <span class="status-badge in-progress">In Progress</span>
+                  </div>
+                  <p>Topic: Algebra Introduction</p>
+                  <div class="timeline-actions">
+                    <button class="btn-timeline-action">
+                      <i class="fas fa-clipboard-check"></i> Attendance
+                    </button>
+                    <button class="btn-timeline-action">
+                      <i class="fas fa-book"></i> Lesson Notes
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="timeline-item">
+                <div class="timeline-time">
+                  <span class="time">1:30 PM</span>
+                  <span class="duration">45 min</span>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-header">
+                    <h4>Primary 4 - Mathematics</h4>
+                    <span class="status-badge upcoming">Upcoming</span>
+                  </div>
+                  <p>Topic: Multiplication and Division</p>
+                  <div class="timeline-actions">
+                    <button class="btn-timeline-action">
+                      <i class="fas fa-clipboard-check"></i> Attendance
+                    </button>
+                    <button class="btn-timeline-action">
+                      <i class="fas fa-book"></i> Lesson Notes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Attendance Modal -->
+    <div id="attendance-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Class Attendance</h2>
+          <button class="modal-close" id="close-attendance-modal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="attendance-header">
+            <div class="attendance-class-info">
+              <h3 id="attendance-class-name">Primary 5 - Mathematics</h3>
+              <p id="attendance-date">May 15, 2023</p>
+            </div>
+            <div class="attendance-summary">
+              <div class="summary-item">
+                <span class="summary-label">Total Students:</span>
+                <span id="total-students-count" class="summary-value">25</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Present:</span>
+                <span id="present-count" class="summary-value">0</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Absent:</span>
+                <span id="absent-count" class="summary-value">0</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Late:</span>
+                <span id="late-count" class="summary-value">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="attendance-actions">
+            <div class="action-buttons">
+              <button id="mark-all-present" class="btn-outline">
+                <i class="fas fa-check-circle"></i> Mark All Present
+              </button>
+              <button id="clear-attendance" class="btn-outline">
+                <i class="fas fa-redo"></i> Clear All
+              </button>
+            </div>
+            <div class="search-attendance">
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                id="search-student"
+                placeholder="Search student..."
+              />
+            </div>
+          </div>
+
+          <div class="attendance-list">
+            <table class="attendance-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Student Name</th>
+                  <th>Status</th>
+                  <th>Comments</th>
+                </tr>
+              </thead>
+              <tbody id="attendance-students">
+                <!-- Student rows will be generated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="attendance-footer">
+            <button id="cancel-attendance" class="btn-outline">Cancel</button>
+            <button id="save-attendance" class="btn-primary">
+              Save Attendance
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lesson Plan Modal -->
+    <div id="lesson-plan-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Lesson Plan</h2>
+          <button class="modal-close" id="close-lesson-plan-modal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="lesson-plan-header">
+            <div class="lesson-class-info">
+              <h3 id="lesson-class-name">Primary 5 - Mathematics</h3>
+              <p id="lesson-date">May 15, 2023</p>
+            </div>
+            <div class="lesson-actions">
+              <button id="edit-lesson-plan" class="btn-outline">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button id="print-lesson-plan" class="btn-outline">
+                <i class="fas fa-print"></i> Print
+              </button>
+              <button id="download-lesson-plan" class="btn-outline">
+                <i class="fas fa-download"></i> Download
+              </button>
+            </div>
+          </div>
+
+          <div class="lesson-plan-content">
+            <div class="lesson-section">
+              <h4>Topic</h4>
+              <p id="lesson-topic">Fractions and Decimals</p>
+            </div>
+
+            <div class="lesson-section">
+              <h4>Learning Objectives</h4>
+              <ul id="lesson-objectives">
+                <li>Convert fractions to decimals and vice versa</li>
+                <li>Compare and order fractions and decimals</li>
+                <li>Solve problems involving fractions and decimals</li>
+              </ul>
+            </div>
+
+            <div class="lesson-section">
+              <h4>Resources</h4>
+              <ul id="lesson-resources">
+                <li>Textbook: Mathematics for Primary 5, Chapter 4</li>
+                <li>Fraction charts and decimal place value charts</li>
+                <li>Worksheets for practice</li>
+                <li>Interactive whiteboard activities</li>
+              </ul>
+            </div>
+
+            <div class="lesson-section">
+              <h4>Lesson Structure</h4>
+              <div class="lesson-timeline">
+                <div class="lesson-timeline-item">
+                  <div class="timeline-duration">10 mins</div>
+                  <div class="timeline-activity">
+                    <h5>Introduction</h5>
+                    <p>
+                      Review previous knowledge on fractions. Introduce the
+                      concept of decimals as another way to represent fractions.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="lesson-timeline-item">
+                  <div class="timeline-duration">15 mins</div>
+                  <div class="timeline-activity">
+                    <h5>Teacher Demonstration</h5>
+                    <p>
+                      Demonstrate how to convert fractions to decimals using
+                      division. Show examples with different types of fractions.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="lesson-timeline-item">
+                  <div class="timeline-duration">15 mins</div>
+                  <div class="timeline-activity">
+                    <h5>Guided Practice</h5>
+                    <p>
+                      Students work in pairs to convert given fractions to
+                      decimals. Teacher circulates to provide support.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="lesson-timeline-item">
+                  <div class="timeline-duration">10 mins</div>
+                  <div class="timeline-activity">
+                    <h5>Independent Practice</h5>
+                    <p>
+                      Students complete worksheet with fraction to decimal
+                      conversion problems.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="lesson-timeline-item">
+                  <div class="timeline-duration">5 mins</div>
+                  <div class="timeline-activity">
+                    <h5>Conclusion</h5>
+                    <p>
+                      Review key concepts. Preview next lesson on comparing
+                      fractions and decimals.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="lesson-section">
+              <h4>Assessment</h4>
+              <p id="lesson-assessment">
+                Formative assessment through observation during guided practice.
+                Worksheet completion will be checked for understanding.
+              </p>
+            </div>
+
+            <div class="lesson-section">
+              <h4>Homework</h4>
+              <p id="lesson-homework">
+                Complete textbook exercises on page 45, questions 1-10.
+              </p>
+            </div>
+
+            <div class="lesson-section">
+              <h4>Notes</h4>
+              <p id="lesson-notes">
+                Pay special attention to students who struggled with fractions
+                in previous lessons. Provide additional support as needed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Class Details Modal -->
+    <div id="class-details-modal" class="modal">
+      <div class="modal-content large-modal">
+        <div class="modal-header">
+          <h2 id="details-class-name">Primary 5 - Mathematics</h2>
+          <button class="modal-close" id="close-class-details-modal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="class-details-tabs">
+            <button class="tab-btn active" data-tab="students">Students</button>
+            <button class="tab-btn" data-tab="curriculum">Curriculum</button>
+            <button class="tab-btn" data-tab="assignments">Assignments</button>
+            <button class="tab-btn" data-tab="performance">Performance</button>
+            <button class="tab-btn" data-tab="resources">Resources</button>
+          </div>
+
+          <div class="class-details-content">
+            <!-- Students Tab -->
+            <div id="students-tab" class="details-tab active">
+              <div class="tab-header">
+                <div class="search-students">
+                  <i class="fas fa-search"></i>
+                  <input type="text" placeholder="Search students..." />
+                </div>
+                <button class="btn-outline">
+                  <i class="fas fa-download"></i> Export List
+                </button>
+              </div>
+
+              <div class="students-list">
+                <table class="students-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Student Name</th>
+                      <th>Gender</th>
+                      <th>Attendance</th>
+                      <th>Performance</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="students-table-body">
+                    <!-- Student rows will be generated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Curriculum Tab -->
+            <div id="curriculum-tab" class="details-tab">
+              <div class="curriculum-progress">
+                <h3>Curriculum Progress</h3>
+                <div class="progress-bar-large">
+                  <div class="progress" style="width: 75%"></div>
+                  <span class="progress-text">75% Complete</span>
+                </div>
+              </div>
+
+              <div class="curriculum-units">
+                <div class="curriculum-unit completed">
+                  <div class="unit-header">
+                    <h4>Unit 1: Number Systems</h4>
+                    <span class="unit-status">Completed</span>
+                  </div>
+                  <div class="unit-topics">
+                    <div class="topic-item completed">
+                      <span class="topic-name"
+                        >Place Value and Number Representation</span
+                      >
+                      <span class="topic-date">Completed: Feb 15, 2023</span>
+                    </div>
+                    <div class="topic-item completed">
+                      <span class="topic-name"
+                        >Addition and Subtraction of Large Numbers</span
+                      >
+                      <span class="topic-date">Completed: Feb 22, 2023</span>
+                    </div>
+                    <div class="topic-item completed">
+                      <span class="topic-name"
+                        >Multiplication and Division</span
+                      >
+                      <span class="topic-date">Completed: Mar 1, 2023</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="curriculum-unit completed">
+                  <div class="unit-header">
+                    <h4>Unit 2: Fractions</h4>
+                    <span class="unit-status">Completed</span>
+                  </div>
+                  <div class="unit-topics">
+                    <div class="topic-item completed">
+                      <span class="topic-name">Equivalent Fractions</span>
+                      <span class="topic-date">Completed: Mar 8, 2023</span>
+                    </div>
+                    <div class="topic-item completed">
+                      <span class="topic-name"
+                        >Addition and Subtraction of Fractions</span
+                      >
+                      <span class="topic-date">Completed: Mar 15, 2023</span>
+                    </div>
+                    <div class="topic-item completed">
+                      <span class="topic-name"
+                        >Multiplication and Division of Fractions</span
+                      >
+                      <span class="topic-date">Completed: Mar 22, 2023</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="curriculum-unit in-progress">
+                  <div class="unit-header">
+                    <h4>Unit 3: Decimals</h4>
+                    <span class="unit-status">In Progress</span>
+                  </div>
+                  <div class="unit-topics">
+                    <div class="topic-item completed">
+                      <span class="topic-name">Decimal Place Value</span>
+                      <span class="topic-date">Completed: Apr 5, 2023</span>
+                    </div>
+                    <div class="topic-item completed">
+                      <span class="topic-name"
+                        >Addition and Subtraction of Decimals</span
+                      >
+                      <span class="topic-date">Completed: Apr 12, 2023</span>
+                    </div>
+                    <div class="topic-item in-progress">
+                      <span class="topic-name"
+                        >Multiplication and Division of Decimals</span
+                      >
+                      <span class="topic-date">In Progress</span>
+                    </div>
+                    <div class="topic-item">
+                      <span class="topic-name"
+                        >Converting Fractions to Decimals</span
+                      >
+                      <span class="topic-date">Upcoming</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="curriculum-unit">
+                  <div class="unit-header">
+                    <h4>Unit 4: Percentages</h4>
+                    <span class="unit-status">Not Started</span>
+                  </div>
+                  <div class="unit-topics">
+                    <div class="topic-item">
+                      <span class="topic-name"
+                        >Introduction to Percentages</span
+                      >
+                      <span class="topic-date">Upcoming</span>
+                    </div>
+                    <div class="topic-item">
+                      <span class="topic-name"
+                        >Converting Between Fractions, Decimals, and
+                        Percentages</span
+                      >
+                      <span class="topic-date">Upcoming</span>
+                    </div>
+                    <div class="topic-item">
+                      <span class="topic-name">Percentage of a Quantity</span>
+                      <span class="topic-date">Upcoming</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="curriculum-unit">
+                  <div class="unit-header">
+                    <h4>Unit 5: Geometry</h4>
+                    <span class="unit-status">Not Started</span>
+                  </div>
+                  <div class="unit-topics">
+                    <div class="topic-item">
+                      <span class="topic-name">2D Shapes and Properties</span>
+                      <span class="topic-date">Upcoming</span>
+                    </div>
+                    <div class="topic-item">
+                      <span class="topic-name">3D Shapes and Properties</span>
+                      <span class="topic-date">Upcoming</span>
+                    </div>
+                    <div class="topic-item">
+                      <span class="topic-name">Area and Perimeter</span>
+                      <span class="topic-date">Upcoming</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Assignments Tab -->
+            <div id="assignments-tab" class="details-tab">
+              <div class="tab-header">
+                <button class="btn-primary">
+                  <i class="fas fa-plus"></i> Create Assignment
+                </button>
+                <div class="filter-dropdown">
+                  <select id="assignment-filter">
+                    <option value="all">All Assignments</option>
+                    <option value="active">Active</option>
+                    <option value="past">Past</option>
+                    <option value="draft">Drafts</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="assignments-list">
+                <div class="assignment-card active">
+                  <div class="assignment-header">
+                    <h4>Decimal Operations Worksheet</h4>
+                    <span class="assignment-status active">Active</span>
+                  </div>
+                  <div class="assignment-details">
+                    <div class="assignment-info">
+                      <p><i class="fas fa-calendar"></i> Due: May 18, 2023</p>
+                      <p>
+                        <i class="fas fa-users"></i> Assigned to: Whole Class
+                      </p>
+                    </div>
+                    <div class="assignment-progress">
+                      <div class="progress-stats">
+                        <span>15/25 Submitted</span>
+                        <span>60%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress" style="width: 60%"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="assignment-actions">
+                    <button class="btn-outline">
+                      <i class="fas fa-eye"></i> View
+                    </button>
+                    <button class="btn-outline">
+                      <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn-outline">
+                      <i class="fas fa-check-square"></i> Grade
+                    </button>
+                  </div>
+                </div>
+
+                <div class="assignment-card past">
+                  <div class="assignment-header">
+                    <h4>Fraction Word Problems</h4>
+                    <span class="assignment-status past">Past</span>
+                  </div>
+                  <div class="assignment-details">
+                    <div class="assignment-info">
+                      <p><i class="fas fa-calendar"></i> Due: Apr 28, 2023</p>
+                      <p>
+                        <i class="fas fa-users"></i> Assigned to: Whole Class
+                      </p>
+                    </div>
+                    <div class="assignment-progress">
+                      <div class="progress-stats">
+                        <span>23/25 Submitted</span>
+                        <span>92%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress" style="width: 92%"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="assignment-actions">
+                    <button class="btn-outline">
+                      <i class="fas fa-eye"></i> View
+                    </button>
+                    <button class="btn-outline">
+                      <i class="fas fa-check-square"></i> Grade
+                    </button>
+                    <button class="btn-outline">
+                      <i class="fas fa-copy"></i> Duplicate
+                    </button>
+                  </div>
+                </div>
+
+                <div class="assignment-card draft">
+                  <div class="assignment-header">
+                    <h4>Geometry Quiz</h4>
+                    <span class="assignment-status draft">Draft</span>
+                  </div>
+                  <div class="assignment-details">
+                    <div class="assignment-info">
+                      <p><i class="fas fa-calendar"></i> Not scheduled</p>
+                      <p><i class="fas fa-users"></i> Not assigned</p>
+                    </div>
+                  </div>
+                  <div class="assignment-actions">
+                    <button class="btn-outline">
+                      <i class="fas fa-eye"></i> Preview
+                    </button>
+                    <button class="btn-outline">
+                      <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn-outline">
+                      <i class="fas fa-paper-plane"></i> Assign
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Performance Tab -->
+            <div id="performance-tab" class="details-tab">
+              <div class="performance-overview">
+                <div class="performance-card">
+                  <h4>Class Average</h4>
+                  <div class="performance-score">78%</div>
+                  <div class="performance-trend positive">
+                    <i class="fas fa-arrow-up"></i> 3% from last term
+                  </div>
+                </div>
+
+                <div class="performance-card">
+                  <h4>Highest Score</h4>
+                  <div class="performance-score">95%</div>
+                  <div class="student-name">Sarah Johnson</div>
+                </div>
+
+                <div class="performance-card">
+                  <h4>Lowest Score</h4>
+                  <div class="performance-score">52%</div>
+                  <div class="student-name">Michael Brown</div>
+                </div>
+
+                <div class="performance-card">
+                  <h4>At-Risk Students</h4>
+                  <div class="performance-score">3</div>
+                  <div class="performance-trend negative">
+                    <i class="fas fa-arrow-down"></i> 2 from last term
+                  </div>
+                </div>
+              </div>
+
+              <div class="performance-charts">
+                <div class="chart-container">
+                  <h4>Grade Distribution</h4>
+                  <canvas id="grade-distribution-chart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                  <h4>Performance Trend</h4>
+                  <canvas id="performance-trend-chart"></canvas>
+                </div>
+              </div>
+
+              <div class="performance-topics">
+                <h4>Performance by Topic</h4>
+                <div class="topic-performance-list">
+                  <div class="topic-performance-item">
+                    <div class="topic-info">
+                      <h5>Number Systems</h5>
+                      <div class="progress-bar">
+                        <div class="progress" style="width: 85%"></div>
+                      </div>
+                    </div>
+                    <div class="topic-score">85%</div>
+                  </div>
+
+                  <div class="topic-performance-item">
+                    <div class="topic-info">
+                      <h5>Fractions</h5>
+                      <div class="progress-bar">
+                        <div class="progress" style="width: 78%"></div>
+                      </div>
+                    </div>
+                    <div class="topic-score">78%</div>
+                  </div>
+
+                  <div class="topic-performance-item">
+                    <div class="topic-info">
+                      <h5>Decimals</h5>
+                      <div class="progress-bar">
+                        <div class="progress" style="width: 72%"></div>
+                      </div>
+                    </div>
+                    <div class="topic-score">72%</div>
+                  </div>
+
+                  <div class="topic-performance-item">
+                    <div class="topic-info">
+                      <h5>Word Problems</h5>
+                      <div class="progress-bar">
+                        <div class="progress" style="width: 65%"></div>
+                      </div>
+                    </div>
+                    <div class="topic-score">65%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Resources Tab -->
+            <div id="resources-tab" class="details-tab">
+              <div class="tab-header">
+                <button class="btn-primary">
+                  <i class="fas fa-plus"></i> Add Resource
+                </button>
+                <div class="filter-dropdown">
+                  <select id="resource-filter">
+                    <option value="all">All Resources</option>
+                    <option value="documents">Documents</option>
+                    <option value="videos">Videos</option>
+                    <option value="links">Links</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="resources-list">
+                <div class="resource-card">
+                  <div class="resource-icon">
+                    <i class="fas fa-file-pdf"></i>
+                  </div>
+                  <div class="resource-info">
+                    <h4>Decimal Operations Worksheet</h4>
+                    <p>
+                      Practice worksheet for addition, subtraction,
+                      multiplication, and division of decimals
+                    </p>
+                    <div class="resource-meta">
+                      <span
+                        ><i class="fas fa-calendar"></i> Added: Apr 10,
+                        2023</span
+                      >
+                      <span><i class="fas fa-download"></i> Downloads: 25</span>
+                    </div>
+                  </div>
+                  <div class="resource-actions">
+                    <button class="btn-icon">
+                      <i class="fas fa-download"></i>
+                    </button>
+                    <button class="btn-icon">
+                      <i class="fas fa-share-alt"></i>
+                    </button>
+                    <button class="btn-icon">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="resource-card">
+                  <div class="resource-icon">
+                    <i class="fas fa-video"></i>
+                  </div>
+                  <div class="resource-info">
+                    <h4>Decimal Division Tutorial</h4>
+                    <p>
+                      Video tutorial explaining step-by-step process for decimal
+                      division
+                    </p>
+                    <div class="resource-meta">
+                      <span
+                        ><i class="fas fa-calendar"></i> Added: Apr 18,
+                        2023</span
+                      >
+                      <span><i class="fas fa-eye"></i> Views: 32</span>
+                    </div>
+                  </div>
+                  <div class="resource-actions">
+                    <button class="btn-icon">
+                      <i class="fas fa-play"></i>
+                    </button>
+                    <button class="btn-icon">
+                      <i class="fas fa-share-alt"></i>
+                    </button>
+                    <button class="btn-icon">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="resource-card">
+                  <div class="resource-icon">
+                    <i class="fas fa-file-excel"></i>
+                  </div>
+                  <div class="resource-info">
+                    <h4>Grade Tracker Template</h4>
+                    <p>
+                      Excel template for tracking student grades and progress
+                    </p>
+                    <div class="resource-meta">
+                      <span
+                        ><i class="fas fa-calendar"></i> Added: Feb 15,
+                        2023</span
+                      >
+                      <span><i class="fas fa-download"></i> Downloads: 20</span>
+                    </div>
+                  </div>
+                  <div class="resource-actions">
+                    <button class="btn-icon">
+                      <i class="fas fa-download"></i>
+                    </button>
+                    <button class="btn-icon">
+                      <i class="fas fa-share-alt"></i>
+                    </button>
+                    <button class="btn-icon">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="resource-card">
+                  <div class="resource-icon">
+                    <i class="fas fa-link"></i>
+                  </div>
+                  <div class="resource-info">
+                    <h4>Interactive Math Games</h4>
+                    <p>
+                      Collection of online math games for practicing decimal
+                      operations
+                    </p>
+                    <div class="resource-meta">
+                      <span
+                        ><i class="fas fa-calendar"></i> Added: Mar 25,
+                        2023</span
+                      >
+                      <span
+                        ><i class="fas fa-external-link-alt"></i> Visits:
+                        45</span
+                      >
+                    </div>
+                  </div>
+                  <div class="resource-actions">
+                    <button class="btn-icon">
+                      <i class="fas fa-external-link-alt"></i>
+                    </button>
+                    <button class="btn-icon">
+                      <i class="fas fa-share-alt"></i>
+                    </button>
+                    <button class="btn-icon">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timetable Modal -->
+    <div id="timetable-modal" class="modal">
+      <div class="modal-content large-modal">
+        <div class="modal-header">
+          <h2>Weekly Timetable</h2>
+          <button class="modal-close" id="close-timetable-modal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="timetable-controls">
+            <div class="timetable-filter">
+              <label for="timetable-view">View:</label>
+              <select id="timetable-view">
+                <option value="week">Weekly</option>
+                <option value="day">Daily</option>
+              </select>
+            </div>
+            <div class="timetable-actions">
+              <button class="btn-outline">
+                <i class="fas fa-print"></i> Print
+              </button>
+              <button class="btn-outline">
+                <i class="fas fa-download"></i> Download
+              </button>
+              <button class="btn-outline">
+                <i class="fas fa-share-alt"></i> Share
+              </button>
+            </div>
+          </div>
+
+          <div class="timetable-container">
+            <table class="timetable">
+              <thead>
+                <tr>
+                  <th class="time-column">Time</th>
+                  <th>Monday</th>
+                  <th>Tuesday</th>
+                  <th>Wednesday</th>
+                  <th>Thursday</th>
+                  <th>Friday</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="time-slot">8:00 - 8:45</td>
+                  <td class="class-slot primary-5">
+                    <div class="class-details">
+                      <h4>Primary 5</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 12</span>
+                    </div>
+                  </td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot primary-5">
+                    <div class="class-details">
+                      <h4>Primary 5</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 12</span>
+                    </div>
+                  </td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot primary-5">
+                    <div class="class-details">
+                      <h4>Primary 5</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 12</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="time-slot">8:50 - 9:35</td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot primary-4">
+                    <div class="class-details">
+                      <h4>Primary 4</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 10</span>
+                    </div>
+                  </td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot primary-4">
+                    <div class="class-details">
+                      <h4>Primary 4</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 10</span>
+                    </div>
+                  </td>
+                  <td class="class-slot primary-4">
+                    <div class="class-details">
+                      <h4>Primary 4</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 10</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="time-slot">9:40 - 10:25</td>
+                  <td class="class-slot primary-6">
+                    <div class="class-details">
+                      <h4>Primary 6</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 15</span>
+                    </div>
+                  </td>
+                  <td class="class-slot primary-6">
+                    <div class="class-details">
+                      <h4>Primary 6</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 15</span>
+                    </div>
+                  </td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot primary-6">
+                    <div class="class-details">
+                      <h4>Primary 6</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 15</span>
+                    </div>
+                  </td>
+                  <td class="class-slot"></td>
+                </tr>
+                <tr>
+                  <td class="time-slot">10:25 - 10:45</td>
+                  <td class="break-slot" colspan="5">
+                    <div class="break-details">
+                      <i class="fas fa-coffee"></i> Break
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="time-slot">10:45 - 11:30</td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot primary-5">
+                    <div class="class-details">
+                      <h4>Primary 5</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 12</span>
+                    </div>
+                  </td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot"></td>
+                </tr>
+                <tr>
+                  <td class="time-slot">11:35 - 12:20</td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot"></td>
+                </tr>
+                <tr>
+                  <td class="time-slot">12:20 - 1:00</td>
+                  <td class="break-slot" colspan="5">
+                    <div class="break-details">
+                      <i class="fas fa-utensils"></i> Lunch
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="time-slot">1:00 - 1:45</td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot"></td>
+                </tr>
+                <tr>
+                  <td class="time-slot">1:50 - 2:35</td>
+                  <td class="class-slot primary-4">
+                    <div class="class-details">
+                      <h4>Primary 4</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 10</span>
+                    </div>
+                  </td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot primary-4">
+                    <div class="class-details">
+                      <h4>Primary 4</h4>
+                      <p>Mathematics</p>
+                      <span class="room">Room 10</span>
+                    </div>
+                  </td>
+                  <td class="class-slot"></td>
+                  <td class="class-slot"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="timetable-legend">
+            <div class="legend-item">
+              <span class="legend-color primary-4"></span>
+              <span>Primary 4</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color primary-5"></span>
+              <span>Primary 5</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color primary-6"></span>
+              <span>Primary 6</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color break"></span>
+              <span>Break/Lunch</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/js/my-classes.js"></script>
+  </body>
+</html>

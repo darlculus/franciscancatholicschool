@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Leave Application - Franciscan Catholic Nursery and Primary School
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/franciscan.css" />
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <link rel="stylesheet" href="assets/css/leave-application.css" />
+  </head>
+  <body class="dashboard-body">
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+          <div class="logo-circle">
+            <img
+              src="assets/img/logo.jpg"
+              alt="Franciscan Catholic School Logo"
+            />
+          </div>
+          <h3>Teacher Portal</h3>
+        </div>
+
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="user-details">
+            <h4 id="teacher-name">Loading...</h4>
+            <p id="teacher-subject">Loading...</p>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="teacher-dashboard.html"
+                ><i class="fas fa-th-large"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="my-classes.html"
+                ><i class="fas fa-users"></i> My Classes</a
+              >
+            </li>
+            <li>
+              <a href="assignments.html"
+                ><i class="fas fa-book"></i> Assignments</a
+              >
+            </li>
+            <li>
+              <a href="e-learning.html"
+                ><i class="fas fa-laptop"></i> E-Learning</a
+              >
+            </li>
+            <li>
+              <a href="staff-appraisal.html"
+                ><i class="fas fa-chart-bar"></i> Staff Appraisal</a
+              >
+            </li>
+            <li class="active">
+              <a href="leave-application.html"
+                ><i class="fas fa-calendar-alt"></i> Leave Application</a
+              >
+            </li>
+            <li>
+              <a href="resources.html"
+                ><i class="fas fa-folder"></i> Resources</a
+              >
+            </li>
+            <li>
+              <a href="#messages"><i class="fas fa-envelope"></i> Messages</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+          <a href="#" id="logout-btn"
+            ><i class="fas fa-sign-out-alt"></i> Logout</a
+          >
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="dashboard-main">
+        <header class="dashboard-header">
+          <div class="mobile-toggle" id="sidebar-toggle">
+            <i class="fas fa-bars"></i>
+          </div>
+
+          <div class="header-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search..." />
+          </div>
+
+          <div class="header-actions">
+            <div class="notification-bell">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge">3</span>
+            </div>
+            <div class="date-display">
+              <i class="fas fa-calendar"></i>
+              <span id="current-date">Loading...</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="dashboard-content">
+          <div class="page-header">
+            <h1>Leave Application</h1>
+            <p>Request time off or report an absence</p>
+          </div>
+
+          <div class="leave-dashboard">
+            <div class="leave-stats">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="annual-leave-balance">15</h3>
+                  <p>Annual Leave Balance</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-procedures"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="sick-leave-balance">10</h3>
+                  <p>Sick Leave Balance</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-calendar-times"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="leave-taken">0</h3>
+                  <p>Leave Days Taken</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div class="stat-info">
+                  <h3 id="pending-applications">0</h3>
+                  <p>Pending Applications</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="leave-actions">
+              <button id="new-leave-btn" class="btn-primary">
+                <i class="fas fa-plus"></i> New Leave Application
+              </button>
+              <button id="view-calendar-btn" class="btn-outline">
+                <i class="fas fa-calendar-alt"></i> View School Calendar
+              </button>
+            </div>
+
+            <div class="leave-tabs">
+              <div class="tab-header">
+                <button class="tab-btn active" data-tab="pending">
+                  Pending
+                </button>
+                <button class="tab-btn" data-tab="approved">Approved</button>
+                <button class="tab-btn" data-tab="rejected">Rejected</button>
+                <button class="tab-btn" data-tab="all">All Applications</button>
+              </div>
+
+              <div class="tab-content">
+                <div id="pending-tab" class="tab-pane active">
+                  <div class="empty-state">
+                    <div class="empty-icon">
+                      <i class="fas fa-calendar-times"></i>
+                    </div>
+                    <h3>No Pending Applications</h3>
+                    <p>
+                      You don't have any pending leave applications at the
+                      moment.
+                    </p>
+                    <button class="btn-create-application">
+                      Apply for Leave
+                    </button>
+                  </div>
+                </div>
+
+                <div id="approved-tab" class="tab-pane">
+                  <div class="empty-state">
+                    <div class="empty-icon">
+                      <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>No Approved Applications</h3>
+                    <p>You don't have any approved leave applications yet.</p>
+                    <button class="btn-create-application">
+                      Apply for Leave
+                    </button>
+                  </div>
+                </div>
+
+                <div id="rejected-tab" class="tab-pane">
+                  <div class="empty-state">
+                    <div class="empty-icon">
+                      <i class="fas fa-calendar-times"></i>
+                    </div>
+                    <h3>No Rejected Applications</h3>
+                    <p>You don't have any rejected leave applications.</p>
+                  </div>
+                </div>
+
+                <div id="all-tab" class="tab-pane">
+                  <div class="empty-state">
+                    <div class="empty-icon">
+                      <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>No Leave Applications</h3>
+                    <p>
+                      You haven't submitted any leave applications yet. When the
+                      school year begins, you can apply for leave using the
+                      button below.
+                    </p>
+                    <button class="btn-create-application">
+                      Apply for Leave
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Leave Application Modal -->
+    <div id="leave-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>New Leave Application</h2>
+          <button class="modal-close" id="close-leave-modal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="leave-form">
+            <div class="form-group">
+              <label for="leave-type">Leave Type</label>
+              <select id="leave-type" name="leave-type" required>
+                <option value="">Select Leave Type</option>
+                <option value="annual">Annual Leave</option>
+                <option value="sick">Sick Leave</option>
+                <option value="compassionate">Compassionate Leave</option>
+                <option value="study">Study Leave</option>
+                <option value="maternity">Maternity Leave</option>
+                <option value="paternity">Paternity Leave</option>
+                <option value="unpaid">Unpaid Leave</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="start-date">Start Date</label>
+                <input type="date" id="start-date" name="start-date" required />
+              </div>
+
+              <div class="form-group">
+                <label for="end-date">End Date</label>
+                <input type="date" id="end-date" name="end-date" required />
+              </div>
+            </div>
+
+            <div class="form-group duration-display">
+              <label>Duration</label>
+              <div class="duration-result">
+                <span id="leave-duration">0</span> days
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="leave-reason">Reason for Leave</label>
+              <textarea
+                id="leave-reason"
+                name="leave-reason"
+                rows="4"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-info">Contact Information During Leave</label>
+              <input
+                type="text"
+                id="contact-info"
+                name="contact-info"
+                placeholder="Phone number or email"
+              />
+            </div>
+
+            <div class="form-group" id="document-upload-container">
+              <label>Supporting Documents (if applicable)</label>
+              <div class="file-upload-area">
+                <input
+                  type="file"
+                  id="document-upload"
+                  name="document-upload"
+                  multiple
+                />
+                <label for="document-upload" class="file-upload-label">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <span>Click to upload or drag files here</span>
+                </label>
+              </div>
+              <div id="file-list" class="file-list"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="substitute-teacher"
+                >Substitute Teacher Arrangements</label
+              >
+              <select id="substitute-teacher" name="substitute-teacher">
+                <option value="">Select Substitute Teacher</option>
+                <option value="school-arrange">
+                  School to arrange substitute
+                </option>
+                <option value="teacher1">Mrs. Sarah Johnson</option>
+                <option value="teacher2">Mr. Robert Williams</option>
+                <option value="teacher3">Ms. Elizabeth Brown</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="handover-notes">Handover Notes</label>
+              <textarea
+                id="handover-notes"
+                name="handover-notes"
+                rows="4"
+                placeholder="Provide any important information for your substitute"
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" id="cancel-leave" class="btn-outline">
+                Cancel
+              </button>
+              <button type="submit" class="btn-primary">
+                Submit Application
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar Modal -->
+    <div id="calendar-modal" class="modal">
+      <div class="modal-content calendar-modal-content">
+        <div class="modal-header">
+          <h2>School Calendar</h2>
+          <button class="modal-close" id="close-calendar-modal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="calendar-controls">
+            <button id="prev-month" class="btn-calendar-nav">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <h3 id="calendar-month">May 2025</h3>
+            <button id="next-month" class="btn-calendar-nav">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <div class="calendar-legend">
+            <div class="legend-item">
+              <span class="legend-color school-holiday"></span>
+              <span>School Holiday</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color public-holiday"></span>
+              <span>Public Holiday</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color teacher-leave"></span>
+              <span>Your Leave</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color staff-event"></span>
+              <span>Staff Event</span>
+            </div>
+          </div>
+
+          <div class="calendar-container">
+            <div class="calendar-header">
+              <div>Sun</div>
+              <div>Mon</div>
+              <div>Tue</div>
+              <div>Wed</div>
+              <div>Thu</div>
+              <div>Fri</div>
+              <div>Sat</div>
+            </div>
+            <div id="calendar-days" class="calendar-days">
+              <!-- Calendar days will be generated by JavaScript -->
+            </div>
+          </div>
+
+          <div class="calendar-events">
+            <h4>Upcoming Events</h4>
+            <div id="event-list" class="event-list">
+              <div class="event-item">
+                <div class="event-date">September 5, 2025</div>
+                <div class="event-details">
+                  <div class="event-title">School Resumption</div>
+                  <div class="event-time">8:00 AM</div>
+                </div>
+              </div>
+
+              <div class="event-item">
+                <div class="event-date">September 4, 2023</div>
+                <div class="event-details">
+                  <div class="event-title">Staff Orientation</div>
+                  <div class="event-time">9:00 AM - 3:00 PM</div>
+                </div>
+              </div>
+              <div class="event-item">
+                <div class="event-date">October 1, 2023</div>
+                <div class="event-details">
+                  <div class="event-title">Independence Day Holiday</div>
+                  <div class="event-time">All Day</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/js/leave-application.js"></script>
+  </body>
+</html>
