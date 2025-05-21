@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Franciscan Catholic Nursery and Primary School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/franciscan.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/messages.css">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-circle">
+                    <img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo">
+                </div>
+                <h3>Teacher Portal</h3>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <h4 id="teacher-name">Loading...</h4>
+                    <p id="teacher-subject">Loading...</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="teacher-dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="my-classes.html"><i class="fas fa-users"></i> My Classes</a>
+                    </li>
+                    <li>
+                        <a href="assignments.html"><i class="fas fa-book"></i> Assignments</a>
+                    </li>
+                    <li>
+                        <a href="e-learning.html"><i class="fas fa-laptop"></i> E-Learning</a>
+                    </li>
+                    <li>
+                        <a href="staff-appraisal.html"><i class="fas fa-chart-bar"></i> Staff Appraisal</a>
+                    </li>
+                    <li>
+                        <a href="leave-application.html"><i class="fas fa-calendar-alt"></i> Leave Application</a>
+                    </li>
+                    <li>
+                        <a href="resources.html"><i class="fas fa-folder"></i> Resources</a>
+                    </li>
+                    <li class="active">
+                        <a href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="mobile-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search messages...">
+                </div>
+                
+                <div class="header-actions">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">0</span>
+                    </div>
+                    <div class="date-display">
+                        <i class="fas fa-calendar"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="dashboard-content">
+                <div class="page-header">
+                    <h1>Messages</h1>
+                    <p>Communicate with students, parents, and staff</p>
+                </div>
+                
+                <div class="messages-container">
+                    <div class="messages-sidebar">
+                        <div class="messages-actions">
+                            <button id="compose-btn" class="compose-button">
+                                <i class="fas fa-pen"></i> Compose
+                            </button>
+                        </div>
+                        
+                        <div class="messages-folders">
+                            <div class="folder-item active">
+                                <i class="fas fa-inbox"></i>
+                                <span>Inbox</span>
+                                <span class="message-count">0</span>
+                            </div>
+                            <div class="folder-item">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Sent</span>
+                                <span class="message-count">0</span>
+                            </div>
+                            <div class="folder-item">
+                                <i class="fas fa-star"></i>
+                                <span>Starred</span>
+                                <span class="message-count">0</span>
+                            </div>
+                            <div class="folder-item">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Drafts</span>
+                                <span class="message-count">0</span>
+                            </div>
+                            <div class="folder-item">
+                                <i class="fas fa-trash-alt"></i>
+                                <span>Trash</span>
+                                <span class="message-count">0</span>
+                            </div>
+                        </div>
+                        
+                        <div class="messages-contacts">
+                            <h3>Quick Contacts</h3>
+                            <div class="empty-contacts">
+                                <i class="fas fa-address-book"></i>
+                                <p>No contacts available yet</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="messages-content">
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="fas fa-envelope-open"></i>
+                            </div>
+                            <h3>No Messages Yet</h3>
+                            <p>Your inbox is empty. Messages from students, parents, and staff will appear here once the school year begins.</p>
+                            <p class="empty-subtext">You can still compose messages to the administrative staff if you have any questions before the school year starts.</p>
+                            <button id="empty-compose-btn" class="compose-button">
+                                <i class="fas fa-pen"></i> Compose a Message
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Compose Message Modal -->
+    <div id="compose-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Compose Message</h2>
+                <button class="modal-close" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="compose-form">
+                    <div class="form-group">
+                        <label for="message-to">To</label>
+                        <select id="message-to" name="message-to" required>
+                            <option value="">Select Recipient</option>
+                            <option value="principal">Dr. James Anderson (Principal)</option>
+                            <option value="vice-principal">Mrs. Sarah Johnson (Vice Principal)</option>
+                            <option value="admin">School Administration</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message-subject">Subject</label>
+                        <input type="text" id="message-subject" name="message-subject" placeholder="Enter subject" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message-body">Message</label>
+                        <textarea id="message-body" name="message-body" rows="8" placeholder="Type your message here..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Attachments</label>
+                        <div class="file-upload-area">
+                            <input type="file" id="message-attachment" name="message-attachment" multiple>
+                            <label for="message-attachment" class="file-upload-label">
+                                <i class="fas fa-paperclip"></i>
+                                <span>Click to attach files or drag files here</span>
+                            </label>
+                        </div>
+                        <div id="attachment-list" class="attachment-list"></div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="save-draft" class="btn-outline">
+                            <i class="fas fa-save"></i> Save as Draft
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/messages.js"></script>
+</body>
+</html>
