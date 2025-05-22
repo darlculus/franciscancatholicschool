@@ -131,7 +131,7 @@
                     <div class="action-buttons">
                         <button class="action-btn" id="add-teacher-btn">
                             <i class="fas fa-user-plus"></i>
-                            <span>Add Teacher</span>
+                            <span>Add Staff</span>
                         </button>
                         <button class="action-btn" id="add-student-btn">
                             <i class="fas fa-user-plus"></i>
@@ -183,8 +183,23 @@
                                 <input type="tel" id="teacher-phone" name="teacher-phone" required>
                             </div>
                             <div class="form-group">
+                                <label for="teacher-role">Role</label>
+                                <select id="teacher-role" name="teacher-role" required>
+                                    <option value="">Select Role</option>
+                                    <option value="teacher">Class Teacher</option>
+                                    <option value="admin">Administrative Staff</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="teacher-subject-group">
                                 <label for="teacher-subject">Subject</label>
-                                <input type="text" id="teacher-subject" name="teacher-subject" required>
+                                <input type="text" id="teacher-subject" name="teacher-subject">
+                            </div>
+                            <div class="form-group" id="teacher-class-group">
+                                <label for="teacher-class">Assigned Class</label>
+                                <select id="teacher-class" name="teacher-class">
+                                    <option value="">Select Class (Optional)</option>
+                                    <!-- Classes will be populated dynamically -->
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="teacher-password">Temporary Password</label>

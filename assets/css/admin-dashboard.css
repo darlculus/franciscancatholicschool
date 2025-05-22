@@ -471,7 +471,7 @@ body {
         transform: translateX(0);
     }
     
-    .sidebar-header h3, .sidebar-menu a span, .sidebar-footer a span {
+    .dashboard-header h3, .sidebar-menu a span, .sidebar-footer a span {
         display: block;
     }
     

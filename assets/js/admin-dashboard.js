@@ -1,6 +1,30 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Admin dashboard script loaded');
     
+    // Add hamburger menu functionality
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.dashboard-sidebar');
+    
+    if (sidebarToggle && sidebar) {
+        console.log('Sidebar toggle button found');
+        sidebarToggle.addEventListener('click', function(e) {
+            console.log('Sidebar toggle clicked');
+            sidebar.classList.toggle('active');
+            e.stopPropagation(); // Prevent the click from bubbling to document
+        });
+    }
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(event) {
+        if (sidebar && 
+            sidebar.classList.contains('active') && 
+            !sidebar.contains(event.target) && 
+            event.target !== sidebarToggle && 
+            !sidebarToggle.contains(event.target)) {
+            sidebar.classList.remove('active');
+        }
+    });
+    
     // Test button connections
     const addTeacherBtn = document.getElementById('add-teacher-btn');
     const addStudentBtn = document.getElementById('add-student-btn');
@@ -87,6 +111,87 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // Handle teacher role selection
+    const teacherRoleSelect = document.getElementById('teacher-role');
+    if (teacherRoleSelect) {
+        teacherRoleSelect.addEventListener('change', function() {
+            const subjectGroup = document.getElementById('teacher-subject-group');
+            const classGroup = document.getElementById('teacher-class-group');
+            
+            if (this.value === 'admin') {
+                // For administrative staff, hide subject and class fields
+                if (subjectGroup) subjectGroup.style.display = 'none';
+                if (classGroup) classGroup.style.display = 'none';
+            } else {
+                // For teachers, show subject and class fields
+                if (subjectGroup) subjectGroup.style.display = 'block';
+                if (classGroup) classGroup.style.display = 'block';
+            }
+        });
+    }
+
+    // Also update your form submission handler to account for the role
+    const addTeacherForm = document.getElementById('add-teacher-form');
+    if (addTeacherForm) {
+        addTeacherForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const role = document.getElementById('teacher-role').value;
+            
+            // Get form data
+            const teacherData = {
+                id: Date.now(), // Use timestamp as ID
+                name: document.getElementById('teacher-name').value,
+                email: document.getElementById('teacher-email').value,
+                phone: document.getElementById('teacher-phone').value,
+                role: role,
+                subject: role === 'teacher' ? document.getElementById('teacher-subject').value : '',
+                classId: role === 'teacher' ? document.getElementById('teacher-class').value : '',
+                password: document.getElementById('teacher-password').value,
+                dateAdded: new Date().toISOString()
+            };
+            
+            // Get existing teachers or initialize empty array
+            const teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+            
+            // Add new teacher
+            teachers.push(teacherData);
+            
+            // Save to localStorage
+            localStorage.setItem('teachers', JSON.stringify(teachers));
+            
+            // Close modal and reset form
+            document.getElementById('add-teacher-modal').style.display = 'none';
+            addTeacherForm.reset();
+            
+            // Show success message
+            alert('Teacher added successfully!');
+            
+            // Update teacher count in dashboard
+            const teacherCountElement = document.querySelector('.stat-card:nth-child(2) .stat-count');
+            if (teacherCountElement) {
+                teacherCountElement.textContent = teachers.length;
+            }
+            
+            // Add to recent activities
+            const activityList = document.querySelector('.activity-list');
+            if (activityList) {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                activityItem.innerHTML = `
+                    <div class="activity-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="activity-details">
+                        <p>New ${role === 'admin' ? 'administrative staff' : 'teacher'} ${teacherData.name} added</p>
+                        <span class="activity-time">Just now</span>
+                    </div>
+                `;
+                activityList.insertBefore(activityItem, activityList.firstChild);
+            }
+        });
+    }
     
     // Logout functionality
     const logoutBtn = document.getElementById('logout-btn');
