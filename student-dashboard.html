@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/franciscan.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/student-dashboard.css">
 </head>
 <body class="dashboard-body">
     <div class="dashboard-container">
@@ -53,6 +54,12 @@
                         <a href="#resources"><i class="fas fa-folder"></i> Resources</a>
                     </li>
                     <li>
+                        <a href="#newsletter"><i class="fas fa-newspaper"></i> Newsletter</a>
+                    </li>
+                    <li>
+                        <a href="#videos"><i class="fab fa-youtube"></i> Learning Videos</a>
+                    </li>
+                    <li>
                         <a href="#messages"><i class="fas fa-envelope"></i> Messages</a>
                     </li>
                 </ul>
@@ -79,7 +86,7 @@
                 <div class="header-actions">
                     <div class="notification-bell">
                         <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
+                        <span class="notification-badge">5</span>
                     </div>
                     <div class="date-display">
                         <i class="fas fa-calendar"></i>
@@ -92,7 +99,11 @@
                 <div class="welcome-banner">
                     <div class="welcome-text">
                         <h1>Welcome back, <span id="welcome-name">Student</span>!</h1>
-                        <p>Here's what's happening with your academic progress</p>
+                        <p>Get ready for the new academic session - School resumes soon!</p>
+                        <div class="resumption-notice">
+                            <i class="fas fa-info-circle"></i>
+                            <span>School Resumption: January 15th, 2024</span>
+                        </div>
                     </div>
                     <div class="welcome-image">
                         <img src="assets/img/student-illustration.png" alt="Student Illustration">
@@ -102,80 +113,81 @@
                 <div class="quick-stats">
                     <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="fas fa-tasks"></i>
+                            <i class="fas fa-calendar-check"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>4</h3>
-                            <p>Pending Assignments</p>
+                            <h3>7</h3>
+                            <p>Days to Resumption</p>
                         </div>
                     </div>
                     
                     <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="fas fa-star"></i>
+                            <i class="fas fa-book-open"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>85%</h3>
-                            <p>Average Grade</p>
+                            <h3>12</h3>
+                            <p>Holiday Assignments</p>
                         </div>
                     </div>
                     
                     <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="fas fa-check-circle"></i>
+                            <i class="fas fa-video"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>95%</h3>
-                            <p>Attendance Rate</p>
+                            <h3>8</h3>
+                            <p>Learning Videos</p>
                         </div>
                     </div>
                     
                     <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="fas fa-trophy"></i>
+                            <i class="fas fa-newspaper"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>3</h3>
-                            <p>Achievements</p>
+                            <h3>New</h3>
+                            <p>Newsletter Available</p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="dashboard-grid">
+                    <!-- Holiday Assignments -->
                     <div class="dashboard-card upcoming-assignments">
                         <div class="card-header">
-                            <h2>Upcoming Assignments</h2>
+                            <h2>Holiday Assignments</h2>
                             <a href="#assignments" class="view-all">View All</a>
                         </div>
                         <div class="card-content">
                             <ul class="assignment-list">
                                 <li class="assignment-item">
                                     <div class="assignment-info">
-                                        <h4>Mathematics - Fractions Exercise</h4>
-                                        <p>Complete exercises 1-10 on page 45</p>
+                                        <h4>Mathematics - Holiday Workbook</h4>
+                                        <p>Complete pages 1-25 in your holiday mathematics workbook</p>
                                     </div>
                                     <div class="assignment-meta">
-                                        <span class="due-date">Due: Tomorrow</span>
+                                        <span class="due-date">Due: Before Resumption</span>
                                         <span class="priority high">High Priority</span>
                                     </div>
                                 </li>
                                 <li class="assignment-item">
                                     <div class="assignment-info">
-                                        <h4>Science - Plant Life Cycle</h4>
-                                        <p>Draw and label the stages of plant growth</p>
+                                        <h4>English - Reading Comprehension</h4>
+                                        <p>Read "The Adventures of Tom Sawyer" and write a summary</p>
                                     </div>
                                     <div class="assignment-meta">
-                                        <span class="due-date">Due: 3 days</span>
+                                        <span class="due-date">Due: First week of term</span>
                                         <span class="priority medium">Medium Priority</span>
                                     </div>
                                 </li>
                                 <li class="assignment-item">
                                     <div class="assignment-info">
-                                        <h4>English - Book Report</h4>
-                                        <p>Write a 2-page report on "The Lion, the Witch and the Wardrobe"</p>
+                                        <h4>Science - Nature Journal</h4>
+                                        <p>Keep a daily journal of weather observations during holidays</p>
                                     </div>
                                     <div class="assignment-meta">
-                                        <span class="due-date">Due: 1 week</span>
+                                        <span class="due-date">Due: Ongoing</span>
                                         <span class="priority medium">Medium Priority</span>
                                     </div>
                                 </li>
@@ -183,69 +195,137 @@
                         </div>
                     </div>
                     
-                    <div class="dashboard-card recent-grades">
+                    <!-- Learning Videos Section -->
+                    <div class="dashboard-card learning-videos">
                         <div class="card-header">
-                            <h2>Recent Grades</h2>
-                            <a href="#grades" class="view-all">View All</a>
+                            <h2><i class="fab fa-youtube"></i> Learning Videos</h2>
+                            <a href="#videos" class="view-all">View All</a>
                         </div>
                         <div class="card-content">
-                            <ul class="grades-list">
-                                <li class="grade-item">
-                                    <div class="grade-info">
-                                        <h4>Mathematics Quiz</h4>
-                                        <p>Multiplication and Division</p>
+                            <div class="video-grid">
+                                <div class="video-item">
+                                    <div class="video-thumbnail">
+                                        <img src="assets/img/video-thumb-1.jpg" alt="Math Video" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI2Y4ZjlmYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2Yjc2ODQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5NYXRoIFZpZGVvPC90ZXh0Pjwvc3ZnPg=='">
+                                        <div class="play-button">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                        <div class="video-duration">5:30</div>
                                     </div>
-                                    <div class="grade-score excellent">
-                                        <span>92%</span>
+                                    <div class="video-info">
+                                        <h4>Multiplication Tables Made Easy</h4>
+                                        <p>Learn multiplication tricks</p>
+                                        <span class="video-subject">Mathematics</span>
                                     </div>
-                                </li>
-                                <li class="grade-item">
-                                    <div class="grade-info">
-                                        <h4>English Spelling Test</h4>
-                                        <p>Weekly vocabulary</p>
+                                </div>
+                                
+                                <div class="video-item">
+                                    <div class="video-thumbnail">
+                                        <img src="assets/img/video-thumb-2.jpg" alt="Science Video" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI2Y4ZjlmYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2Yjc2ODQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5TY2llbmNlIFZpZGVvPC90ZXh0Pjwvc3ZnPg=='">
+                                        <div class="play-button">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                        <div class="video-duration">8:15</div>
                                     </div>
-                                    <div class="grade-score good">
-                                        <span>85%</span>
+                                    <div class="video-info">
+                                        <h4>The Water Cycle Explained</h4>
+                                        <p>Understanding evaporation and precipitation</p>
+                                        <span class="video-subject">Science</span>
                                     </div>
-                                </li>
-                                <li class="grade-item">
-                                    <div class="grade-info">
-                                        <h4>Science Project</h4>
-                                        <p>Solar System Model</p>
+                                </div>
+                                
+                                <div class="video-item">
+                                    <div class="video-thumbnail">
+                                        <img src="assets/img/video-thumb-3.jpg" alt="English Video" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI2Y4ZjlmYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2Yjc2ODQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5FbmdsaXNoIFZpZGVvPC90ZXh0Pjwvc3ZnPg=='">
+                                        <div class="play-button">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                        <div class="video-duration">6:45</div>
                                     </div>
-                                    <div class="grade-score excellent">
-                                        <span>95%</span>
+                                    <div class="video-info">
+                                        <h4>Creative Writing Tips</h4>
+                                        <p>How to write amazing stories</p>
+                                        <span class="video-subject">English</span>
                                     </div>
-                                </li>
-                            </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
+                    <!-- Newsletter Preview -->
+                    <div class="dashboard-card newsletter-preview">
+                        <div class="card-header">
+                            <h2><i class="fas fa-newspaper"></i> School Newsletter</h2>
+                            <a href="#newsletter" class="view-all">Read Full Newsletter</a>
+                        </div>
+                        <div class="card-content">
+                            <div class="newsletter-header">
+                                <h3>Franciscan Catholic School Newsletter</h3>
+                                <span class="newsletter-date">January 2024 Edition</span>
+                            </div>
+                            <div class="newsletter-content">
+                                <div class="newsletter-item featured">
+                                    <div class="newsletter-icon">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="newsletter-text">
+                                        <h4>School Resumption Notice</h4>
+                                        <p>We are excited to welcome all students back for the new academic session starting January 15th, 2024. Please ensure all holiday assignments are completed.</p>
+                                        <span class="newsletter-category">Important Notice</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="newsletter-item">
+                                    <div class="newsletter-icon">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <div class="newsletter-text">
+                                        <h4>New Learning Resources</h4>
+                                        <p>We've added new educational videos and interactive materials to help students prepare for the upcoming term.</p>
+                                        <span class="newsletter-category">Academic</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="newsletter-item">
+                                    <div class="newsletter-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="newsletter-text">
+                                        <h4>Parent-Teacher Meeting</h4>
+                                        <p>Schedule your parent-teacher conference for the first week of resumption to discuss your child's progress.</p>
+                                        <span class="newsletter-category">Events</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- School Announcements -->
                     <div class="dashboard-card announcements">
                         <div class="card-header">
                             <h2>School Announcements</h2>
                         </div>
                         <div class="card-content">
                             <ul class="announcement-list">
-                                <li class="announcement-item">
+                                <li class="announcement-item urgent">
                                     <div class="announcement-header">
-                                        <h4 class="announcement-title">Annual Science Fair</h4>
-                                        <span class="announcement-date">Posted: 2 days ago</span>
+                                        <h4 class="announcement-title">School Resumption Preparation</h4>
+                                        <span class="announcement-date">Posted: 3 days ago</span>
                                     </div>
                                     <p class="announcement-content">
-                                        The Annual Science Fair will be held on March 15th. All students are encouraged to prepare projects demonstrating scientific principles. Registration forms are available from your science teacher.
+                                        Dear students and parents, please ensure all holiday assignments are completed before resumption on January 15th, 2024. School uniforms should be ready and all fees paid.
                                     </p>
                                     <div class="announcement-footer">
-                                        <span class="announcement-author">Posted by: Mrs. Elizabeth Brown</span>
+                                        <span class="announcement-author">Posted by: School Administration</span>
+                                        <span class="announcement-priority">Urgent</span>
                                     </div>
                                 </li>
                                 <li class="announcement-item">
                                     <div class="announcement-header">
-                                        <h4 class="announcement-title">Parent-Teacher Conference</h4>
-                                        <span class="announcement-date">Posted: 5 days ago</span>
+                                        <h4 class="announcement-title">New Academic Session Orientation</h4>
+                                        <span class="announcement-date">Posted: 1 week ago</span>
                                     </div>
                                     <p class="announcement-content">
-                                        Parent-Teacher conferences will be held on May 10th. Please have your parents schedule an appointment through the school office.
+                                        All students are required to attend the orientation program on the first day of resumption. Parents are also invited to join us for the welcome ceremony.
                                     </p>
                                     <div class="announcement-footer">
                                         <span class="announcement-author">Posted by: Dr. James Anderson</span>
@@ -253,17 +333,126 @@
                                 </li>
                                 <li class="announcement-item">
                                     <div class="announcement-header">
-                                        <h4 class="announcement-title">School Holiday Reminder</h4>
-                                        <span class="announcement-date">Posted: 1 week ago</span>
+                                        <h4 class="announcement-title">Holiday Learning Videos Available</h4>
+                                        <span class="announcement-date">Posted: 2 weeks ago</span>
                                     </div>
                                     <p class="announcement-content">
-                                        Please note that the school will be closed on April 22nd for Staff Development Day. Classes will resume on April 23rd.
+                                        We've uploaded new educational videos to help students stay engaged during the holidays. Check out the Learning Videos section for Mathematics, Science, and English content.
                                     </p>
                                     <div class="announcement-footer">
-                                        <span class="announcement-author">Posted by: School Administration</span>
+                                        <span class="announcement-author">Posted by: Mrs. Elizabeth Brown</span>
                                     </div>
                                 </li>
                             </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Preparation Checklist -->
+                    <div class="dashboard-card preparation-checklist">
+                        <div class="card-header">
+                            <h2><i class="fas fa-clipboard-list"></i> Resumption Checklist</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="checklist-intro">
+                                <p>Make sure you're ready for the new academic session!</p>
+                            </div>
+                            <ul class="checklist">
+                                <li class="checklist-item">
+                                    <input type="checkbox" id="assignments" checked>
+                                    <label for="assignments">
+                                        <i class="fas fa-book"></i>
+                                        Complete all holiday assignments
+                                    </label>
+                                </li>
+                                <li class="checklist-item">
+                                    <input type="checkbox" id="uniforms">
+                                    <label for="uniforms">
+                                        <i class="fas fa-tshirt"></i>
+                                        Prepare school uniforms
+                                    </label>
+                                </li>
+                                <li class="checklist-item">
+                                    <input type="checkbox" id="supplies">
+                                    <label for="supplies">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        Get school supplies ready
+                                    </label>
+                                </li>
+                                <li class="checklist-item">
+                                    <input type="checkbox" id="fees">
+                                    <label for="fees">
+                                        <i class="fas fa-credit-card"></i>
+                                        Pay outstanding school fees
+                                    </label>
+                                </li>
+                                <li class="checklist-item">
+                                    <input type="checkbox" id="medical">
+                                    <label for="medical">
+                                        <i class="fas fa-heartbeat"></i>
+                                        Update medical records
+                                    </label>
+                                </li>
+                                <li class="checklist-item">
+                                    <input type="checkbox" id="transport">
+                                    <label for="transport">
+                                        <i class="fas fa-bus"></i>
+                                        Arrange transportation
+                                    </label>
+                                </li>
+                            </ul>
+                            <div class="checklist-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 16.67%"></div>
+                                </div>
+                                <span class="progress-text">1 of 6 completed</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Links -->
+                    <div class="dashboard-card quick-links">
+                        <div class="card-header">
+                            <h2><i class="fas fa-external-link-alt"></i> Quick Links</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="links-grid">
+                                <a href="#assignments" class="quick-link">
+                                    <div class="link-icon">
+                                        <i class="fas fa-tasks"></i>
+                                    </div>
+                                    <span>Holiday Assignments</span>
+                                </a>
+                                <a href="#videos" class="quick-link">
+                                    <div class="link-icon">
+                                        <i class="fab fa-youtube"></i>
+                                    </div>
+                                    <span>Learning Videos</span>
+                                </a>
+                                <a href="#newsletter" class="quick-link">
+                                    <div class="link-icon">
+                                        <i class="fas fa-newspaper"></i>
+                                    </div>
+                                    <span>Newsletter</span>
+                                </a>
+                                <a href="#timetable" class="quick-link">
+                                    <div class="link-icon">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                    <span>New Timetable</span>
+                                </a>
+                                <a href="#resources" class="quick-link">
+                                    <div class="link-icon">
+                                        <i class="fas fa-download"></i>
+                                    </div>
+                                    <span>Study Materials</span>
+                                </a>
+                                <a href="#messages" class="quick-link">
+                                    <div class="link-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <span>Messages</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -273,4 +462,4 @@
 
     <script src="assets/js/student-dashboard.js"></script>
 </body>
-</html>
+</html> 
