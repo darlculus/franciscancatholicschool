@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments - Student Portal | Franciscan Catholic School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/franciscan.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/student-dashboard.css">
+    <link rel="stylesheet" href="assets/css/student-assignments.css">
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-circle">
+                    <img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo">
+                </div>
+                <h3>Student Portal</h3>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <h4 id="student-name">Loading...</h4>
+                    <p id="student-grade">Loading...</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="student-dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <a href="student-assignments.html"><i class="fas fa-book"></i> Assignments</a>
+                    </li>
+                    <li>
+                        <a href="#grades"><i class="fas fa-chart-line"></i> Grades</a>
+                    </li>
+                    <li>
+                        <a href="#timetable"><i class="fas fa-calendar-alt"></i> Timetable</a>
+                    </li>
+                    <li>
+                        <a href="#attendance"><i class="fas fa-clipboard-check"></i> Attendance</a>
+                    </li>
+                    <li>
+                        <a href="#resources"><i class="fas fa-folder"></i> Resources</a>
+                    </li>
+                    <li>
+                        <a href="#messages"><i class="fas fa-envelope"></i> Messages</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="mobile-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search assignments..." id="assignment-search">
+                </div>
+                
+                <div class="header-actions">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="date-display">
+                        <i class="fas fa-calendar"></i>
+                        <span id="current-date">Loading...</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="dashboard-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div class="header-left">
+                        <h1><i class="fas fa-book"></i> My Assignments</h1>
+                        <p class="page-subtitle">Holiday assignments and preparation tasks for the new academic session</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-secondary" id="filter-btn">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        <button class="btn-primary" id="download-btn">
+                            <i class="fas fa-download"></i> Download All
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Assignment Statistics -->
+                <div class="assignment-stats">
+                    <div class="stat-card total">
+                        <div class="stat-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-assignments">8</h3>
+                            <p>Total Assignments</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card completed">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="completed-assignments">3</h3>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card pending">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pending-assignments">4</h3>
+                            <p>In Progress</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card upcoming">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-plus"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="upcoming-assignments">1</h3>
+                            <p>Upcoming</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumption Countdown -->
+                <div class="resumption-banner">
+                    <div class="banner-content">
+                        <div class="banner-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="banner-text">
+                            <h3>School Resumption Countdown</h3>
+                            <p>New academic session begins in <span id="days-remaining">15</span> days</p>
+                            <div class="countdown-timer">
+                                <div class="time-unit">
+                                    <span id="days">15</span>
+                                    <label>Days</label>
+                                </div>
+                                <div class="time-unit">
+                                    <span id="hours">10</span>
+                                    <label>Hours</label>
+                                </div>
+                                <div class="time-unit">
+                                    <span id="minutes">30</span>
+                                    <label>Minutes</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-progress">
+                        <div class="progress-label">Holiday Assignment Progress</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="holiday-progress" style="width: 60%"></div>
+                        </div>
+                        <div class="progress-text">60% Complete</div>
+                    </div>
+                </div>
+
+                <!-- Assignment Filters -->
+                <div class="assignment-filters" id="assignment-filters">
+                    <div class="filter-group">
+                        <label for="subject-filter">Subject:</label>
+                        <select id="subject-filter" class="filter-select">
+                            <option value="all">All Subjects</option>
+                            <option value="mathematics">Mathematics</option>
+                            <option value="english">English Language</option>
+                            <option value="science">Basic Science</option>
+                            <option value="social-studies">Social Studies</option>
+                            <option value="crs">Christian Religious Studies</option>
+                            <option value="french">French</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="status-filter">Status:</label>
+                        <select id="status-filter" class="filter-select">
+                            <option value="all">All Status</option>
+                            <option value="completed">Completed</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="not-started">Not Started</option>
+                            <option value="upcoming">Upcoming</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="type-filter">Type:</label>
+                        <select id="type-filter" class="filter-select">
+                            <option value="all">All Types</option>
+                            <option value="holiday">Holiday Assignment</option>
+                            <option value="preparation">Preparation Task</option>
+                            <option value="reading">Reading Assignment</option>
+                            <option value="project">Project Work</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <button class="btn-secondary" id="clear-filters">
+                            <i class="fas fa-times"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Assignment Categories -->
+                <div class="assignment-categories">
+                    <div class="category-tabs">
+                        <button class="tab-btn active" data-category="holiday">
+                            <i class="fas fa-umbrella-beach"></i>
+                            Holiday Assignments
+                        </button>
+                        <button class="tab-btn" data-category="preparation">
+                            <i class="fas fa-clipboard-list"></i>
+                            Preparation Tasks
+                        </button>
+                        <button class="tab-btn" data-category="upcoming">
+                            <i class="fas fa-calendar-week"></i>
+                            Upcoming Assignments
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Assignment Content -->
+                <div class="assignment-content">
+                    <!-- Holiday Assignments Tab -->
+                    <div class="tab-content active" id="holiday-tab">
+                        <div class="assignments-grid">
+                            <!-- Mathematics Assignment -->
+                            <div class="assignment-card" data-subject="mathematics" data-status="in-progress" data-type="holiday">
+                                <div class="assignment-header">
+                                    <div class="subject-badge mathematics">
+                                        <i class="fas fa-calculator"></i>
+                                        Mathematics
+                                    </div>
+                                    <div class="assignment-status in-progress">
+                                        <i class="fas fa-clock"></i>
+                                        In Progress
+                                    </div>
+                                </div>
+                                <div class="assignment-body">
+                                    <h3>Fractions and Decimals Practice</h3>
+                                    <p class="assignment-description">
+                                        Complete exercises on converting fractions to decimals and vice versa. 
+                                        Practice word problems involving fractions in real-life scenarios.
+                                    </p>
+                                    <div class="assignment-details">
+                                        <div class="detail-item">
+                                            <i class="fas fa-book-open"></i>
+                                            <span>Pages 45-60 in Mathematics Textbook</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Due: January 10, 2024</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Estimated Time: 3 hours</span>
+                                        </div>
+                                    </div>
+                                    <div class="assignment-progress">
+                                        <div class="progress-label">Progress: 65%</div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 65%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="assignment-footer">
+                                    <button class="btn-primary" onclick="openAssignment('math-fractions')">
+                                        <i class="fas fa-play"></i> Continue
+                                    </button>
+                                    <button class="btn-secondary" onclick="downloadAssignment('math-fractions')">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="btn-secondary" onclick="viewDetails('math-fractions')">
+                                        <i class="fas fa-eye"></i> Details
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- English Assignment -->
+                            <div class="assignment-card" data-subject="english" data-status="completed" data-type="holiday">
+                                <div class="assignment-header">
+                                    <div class="subject-badge english">
+                                        <i class="fas fa-pen-fancy"></i>
+                                        English Language
+                                    </div>
+                                    <div class="assignment-status completed">
+                                        <i class="fas fa-check-circle"></i>
+                                        Completed
+                                    </div>
+                                </div>
+                                <div class="assignment-body">
+                                    <h3>Creative Writing Portfolio</h3>
+                                    <p class="assignment-description">
+                                        Write three short stories based on the themes: friendship, adventure, and family. 
+                                        Each story should be 200-300 words with proper grammar and punctuation.
+                                    </p>
+                                    <div class="assignment-details">
+                                        <div class="detail-item">
+                                            <i class="fas fa-file-alt"></i>
+                                            <span>3 Short Stories (200-300 words each)</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-calendar-check"></i>
+                                            <span>Completed: December 20, 2023</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-star"></i>
+                                            <span>Grade: 95% (Excellent)</span>
+                                        </div>
+                                    </div>
+                                    <div class="assignment-progress">
+                                        <div class="progress-label">Progress: 100%</div>
+                                        <div class="progress-bar">
+                                                                                        <div class="progress-fill completed" style="width: 100%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="assignment-footer">
+                                    <button class="btn-success" onclick="viewSubmission('english-writing')">
+                                        <i class="fas fa-eye"></i> View Submission
+                                    </button>
+                                    <button class="btn-secondary" onclick="downloadFeedback('english-writing')">
+                                        <i class="fas fa-comment"></i> Feedback
+                                    </button>
+                                    <button class="btn-secondary" onclick="downloadAssignment('english-writing')">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Science Assignment -->
+                            <div class="assignment-card" data-subject="science" data-status="not-started" data-type="holiday">
+                                <div class="assignment-header">
+                                    <div class="subject-badge science">
+                                        <i class="fas fa-flask"></i>
+                                        Basic Science
+                                    </div>
+                                    <div class="assignment-status not-started">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        Not Started
+                                    </div>
+                                </div>
+                                <div class="assignment-body">
+                                    <h3>Plant Life Cycle Project</h3>
+                                    <p class="assignment-description">
+                                        Create a detailed diagram showing the life cycle of a flowering plant. 
+                                        Include labels and write a short explanation for each stage.
+                                    </p>
+                                    <div class="assignment-details">
+                                        <div class="detail-item">
+                                            <i class="fas fa-seedling"></i>
+                                            <span>Diagram + Written Explanation</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Due: January 12, 2024</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Estimated Time: 2 hours</span>
+                                        </div>
+                                    </div>
+                                    <div class="assignment-progress">
+                                        <div class="progress-label">Progress: 0%</div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="assignment-footer">
+                                    <button class="btn-primary" onclick="startAssignment('science-plant')">
+                                        <i class="fas fa-play"></i> Start Assignment
+                                    </button>
+                                    <button class="btn-secondary" onclick="downloadAssignment('science-plant')">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="btn-secondary" onclick="viewDetails('science-plant')">
+                                        <i class="fas fa-info-circle"></i> Instructions
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Social Studies Assignment -->
+                            <div class="assignment-card" data-subject="social-studies" data-status="in-progress" data-type="holiday">
+                                <div class="assignment-header">
+                                    <div class="subject-badge social-studies">
+                                        <i class="fas fa-globe-africa"></i>
+                                        Social Studies
+                                    </div>
+                                    <div class="assignment-status in-progress">
+                                        <i class="fas fa-clock"></i>
+                                        In Progress
+                                    </div>
+                                </div>
+                                <div class="assignment-body">
+                                    <h3>Nigerian Cultural Heritage Research</h3>
+                                    <p class="assignment-description">
+                                        Research and write about three major cultural festivals in Nigeria. 
+                                        Include their origins, significance, and how they are celebrated today.
+                                    </p>
+                                    <div class="assignment-details">
+                                        <div class="detail-item">
+                                            <i class="fas fa-search"></i>
+                                            <span>Research Report (500 words)</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Due: January 8, 2024</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Estimated Time: 4 hours</span>
+                                        </div>
+                                    </div>
+                                    <div class="assignment-progress">
+                                        <div class="progress-label">Progress: 40%</div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 40%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="assignment-footer">
+                                    <button class="btn-primary" onclick="openAssignment('social-heritage')">
+                                        <i class="fas fa-edit"></i> Continue
+                                    </button>
+                                    <button class="btn-secondary" onclick="saveProgress('social-heritage')">
+                                        <i class="fas fa-save"></i> Save Progress
+                                    </button>
+                                    <button class="btn-secondary" onclick="viewDetails('social-heritage')">
+                                        <i class="fas fa-eye"></i> Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preparation Tasks Tab -->
+                    <div class="tab-content" id="preparation-tab">
+                        <div class="assignments-grid">
+                            <!-- Reading List -->
+                            <div class="assignment-card" data-subject="english" data-status="in-progress" data-type="preparation">
+                                <div class="assignment-header">
+                                    <div class="subject-badge reading">
+                                        <i class="fas fa-book-reader"></i>
+                                        Reading List
+                                    </div>
+                                    <div class="assignment-status in-progress">
+                                        <i class="fas fa-clock"></i>
+                                        In Progress
+                                    </div>
+                                </div>
+                                <div class="assignment-body">
+                                    <h3>Holiday Reading Challenge</h3>
+                                    <p class="assignment-description">
+                                        Read at least 5 books from the recommended reading list. 
+                                        Write a brief summary and your favorite part for each book.
+                                    </p>
+                                    <div class="reading-progress">
+                                        <div class="books-read">
+                                            <div class="book-item completed">
+                                                <i class="fas fa-book"></i>
+                                                <span>Charlotte's Web</span>
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                            <div class="book-item completed">
+                                                <i class="fas fa-book"></i>
+                                                <span>The Lion, the Witch and the Wardrobe</span>
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                            <div class="book-item in-progress">
+                                                <i class="fas fa-book"></i>
+                                                <span>Matilda</span>
+                                                <i class="fas fa-clock"></i>
+                                            </div>
+                                            <div class="book-item">
+                                                <i class="fas fa-book"></i>
+                                                <span>The Secret Garden</span>
+                                            </div>
+                                            <div class="book-item">
+                                                <i class="fas fa-book"></i>
+                                                <span>Bridge to Terabithia</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="assignment-progress">
+                                        <div class="progress-label">Books Read: 2 of 5</div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 40%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="assignment-footer">
+                                    <button class="btn-primary" onclick="openReadingLog()">
+                                        <i class="fas fa-plus"></i> Add Book Review
+                                    </button>
+                                    <button class="btn-secondary" onclick="viewReadingList()">
+                                        <i class="fas fa-list"></i> View Full List
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- School Supplies Checklist -->
+                            <div class="assignment-card" data-subject="general" data-status="in-progress" data-type="preparation">
+                                <div class="assignment-header">
+                                    <div class="subject-badge preparation">
+                                        <i class="fas fa-clipboard-check"></i>
+                                        Preparation
+                                    </div>
+                                    <div class="assignment-status in-progress">
+                                        <i class="fas fa-clock"></i>
+                                        In Progress
+                                    </div>
+                                </div>
+                                <div class="assignment-body">
+                                    <h3>School Supplies Checklist</h3>
+                                    <p class="assignment-description">
+                                        Prepare all necessary school supplies and materials for the new academic session. 
+                                        Check off items as you acquire them.
+                                    </p>
+                                    <div class="supplies-checklist">
+                                        <div class="checklist-category">
+                                            <h4><i class="fas fa-pencil-alt"></i> Stationery</h4>
+                                            <div class="checklist-items">
+                                                <label class="checklist-item">
+                                                    <input type="checkbox" checked>
+                                                    <span>Exercise books (10 pieces)</span>
+                                                </label>
+                                                <label class="checklist-item">
+                                                    <input type="checkbox" checked>
+                                                    <span>Pencils (HB, 2B)</span>
+                                                </label>
+                                                <label class="checklist-item">
+                                                    <input type="checkbox">
+                                                    <span>Colored pencils set</span>
+                                                </label>
+                                                <label class="checklist-item">
+                                                    <input type="checkbox">
+                                                    <span>Ruler and eraser</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="checklist-category">
+                                            <h4><i class="fas fa-book"></i> Textbooks</h4>
+                                            <div class="checklist-items">
+                                                <label class="checklist-item">
+                                                    <input type="checkbox" checked>
+                                                    <span>Mathematics Textbook</span>
+                                                </label>
+                                                <label class="checklist-item">
+                                                    <input type="checkbox">
+                                                    <span>English Language Textbook</span>
+                                                </label>
+                                                <label class="checklist-item">
+                                                    <input type="checkbox">
+                                                    <span>Basic Science Textbook</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="assignment-progress">
+                                        <div class="progress-label">Items Acquired: 3 of 7</div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 43%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="assignment-footer">
+                                    <button class="btn-primary" onclick="updateChecklist()">
+                                        <i class="fas fa-save"></i> Save Progress
+                                    </button>
+                                    <button class="btn-secondary" onclick="downloadSuppliesList()">
+                                        <i class="fas fa-download"></i> Download List
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Skill Review -->
+                            <div class="assignment-card" data-subject="general" data-status="not-started" data-type="preparation">
+                                <div class="assignment-header">
+                                    <div class="subject-badge review">
+                                        <i class="fas fa-brain"></i>
+                                        Skill Review
+                                    </div>
+                                    <div class="assignment-status not-started">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        Not Started
+                                    </div>
+                                </div>
+                                <div class="assignment-body">
+                                    <h3>Previous Term Review</h3>
+                                    <p class="assignment-description">
+                                        Review key concepts from the previous term to prepare for the new session. 
+                                        Complete practice exercises in each subject area.
+                                    </p>
+                                    <div class="review-subjects">
+                                        <div class="subject-review">
+                                            <i class="fas fa-calculator"></i>
+                                            <span>Mathematics Review</span>
+                                            <div class="review-status">Not Started</div>
+                                        </div>
+                                        <div class="subject-review">
+                                            <i class="fas fa-pen-fancy"></i>
+                                            <span>English Review</span>
+                                            <div class="review-status">Not Started</div>
+                                        </div>
+                                        <div class="subject-review">
+                                            <i class="fas fa-flask"></i>
+                                            <span>Science Review</span>
+                                            <div class="review-status">Not Started</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="assignment-footer">
+                                    <button class="btn-primary" onclick="startReview()">
+                                        <i class="fas fa-play"></i> Start Review
+                                    </button>
+                                    <button class="btn-secondary" onclick="viewReviewMaterials()">
+                                        <i class="fas fa-book-open"></i> Review Materials
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Assignments Tab -->
+                    <div class="tab-content" id="upcoming-tab">
+                        <div class="upcoming-notice">
+                            <div class="notice-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="notice-content">
+                                <h3>Upcoming Assignments</h3>
+                                <p>These assignments will be available when the new academic session begins.</p>
+                            </div>
+                        </div>
+
+                        <div class="assignments-grid">
+                            <!-- Preview of upcoming assignments -->
+                            <div class="assignment-card upcoming-preview">
+                                <div class="assignment-header">
+                                    <div class="subject-badge mathematics">
+                                                                                <i class="fas fa-calculator"></i>
+                                        Mathematics
+                                    </div>
+                                    <div class="assignment-status upcoming">
+                                        <i class="fas fa-calendar-plus"></i>
+                                        Upcoming
+                                    </div>
+                                </div>
+                                <div class="assignment-body">
+                                    <h3>Algebra Fundamentals</h3>
+                                    <p class="assignment-description">
+                                        Introduction to basic algebraic expressions and equations. 
+                                        This assignment will be available on the first week of school.
+                                    </p>
+                                    <div class="assignment-details">
+                                        <div class="detail-item">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Available: January 15, 2024</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Estimated Duration: 1 week</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-star"></i>
+                                            <span>Difficulty: Intermediate</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="assignment-footer">
+                                    <button class="btn-secondary" disabled>
+                                        <i class="fas fa-lock"></i> Available Soon
+                                    </button>
+                                    <button class="btn-secondary" onclick="setReminder('algebra-fundamentals')">
+                                        <i class="fas fa-bell"></i> Set Reminder
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="assignment-card upcoming-preview">
+                                <div class="assignment-header">
+                                    <div class="subject-badge english">
+                                        <i class="fas fa-pen-fancy"></i>
+                                        English Language
+                                    </div>
+                                    <div class="assignment-status upcoming">
+                                        <i class="fas fa-calendar-plus"></i>
+                                        Upcoming
+                                    </div>
+                                </div>
+                                <div class="assignment-body">
+                                    <h3>Poetry Analysis Project</h3>
+                                    <p class="assignment-description">
+                                        Analyze selected poems focusing on themes, literary devices, and personal interpretation. 
+                                        Will include both written analysis and creative presentation.
+                                    </p>
+                                    <div class="assignment-details">
+                                        <div class="detail-item">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Available: January 22, 2024</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Estimated Duration: 2 weeks</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-star"></i>
+                                            <span>Difficulty: Advanced</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="assignment-footer">
+                                    <button class="btn-secondary" disabled>
+                                        <i class="fas fa-lock"></i> Available Soon
+                                    </button>
+                                    <button class="btn-secondary" onclick="setReminder('poetry-analysis')">
+                                        <i class="fas fa-bell"></i> Set Reminder
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="assignment-card upcoming-preview">
+                                <div class="assignment-header">
+                                    <div class="subject-badge science">
+                                        <i class="fas fa-flask"></i>
+                                        Basic Science
+                                    </div>
+                                    <div class="assignment-status upcoming">
+                                        <i class="fas fa-calendar-plus"></i>
+                                        Upcoming
+                                    </div>
+                                </div>
+                                <div class="assignment-body">
+                                    <h3>Simple Machines Investigation</h3>
+                                    <p class="assignment-description">
+                                        Hands-on investigation of simple machines in everyday life. 
+                                        Students will identify, categorize, and explain how simple machines work.
+                                    </p>
+                                    <div class="assignment-details">
+                                        <div class="detail-item">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Available: February 1, 2024</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Estimated Duration: 1 week</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-star"></i>
+                                            <span>Difficulty: Beginner</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="assignment-footer">
+                                    <button class="btn-secondary" disabled>
+                                        <i class="fas fa-lock"></i> Available Soon
+                                    </button>
+                                    <button class="btn-secondary" onclick="setReminder('simple-machines')">
+                                        <i class="fas fa-bell"></i> Set Reminder
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assignment Tips -->
+                <div class="assignment-tips">
+                    <div class="tips-header">
+                        <h3><i class="fas fa-lightbulb"></i> Assignment Tips</h3>
+                    </div>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <div class="tip-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h4>Time Management</h4>
+                            <p>Break large assignments into smaller tasks and set daily goals to avoid last-minute rush.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <h4>Ask for Help</h4>
+                            <p>Don't hesitate to ask your teachers or parents if you need clarification on any assignment.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">
+                                <i class="fas fa-check-double"></i>
+                            </div>
+                            <h4>Review Your Work</h4>
+                            <p>Always review your completed assignments before submission to catch any errors or improvements.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">
+                                <i class="fas fa-bookmark"></i>
+                            </div>
+                            <h4>Stay Organized</h4>
+                            <p>Keep all your assignment materials organized and create a dedicated study space at home.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Assignment Detail Modal -->
+    <div class="modal" id="assignment-modal">
+        <div class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-title">Assignment Details</h3>
+                    <button class="close-modal" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closeModal()">Close</button>
+                    <button class="btn-primary" id="modal-action-btn">Start Assignment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/student-dashboard.js"></script>
+    <script src="assets/js/student-assignments.js"></script>
+</body>
+</html>
+
