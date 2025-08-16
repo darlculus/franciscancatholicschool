@@ -1,635 +1,589 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Franciscan Catholic Nursery and Primary School</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="assets/css/franciscan.css" />
-  </head>
-  <body>
-    <!-- Navbar begins -->
-    <nav class="navbar">
-      <div class="date-display" id="currentDate">
-        <span class="day"></span>
-        <div class="month-year">
-          <span class="month"></span>
-          <span class="year"></span>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Franciscan Catholic Nursery and Primary School</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/franciscan.css" />
+</head>
+
+<body>
+  <!-- Navbar begins -->
+  <nav class="navbar">
+    <div class="date-display" id="currentDate">
+      <span class="day"></span>
+      <div class="month-year">
+        <span class="month"></span>
+        <span class="year"></span>
+      </div>
+    </div>
+    <div class="logo">
+      <div class="logo-circle">
+        <a href="index.html"><img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo" /></a>
+      </div>
+      <span>Franciscan Catholic Nursery and Primary School</span>
+    </div>
+    <div class="nav-items">
+      <a href="index.html" class="active">Home</a>
+      <div class="dropdown">
+        <a href="about.html" class="dropdown-trigger">About <i class="fas fa-chevron-down"></i></a>
+        <div class="dropdown-content">
+          <a href="welcome.html">Welcome Note</a>
+          <a href="corevalues.html">Our Core Values</a>
         </div>
       </div>
-      <div class="logo">
-        <div class="logo-circle">
-          <a href="index.html"
-            ><img
-              src="assets/img/logo.jpg"
-              alt="Franciscan Catholic School Logo"
-          /></a>
-        </div>
-        <span>Franciscan Catholic Nursery and Primary School</span>
-      </div>
-      <div class="nav-items">
-        <a href="index.html" class="active">Home</a>
-        <div class="dropdown">
-          <a href="about.html" class="dropdown-trigger"
-            >About <i class="fas fa-chevron-down"></i
-          ></a>
-          <div class="dropdown-content">
-            <a href="welcome.html">Welcome Note</a>
-            <a href="corevalues.html">Our Core Values</a>
-          </div>
-        </div>
-        <div class="dropdown">
-          <a href="programme.html" class="dropdown-trigger"
-            >Programmes <i class="fas fa-chevron-down"></i
-          ></a>
-          <div class="dropdown-content">
-            <div class="nested-dropdown">
-              <a href="earlyyear.html" class="nested-trigger"
-                >Early Years <i class="fas fa-chevron-right"></i
-              ></a>
-              <div class="nested-content">
-                <a href="creche.html">Creche</a>
-                <a href="preschool.html">PreSchool</a>
-              </div>
-            </div>
-            <a href="primary.html">Primary</a>
-          </div>
-        </div>
-        <a href="gallery.html">Gallery</a>
-        <a href="contact.html">Contact</a>
-        <a href="portal.html" class="portal-btn">Student Portal</a>
-      </div>
-      <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </nav>
-    <!-- Navbar ends -->
-
-    <!-- Hero section begins -->
-    <section class="hero">
-      <div class="carousel">
-        <div class="carousel-inner">
-          <!-- Slide 1 -->
-          <div class="slide active">
-            <div class="slide-overlay"></div>
-            <img src="assets/img/class-1.jpg" alt="Students in classroom" />
-            <div class="slide-content">
-              <h1>Faith-Based <span>Excellence</span></h1>
-              <p>
-                Nurturing young minds through Catholic values, academic rigor,
-                and character development.
-              </p>
-              <a href="about.html" class="cta-button">Discover Our Mission</a>
+      <div class="dropdown">
+        <a href="programme.html" class="dropdown-trigger">Programmes <i class="fas fa-chevron-down"></i></a>
+        <div class="dropdown-content">
+          <div class="nested-dropdown">
+            <a href="earlyyear.html" class="nested-trigger">Early Years <i class="fas fa-chevron-right"></i></a>
+            <div class="nested-content">
+              <a href="creche.html">Creche</a>
+              <a href="preschool.html">PreSchool</a>
             </div>
           </div>
-
-          <!-- Slide 2 -->
-          <div class="slide">
-            <div class="slide-overlay"></div>
-            <img src="assets/img/class-2.jpg" alt="School facilities" />
-            <div class="slide-content">
-              <h1>Holistic <span>Education</span></h1>
-              <p>
-                Developing spiritual, intellectual, physical, and social
-                capabilities in every child.
-              </p>
-              <a href="programme.html" class="cta-button"
-                >Explore Our Programmes</a
-              >
-            </div>
-          </div>
-
-          <!-- Slide 3 -->
-          <div class="slide">
-            <div class="slide-overlay"></div>
-            <img src="assets/img/blog-2.jpg" alt="Students in activities" />
-            <div class="slide-content">
-              <h1>Building <span>Future Leaders</span></h1>
-              <p>
-                Empowering students with knowledge, faith, and values to become
-                tomorrow's innovative leaders.
-              </p>
-              <a href="contact.html" class="cta-button">Join Our Family</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Navigation Arrows -->
-        <button class="carousel-arrow prev">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="carousel-arrow next">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-
-        <!-- Carousel Indicators -->
-        <div class="carousel-indicators">
-          <span class="indicator active"></span>
-          <span class="indicator"></span>
-          <span class="indicator"></span>
+          <a href="primary.html">Primary</a>
         </div>
       </div>
-    </section>
-    <!-- Hero section ends -->
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="portal.html" class="portal-btn">Portal</a>
+    </div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+  <!-- Navbar ends -->
 
-    <!-- Welcome section begins -->
-    <section class="welcome-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Welcome to Franciscan Catholic Nursery and Primary School</h2>
-          <p class="subtitle">
-            A place of faith, learning, and character development
-          </p>
-          <div class="divider">
-            <span class="divider-line"></span>
-            <i class="fas fa-cross"></i>
-            <span class="divider-line"></span>
-          </div>
-        </div>
-
-        <div class="welcome-content">
-          <div class="welcome-image">
-            <img src="assets/img/sister2.png" alt="School Principal" />
-            <div class="image-caption">
-              <p>Rev. Sr. Victoria Ogunwade</p>
-              <p class="caption-title">School Principal</p>
-            </div>
-          </div>
-          <div class="welcome-text">
-            <h3>Nurturing Excellence in Faith and Learning</h3>
+  <!-- Hero section begins -->
+  <section class="hero">
+    <div class="carousel">
+      <div class="carousel-inner">
+        <!-- Slide 1 -->
+        <div class="slide active">
+          <div class="slide-overlay"></div>
+          <img src="assets/img/class-1.jpg" alt="Students in classroom" />
+          <div class="slide-content">
+            <h1>Faith-Based <span>Excellence</span></h1>
             <p>
-              At Franciscan Catholic Nursery and Primary School, we believe in
-              providing a nurturing environment where children can grow
-              intellectually, spiritually, and socially. Founded on the
-              principles of Catholic education and the Franciscan tradition, our
-              school offers a balanced curriculum that prepares students for
-              academic success while instilling strong moral values.
+              Nurturing young minds through Catholic values, academic rigor,
+              and character development.
             </p>
+            <a href="about.html" class="cta-button">Discover Our Mission</a>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+          <div class="slide-overlay"></div>
+          <img src="assets/img/class-2.jpg" alt="School facilities" />
+          <div class="slide-content">
+            <h1>Holistic <span>Education</span></h1>
             <p>
-              Our dedicated teachers and staff are committed to recognizing each
-              child's unique gifts and talents, fostering a love for learning
-              that extends beyond the classroom. We invite you to explore what
-              makes our school community special.
+              Developing spiritual, intellectual, physical, and social
+              capabilities in every child.
             </p>
-            <a href="welcome.html" class="btn-secondary"
-              >Read Principal's Welcome Note</a
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Welcome section ends -->
-
-    <!-- Values section begins -->
-    <section class="values-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Our Core Values</h2>
-          <p class="subtitle">
-            The pillars that guide our educational approach
-          </p>
-          <div class="divider">
-            <span class="divider-line"></span>
-            <i class="fas fa-cross"></i>
-            <span class="divider-line"></span>
+            <a href="programme.html" class="cta-button">Explore Our Programmes</a>
           </div>
         </div>
 
-        <div class="values-container">
-          <div class="value-card" data-aos="fade-up" data-aos-delay="100">
-            <div class="value-icon">
-              <i class="fas fa-pray"></i>
-            </div>
-            <h3>Faith</h3>
+        <!-- Slide 3 -->
+        <div class="slide">
+          <div class="slide-overlay"></div>
+          <img src="assets/img/blog-2.jpg" alt="Students in activities" />
+          <div class="slide-content">
+            <h1>Building <span>Future Leaders</span></h1>
             <p>
-              Nurturing a deep connection with God through Catholic teachings
-              and daily prayer, guiding students to live by Christian
-              principles.
+              Empowering students with knowledge, faith, and values to become
+              tomorrow's innovative leaders.
             </p>
-          </div>
-
-          <div class="value-card" data-aos="fade-up" data-aos-delay="200">
-            <div class="value-icon">
-              <i class="fas fa-book-open"></i>
-            </div>
-            <h3>Excellence</h3>
-            <p>
-              Pursuing the highest standards in academics, character, and
-              service, encouraging students to develop their God-given talents.
-            </p>
-          </div>
-
-          <div class="value-card" data-aos="fade-up" data-aos-delay="300">
-            <div class="value-icon">
-              <i class="fas fa-hands-helping"></i>
-            </div>
-            <h3>Community</h3>
-            <p>
-              Creating a supportive environment where students, teachers, and
-              families work together to foster growth and mutual respect.
-            </p>
-          </div>
-
-          <div class="value-card" data-aos="fade-up" data-aos-delay="400">
-            <div class="value-icon">
-              <i class="fas fa-balance-scale"></i>
-            </div>
-            <h3>Integrity</h3>
-            <p>
-              Developing moral character through honesty, responsibility, and
-              ethical decision-making in all aspects of life.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Values section ends -->
-
-    <!-- Programmes section begins -->
-    <section class="programmes-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Our Educational Programmes</h2>
-          <p class="subtitle">
-            Comprehensive learning pathways for every stage
-          </p>
-          <div class="divider">
-            <span class="divider-line"></span>
-            <i class="fas fa-cross"></i>
-            <span class="divider-line"></span>
-          </div>
-        </div>
-
-        <div class="programmes-container">
-          <div class="programme-card early-years">
-            <div class="programme-content">
-              <h3>Early Years (Ages 1-4)</h3>
-              <p>
-                A nurturing environment where young children develop
-                foundational skills through play-based learning and guided
-                activities.
-              </p>
-              <ul>
-                <li><i class="fas fa-check-circle"></i> Creche (Ages 1-2)</li>
-                <li><i class="fas fa-check-circle"></i> Pre-Nursery (Age 3)</li>
-                <li><i class="fas fa-check-circle"></i> Nursery (Age 4)</li>
-              </ul>
-              <a href="earlyyear.html" class="btn-programme">Learn More</a>
-            </div>
-            <div class="programme-image">
-              <img src="assets/img/about-1.jpg" alt="Early Years Students" />
-            </div>
-          </div>
-
-          <div class="programme-card primary">
-            <div class="programme-image">
-              <img src="assets/img/class-3.jpg" alt="Primary Students" />
-            </div>
-            <div class="programme-content">
-              <h3>Primary Education (Ages 5-11)</h3>
-              <p>
-                A comprehensive curriculum that builds strong academic
-                foundations while developing critical thinking and
-                problem-solving skills.
-              </p>
-              <ul>
-                <li>
-                  <i class="fas fa-check-circle"></i> Lower Primary (Ages 5-8)
-                </li>
-                <li>
-                  <i class="fas fa-check-circle"></i> Upper Primary (Ages 9-11)
-                </li>
-                <li>
-                  <i class="fas fa-check-circle"></i> Special Enrichment
-                  Programs
-                </li>
-              </ul>
-              <a href="primary.html" class="btn-programme">Learn More</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="programmes-cta">
-          <h3>Ready to join our school community?</h3>
-          <p>Applications are now open for the upcoming academic year.</p>
-          <a href="contact.html" class="cta-button">Apply Now</a>
-        </div>
-      </div>
-    </section>
-    <!-- Programmes section ends -->
-
-    <!-- Testimonials section begins -->
-    <section class="testimonials-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>What Parents Say</h2>
-          <p class="subtitle">Hear from our school community</p>
-          <div class="divider">
-            <span class="divider-line"></span>
-            <i class="fas fa-cross"></i>
-            <span class="divider-line"></span>
-          </div>
-        </div>
-
-        <div class="testimonials-slider">
-          <div class="testimonial-card active">
-            <div class="testimonial-content">
-              <i class="fas fa-quote-left"></i>
-              <p>
-                "The teachers at Franciscan Catholic Nursery and Primary School
-                have been instrumental in my child's development. The balance of
-                academic rigor and spiritual formation is exactly what we were
-                looking for in a school."
-              </p>
-              <div class="testimonial-author">
-                <h4>Mrs. Adebayo</h4>
-                <p>Parent of Primary 3 Student</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="testimonial-card">
-            <div class="testimonial-content">
-              <i class="fas fa-quote-left"></i>
-              <p>
-                "We've seen tremendous growth in our daughter since she started
-                at Franciscan. The individual attention she receives and the
-                values-based education have made all the difference."
-              </p>
-              <div class="testimonial-author">
-                <h4>Mr. & Mrs. Okonkwo</h4>
-                <p>Parents of Nursery Student</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="testimonial-card">
-            <div class="testimonial-content">
-              <i class="fas fa-quote-left"></i>
-              <p>
-                "The school's commitment to excellence is evident in everything
-                they do. My son has developed not just academically but also in
-                character and confidence. We couldn't be happier with our
-                choice."
-              </p>
-              <div class="testimonial-author">
-                <h4>Dr. Emmanuel</h4>
-                <p>Parent of Primary 5 Student</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-controls">
-          <button class="testimonial-arrow prev">
-            <i class="fas fa-arrow-left"></i>
-          </button>
-          <div class="testimonial-dots">
-            <span class="dot active"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-          </div>
-          <button class="testimonial-arrow next">
-            <i class="fas fa-arrow-right"></i>
-          </button>
-        </div>
-      </div>
-    </section>
-    <!-- Testimonials section ends -->
-
-    <!-- Call to action section begins -->
-    <section class="cta-section">
-      <div class="container">
-        <div class="cta-content">
-          <h2>Experience the Franciscan Difference</h2>
-          <p>
-            Schedule a visit to our campus and see our nurturing learning
-            environment firsthand.
-          </p>
-          <div class="cta-buttons">
-            <a href="contact.html" class="cta-button">Book a Tour</a>
-            <a href="admissions.html" class="btn-secondary"
-              >Download Prospectus</a
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Call to action section ends -->
-
-    <!-- News and events section begins -->
-    <section class="news-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Latest News & Events</h2>
-          <p class="subtitle">Stay updated with our school community</p>
-          <div class="divider">
-            <span class="divider-line"></span>
-            <i class="fas fa-cross"></i>
-            <span class="divider-line"></span>
-          </div>
-        </div>
-
-        <div class="news-container">
-          <div class="news-card">
-            <div class="news-image">
-              <img src="assets/img/science.jpg" alt="School Event" />
-              <div class="news-date">
-                <span class="day">15</span>
-                <span class="month">Mar</span>
-              </div>
-            </div>
-            <div class="news-content">
-              <h3>Annual Science Fair</h3>
-              <p>
-                Students showcase innovative projects and experiments at our
-                yearly science exhibition.
-              </p>
-              <a href="gallery.html" class="news-link"
-                >Read More <i class="fas fa-arrow-right"></i
-              ></a>
-            </div>
-          </div>
-
-          <div class="news-card">
-            <div class="news-image">
-              <img src="assets/img/sports.jpg" alt="School Event" />
-              <div class="news-date">
-                <span class="day">22</span>
-                <span class="month">Apr</span>
-              </div>
-            </div>
-            <div class="news-content">
-              <h3>Sports Day 2025</h3>
-              <p>
-                Join us for a day of friendly competition and physical
-                activities for all age groups.
-              </p>
-              <a href="gallery.html" class="news-link"
-                >Read More <i class="fas fa-arrow-right"></i
-              ></a>
-            </div>
-          </div>
-
-          <div class="news-card">
-            <div class="news-image">
-              <img src="assets/img/pta.jpg" alt="School Event" />
-              <div class="news-date">
-                <span class="day">10</span>
-                <span class="month">May</span>
-              </div>
-            </div>
-            <div class="news-content">
-              <h3>Parent-Teacher Conference</h3>
-              <p>
-                Schedule your appointment for our upcoming parent-teacher
-                meetings to discuss student progress.
-              </p>
-              <a href="gallery.html" class="news-link"
-                >Read More <i class="fas fa-arrow-right"></i
-              ></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="news-cta">
-          <a href="gallery.html" class="btn-secondary"
-            >View All News & Events</a
-          >
-        </div>
-      </div>
-    </section>
-    <!-- News and events section ends -->
-
-    <!-- Footer section begins -->
-    <footer class="footer">
-      <div class="footer-top">
-        <div class="container">
-          <div class="footer-content">
-            <div class="footer-section about">
-              <div class="footer-logo">
-                <div class="logo-circle">
-                  <img
-                    src="assets/img/logo.jpg"
-                    alt="Franciscan Catholic School Logo"
-                  />
-                </div>
-                <h3>Franciscan Catholic Nursery and Primary School</h3>
-              </div>
-              <p>
-                Providing quality Catholic education since 2025. Building faith,
-                knowledge, and character in young minds.
-              </p>
-              <div class="social-links">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-              </div>
-            </div>
-
-            <div class="footer-section links">
-              <h4>Quick Links</h4>
-              <ul>
-                <li>
-                  <a href="about.html"
-                    ><i class="fas fa-angle-right"></i> About Us</a
-                  >
-                </li>
-                <li>
-                  <a href="programme.html"
-                    ><i class="fas fa-angle-right"></i> Our Programmes</a
-                  >
-                </li>
-                <li>
-                  <a href="gallery.html"
-                    ><i class="fas fa-angle-right"></i> Gallery</a
-                  >
-                </li>
-                <li>
-                  <a href="contact.html"
-                    ><i class="fas fa-angle-right"></i> Contact Us</a
-                  >
-                </li>
-              </ul>
-            </div>
-
-            <div class="footer-section programmes">
-              <h4>Our Programmes</h4>
-              <ul>
-                <li>
-                  <a href="creche.html"
-                    ><i class="fas fa-angle-right"></i> Creche</a
-                  >
-                </li>
-                <li>
-                  <a href="preschool.html"
-                    ><i class="fas fa-angle-right"></i> Pre-School</a
-                  >
-                </li>
-                <li>
-                  <a href="primary.html"
-                    ><i class="fas fa-angle-right"></i> Primary School</a
-                  >
-                </li>
-              </ul>
-            </div>
-
-            <div class="footer-section contact">
-              <h4>Contact Information</h4>
-              <ul>
-                <li>
-                  <i class="fas fa-map-marker-alt"></i> 15 Francis Avenue, Lekki
-                  Phase 1, Lagos, Nigeria
-                </li>
-                <li>
-                  <i class="fas fa-phone"></i> +234 803 456 7890, +234 802 345
-                  6789
-                </li>
-                <li>
-                  <i class="fas fa-envelope"></i>
-                  info@franciscancatholicschool.edu.ng
-                </li>
-                <li>
-                  <i class="fas fa-clock"></i> Monday - Friday: 7:30 AM - 3:30
-                  PM
-                </li>
-              </ul>
-            </div>
+            <a href="contact.html" class="cta-button">Join Our Family</a>
           </div>
         </div>
       </div>
 
-      <div class="footer-bottom">
-        <div class="container">
-          <p>
-            &copy; 2025 Franciscan Catholic Nursery and Primary School. All
-            Rights Reserved.
-          </p>
-          <p>
-            Designed by
-            <a href="https://darlingtonodom-portfolio.vercel.app/">Darlculus</a>
-          </p>
-        </div>
-      </div>
-
-      <button id="scrollToTop" class="scroll-to-top">
-        <i class="fas fa-arrow-up"></i>
+      <!-- Navigation Arrows -->
+      <button class="carousel-arrow prev">
+        <i class="fas fa-chevron-left"></i>
       </button>
-    </footer>
-    <!-- Footer section ends -->
+      <button class="carousel-arrow next">
+        <i class="fas fa-chevron-right"></i>
+      </button>
 
-    <script src="assets/js/franciscan.js"></script>
-  </body>
+      <!-- Carousel Indicators -->
+      <div class="carousel-indicators">
+        <span class="indicator active"></span>
+        <span class="indicator"></span>
+        <span class="indicator"></span>
+      </div>
+    </div>
+  </section>
+  <!-- Hero section ends -->
+
+  <!-- Welcome section begins -->
+  <section class="welcome-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Welcome to Franciscan Catholic Nursery and Primary School</h2>
+        <p class="subtitle">
+          A place of faith, learning, and character development
+        </p>
+        <div class="divider">
+          <span class="divider-line"></span>
+          <i class="fas fa-cross"></i>
+          <span class="divider-line"></span>
+        </div>
+      </div>
+
+      <div class="welcome-content">
+        <div class="welcome-image">
+          <img src="assets/img/sister2.png" alt="School Principal" />
+          <div class="image-caption">
+            <p>Rev. Sr. Victoria Ogunwade</p>
+            <p class="caption-title">School Principal</p>
+          </div>
+        </div>
+        <div class="welcome-text">
+          <h3>Nurturing Excellence in Faith and Learning</h3>
+          <p>
+            At Franciscan Catholic Nursery and Primary School, we believe in
+            providing a nurturing environment where children can grow
+            intellectually, spiritually, and socially. Founded on the
+            principles of Catholic education and the Franciscan tradition, our
+            school offers a balanced curriculum that prepares students for
+            academic success while instilling strong moral values.
+          </p>
+          <p>
+            Our dedicated teachers and staff are committed to recognizing each
+            child's unique gifts and talents, fostering a love for learning
+            that extends beyond the classroom. We invite you to explore what
+            makes our school community special.
+          </p>
+          <a href="welcome.html" class="btn-secondary">Read Principal's Welcome Note</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Welcome section ends -->
+
+  <!-- Values section begins -->
+  <section class="values-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Our Core Values</h2>
+        <p class="subtitle">
+          The pillars that guide our educational approach
+        </p>
+        <div class="divider">
+          <span class="divider-line"></span>
+          <i class="fas fa-cross"></i>
+          <span class="divider-line"></span>
+        </div>
+      </div>
+
+      <div class="values-container">
+        <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="value-icon">
+            <i class="fas fa-pray"></i>
+          </div>
+          <h3>Faith</h3>
+          <p>
+            Deepening our relationship with God through daily prayer, sacraments, and Franciscan spirituality, guiding
+            students to live as Christ’s disciples.
+          </p>
+        </div>
+
+        <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="value-icon">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+          </div>
+          <h3>Stewardship</h3>
+          <p>
+            Cultivating excellence in academics and character by nurturing God-given talents for service to others and
+            care for creation.
+          </p>
+        </div>
+
+        <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="value-icon">
+            <i class="fas fa-hands-helping"></i>
+          </div>
+          <h3>Solidarity</h3>
+          <p>
+            Building a compassionate community where students, families, and staff collaborate to uplift the
+            marginalized and foster mutual dignity.
+          </p>
+        </div>
+
+        <div class="value-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="value-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <h3>Integrity</h3>
+          <p>
+            Developing moral character through honesty, responsibility, and
+            ethical decision-making in all aspects of life.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Values section ends -->
+
+  <!-- Programmes section begins -->
+  <section class="programmes-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Our Educational Programmes</h2>
+        <p class="subtitle">
+          Comprehensive learning pathways for every stage
+        </p>
+        <div class="divider">
+          <span class="divider-line"></span>
+          <i class="fas fa-cross"></i>
+          <span class="divider-line"></span>
+        </div>
+      </div>
+
+      <div class="programmes-container">
+        <div class="programme-card early-years">
+          <div class="programme-content">
+            <h3>Early Years (Ages 1-4)</h3>
+            <p>
+              A nurturing environment where young children develop
+              foundational skills through play-based learning and guided
+              activities.
+            </p>
+            <ul>
+              <li><i class="fas fa-check-circle"></i> Creche (Ages 1-2)</li>
+              <li><i class="fas fa-check-circle"></i> Pre-Nursery (Age 3)</li>
+              <li><i class="fas fa-check-circle"></i> Nursery (Age 4)</li>
+            </ul>
+            <a href="earlyyear.html" class="btn-programme">Learn More</a>
+          </div>
+          <div class="programme-image">
+            <img src="assets/img/about-1.jpg" alt="Early Years Students" />
+          </div>
+        </div>
+
+        <div class="programme-card primary">
+          <div class="programme-image">
+            <img src="assets/img/class-3.jpg" alt="Primary Students" />
+          </div>
+          <div class="programme-content">
+            <h3>Primary Education (Ages 5-11)</h3>
+            <p>
+              A comprehensive curriculum that builds strong academic
+              foundations while developing critical thinking and
+              problem-solving skills.
+            </p>
+            <ul>
+              <li>
+                <i class="fas fa-check-circle"></i> Lower Primary (Ages 5-8)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Upper Primary (Ages 9-11)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Special Enrichment
+                Programs
+              </li>
+            </ul>
+            <a href="primary.html" class="btn-programme">Learn More</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="programmes-cta">
+        <h3>Ready to join our school community?</h3>
+        <p>Applications are now open for the upcoming academic year.</p>
+        <a href="contact.html" class="cta-button">Apply Now</a>
+      </div>
+    </div>
+  </section>
+  <!-- Programmes section ends -->
+
+  <!-- Testimonials section begins -->
+  <section class="testimonials-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>What Parents Say</h2>
+        <p class="subtitle">Hear from our school community</p>
+        <div class="divider">
+          <span class="divider-line"></span>
+          <i class="fas fa-cross"></i>
+          <span class="divider-line"></span>
+        </div>
+      </div>
+
+      <div class="testimonials-slider">
+        <div class="testimonial-card active">
+          <div class="testimonial-content">
+            <i class="fas fa-quote-left"></i>
+            <p>
+              "The teachers at Franciscan Catholic Nursery and Primary School
+              have been instrumental in my child's development. The balance of
+              academic rigor and spiritual formation is exactly what we were
+              looking for in a school."
+            </p>
+            <div class="testimonial-author">
+              <h4>Mrs. Adebayo</h4>
+              <p>Parent of Primary 3 Student</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <i class="fas fa-quote-left"></i>
+            <p>
+              "We've seen tremendous growth in our daughter since she started
+              at Franciscan. The individual attention she receives and the
+              values-based education have made all the difference."
+            </p>
+            <div class="testimonial-author">
+              <h4>Mr. & Mrs. Okonkwo</h4>
+              <p>Parents of Nursery Student</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-content">
+            <i class="fas fa-quote-left"></i>
+            <p>
+              "The school's commitment to excellence is evident in everything
+              they do. My son has developed not just academically but also in
+              character and confidence. We couldn't be happier with our
+              choice."
+            </p>
+            <div class="testimonial-author">
+              <h4>Dr. Emmanuel</h4>
+              <p>Parent of Primary 5 Student</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-controls">
+        <button class="testimonial-arrow prev">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="testimonial-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <button class="testimonial-arrow next">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+  <!-- Testimonials section ends -->
+
+  <!-- Call to action section begins -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Experience the Franciscan Difference</h2>
+        <p>
+          Schedule a visit to our campus and see our nurturing learning
+          environment firsthand.
+        </p>
+        <div class="cta-buttons">
+          <a href="contact.html" class="cta-button">Book a Tour</a>
+          <a href="admissions.html" class="btn-secondary">Download Prospectus</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Call to action section ends -->
+
+  <!-- News and events section begins -->
+  <section class="news-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Latest News & Events</h2>
+        <p class="subtitle">Stay updated with our school community</p>
+        <div class="divider">
+          <span class="divider-line"></span>
+          <i class="fas fa-cross"></i>
+          <span class="divider-line"></span>
+        </div>
+      </div>
+
+      <div class="news-container">
+        <div class="news-card">
+          <div class="news-image">
+            <img src="assets/img/science.jpg" alt="School Event" />
+            <div class="news-date">
+              <span class="day">15</span>
+              <span class="month">Mar</span>
+            </div>
+          </div>
+          <div class="news-content">
+            <h3>Annual Science Fair</h3>
+            <p>
+              Students showcase innovative projects and experiments at our
+              yearly science exhibition.
+            </p>
+            <a href="gallery.html" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="news-card">
+          <div class="news-image">
+            <img src="assets/img/sports.jpg" alt="School Event" />
+            <div class="news-date">
+              <span class="day">22</span>
+              <span class="month">Apr</span>
+            </div>
+          </div>
+          <div class="news-content">
+            <h3>Sports Day 2025</h3>
+            <p>
+              Join us for a day of friendly competition and physical
+              activities for all age groups.
+            </p>
+            <a href="gallery.html" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="news-card">
+          <div class="news-image">
+            <img src="assets/img/pta.jpg" alt="School Event" />
+            <div class="news-date">
+              <span class="day">10</span>
+              <span class="month">May</span>
+            </div>
+          </div>
+          <div class="news-content">
+            <h3>Parent-Teacher Conference</h3>
+            <p>
+              Schedule your appointment for our upcoming parent-teacher
+              meetings to discuss student progress.
+            </p>
+            <a href="gallery.html" class="news-link">Read More <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="news-cta">
+        <a href="gallery.html" class="btn-secondary">View All News & Events</a>
+      </div>
+    </div>
+  </section>
+  <!-- News and events section ends -->
+
+  <!-- Footer section begins -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section about">
+            <div class="footer-logo">
+              <div class="logo-circle">
+                <img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo" />
+              </div>
+              <h3>Franciscan Catholic Nursery and Primary School</h3>
+            </div>
+            <p>
+              Quality Catholic Education Rooted in Franciscan Values Since 2025.
+            </p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+
+          <div class="footer-section links">
+            <h4>Quick Links</h4>
+            <ul>
+              <li>
+                <a href="about.html"><i class="fas fa-angle-right"></i> About Us</a>
+              </li>
+              <li>
+                <a href="programme.html"><i class="fas fa-angle-right"></i> Our Programmes</a>
+              </li>
+              <li>
+                <a href="gallery.html"><i class="fas fa-angle-right"></i> Gallery</a>
+              </li>
+              <li>
+                <a href="contact.html"><i class="fas fa-angle-right"></i> Contact Us</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-section programmes">
+            <h4>Our Programmes</h4>
+            <ul>
+              <li>
+                <a href="creche.html"><i class="fas fa-angle-right"></i> Creche</a>
+              </li>
+              <li>
+                <a href="preschool.html"><i class="fas fa-angle-right"></i> Pre-School</a>
+              </li>
+              <li>
+                <a href="primary.html"><i class="fas fa-angle-right"></i> Primary School</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-section contact">
+            <h4>Contact Information</h4>
+            <ul>
+              <li>
+                <i class="fas fa-map-marker-alt"></i> Unity Estate, Off Cooperative Villa, Badore, Ajah, Lagos, Nigeria.
+              </li>
+              <li>
+                <i class="fas fa-phone"></i> +234 912 660 5391
+              </li>
+              <li>
+                <i class="fas fa-envelope"></i>
+                info@franciscancatholicschool
+              </li>
+              <li>
+                <i class="fas fa-clock"></i> Monday - Friday: 7:30 AM - 3:30
+                PM
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <p>
+          &copy; 2025 Franciscan Catholic Nursery and Primary School. All
+          Rights Reserved.
+        </p>
+        <p>
+          Designed by
+          <a href="https://darlingtonodom-portfolio.vercel.app/">Darlculus</a>
+        </p>
+      </div>
+    </div>
+
+    <button id="scrollToTop" class="scroll-to-top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+  <!-- Footer section ends -->
+
+  <script src="assets/js/franciscan.js"></script>
+</body>
+
 </html>
