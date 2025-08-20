@@ -590,17 +590,31 @@
           if (el) {
             // Offset for fixed navbar
             var navbar = document.querySelector('.navbar');
-            var offset = navbar ? navbar.offsetHeight + 10 : 0;
+            var offset = navbar ? navbar.offsetHeight + 20 : 80;
             var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
             window.scrollTo({ top: top, behavior: 'smooth' });
           }
         }
       }
+      
+      // Run multiple times to ensure it works
+      function runScrollToHash() {
+        scrollToHash();
+        // Run again after a short delay for better reliability
+        setTimeout(scrollToHash, 100);
+        setTimeout(scrollToHash, 500);
+      }
+      
       // Run after page load and on hash changes
-      window.addEventListener('load', scrollToHash);
+      window.addEventListener('load', runScrollToHash);
       window.addEventListener('hashchange', scrollToHash);
-      // If coming from another page, run a tad later to allow layout to settle
-      setTimeout(scrollToHash, 150);
+      
+      // For direct navigation from other pages, run when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runScrollToHash);
+      } else {
+        runScrollToHash();
+      }
     })();
   </script>
 </body>
