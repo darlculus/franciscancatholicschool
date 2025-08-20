@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Prospectus - Franciscan Catholic Nursery and Primary School</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/franciscan.css" />
+  <style>
+    .prospectus-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .prospectus-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 3px solid var(--primary-color);
+    }
+
+    .prospectus-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .prospectus-section h2 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--accent-color);
+    }
+
+    .prospectus-section h3 {
+      color: var(--secondary-color);
+      margin: 1.5rem 0 1rem 0;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .info-card {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary-color);
+    }
+
+    .fees-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .fees-table th,
+    .fees-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .fees-table th {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .fees-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .download-actions {
+      text-align: center;
+      margin: 3rem 0;
+      padding: 2rem;
+      background: var(--accent-light);
+      border-radius: 10px;
+    }
+
+    .download-btn {
+      display: inline-block;
+      background: var(--primary-color);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 5px;
+      text-decoration: none;
+      margin: 0 10px;
+      transition: all 0.3s ease;
+    }
+
+    .download-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    @media print {
+      .navbar,
+      .download-actions {
+        display: none;
+      }
+
+      .prospectus-container {
+        box-shadow: none;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar begins -->
+  <nav class="navbar">
+    <div class="date-display" id="currentDate">
+      <span class="day"></span>
+      <div class="month-year">
+        <span class="month"></span>
+        <span class="year"></span>
+      </div>
+    </div>
+    <div class="logo">
+      <div class="logo-circle">
+        <a href="index.html"><img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo" /></a>
+      </div>
+      <span>Franciscan Catholic Nursery and Primary School</span>
+    </div>
+    <div class="nav-items">
+      <a href="index.html">Home</a>
+      <div class="dropdown">
+        <a href="about.html" class="dropdown-trigger">About <i class="fas fa-chevron-down"></i></a>
+        <div class="dropdown-content">
+          <a href="welcome.html">Welcome Note</a>
+          <a href="corevalues.html">Our Core Values</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <a href="programme.html" class="dropdown-trigger">Programmes <i class="fas fa-chevron-down"></i></a>
+        <div class="dropdown-content">
+          <div class="nested-dropdown">
+            <a href="earlyyear.html" class="nested-trigger">Early Years <i class="fas fa-chevron-right"></i></a>
+            <div class="nested-content">
+              <a href="creche.html">Creche</a>
+              <a href="preschool.html">PreSchool</a>
+            </div>
+          </div>
+          <a href="primary.html">Primary</a>
+        </div>
+      </div>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="portal.html" class="portal-btn">Portal</a>
+    </div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+  <!-- Navbar ends -->
+
+  <div class="prospectus-container">
+    <!-- Header Section -->
+    <div class="prospectus-header">
+      <div class="logo-circle" style="width: 100px; height: 100px; margin: 0 auto 1rem;">
+        <img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo" style="width: 100%; height: 100%;" />
+      </div>
+      <h1>School Prospectus 2025</h1>
+      <h2 style="color: var(--primary-color); margin: 0;">Franciscan Catholic Nursery and Primary School</h2>
+      <p style="font-style: italic; margin-top: 1rem;">"Quality Catholic Education Rooted in Franciscan Values"</p>
+    </div>
+
+    <!-- Welcome Section -->
+    <div class="prospectus-section">
+      <h2><i class="fas fa-heart"></i> Welcome to Our School Family</h2>
+      <p>
+        At Franciscan Catholic Nursery and Primary School, we believe in providing a nurturing environment where 
+        children can grow intellectually, spiritually, and socially. Founded on the principles of Catholic education 
+        and the Franciscan tradition, our school offers a balanced curriculum that prepares students for academic 
+        success while instilling strong moral values.
+      </p>
+      <p>
+        Our dedicated teachers and staff are committed to recognizing each child's unique gifts and talents, 
+        fostering a love for learning that extends beyond the classroom.
+      </p>
+    </div>
+
+    <!-- School Information -->
+    <div class="prospectus-section">
+      <h2><i class="fas fa-info-circle"></i> School Information</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3><i class="fas fa-calendar-alt"></i> Academic Year</h3>
+          <p><strong>Start:</strong> September</p>
+          <p><strong>End:</strong> July</p>
+          <p><strong>Terms:</strong> 3 terms per year</p>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-clock"></i> School Hours</h3>
+          <p><strong>Monday - Friday:</strong> 7:30 AM - 3:30 PM</p>
+          <p><strong>Early Drop-off:</strong> 7:00 AM</p>
+          <p><strong>After School Care:</strong> Until 5:00 PM</p>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-users"></i> Class Sizes</h3>
+          <p><strong>Creche:</strong> Maximum 12 children</p>
+          <p><strong>Pre-School:</strong> Maximum 15 children</p>
+          <p><strong>Primary:</strong> Maximum 20 children</p>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-graduation-cap"></i> Age Groups</h3>
+          <p><strong>Creche:</strong> 1-2 years</p>
+          <p><strong>Pre-School:</strong> 3-4 years</p>
+          <p><strong>Primary:</strong> 5-11 years</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Our Core Values -->
+    <div class="prospectus-section">
+      <h2><i class="fas fa-star"></i> Our Core Values</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3><i class="fas fa-pray"></i> Faith</h3>
+          <p>Deepening our relationship with God through daily prayer, sacraments, and Franciscan spirituality.</p>
+        </div>
+        <div class="info-card">
+          <h3><i class="fa-solid fa-hand-holding-heart"></i> Stewardship</h3>
+          <p>Cultivating excellence in academics and character by nurturing God-given talents.</p>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-hands-helping"></i> Solidarity</h3>
+          <p>Building a compassionate community where everyone collaborates to foster mutual dignity.</p>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-balance-scale"></i> Integrity</h3>
+          <p>Developing moral character through honesty, responsibility, and ethical decision-making.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Academic Programmes -->
+    <div class="prospectus-section">
+      <h2><i class="fas fa-book"></i> Academic Programmes</h2>
+      
+      <h3>Early Years Foundation (Ages 1-4)</h3>
+      <ul>
+        <li><strong>Creche (Ages 1-2):</strong> Basic care, sensory development, and early socialization</li>
+        <li><strong>Pre-Nursery (Age 3):</strong> Introduction to structured learning through play</li>
+        <li><strong>Nursery (Age 4):</strong> Pre-literacy and numeracy skills, creative arts</li>
+      </ul>
+
+      <h3>Primary Education (Ages 5-11)</h3>
+      <ul>
+        <li><strong>Lower Primary (Ages 5-8):</strong> Core subjects with emphasis on literacy and numeracy</li>
+        <li><strong>Upper Primary (Ages 9-11):</strong> Advanced curriculum preparing for secondary education</li>
+      </ul>
+
+      <h3>Core Subjects</h3>
+      <ul>
+        <li>English Language and Literature</li>
+        <li>Mathematics</li>
+        <li>Science (Basic Science, Computer Science)</li>
+        <li>Social Studies (History, Geography, Civic Education)</li>
+        <li>Religious Education</li>
+        <li>French Language</li>
+        <li>Creative Arts (Music, Drama, Fine Arts)</li>
+        <li>Physical and Health Education</li>
+      </ul>
+    </div>
+
+    <!-- Facilities -->
+    <div class="prospectus-section">
+      <h2><i class="fas fa-building"></i> School Facilities</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3><i class="fas fa-chalkboard-teacher"></i> Learning Spaces</h3>
+          <ul>
+            <li>Air-conditioned classrooms</li>
+            <li>ICT laboratory</li>
+            <li>Science laboratory</li>
+            <li>Library and reading room</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-running"></i> Recreation</h3>
+          <ul>
+            <li>Indoor and outdoor play areas</li>
+            <li>Sports facilities</li>
+            <li>Multi-purpose hall</li>
+            <li>School garden</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-shield-alt"></i> Safety & Security</h3>
+          <ul>
+            <li>CCTV monitoring</li>
+            <li>Secure entrance/exit</li>
+            <li>First aid facilities</li>
+            <li>Fire safety systems</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-utensils"></i> Support Services</h3>
+          <ul>
+            <li>School feeding program</li>
+            <li>Transportation service</li>
+            <li>Medical care</li>
+            <li>After-school programs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admission Requirements -->
+    <div class="prospectus-section">
+      <h2><i class="fas fa-clipboard-list"></i> Admission Requirements</h2>
+      
+      <h3>Required Documents</h3>
+      <ul>
+        <li>Completed application form</li>
+        <li>Birth certificate (original and photocopy)</li>
+        <li>Recent passport photographs (4 copies)</li>
+        <li>Immunization record</li>
+        <li>Previous school report (for transfer students)</li>
+        <li>Medical report from a recognized hospital</li>
+        <li>Parent/Guardian identification</li>
+      </ul>
+
+      <h3>Admission Process</h3>
+      <ol>
+        <li>Submit completed application form</li>
+        <li>Schedule entrance assessment (for Primary applicants)</li>
+        <li>Parent-child interview</li>
+        <li>Admission decision notification</li>
+        <li>Fee payment and registration</li>
+      </ol>
+    </div>
+
+    <!-- Fee Structure -->
+    <div class="prospectus-section">
+      <h2><i class="fas fa-money-bill-wave"></i> Fee Structure (2025 Academic Year)</h2>
+      
+      <table class="fees-table">
+        <thead>
+          <tr>
+            <th>Programme</th>
+            <th>Registration Fee</th>
+            <th>Tuition (Per Term)</th>
+            <th>Development Fee</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Creche (Ages 1-2)</td>
+            <td>₦50,000</td>
+            <td>₦180,000</td>
+            <td>₦30,000</td>
+          </tr>
+          <tr>
+            <td>Pre-School (Ages 3-4)</td>
+            <td>₦60,000</td>
+            <td>₦200,000</td>
+            <td>₦35,000</td>
+          </tr>
+          <tr>
+            <td>Lower Primary (Ages 5-8)</td>
+            <td>₦80,000</td>
+            <td>₦250,000</td>
+            <td>₦40,000</td>
+          </tr>
+          <tr>
+            <td>Upper Primary (Ages 9-11)</td>
+            <td>₦100,000</td>
+            <td>₦300,000</td>
+            <td>₦50,000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Additional Fees</h3>
+      <ul>
+        <li><strong>Uniform:</strong> ₦25,000 - ₦35,000</li>
+        <li><strong>Books & Materials:</strong> ₦15,000 - ₦25,000</li>
+        <li><strong>Feeding (Optional):</strong> ₦45,000 per term</li>
+        <li><strong>Transportation (Optional):</strong> ₦60,000 per term</li>
+        <li><strong>After School Care:</strong> ₦30,000 per term</li>
+      </ul>
+
+      <h3>Payment Information</h3>
+      <p><strong>Account Name:</strong> Franciscan Sisters Project Account</p>
+      <p><strong>Account Number:</strong> 2006324090</p>
+      <p><strong>Bank:</strong> First Bank</p>
+    </div>
+
+    <!-- Extracurricular Activities -->
+    <div class="prospectus-section">
+      <h2><i class="fas fa-palette"></i> Extracurricular Activities</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3><i class="fas fa-music"></i> Arts & Culture</h3>
+          <ul>
+            <li>School choir</li>
+            <li>Drama club</li>
+            <li>Art and craft</li>
+            <li>Cultural dance</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-futbol"></i> Sports</h3>
+          <ul>
+            <li>Football</li>
+            <li>Basketball</li>
+            <li>Athletics</li>
+            <li>Swimming</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-brain"></i> Academic Clubs</h3>
+          <ul>
+            <li>Debate society</li>
+            <li>Science club</li>
+            <li>Math olympiad</li>
+            <li>Quiz competitions</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-hands-helping"></i> Service</h3>
+          <ul>
+            <li>Environmental club</li>
+            <li>Community service</li>
+            <li>Peer mentoring</li>
+            <li>Charity activities</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="prospectus-section">
+      <h2><i class="fas fa-phone"></i> Contact Information</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3><i class="fas fa-map-marker-alt"></i> Address</h3>
+          <p>Unity Estate, Off Cooperative Villa<br>
+          Badore, Ajah, Lagos, Nigeria</p>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-phone-alt"></i> Phone</h3>
+          <p>+234 912 660 5391</p>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-envelope"></i> Email</h3>
+          <p>info@franciscancatholicschool.edu.ng<br>
+          admissions@franciscancatholicschool.edu.ng</p>
+        </div>
+        <div class="info-card">
+          <h3><i class="fas fa-globe"></i> Website</h3>
+          <p>www.franciscancatholicschool.edu.ng</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Download Actions -->
+    <div class="download-actions">
+      <h3>Download or Print This Prospectus</h3>
+      <p>Take this information with you or share it with others</p>
+      <a href="#" onclick="window.print()" class="download-btn">
+        <i class="fas fa-print"></i> Print Prospectus
+      </a>
+      <a href="contact.html#admission" class="download-btn">
+        <i class="fas fa-file-alt"></i> Apply Now
+      </a>
+      <a href="contact.html" class="download-btn">
+        <i class="fas fa-calendar-check"></i> Schedule Visit
+      </a>
+    </div>
+  </div>
+
+  <script src="assets/js/franciscan.js"></script>
+</body>
+
+</html>
