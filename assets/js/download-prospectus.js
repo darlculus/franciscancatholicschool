@@ -7,7 +7,7 @@ School Prospectus 2025
 "Quality Catholic Education Rooted in Franciscan Values"
 
 📍 SCHOOL INFORMATION
-Address: Unity Estate, Off Cooperative Villa, Badore, Ajah, Lagos, Nigeria
+Address: First Unity Estate, Off Cooperative Villa, Badore, Ajah, Lagos, Nigeria
 Phone: +234 912 660 5391
 Email: info@franciscancatholicschool.edu.ng | admissions@franciscancatholicschool.edu.ng
 School Hours: Monday - Friday: 7:30 AM - 3:30 PM
