@@ -3570,7 +3570,7 @@ img {
 
 .next-step-icon i {
   font-size: 2rem;
-  color: var(--primary);
+  color: var(--white);
 }
 
 .next-step-card h3 {
@@ -5480,7 +5480,7 @@ img {
 
 .learning-area-icon i {
   font-size: 1.8rem;
-  color: var(--primary);
+  color: var(--white);
 }
 
 .learning-area-card h3 {
@@ -5551,7 +5551,7 @@ img {
 
 .feature-icon i {
   font-size: 1.3rem;
-  color: var(--primary);
+  color: var(--white);
 }
 
 .feature-content h3 {
@@ -5614,7 +5614,7 @@ img {
 
 .principle-icon i {
   font-size: 1.8rem;
-  color: var(--primary);
+  color: var(--white);
 }
 
 .principle-card h3 {
@@ -5777,6 +5777,12 @@ img {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
+}
+
+
+.next-step-icon i {
+  font-size: 1.8rem;
+  color: var(--white);
 }
 
 /* Responsive Styles for Early Years Page */
@@ -6770,6 +6776,11 @@ img {
   }
 }
 
+/* Font Awesome Icons Color */
+.fas, .far, .fab {
+  color: var(--white);
+}
+
 /* Contact Page Styles */
 .page-header {
   background-image: url('../img/contact-header.jpg');
@@ -7292,4 +7303,5 @@ img {
 }
 
 .modal-btn:hover {
-  background-color: var(--primary-
+  background-color: var(--primary-light);
+}
