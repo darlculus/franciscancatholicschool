@@ -7206,6 +7206,11 @@ img {
   font-family: 'Lora', serif;
   font-size: 1.8rem;
   margin-bottom: 2rem;
+  color: white;
+}
+
+.appointment-info h4 {
+  color: white;
 }
 
 .visit-info-list {
@@ -7236,6 +7241,11 @@ img {
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+
+.social-media-icons i{
+  color:#14163f;
 }
 
 /* Success Message Modal */
