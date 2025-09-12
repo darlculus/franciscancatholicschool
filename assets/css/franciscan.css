@@ -3157,6 +3157,11 @@ img {
 
 .schedule-item:hover {
   background-color: var(--primary-light);
+  color: white;
+}
+
+.schedule-item:hover h4{
+  color: white;
 }
 
 .schedule-time {
@@ -3246,7 +3251,7 @@ img {
 
 .activity-icon i {
   font-size: 1.8rem;
-  color: var(--primary);
+  color: white;
 }
 
 .activity-content h3 {
@@ -3311,6 +3316,17 @@ img {
 
 .partnership-feature:hover {
   background-color: var(--primary-light);
+  color: white;
+}
+
+.partnership-feature:hover h4 {
+  background-color: var(--primary-light);
+  color: white;
+}
+
+.partnership-feature:hover i {
+  background-color: var(--primary-light);
+  color: white;
 }
 
 .partnership-feature i {
@@ -3372,6 +3388,7 @@ img {
 .enrollment-section {
   padding: 5rem 0;
   background-color: var(--primary-light);
+  color: white;
 }
 
 .enrollment-container {
@@ -3385,15 +3402,16 @@ img {
 }
 
 .enrollment-content h2 {
-  color: var(--primary);
+  color: white;
   margin-bottom: 1.5rem;
   font-size: 2.2rem;
   font-family: 'Lora', serif;
 }
 
-.enrollment-content > p {
+.enrollment-content p {
   margin-bottom: 2rem;
   line-height: 1.8;
+  color: var(--primary-light);
 }
 
 .enrollment-steps {
