@@ -4753,7 +4753,7 @@ img {
 
 .subject-icon i {
   font-size: 1.8rem;
-  color: var(--primary);
+  color: white;
 }
 
 .subject-area-card h3 {
@@ -4812,7 +4812,7 @@ img {
 
 .method-icon i {
   font-size: 1.3rem;
-  color: var(--primary);
+  color: white;
 }
 
 .method-content h3 {
