@@ -552,6 +552,15 @@ img {
     color: var(--secondary);
     margin-bottom: 1.5rem;
   }
+
+  .welcome-text a{
+    color: #333333;
+  }
+
+  .welcome-text a:hover{
+    background-color: #14163f;
+    color: white;
+  }
   
   /* Values Section Styles */
   .values-section {
