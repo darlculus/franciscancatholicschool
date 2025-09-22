@@ -3816,7 +3816,7 @@ img {
 
 .highlight-icon i {
   font-size: 1.8rem;
-  color: var(--primary);
+  color: white;
 }
 
 .highlight-card h3 {
@@ -3936,7 +3936,7 @@ img {
 
 .area-icon i {
   font-size: 1.3rem;
-  color: var(--primary);
+  color: white;
 }
 
 .area-content {
@@ -4103,6 +4103,11 @@ img {
 .approach-feature:hover {
   transform: translateX(5px);
   background-color: var(--primary-light);
+  color: white;
+}
+
+.approach-feature:hover h3{
+  color: white;
 }
 
 .feature-icon {
