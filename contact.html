@@ -16,6 +16,85 @@
     />
     <link rel="stylesheet" href="assets/css/franciscan.css" />
     <link rel="stylesheet" href="assets/css/contact-fix.css" />
+    <style>
+      /* Contact page layout + overflow fixes */
+      .contact-info-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
+      @media (max-width: 1200px) {
+        .contact-info-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 768px) {
+        .contact-info-grid { grid-template-columns: 1fr; }
+        .date-display { margin-left: 0; }
+      }
+      .contact-info-card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 1.25rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        min-width: 0; /* Allow cards to shrink so they don't overflow */
+      }
+      .contact-info-card p,
+      .contact-info-card a {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      /* Ensure two-column sections stack on mobile */
+      .contact-form-map,
+      .admission-container,
+      .appointment-container,
+      .footer-content {
+        display: flex;
+        gap: 2rem;
+        align-items: stretch;
+        flex-wrap: nowrap;
+      }
+      .contact-form-container,
+      .map-container,
+      .admission-content,
+      .admission-image,
+      .appointment-form-container,
+      .appointment-info {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+      @media (max-width: 768px) {
+        .contact-form-map,
+        .admission-container,
+        .appointment-container,
+        .footer-content {
+          flex-direction: column;
+        }
+        .appointment-info { order: 2; }
+      }
+
+      /* Mobile navigation fix for this page */
+      @media (max-width: 768px) {
+        .hamburger { display: flex; flex-direction: column; gap: 6px; cursor: pointer; padding: 10px; margin-left: auto; }
+        /* Slide-in mobile menu for better reliability */
+        .nav-items { position: fixed; top: 80px; left: -100%; right: auto; width: 80%; height: calc(100vh - 80px); background: #fff; padding: 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.1); flex-direction: column; align-items: flex-start; gap: 20px; z-index: 1001; overflow-y: auto; transition: left 0.3s ease; }
+        .nav-items.active { left: 0 !important; display: flex !important; }
+        .dropdown-content, .nested-content { position: static; display: none; box-shadow: none; width: 100%; padding-left: 15px; }
+        .dropdown.active > .dropdown-content,
+        .nested-dropdown.active > .nested-content,
+        .dropdown-content.active,
+        .nested-content.active { display: block; }
+        .appointment-info { order: 2; display: block; }
+      }
+
+      .map-container { width: 100%; overflow: hidden; }
+      .map-container iframe {
+        width: 100% !important;
+        max-width: 100%;
+        height: 350px;
+        display: block;
+        border: 0;
+      }
+    </style>
   </head>
 
   <body>
@@ -237,7 +316,7 @@
             </form>
           </div>
 
-          <div class="map-container">
+          <!-- <div class="map-container">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.1403647523844!2d3.621049873666875!3d6.503909493488339!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bfb9fa008bd2f%3A0xffc4e88db8d84cef!2sFriends%20Of%20Jesus%20Orphanage!5e0!3m2!1sen!2sng!4v1757617003386!5m2!1sen!2sng"
               width="600"
@@ -247,7 +326,7 @@
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
-          </div>
+          </div> -->
         </div>
       </div>
     </section>
@@ -831,6 +910,29 @@
 
         // Extra safety net for page transitions
         setTimeout(executeScrollToHash, 100);
+      })();
+    </script>
+    <script>
+      // Fallback mobile menu toggle specific to this page
+      (function(){
+        function initContactHamburger(){
+          var hamburger = document.querySelector('.hamburger');
+          var navItems = document.querySelector('.nav-items');
+          if (!hamburger || !navItems) return;
+          // Avoid duplicate handlers
+          hamburger._contactBound && hamburger.removeEventListener('click', hamburger._contactBound);
+          var handler = function(){
+            hamburger.classList.toggle('active');
+            navItems.classList.toggle('active');
+          };
+          hamburger._contactBound = handler;
+          hamburger.addEventListener('click', handler);
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initContactHamburger);
+        } else {
+          initContactHamburger();
+        }
       })();
     </script>
   </body>
