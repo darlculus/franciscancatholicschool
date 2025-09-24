@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     // Send to multiple recipients
     await transporter.sendMail({
       from: `"Website Contact" <${process.env.SMTP_USER}>`,
-      to: ['info@franciscancnps.org', 'admissions@franciscancnps.org'],
+      to: ['info@franciscancnps.org', 'admin@franciscancnps.org'],
       replyTo: email,
       subject: `[Contact Form] ${subject}`,
       text: `Name: ${fullName}\nEmail: ${email}\n\nMessage:\n${message}`,
