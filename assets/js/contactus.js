@@ -142,21 +142,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contactForm');
     
     if (contactForm) {
-      contactForm.addEventListener('submit', function(e) {
+      contactForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        // Simple validation
         const fullName = document.getElementById('fullName');
         const email = document.getElementById('email');
         const subject = document.getElementById('subject');
         const message = document.getElementById('message');
-        
-        if (fullName.value && email.value && subject.value && message.value) {
-          // Show success modal
-          showSuccessModal('Message Sent Successfully!', 'Thank you for contacting us. We will get back to you as soon as possible.');
-          
-          // Reset form
-          contactForm.reset();
+        const submitBtn = contactForm.querySelector('.submit-btn');
+
+        if (!fullName.value || !email.value || !subject.value || !message.value) {
+          alert('Please fill in all required fields.');
+          return;
+        }
+
+        // Disable button and show loading state
+        const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = 'Sending...'; }
+
+        try {
+          const res = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              fullName: fullName.value.trim(),
+              email: email.value.trim(),
+              subject: subject.value.trim(),
+              message: message.value.trim()
+            })
+          });
+
+          if (res.ok) {
+            showSuccessModal('Message Sent Successfully!', 'Thank you for contacting us. We will get back to you as soon as possible.');
+            contactForm.reset();
+          } else {
+            let errMsg = 'Failed to send message. Please try again later.';
+            try { const data = await res.json(); if (data && data.error) errMsg = data.error; } catch (_) {}
+            alert(errMsg);
+          }
+        } catch (err) {
+          alert('Network error. Please check your connection and try again.');
+        } finally {
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = originalBtnHtml; }
         }
       });
     }
