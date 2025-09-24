@@ -168,7 +168,8 @@ document.addEventListener('DOMContentLoaded', function() {
               fullName: fullName.value.trim(),
               email: email.value.trim(),
               subject: subject.value.trim(),
-              message: message.value.trim()
+              message: message.value.trim(),
+              contactHp: (document.getElementById('contactHp')?.value || '')
             })
           });
 
@@ -194,25 +195,52 @@ document.addEventListener('DOMContentLoaded', function() {
     const appointmentForm = document.getElementById('appointmentForm');
     
     if (appointmentForm) {
-      appointmentForm.addEventListener('submit', function(e) {
+      appointmentForm.addEventListener('submit', async function(e) {
         e.preventDefault();
-        
-        // Simple validation - check if all required fields have values
+
+        // Validate required fields
         const requiredFields = appointmentForm.querySelectorAll('[required]');
         let isValid = true;
-        
-        requiredFields.forEach(field => {
-          if (!field.value.trim()) {
-            isValid = false;
+        requiredFields.forEach(field => { if (!field.value.trim()) isValid = false; });
+        if (!isValid) { alert('Please fill in all required fields.'); return; }
+
+        const submitBtn = appointmentForm.querySelector('.submit-btn');
+        const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = 'Booking...'; }
+
+        // Collect values
+        const payload = {
+          parentName: document.getElementById('parentName')?.value.trim(),
+          childName: document.getElementById('childName')?.value.trim(),
+          appointmentEmail: document.getElementById('appointmentEmail')?.value.trim(),
+          appointmentPhone: document.getElementById('appointmentPhone')?.value.trim(),
+          childAge: document.getElementById('childAge')?.value,
+          preferredDate: document.getElementById('preferredDate')?.value,
+          preferredTime: document.getElementById('preferredTime')?.value,
+          visitPurpose: document.getElementById('visitPurpose')?.value,
+          additionalInfo: document.getElementById('additionalInfo')?.value?.trim() || '',
+          appointmentHp: (document.getElementById('appointmentHp')?.value || '')
+        };
+
+        try {
+          const res = await fetch('/api/appointment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.ok) {
+            showSuccessModal('Appointment Booked Successfully!', 'Thank you for booking an appointment. We will confirm your appointment shortly.');
+            appointmentForm.reset();
+          } else {
+            let errMsg = 'Failed to book appointment. Please try again later.';
+            try { const data = await res.json(); if (data && data.error) errMsg = data.error; } catch (_) {}
+            alert(errMsg);
           }
-        });
-        
-        if (isValid) {
-          // Show success modal
-          showSuccessModal('Appointment Booked Successfully!', 'Thank you for booking an appointment. We will confirm your appointment shortly.');
-          
-          // Reset form
-          appointmentForm.reset();
+        } catch (err) {
+          alert('Network error. Please check your connection and try again.');
+        } finally {
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = originalBtnHtml; }
         }
       });
     }
