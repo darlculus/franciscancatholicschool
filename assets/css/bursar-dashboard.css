@@ -194,6 +194,7 @@ body.bursar-dashboard {
   align-items: center;
   gap: 12px;
   font-family: 'Lora', serif;
+  color: gold
 }
 
 .finance-banner .banner-content p {
