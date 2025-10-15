@@ -2,20 +2,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // Tab switching functionality
     const portalTabs = document.querySelectorAll('.portal-tab');
     const loginFormElements = document.querySelectorAll('.login-form');
+    const portalContent = document.querySelector('.portal-content');
+
+    const handleTabActivation = (tabElement) => {
+        portalTabs.forEach(t => t.classList.remove('active'));
+        loginFormElements.forEach(form => form.classList.remove('active'));
+
+        tabElement.classList.add('active');
+        const targetForm = document.getElementById(tabElement.dataset.target);
+        if (targetForm) {
+            targetForm.classList.add('active');
+            if (portalContent) {
+                portalContent.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    };
     
     portalTabs.forEach(tab => {
         tab.addEventListener('click', function() {
-            // Remove active class from all tabs and forms
-            portalTabs.forEach(t => t.classList.remove('active'));
-            loginFormElements.forEach(form => form.classList.remove('active'));
-            
-            // Add active class to clicked tab
-            this.classList.add('active');
-            
-            // Show corresponding form
-            const targetForm = document.getElementById(this.dataset.target);
-            if (targetForm) {
-                targetForm.classList.add('active');
+            handleTabActivation(this);
+        });
+    });
+    
+    // Support keyboard navigation
+    portalTabs.forEach(tab => {
+        tab.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                handleTabActivation(this);
             }
         });
     });
@@ -55,6 +69,15 @@ document.addEventListener('DOMContentLoaded', function() {
         ],
         admin: [
             { id: 'ADM001', password: 'admin123', name: 'Dr. James Anderson', position: 'Principal', role: 'admin' }
+        ],
+        bursar: [
+            {
+                id: 'BUR001',
+                password: 'bursar123',
+                name: 'Sr. Clare Ohagwa, OSF',
+                role: 'bursar',
+                contact: 'bursar@franciscancatholicschool.edu.ng'
+            }
         ]
     };
     
@@ -65,36 +88,38 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form ID to determine if it's student or teacher login
-            const formId = this.closest('.login-form').id;
+            const formElement = this.closest('.login-form');
+            const formId = formElement.id;
             const isStudent = formId === 'student-login';
+            const isTeacher = formId === 'teacher-login';
+            const isBursar = formId === 'bursar-login';
             
-            // Get username and password
-            const userId = isStudent ? 
-                document.getElementById('student-id').value : 
-                document.getElementById('teacher-id').value;
-                
-            const password = isStudent ? 
-                document.getElementById('student-password').value : 
-                document.getElementById('teacher-password').value;
-                
-            const rememberMe = isStudent ?
-                document.getElementById('student-remember').checked :
-                document.getElementById('teacher-remember').checked;
+            let userId = '';
+            let password = '';
+            let rememberMe = false;
             
-            // Simple validation
+            if (isStudent) {
+                userId = document.getElementById('student-id').value.trim();
+                password = document.getElementById('student-password').value;
+                rememberMe = document.getElementById('student-remember').checked;
+            } else if (isTeacher) {
+                userId = document.getElementById('teacher-id').value.trim();
+                password = document.getElementById('teacher-password').value;
+                rememberMe = document.getElementById('teacher-remember').checked;
+            } else if (isBursar) {
+                userId = document.getElementById('bursar-id').value.trim();
+                password = document.getElementById('bursar-password').value;
+                rememberMe = document.getElementById('bursar-remember').checked;
+            }
+            
             if (!userId || !password) {
                 alert('Please enter both ID and password');
                 return;
             }
             
-            // Authenticate user
-            if (isStudent) {
-                // Find student in test database
+            const authenticateStudent = () => {
                 const student = testUsers.students.find(user => user.id === userId);
-                
                 if (student && student.password === password) {
-                    // Store user info in session storage or local storage based on remember me
                     const storage = rememberMe ? localStorage : sessionStorage;
                     storage.setItem('currentUser', JSON.stringify({
                         id: student.id,
@@ -102,20 +127,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         grade: student.grade,
                         role: student.role
                     }));
-                    
-                    // Redirect to student dashboard
                     window.location.href = 'student-dashboard.html';
                 } else {
                     alert('Invalid student ID or password. Please try again.');
                 }
-            } else {
-                // Find teacher or admin in test database
+            };
+            
+            const authenticateTeacherOrAdmin = () => {
                 const teacher = testUsers.teachers.find(user => user.id === userId);
                 const admin = testUsers.admin.find(user => user.id === userId);
                 const user = teacher || admin;
                 
                 if (user && user.password === password) {
-                    // Store user info in session storage or local storage based on remember me
                     const storage = rememberMe ? localStorage : sessionStorage;
                     storage.setItem('currentUser', JSON.stringify({
                         id: user.id,
@@ -124,7 +147,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         ...(user.role === 'teacher' ? { subject: user.subject } : { position: user.position })
                     }));
                     
-                    // Redirect to appropriate dashboard
                     if (user.role === 'teacher') {
                         window.location.href = 'teacher-dashboard.html';
                     } else {
@@ -133,6 +155,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     alert('Invalid staff ID or password. Please try again.');
                 }
+            };
+            
+            const authenticateBursar = () => {
+                const bursar = testUsers.bursar.find(user => user.id === userId);
+                if (bursar && bursar.password === password) {
+                    const storage = rememberMe ? localStorage : sessionStorage;
+                    storage.setItem('currentUser', JSON.stringify({
+                        id: bursar.id,
+                        name: bursar.name,
+                        role: bursar.role,
+                        contact: bursar.contact
+                    }));
+                    window.location.href = 'bursar-dashboard.html';
+                } else {
+                    alert('Invalid bursar credentials. Kindly try again.');
+                }
+            };
+            
+            if (isStudent) {
+                authenticateStudent();
+            } else if (isTeacher) {
+                authenticateTeacherOrAdmin();
+            } else if (isBursar) {
+                authenticateBursar();
             }
         });
     });

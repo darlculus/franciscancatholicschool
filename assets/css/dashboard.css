@@ -637,23 +637,28 @@
         left: -280px;
         top: 0;
         height: 100%;
-        transition: left 0.3s ease;
-        z-index: 1000;
         width: 280px;
+        transition: transform 0.35s ease, box-shadow 0.3s ease;
+        z-index: 1000;
+        transform: translateX(-100%);
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(to bottom, var(--primary), var(--primary-light));
     }
     
     .dashboard-sidebar.active {
+        transform: translateX(0);
         left: 0;
     }
     
     .dashboard-main {
         width: 100%;
         margin-left: 0;
-        transition: margin-left 0.3s ease;
+        transition: transform 0.35s ease;
     }
     
     .dashboard-container.sidebar-open .dashboard-main {
-        margin-left: 280px;
+        transform: translateX(240px);
     }
     
     .mobile-toggle {
@@ -665,6 +670,7 @@
         cursor: pointer;
         font-size: 1.5rem;
         color: #333;
+        z-index: 1300;
     }
     
     /* Add overlay when sidebar is open */

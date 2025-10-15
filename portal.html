@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student & Teacher Portal - Franciscan Catholic Nursery and Primary School</title>
+    <title>
+      Student & Teacher Portal - Franciscan Catholic Nursery and Primary School
+    </title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,12 +21,15 @@
   </head>
   <body class="portal-body">
     <div class="portal-overlay"></div>
-    
+
     <div class="portal-container">
       <div class="portal-header">
         <div class="portal-logo">
           <div class="logo-circle">
-            <img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo" />
+            <img
+              src="assets/img/logo.jpg"
+              alt="Franciscan Catholic School Logo"
+            />
           </div>
           <h1>Franciscan Catholic Nursery and Primary School</h1>
         </div>
@@ -32,95 +37,195 @@
           <i class="fas fa-arrow-left"></i> Back to School Website
         </a>
       </div>
-      
+
       <div class="portal-content">
         <div class="portal-tabs">
-          <button class="portal-tab active" data-target="student-login">Student Login</button>
-          <button class="portal-tab" data-target="teacher-login">Teacher Login</button>
+          <button class="portal-tab active" data-target="student-login">
+            Student Login
+          </button>
+          <button class="portal-tab" data-target="teacher-login">
+            Teacher Login
+          </button>
+          <button class="portal-tab" data-target="bursar-login">
+            Bursar Login
+          </button>
         </div>
-        
+
         <div class="portal-forms">
           <!-- Student Login Form -->
           <div class="login-form active" id="student-login">
             <h2>Student Portal Login</h2>
             <p>Enter your student ID and password to access your dashboard</p>
-            
+
             <form action="#" method="post">
               <div class="form-group">
                 <label for="student-id">Student ID</label>
-                <input type="text" id="student-id" name="student-id" placeholder="Enter your student ID" required />
+                <input
+                  type="text"
+                  id="student-id"
+                  name="student-id"
+                  placeholder="Enter your student ID"
+                  required
+                />
               </div>
-              
+
               <div class="form-group">
                 <label for="student-password">Password</label>
                 <div class="password-input">
-                  <input type="password" id="student-password" name="student-password" placeholder="Enter your password" required />
+                  <input
+                    type="password"
+                    id="student-password"
+                    name="student-password"
+                    placeholder="Enter your password"
+                    required
+                  />
                   <button type="button" class="toggle-password">
                     <i class="fas fa-eye"></i>
                   </button>
                 </div>
               </div>
-              
+
               <div class="form-group remember-me">
-                <input type="checkbox" id="student-remember" name="student-remember" />
+                <input
+                  type="checkbox"
+                  id="student-remember"
+                  name="student-remember"
+                />
                 <label for="student-remember">Remember me</label>
               </div>
-              
+
               <div class="form-actions">
-                <button type="submit" class="btn-login">Login <i class="fas fa-sign-in-alt"></i></button>
+                <button type="submit" class="btn-login">
+                  Login <i class="fas fa-sign-in-alt"></i>
+                </button>
                 <a href="#" class="forgot-password">Forgot Password?</a>
               </div>
             </form>
-            
+
             <div class="portal-help">
-              <p>Need help logging in? Contact your class teacher or call the school office at <strong>+234 803 456 7890</strong></p>
+              <p>
+                Need help logging in? Contact your class teacher or call the
+                school office at <strong>+234 913 653 8240</strong>
+              </p>
             </div>
           </div>
-          
+
           <!-- Teacher Login Form -->
           <div class="login-form" id="teacher-login">
             <h2>Teacher Portal Login</h2>
             <p>Enter your staff ID and password to access your dashboard</p>
-            
+
             <form action="#" method="post">
               <div class="form-group">
                 <label for="teacher-id">Staff ID</label>
-                <input type="text" id="teacher-id" name="teacher-id" placeholder="Enter your staff ID" required />
+                <input
+                  type="text"
+                  id="teacher-id"
+                  name="teacher-id"
+                  placeholder="Enter your staff ID"
+                  required
+                />
               </div>
-              
+
               <div class="form-group">
                 <label for="teacher-password">Password</label>
                 <div class="password-input">
-                  <input type="password" id="teacher-password" name="teacher-password" placeholder="Enter your password" required />
+                  <input
+                    type="password"
+                    id="teacher-password"
+                    name="teacher-password"
+                    placeholder="Enter your password"
+                    required
+                  />
                   <button type="button" class="toggle-password">
                     <i class="fas fa-eye"></i>
                   </button>
                 </div>
               </div>
-              
+
               <div class="form-group remember-me">
-                <input type="checkbox" id="teacher-remember" name="teacher-remember" />
+                <input
+                  type="checkbox"
+                  id="teacher-remember"
+                  name="teacher-remember"
+                />
                 <label for="teacher-remember">Remember me</label>
               </div>
-              
+
               <div class="form-actions">
-                <button type="submit" class="btn-login">Login <i class="fas fa-sign-in-alt"></i></button>
+                <button type="submit" class="btn-login">
+                  Login <i class="fas fa-sign-in-alt"></i>
+                </button>
                 <a href="#" class="forgot-password">Forgot Password?</a>
               </div>
             </form>
-            
+
             <div class="portal-help">
-              <p>Need help logging in? Contact the IT department at <strong>it@franciscancatholicschool.edu.ng</strong></p>
+              <p>
+                Need help logging in? Contact the Admin department at
+                <strong>admin@franciscancnps.org</strong>
+              </p>
             </div>
           </div>
         </div>
+
+        <!-- Bursar Login Form -->
+        <div class="login-form bursar" id="bursar-login">
+          <h2>Bursar Portal Login</h2>
+          <p>Manage payments and receipts</p>
+
+          <form action="#" method="post">
+            <div class="form-group">
+              <label for="bursar-id">Username</label>
+              <input
+                type="text"
+                id="bursar-id"
+                name="bursar-id"
+                placeholder="Enter your username"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="bursar-password">Password</label>
+              <div class="password-input">
+                <input
+                  type="password"
+                  id="bursar-password"
+                  name="bursar-password"
+                  placeholder="Enter your password"
+                  required
+                />
+                <button type="button" class="toggle-password">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group remember-me">
+              <input
+                type="checkbox"
+                id="bursar-remember"
+                name="bursar-remember"
+              />
+              <label for="bursar-remember">Remember me</label>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-login">
+                Login <i class="fas fa-sign-in-alt"></i>
+              </button>
+              <a href="#" class="forgot-password">Need assistance?</a>
+            </div>
+          </form>
+        </div>
       </div>
-      
+
       <div class="portal-footer">
         <p>© 2025 Franciscan Catholic Nursery and Primary School</p>
       </div>
     </div>
-    
+
     <!-- Home button -->
     <a href="index.html" class="home-button" title="Back to Home">
       <i class="fas fa-home"></i>

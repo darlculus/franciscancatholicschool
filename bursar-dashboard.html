@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bursar Dashboard - Franciscan Catholic School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/franciscan.css" />
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <link rel="stylesheet" href="assets/css/bursar-dashboard.css" />
+  </head>
+  <body class="dashboard-body bursar-dashboard">
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="dashboard-sidebar bursar-theme" id="sidebar">
+        <div class="sidebar-header">
+          <div class="logo-circle">
+            <img
+              src="assets/img/logo.jpg"
+              alt="Franciscan Catholic School Logo"
+            />
+          </div>
+          <h3>Bursar's Office</h3>
+        </div>
+
+        <div class="user-info">
+          <div class="user-avatar bursar">
+            <img src="assets/img/school bursar.jpg" alt="Bursar" />
+          </div>
+          <div class="user-details">
+            <h4 id="bursar-name">Sr. Clare Ohagwa, OSF</h4>
+            <p id="bursar-role">Bursar</p>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <ul>
+            <li class="active">
+              <a href="#overview"><i class="fas fa-chart-line"></i> Overview</a>
+            </li>
+            <li>
+              <a href="#payments"
+                ><i class="fas fa-money-check-alt"></i> Payments</a
+              >
+            </li>
+            <li>
+              <a href="#receipts"><i class="fas fa-receipt"></i> e-Receipts</a>
+            </li>
+            <li>
+              <a href="#reports"><i class="fas fa-file-pdf"></i> PDF Reports</a>
+            </li>
+            <li>
+              <a href="#clients"
+                ><i class="fas fa-users"></i> Parents & Guardians</a
+              >
+            </li>
+            <li>
+              <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="#" id="logout-btn"
+            ><i class="fas fa-sign-out-alt"></i> Logout</a
+          >
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="dashboard-main" id="main">
+        <!-- Header -->
+        <header class="dashboard-header bursar">
+          <button
+            class="mobile-toggle"
+            id="sidebar-toggle"
+            aria-label="Toggle Sidebar"
+          >
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+          <div class="header-breadcrumb">
+            <span class="breadcrumb-pill">Finance Suite</span>
+            <h1>Welcome, <span id="welcome-name">Sr. Clare</span></h1>
+          </div>
+          <div class="header-actions">
+            <div class="date-display">
+              <i class="fas fa-calendar-day"></i>
+              <span id="current-date">Loading...</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <section class="dashboard-content">
+          <!-- Hero Banner -->
+          <div class="finance-banner" id="overview">
+            <div class="banner-overlay"></div>
+            <div class="banner-content">
+              <h2>
+                <i class="fas fa-hand-holding-heart"></i> Steward of Stewardship
+              </h2>
+              <p>
+                Track tuition payments, allocate resources wisely, and deliver
+                digital receipts with grace and precision.
+              </p>
+              <div class="banner-stats">
+                <div class="banner-stat">
+                  <span class="label">Today</span>
+                  <strong>₦1,240,000</strong>
+                  <span class="muted">Total inflow</span>
+                </div>
+                <div class="banner-stat">
+                  <span class="label">Receipts</span>
+                  <strong>28</strong>
+                  <span class="muted">Generated</span>
+                </div>
+                <div class="banner-stat">
+                  <span class="label">Outstanding</span>
+                  <strong>12</strong>
+                  <span class="muted">Awaiting confirmation</span>
+                </div>
+              </div>
+            </div>
+            <div class="banner-illustration">
+              <img
+                src="assets/img/finance-illustration.svg"
+                alt="Finance illustration"
+                onerror="this.style.display='none'"
+              />
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="finance-quick-actions">
+            <div class="action-card">
+              <div class="icon-circle success">
+                <i class="fas fa-plus-circle"></i>
+              </div>
+              <div>
+                <h3>Record New Payment</h3>
+                <p>
+                  Capture tuition, levies, and support contributions
+                  effortlessly.
+                </p>
+              </div>
+              <button class="btn-action" data-target="#payment-modal">
+                Launch Form <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+            <div class="action-card">
+              <div class="icon-circle accent">
+                <i class="fas fa-print"></i>
+              </div>
+              <div>
+                <h3>Generate e-Receipt</h3>
+                <p>
+                  Issue personalized digital receipts and send them instantly.
+                </p>
+              </div>
+              <button class="btn-action" data-target="#receipt-panel">
+                Open Studio <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+            <div class="action-card">
+              <div class="icon-circle royal">
+                <i class="fas fa-file-pdf"></i>
+              </div>
+              <div>
+                <h3>Export PDF Reports</h3>
+                <p>
+                  Share finance summaries with leadership in a polished format.
+                </p>
+              </div>
+              <button class="btn-action" data-target="#export-panel">
+                Prepare Report <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Payments Table -->
+          <div class="finance-card" id="payments">
+            <div class="card-header">
+              <div>
+                <h2>Recent Payments</h2>
+                <p>
+                  Monitor tuition inflows and outstanding balances in real-time.
+                </p>
+              </div>
+              <div class="card-actions">
+                <button class="chip-btn">
+                  <i class="fas fa-sync"></i> Refresh
+                </button>
+                <button class="chip-btn">
+                  <i class="fas fa-filter"></i> Filter
+                </button>
+                <button class="chip-btn primary">
+                  <i class="fas fa-download"></i> Export CSV
+                </button>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table class="payments-table">
+                <thead>
+                  <tr>
+                    <th>Receipt ID</th>
+                    <th>Student</th>
+                    <th>Class</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Mode</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="badge">RCPT-2101</span></td>
+                    <td>Michael Johnson</td>
+                    <td>Primary 4</td>
+                    <td>₦85,000</td>
+                    <td><span class="status-pill paid">Paid</span></td>
+                    <td>Bank Transfer</td>
+                    <td>03 Feb, 2025</td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge">RCPT-2102</span></td>
+                    <td>Esther Abraham</td>
+                    <td>Primary 2</td>
+                    <td>₦75,000</td>
+                    <td><span class="status-pill pending">Pending</span></td>
+                    <td>POS</td>
+                    <td>03 Feb, 2025</td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge">RCPT-2103</span></td>
+                    <td>Samuel Okeke</td>
+                    <td>Primary 6</td>
+                    <td>₦95,000</td>
+                    <td><span class="status-pill paid">Paid</span></td>
+                    <td>Cash</td>
+                    <td>02 Feb, 2025</td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge">RCPT-2104</span></td>
+                    <td>Theresa Ani</td>
+                    <td>Primary 1</td>
+                    <td>₦65,000</td>
+                    <td><span class="status-pill overdue">Overdue</span></td>
+                    <td>Bank Transfer</td>
+                    <td>31 Jan, 2025</td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge">RCPT-2105</span></td>
+                    <td>Ifeanyi Eze</td>
+                    <td>Nursery 2</td>
+                    <td>₦55,000</td>
+                    <td><span class="status-pill paid">Paid</span></td>
+                    <td>Online</td>
+                    <td>30 Jan, 2025</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Receipt Generator -->
+          <div class="finance-split" id="receipts">
+            <div class="split-panel" id="receipt-panel">
+              <div class="panel-header">
+                <h2>e-Receipt Studio</h2>
+                <p>Create custom branded receipts and share instantly.</p>
+              </div>
+              <form class="receipt-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="receipt-student">Student Name</label>
+                    <input
+                      type="text"
+                      id="receipt-student"
+                      placeholder="e.g. Michael Johnson"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="receipt-class">Class</label>
+                    <input
+                      type="text"
+                      id="receipt-class"
+                      placeholder="e.g. Primary 4"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="receipt-amount">Amount (₦)</label>
+                    <input
+                      type="number"
+                      id="receipt-amount"
+                      placeholder="e.g. 85000"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="receipt-purpose">Payment For</label>
+                    <input
+                      type="text"
+                      id="receipt-purpose"
+                      placeholder="Tuition / Fees"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="receipt-mode">Payment Mode</label>
+                    <select id="receipt-mode">
+                      <option value="">Select mode</option>
+                      <option value="transfer">Bank Transfer</option>
+                      <option value="pos">POS</option>
+                      <option value="cash">Cash</option>
+                      <option value="online">Online</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="receipt-date">Payment Date</label>
+                    <input type="date" id="receipt-date" />
+                  </div>
+                </div>
+                <div class="form-group full">
+                  <label for="receipt-notes">Notes</label>
+                  <textarea
+                    id="receipt-notes"
+                    rows="3"
+                    placeholder="Optional message"
+                  ></textarea>
+                </div>
+                <div class="form-actions">
+                  <button
+                    type="button"
+                    class="btn-primary"
+                    id="preview-receipt"
+                  >
+                    <i class="fas fa-eye"></i> Preview Receipt
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-secondary"
+                    id="generate-receipt"
+                  >
+                    <i class="fas fa-receipt"></i> Generate e-Receipt
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="split-panel preview" aria-live="polite">
+              <div class="panel-header">
+                <h2>Live Preview</h2>
+                <p>Review before you send or download.</p>
+              </div>
+              <div class="receipt-preview" id="receipt-preview">
+                <div class="preview-placeholder">
+                  <i class="fas fa-receipt"></i>
+                  <p>Fill the form to preview the e-receipt.</p>
+                </div>
+              </div>
+              <div class="preview-actions">
+                <button class="btn-outline" id="download-receipt">
+                  <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn-outline" id="share-receipt">
+                  <i class="fas fa-share"></i> Share via Email
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Export Reports -->
+          <div class="finance-card" id="reports">
+            <div class="card-header">
+              <div>
+                <h2>Export Financial Reports</h2>
+                <p>
+                  Generate beautifully formatted PDF summaries for leadership.
+                </p>
+              </div>
+              <div class="card-actions">
+                <button class="chip-btn">
+                  <i class="fas fa-calendar-week"></i> This Week
+                </button>
+                <button class="chip-btn">
+                  <i class="fas fa-calendar-alt"></i> This Term
+                </button>
+                <button class="chip-btn primary">
+                  <i class="fas fa-sliders-h"></i> Custom Range
+                </button>
+              </div>
+            </div>
+            <div class="report-grid" id="export-panel">
+              <div class="report-card">
+                <div class="report-icon success">
+                  <i class="fas fa-coins"></i>
+                </div>
+                <h3>Revenue Summary</h3>
+                <p>Consolidated view of tuition, levies, and donations.</p>
+                <button class="btn-link" data-report="revenue">
+                  Export PDF <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="report-card">
+                <div class="report-icon accent">
+                  <i class="fas fa-balance-scale"></i>
+                </div>
+                <h3>Outstanding Balances</h3>
+                <p>Highlight fees that require follow-up and next steps.</p>
+                <button class="btn-link" data-report="outstanding">
+                  Export PDF <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="report-card">
+                <div class="report-icon royal">
+                  <i class="fas fa-hand-holding-usd"></i>
+                </div>
+                <h3>Scholarship Allocation</h3>
+                <p>Track bursary distributions and sponsorship payments.</p>
+                <button class="btn-link" data-report="scholarship">
+                  Export PDF <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="report-card">
+                <div class="report-icon neutral">
+                  <i class="fas fa-chart-pie"></i>
+                </div>
+                <h3>Termly Finance Snapshot</h3>
+                <p>Comprehensive overview for the school management team.</p>
+                <button class="btn-link" data-report="snapshot">
+                  Export PDF <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Parents & Guardians -->
+          <div class="finance-card" id="clients">
+            <div class="card-header">
+              <div>
+                <h2>Parents & Guardians</h2>
+                <p>Track interactions and communication history at a glance.</p>
+              </div>
+              <div class="card-actions">
+                <button class="chip-btn">
+                  <i class="fas fa-user-plus"></i> Add Parent
+                </button>
+                <button class="chip-btn primary">
+                  <i class="fas fa-message"></i> Send Reminder
+                </button>
+              </div>
+            </div>
+            <div class="client-grid">
+              <div class="client-card">
+                <div class="client-avatar">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div>
+                  <h3>Mrs. Angela Okafor</h3>
+                  <p>Ward: Chimdi Okafor (Primary 3)</p>
+                  <span class="client-chip success">Updated</span>
+                </div>
+                <button class="btn-ghost">
+                  <i class="fas fa-envelope"></i>
+                </button>
+              </div>
+              <div class="client-card">
+                <div class="client-avatar pending">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div>
+                  <h3>Mr. David Ojo</h3>
+                  <p>Ward: Tope Ojo (Primary 5)</p>
+                  <span class="client-chip overdue">Payment Due</span>
+                </div>
+                <button class="btn-ghost"><i class="fas fa-phone"></i></button>
+              </div>
+              <div class="client-card">
+                <div class="client-avatar">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div>
+                  <h3>Mrs. Ifunanya Eze</h3>
+                  <p>Ward: Adaeze Eze (Nursery 2)</p>
+                  <span class="client-chip accent">New Follow-up</span>
+                </div>
+                <button class="btn-ghost">
+                  <i class="fas fa-envelope"></i>
+                </button>
+              </div>
+              <div class="client-card">
+                <div class="client-avatar">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div>
+                  <h3>Mr. Chika Umeh</h3>
+                  <p>Ward: Kosi Umeh (Primary 1)</p>
+                  <span class="client-chip neutral">Awaiting Reply</span>
+                </div>
+                <button class="btn-ghost">
+                  <i class="fas fa-message"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings Section -->
+          <div class="finance-card" id="settings">
+            <div class="card-header">
+              <div>
+                <h2>Settings</h2>
+                <p>Manage your account preferences and system configurations.</p>
+              </div>
+            </div>
+            <div class="settings-grid">
+              <div class="settings-card">
+                <div class="settings-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+                <h3>Profile Settings</h3>
+                <p>Update your personal information and profile picture.</p>
+                <button class="btn-link" id="profile-settings-btn">
+                  Edit Profile <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="settings-card">
+                <div class="settings-icon">
+                  <i class="fas fa-bell"></i>
+                </div>
+                <h3>Notifications</h3>
+                <p>Configure email and in-app notification preferences.</p>
+                <button class="btn-link" id="notification-settings-btn">
+                  Manage Notifications <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="settings-card">
+                <div class="settings-icon">
+                  <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Security</h3>
+                <p>Change password and manage security settings.</p>
+                <button class="btn-link" id="security-settings-btn">
+                  Security Settings <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="settings-card">
+                <div class="settings-icon">
+                  <i class="fas fa-cogs"></i>
+                </div>
+                <h3>System Preferences</h3>
+                <p>Customize dashboard appearance and behavior.</p>
+                <button class="btn-link" id="system-settings-btn">
+                  System Settings <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </main>
+    </div>
+
+    <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/bursar-dashboard.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </body>
+</html>
