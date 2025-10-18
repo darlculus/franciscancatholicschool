@@ -247,7 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="contact-tags">
             <span><i class="fas fa-envelope"></i> info@franciscancnps.org</span>
             <span><i class="fas fa-phone"></i> +234 913 653 8240 · +234 907 768 5251</span>
-            <span><i class="fas fa-globe"></i> franciscannps.edu.ng</span>
           </div>
         </section>
 
@@ -385,6 +384,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const issuedTime = formatTime(issuedAt);
       const bursarName = currentUser.name || 'Sr. Clare Ohagwa, OSF';
 
+      // doc.image('assets/img/logo.jpg', 40, 30, 50, 50);
+            
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(18);
       doc.text('Franciscan Catholic Nursery & Primary School', 40, 60);
@@ -392,8 +393,8 @@ document.addEventListener('DOMContentLoaded', () => {
       doc.setFontSize(12);
       doc.setFont('helvetica', 'normal');
       doc.text('First Unity Estate, Off Cooperative Villa, Badore, Ajah, Lagos, Nigeria', 40, 80);
-      doc.text('Email: info@franciscancnps.org · Phone: +234 913 653 8240 / +234 907 768 5251', 40, 96);
-      doc.text('Website: franciscannps.edu.ng', 40, 112);
+      doc.text('Email: bursar@franciscancnps.org · Phone: +234 913 653 8240 / +234 907 768 5251', 40, 96);
+      
 
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(16);
@@ -445,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
       doc.setFont('helvetica', 'normal');
       doc.text(bursarName, 40, notesYOffset + 20);
       doc.line(40, notesYOffset + 24, 220, notesYOffset + 24);
-      doc.text('For verification: franciscanschool.ng/verify', 40, notesYOffset + 60);
+      
 
       doc.save(`receipt-${receiptId}.pdf`);
     });
