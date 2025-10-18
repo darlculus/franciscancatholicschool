@@ -574,11 +574,349 @@ body.bursar-dashboard {
   gap: 8px;
 }
 
+.receipt-shell {
+  display: grid;
+  gap: 20px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(250, 242, 236, 0.9));
+  border-radius: 18px;
+  border: 1px solid rgba(139, 90, 43, 0.12);
+  box-shadow: 0 18px 40px rgba(20, 22, 63, 0.1);
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.receipt-shell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(169, 125, 80, 0.22), transparent 55%);
+  pointer-events: none;
+}
+
+.receipt-header,
+.receipt-contact,
+.receipt-body,
+.receipt-summary,
+.receipt-notes,
+.receipt-footer,
+.receipt-bottom {
+  position: relative;
+  z-index: 1;
+}
+
+.receipt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.receipt-brand {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.receipt-body {
+  display: grid;
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 14px;
+  border: 1px solid rgba(139, 90, 43, 0.1);
+}
+
+.info-row span {
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  color: rgba(20, 22, 63, 0.55);
+}
+
+.info-row strong {
+  font-size: 1rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.info-row.amount {
+  background: linear-gradient(135deg, rgba(139, 90, 43, 0.12), rgba(139, 90, 43, 0.22));
+  border-color: rgba(139, 90, 43, 0.2);
+}
+
+.receipt-brand .brand-logo {
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 3px solid rgba(139, 90, 43, 0.25);
+  box-shadow: 0 10px 24px rgba(139, 90, 43, 0.18);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.receipt-brand .brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.receipt-brand h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-family: 'Lora', serif;
+  color: var(--primary);
+}
+
+.receipt-brand p {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: rgba(20, 22, 63, 0.75);
+  font-weight: 500;
+}
+
+.receipt-meta {
+  min-width: 210px;
+  background: rgba(139, 90, 43, 0.08);
+  border-radius: 16px;
+  padding: 14px 18px;
+  display: grid;
+  gap: 10px;
+  border: 1px solid rgba(139, 90, 43, 0.18);
+  position: relative;
+  z-index: 1;
+}
+
+.meta-pill {
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--bursar-primary), var(--bursar-primary-light));
+  color: var(--white);
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: rgba(20, 22, 63, 0.75);
+}
+
+.meta-row span {
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  font-size: 0.7rem;
+}
+
+.meta-row strong {
+  font-size: 0.95rem;
+  color: var(--primary);
+}
+
+.receipt-contact {
+  display: grid;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.receipt-contact .contact-address {
+  color: rgba(20, 22, 63, 0.75);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.contact-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-tags span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(139, 90, 43, 0.12);
+  color: var(--primary);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.receipt-summary {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  position: relative;
+  z-index: 1;
+}
+
+.summary-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid rgba(139, 90, 43, 0.12);
+  display: grid;
+  gap: 8px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.summary-card.amount {
+  background: linear-gradient(145deg, rgba(139, 90, 43, 0.1), rgba(139, 90, 43, 0.2));
+  color: var(--primary);
+}
+
+.summary-card .label {
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  font-size: 0.7rem;
+  color: rgba(20, 22, 63, 0.65);
+}
+
+.summary-card strong {
+  font-size: 1.1rem;
+  color: var(--primary);
+}
+
+.summary-card p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(20, 22, 63, 0.7);
+}
+
+.receipt-notes {
+  background: rgba(255, 255, 255, 0.92);
+  border-left: 4px solid var(--bursar-primary);
+  padding: 16px 18px;
+  border-radius: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.receipt-notes h4 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: var(--primary);
+}
+
+.receipt-notes p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(20, 22, 63, 0.75);
+  line-height: 1.5;
+}
+
+.receipt-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.signature-block {
+  display: grid;
+  gap: 6px;
+}
+
+.signature-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(20, 22, 63, 0.65);
+}
+
+.signature-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.signature-line {
+  width: 180px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139, 90, 43, 0.6), transparent);
+}
+
+.qr-block {
+  text-align: center;
+  display: grid;
+  gap: 6px;
+}
+
+.qr-placeholder {
+  width: 74px;
+  height: 74px;
+  border-radius: 14px;
+  border: 1px dashed rgba(139, 90, 43, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(139, 90, 43, 0.7);
+  font-size: 1.4rem;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.qr-block span {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(20, 22, 63, 0.6);
+}
+
+.receipt-bottom {
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(20, 22, 63, 0.55);
+  position: relative;
+  z-index: 1;
+}
+
 .preview-actions {
   margin-top: 20px;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .receipt-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .receipt-meta {
+    width: 100%;
+  }
+
+  .receipt-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .signature-line {
+    width: 140px;
+  }
 }
 
 .report-grid {
