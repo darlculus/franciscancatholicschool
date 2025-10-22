@@ -1,0 +1,44 @@
+[
+  {
+    "id": "PAY-1761134100675",
+    "receiptId": "RCPT-1761134100675",
+    "studentName": "Leonard Odom",
+    "studentClass": "Primary 5",
+    "amount": 150000,
+    "purpose": "Transportation",
+    "paymentMode": "transfer",
+    "paymentDate": "2025-10-22",
+    "notes": "",
+    "status": "paid",
+    "createdBy": "BUR001",
+    "createdAt": "2025-10-22T11:55:00.675Z"
+  },
+  {
+    "id": "PAY-1761134185926",
+    "receiptId": "RCPT-1761134185926",
+    "studentName": "Darlington Odom",
+    "studentClass": "Primary 6",
+    "amount": 85000,
+    "purpose": "Transportation Fare",
+    "paymentMode": "transfer",
+    "paymentDate": "2025-10-22",
+    "notes": "This child is on the school bus for Addo/Badore axis",
+    "status": "paid",
+    "createdBy": "BUR001",
+    "createdAt": "2025-10-22T11:56:25.926Z"
+  },
+  {
+    "id": "PAY-1761135327927",
+    "receiptId": "RCPT-1761135327927",
+    "studentName": "Micheal Odom",
+    "studentClass": "Primary 6",
+    "amount": 150000,
+    "purpose": "Transport Fee",
+    "paymentMode": "transfer",
+    "paymentDate": "2025-10-22",
+    "notes": "This child is on the Addo/Badore bus route",
+    "status": "paid",
+    "createdBy": "BUR001",
+    "createdAt": "2025-10-22T12:15:27.927Z"
+  }
+]

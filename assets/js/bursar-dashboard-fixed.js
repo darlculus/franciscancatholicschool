@@ -1,13 +1,13 @@
-  // Set current date immediately
-  const currentDateEl = document.getElementById('current-date');
-  if (currentDateEl) {
-    currentDateEl.textContent = new Date().toLocaleDateString('en-NG', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-  }
+// Set current date immediately
+const currentDateEl = document.getElementById('current-date');
+if (currentDateEl) {
+  currentDateEl.textContent = new Date().toLocaleDateString('en-NG', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
   // Check authentication
@@ -53,6 +53,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Helper functions
+  const formatCurrency = (value) => {
+    if (!value && value !== 0) return '';
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 0,
+    }).format(Number(value));
+  };
+
+  const formatPaymentMode = (modeValue) => {
+    const paymentLabels = {
+      transfer: 'Bank Transfer',
+      pos: 'POS',
+      cash: 'Cash',
+      online: 'Online Payment',
+    };
+    if (!modeValue) return 'Pending selection';
+    return paymentLabels[modeValue] || modeValue;
+  };
+  
   function updateDashboardStats(stats) {
     const todayTotalEl = document.querySelector('.banner-stat strong');
     const receiptsCountEl = document.querySelectorAll('.banner-stat strong')[1];
@@ -84,15 +104,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       </tr>
     `).join('');
   }
-  
-  const formatCurrency = (value) => {
-    if (!value && value !== 0) return '';
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 0,
-    }).format(Number(value));
-  };
 
   const formatDate = (dateString) => {
     if (!dateString) return new Date().toLocaleDateString('en-NG', {
@@ -101,39 +112,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     return new Date(dateString).toLocaleDateString('en-NG', {
       day: '2-digit', month: 'short', year: 'numeric',
     });
-  };
-
-  const loadImageAsBase64 = async (url) => {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Network response was not ok');
-      const blob = await response.blob();
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.readAsDataURL(blob);
-      });
-    } catch (error) {
-      console.error('Error loading image:', error);
-      // Fallback for local files: use XMLHttpRequest
-      return new Promise((resolve) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.responseType = 'blob';
-        xhr.onload = () => {
-          const successStatus = xhr.status === 200 || xhr.status === 0;
-          if (successStatus && xhr.response) {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.readAsDataURL(xhr.response);
-          } else {
-            resolve(null);
-          }
-        };
-        xhr.onerror = () => resolve(null);
-        xhr.send();
-      });
-    }
   };
 
   // Populate bursar info
@@ -211,10 +189,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  const paymentModalButton = document.querySelector('[data-target="#payment-modal"]');
-  if (paymentModalButton) {
-    paymentModalButton.addEventListener('click', () => {
-      alert('Payment form coming soon.');
+  // Clear payments functionality
+  const clearPaymentsBtn = document.getElementById('clear-payments');
+  if (clearPaymentsBtn) {
+    clearPaymentsBtn.addEventListener('click', async () => {
+      if (confirm('Are you sure you want to clear all payment records? This action cannot be undone.')) {
+        try {
+          // Clear from backend
+          await window.api.clearPayments();
+          
+          // Refresh the table and stats
+          updatePaymentsTable([]);
+          updateDashboardStats({ todayTotal: 0, todayCount: 0, pendingCount: 0 });
+          
+          alert('All payment records have been cleared.');
+        } catch (error) {
+          console.error('Error clearing payments:', error);
+          alert('Error clearing payments: ' + error.message);
+        }
+      }
     });
   }
 
@@ -225,13 +218,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  const exportPanelButton = document.querySelector('[data-target="#export-panel"]');
-  if (exportPanelButton) {
-    exportPanelButton.addEventListener('click', () => {
-      window.scrollTo({ top: document.getElementById('reports')?.offsetTop || 0, behavior: 'smooth' });
-    });
-  }
-
   const receiptFormFields = {
     student: document.getElementById('receipt-student'),
     class: document.getElementById('receipt-class'),
@@ -239,6 +225,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     purpose: document.getElementById('receipt-purpose'),
     mode: document.getElementById('receipt-mode'),
     date: document.getElementById('receipt-date'),
+    term: document.getElementById('receipt-term'),
+    session: document.getElementById('receipt-session'),
     notes: document.getElementById('receipt-notes'),
   };
 
@@ -294,6 +282,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mode = receiptFormFields.mode?.value;
     const dateValue = receiptFormFields.date?.value;
     const date = formatDate(dateValue);
+    const term = receiptFormFields.term?.value;
+    const session = receiptFormFields.session?.value;
     const notes = receiptFormFields.notes?.value.trim();
 
     if (!student || !rawAmount || !purpose) {
@@ -378,6 +368,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             <span>Payment Date</span>
             <strong>${date}</strong>
           </div>
+          ${term ? `<div class="info-row">
+            <span>Term</span>
+            <strong>${term.charAt(0).toUpperCase() + term.slice(1)} Term</strong>
+          </div>` : ''}
+          ${session ? `<div class="info-row">
+            <span>Session</span>
+            <strong>${session}</strong>
+          </div>` : ''}
         </section>
 
         <section class="receipt-summary">
@@ -394,7 +392,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="summary-card">
             <span class="label">Payment Mode</span>
             <strong>${readableMode}</strong>
-            <p>${date}</p>
+            <p>${date}${term && session ? ` • ${term.charAt(0).toUpperCase() + term.slice(1)} Term ${session}` : ''}</p>
           </div>
         </section>
 
@@ -447,6 +445,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       const studentClass = receiptFormFields.class?.value.trim();
       const paymentMode = receiptFormFields.mode?.value;
       const paymentDate = receiptFormFields.date?.value;
+      const term = receiptFormFields.term?.value;
+      const session = receiptFormFields.session?.value;
       const notes = receiptFormFields.notes?.value.trim();
 
       if (!student || !amount || !purpose) {
@@ -468,6 +468,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           purpose: purpose,
           paymentMode: paymentMode || 'cash',
           paymentDate: paymentDate || new Date().toISOString().split('T')[0],
+          term: term,
+          session: session,
           notes: notes
         };
         
@@ -513,6 +515,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       const purpose = receiptFormFields.purpose?.value.trim();
       const mode = receiptFormFields.mode?.value;
       const dateValue = receiptFormFields.date?.value;
+      const term = receiptFormFields.term?.value;
+      const session = receiptFormFields.session?.value;
       const notes = receiptFormFields.notes?.value.trim();
 
       if (!student || !rawAmount || !purpose) {
@@ -574,6 +578,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       doc.setFont('helvetica', 'normal');
       doc.text(`Mode: ${readableMode}`, 50, sectionTop + 128);
       doc.text(`Payment Date: ${feeDate}`, 50, sectionTop + 146);
+      
+      if (term && session) {
+        doc.text(`Term: ${term.charAt(0).toUpperCase() + term.slice(1)} Term`, 320, sectionTop + 128);
+        doc.text(`Session: ${session}`, 320, sectionTop + 146);
+      }
 
       let notesYOffset = sectionTop + 180;
       if (notes) {
@@ -603,6 +612,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       const rawAmount = receiptFormFields.amount?.value;
       const purpose = receiptFormFields.purpose?.value.trim();
       const dateValue = receiptFormFields.date?.value;
+      const term = receiptFormFields.term?.value;
+      const session = receiptFormFields.session?.value;
       const notes = receiptFormFields.notes?.value.trim();
 
       if (!student || !rawAmount || !purpose) {
@@ -623,7 +634,9 @@ Receipt No.: ${receiptId}
 Student: ${student}
 Amount: ${amount}
 Payment For: ${purpose}
-Payment Date: ${feeDate}
+Payment Date: ${feeDate}${term && session ? `
+Term: ${term.charAt(0).toUpperCase() + term.slice(1)} Term
+Session: ${session}` : ''}
 
 ${notes ? `Message from bursar: ${notes}
 
@@ -638,13 +651,6 @@ Bursar, Franciscan Catholic Nursery & Primary School`);
       window.location.href = `mailto:?subject=${subject}&body=${body}`;
     });
   }
-
-  document.querySelectorAll('[data-report]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const reportType = button.dataset.report;
-      alert(`PDF export for ${reportType} report coming soon.`);
-    });
-  });
 
   // Sidebar navigation handling
   const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
@@ -665,35 +671,5 @@ Bursar, Franciscan Catholic Nursery & Primary School`);
       }
     });
   });
-
-  // Settings functionality
-  const profileSettingsBtn = document.getElementById('profile-settings-btn');
-  if (profileSettingsBtn) {
-    profileSettingsBtn.addEventListener('click', () => {
-      alert('Profile settings coming soon.');
-    });
-  }
-
-  const notificationSettingsBtn = document.getElementById('notification-settings-btn');
-  if (notificationSettingsBtn) {
-    notificationSettingsBtn.addEventListener('click', () => {
-      alert('Notification settings coming soon.');
-    });
-  }
-
-  const securitySettingsBtn = document.getElementById('security-settings-btn');
-  if (securitySettingsBtn) {
-    securitySettingsBtn.addEventListener('click', () => {
-      alert('Security settings coming soon.');
-    });
-  }
-
-  const systemSettingsBtn = document.getElementById('system-settings-btn');
-  if (systemSettingsBtn) {
-    systemSettingsBtn.addEventListener('click', () => {
-      alert('System preferences coming soon.');
-    });
-  }
-
 
 });

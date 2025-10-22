@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="assets/css/franciscan.css" />
     <link rel="stylesheet" href="assets/css/dashboard.css" />
     <link rel="stylesheet" href="assets/css/bursar-dashboard.css" />
+    <link rel="stylesheet" href="assets/css/receipt-preview.css" />
   </head>
   <body class="dashboard-body bursar-dashboard">
     <div class="dashboard-container">
@@ -116,17 +117,17 @@
               <div class="banner-stats">
                 <div class="banner-stat">
                   <span class="label">Today</span>
-                  <strong>₦1,240,000</strong>
+                  <strong>₦0</strong>
                   <span class="muted">Total inflow</span>
                 </div>
                 <div class="banner-stat">
                   <span class="label">Receipts</span>
-                  <strong>28</strong>
+                  <strong>0</strong>
                   <span class="muted">Generated</span>
                 </div>
                 <div class="banner-stat">
                   <span class="label">Outstanding</span>
-                  <strong>12</strong>
+                  <strong>0</strong>
                   <span class="muted">Awaiting confirmation</span>
                 </div>
               </div>
@@ -203,6 +204,9 @@
                 <button class="chip-btn">
                   <i class="fas fa-filter"></i> Filter
                 </button>
+                <button class="chip-btn" id="clear-payments">
+                  <i class="fas fa-trash"></i> Clear All
+                </button>
                 <button class="chip-btn primary">
                   <i class="fas fa-download"></i> Export CSV
                 </button>
@@ -223,49 +227,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="badge">RCPT-2101</span></td>
-                    <td>Michael Johnson</td>
-                    <td>Primary 4</td>
-                    <td>₦85,000</td>
-                    <td><span class="status-pill paid">Paid</span></td>
-                    <td>Bank Transfer</td>
-                    <td>03 Feb, 2025</td>
-                  </tr>
-                  <tr>
-                    <td><span class="badge">RCPT-2102</span></td>
-                    <td>Esther Abraham</td>
-                    <td>Primary 2</td>
-                    <td>₦75,000</td>
-                    <td><span class="status-pill pending">Pending</span></td>
-                    <td>POS</td>
-                    <td>03 Feb, 2025</td>
-                  </tr>
-                  <tr>
-                    <td><span class="badge">RCPT-2103</span></td>
-                    <td>Samuel Okeke</td>
-                    <td>Primary 6</td>
-                    <td>₦95,000</td>
-                    <td><span class="status-pill paid">Paid</span></td>
-                    <td>Cash</td>
-                    <td>02 Feb, 2025</td>
-                  </tr>
-                  <tr>
-                    <td><span class="badge">RCPT-2104</span></td>
-                    <td>Theresa Ani</td>
-                    <td>Primary 1</td>
-                    <td>₦65,000</td>
-                    <td><span class="status-pill overdue">Overdue</span></td>
-                    <td>Bank Transfer</td>
-                    <td>31 Jan, 2025</td>
-                  </tr>
-                  <tr>
-                    <td><span class="badge">RCPT-2105</span></td>
-                    <td>Ifeanyi Eze</td>
-                    <td>Nursery 2</td>
-                    <td>₦55,000</td>
-                    <td><span class="status-pill paid">Paid</span></td>
-                    <td>Online</td>
-                    <td>30 Jan, 2025</td>
+                    <td colspan="7" style="text-align: center; padding: 2rem;">No payments recorded yet</td>
                   </tr>
                 </tbody>
               </table>
@@ -328,6 +290,26 @@
                   <div class="form-group">
                     <label for="receipt-date">Payment Date</label>
                     <input type="date" id="receipt-date" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="receipt-term">Term</label>
+                    <select id="receipt-term">
+                      <option value="">Select term</option>
+                      <option value="first">First Term</option>
+                      <option value="second">Second Term</option>
+                      <option value="third">Third Term</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="receipt-session">Session</label>
+                    <select id="receipt-session">
+                      <option value="">Select session</option>
+                      <option value="2024/2025">2024/2025</option>
+                      <option value="2025/2026">2025/2026</option>
+                      <option value="2026/2027">2026/2027</option>
+                    </select>
                   </div>
                 </div>
                 <div class="form-group full">
@@ -460,55 +442,10 @@
               </div>
             </div>
             <div class="client-grid">
-              <div class="client-card">
-                <div class="client-avatar">
-                  <i class="fas fa-user"></i>
-                </div>
-                <div>
-                  <h3>Mrs. Angela Okafor</h3>
-                  <p>Ward: Chimdi Okafor (Primary 3)</p>
-                  <span class="client-chip success">Updated</span>
-                </div>
-                <button class="btn-ghost">
-                  <i class="fas fa-envelope"></i>
-                </button>
-              </div>
-              <div class="client-card">
-                <div class="client-avatar pending">
-                  <i class="fas fa-user"></i>
-                </div>
-                <div>
-                  <h3>Mr. David Ojo</h3>
-                  <p>Ward: Tope Ojo (Primary 5)</p>
-                  <span class="client-chip overdue">Payment Due</span>
-                </div>
-                <button class="btn-ghost"><i class="fas fa-phone"></i></button>
-              </div>
-              <div class="client-card">
-                <div class="client-avatar">
-                  <i class="fas fa-user"></i>
-                </div>
-                <div>
-                  <h3>Mrs. Ifunanya Eze</h3>
-                  <p>Ward: Adaeze Eze (Nursery 2)</p>
-                  <span class="client-chip accent">New Follow-up</span>
-                </div>
-                <button class="btn-ghost">
-                  <i class="fas fa-envelope"></i>
-                </button>
-              </div>
-              <div class="client-card">
-                <div class="client-avatar">
-                  <i class="fas fa-user"></i>
-                </div>
-                <div>
-                  <h3>Mr. Chika Umeh</h3>
-                  <p>Ward: Kosi Umeh (Primary 1)</p>
-                  <span class="client-chip neutral">Awaiting Reply</span>
-                </div>
-                <button class="btn-ghost">
-                  <i class="fas fa-message"></i>
-                </button>
+              <div style="text-align: center; padding: 3rem; color: #666;">
+                <i class="fas fa-users" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                <h3>No Parent Records Yet</h3>
+                <p>Parent and guardian information will appear here once school resumes and enrollment begins.</p>
               </div>
             </div>
           </div>
@@ -569,8 +506,8 @@
       </main>
     </div>
 
-    <script src="assets/js/dashboard.js"></script>
-    <script src="assets/js/bursar-dashboard.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="assets/js/bursar-simple.js"></script>
   </body>
 </html>

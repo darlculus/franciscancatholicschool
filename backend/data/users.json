@@ -1,0 +1,24 @@
+{
+  "bursar": [
+    {
+      "id": "BUR001",
+      "username": "bursar",
+      "password": "$2a$10$Q/7qypw5N6ZH.mr1tHv/4entiZxSlX1rr2VYHLwMIsqzEK/7FnE.i",
+      "name": "Sr. Clare Ohagwa, OSF",
+      "role": "bursar",
+      "email": "bursar@franciscancnps.org",
+      "active": true
+    }
+  ],
+  "admin": [
+    {
+      "id": "ADM001",
+      "username": "admin",
+      "password": "$2a$10$d1etOkRJEikZSbFpqbksJ.Szhxb.sHnhxbY4rU3y/BY64DPiJ0txa",
+      "name": "Rev. Fr. Principal",
+      "role": "admin",
+      "email": "admin@franciscancnps.org",
+      "active": true
+    }
+  ]
+}

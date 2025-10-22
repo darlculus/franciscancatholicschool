@@ -55,31 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Test user database (in a real application, this would be server-side)
-    const testUsers = {
-        students: [
-            { id: 'STU001', password: 'password123', name: 'John Doe', grade: 'Primary 5', role: 'student' },
-            { id: 'STU002', password: 'password123', name: 'Jane Smith', grade: 'Primary 6', role: 'student' },
-            { id: 'STU003', password: 'password123', name: 'Michael Johnson', grade: 'Primary 4', role: 'student' }
-        ],
-        teachers: [
-            { id: 'TCH001', password: 'teacher123', name: 'Mrs. Elizabeth Brown', subject: 'Mathematics', role: 'teacher' },
-            { id: 'TCH002', password: 'teacher123', name: 'Mr. Robert Wilson', subject: 'Science', role: 'teacher' },
-            { id: 'TCH003', password: 'teacher123', name: 'Ms. Sarah Davis', subject: 'English', role: 'teacher' }
-        ],
-        admin: [
-            { id: 'ADM001', password: 'admin123', name: 'Dr. James Anderson', position: 'Principal', role: 'admin' }
-        ],
-        bursar: [
-            {
-                id: 'BUR001',
-                password: 'bursar123',
-                name: 'Sr. Clare Ohagwa, OSF',
-                role: 'bursar',
-                contact: 'bursar@franciscancatholicschool.edu.ng'
-            }
-        ]
-    };
+    // Authentication will now use the backend API
     
     // Form submission (for demonstration - would connect to backend in real app)
     const formElements = document.querySelectorAll('form');
@@ -117,69 +93,64 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            const authenticateStudent = () => {
-                const student = testUsers.students.find(user => user.id === userId);
-                if (student && student.password === password) {
-                    const storage = rememberMe ? localStorage : sessionStorage;
-                    storage.setItem('currentUser', JSON.stringify({
-                        id: student.id,
-                        name: student.name,
-                        grade: student.grade,
-                        role: student.role
-                    }));
-                    window.location.href = 'student-dashboard.html';
-                } else {
-                    alert('Invalid student ID or password. Please try again.');
-                }
-            };
-            
-            const authenticateTeacherOrAdmin = () => {
-                const teacher = testUsers.teachers.find(user => user.id === userId);
-                const admin = testUsers.admin.find(user => user.id === userId);
-                const user = teacher || admin;
-                
-                if (user && user.password === password) {
-                    const storage = rememberMe ? localStorage : sessionStorage;
-                    storage.setItem('currentUser', JSON.stringify({
-                        id: user.id,
-                        name: user.name,
-                        role: user.role,
-                        ...(user.role === 'teacher' ? { subject: user.subject } : { position: user.position })
-                    }));
+            // Real authentication using backend API
+            const authenticateUser = async () => {
+                try {
+                    const role = isStudent ? 'student' : isTeacher ? 'teacher' : isBursar ? 'bursar' : 'admin';
                     
-                    if (user.role === 'teacher') {
-                        window.location.href = 'teacher-dashboard.html';
-                    } else {
-                        window.location.href = 'admin-dashboard.html';
-                    }
-                } else {
-                    alert('Invalid staff ID or password. Please try again.');
-                }
-            };
-            
-            const authenticateBursar = () => {
-                const bursar = testUsers.bursar.find(user => user.id === userId);
-                if (bursar && bursar.password === password) {
+                    const user = await window.api.login(userId, password, role);
+                    
                     const storage = rememberMe ? localStorage : sessionStorage;
-                    storage.setItem('currentUser', JSON.stringify({
-                        id: bursar.id,
-                        name: bursar.name,
-                        role: bursar.role,
-                        contact: bursar.contact
-                    }));
-                    window.location.href = 'bursar-dashboard.html';
-                } else {
-                    alert('Invalid bursar credentials. Kindly try again.');
+                    storage.setItem('currentUser', JSON.stringify(user));
+                    
+                    // Store auth token with same preference as user data
+                    window.api.setToken(window.api.token, rememberMe);
+                    
+                    // Redirect based on role
+                    switch (user.role) {
+                        case 'student':
+                            window.location.href = 'student-dashboard.html';
+                            break;
+                        case 'teacher':
+                            window.location.href = 'teacher-dashboard.html';
+                            break;
+                        case 'admin':
+                            window.location.href = 'admin-dashboard.html';
+                            break;
+                        case 'bursar':
+                            window.location.href = 'bursar-dashboard.html';
+                            break;
+                        default:
+                            alert('Unknown user role');
+                    }
+                    
+                } catch (error) {
+                    console.error('Authentication error:', error);
+                    alert('Invalid credentials. Please try again.');
                 }
             };
             
-            if (isStudent) {
-                authenticateStudent();
-            } else if (isTeacher) {
-                authenticateTeacherOrAdmin();
-            } else if (isBursar) {
-                authenticateBursar();
-            }
+            authenticateUser();
         });
     });
+    
+    // Check if user is already logged in
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
+    if (currentUser.role) {
+        // Redirect to appropriate dashboard if already logged in
+        switch (currentUser.role) {
+            case 'student':
+                window.location.href = 'student-dashboard.html';
+                break;
+            case 'teacher':
+                window.location.href = 'teacher-dashboard.html';
+                break;
+            case 'admin':
+                window.location.href = 'admin-dashboard.html';
+                break;
+            case 'bursar':
+                window.location.href = 'bursar-dashboard.html';
+                break;
+        }
+    }
 });
