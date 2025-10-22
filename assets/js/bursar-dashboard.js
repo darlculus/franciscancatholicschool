@@ -34,6 +34,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const loadImageAsBase64 = async (url) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const blob = await response.blob();
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.error('Error loading image:', error);
+      // Fallback for local files: use XMLHttpRequest
+      return new Promise((resolve) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'blob';
+        xhr.onload = () => {
+          const successStatus = xhr.status === 200 || xhr.status === 0;
+          if (successStatus && xhr.response) {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(xhr.response);
+          } else {
+            resolve(null);
+          }
+        };
+        xhr.onerror = () => resolve(null);
+        xhr.send();
+      });
+    }
+  };
+
   // Populate bursar info
   if (currentUser.role === 'bursar') {
     if (welcomeNameEl) welcomeNameEl.textContent = currentUser.name.split(' ')[1] || currentUser.name;
@@ -359,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const downloadBtn = document.getElementById('download-receipt');
   if (downloadBtn) {
-    downloadBtn.addEventListener('click', () => {
+    downloadBtn.addEventListener('click', async () => {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
 
@@ -384,7 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const issuedTime = formatTime(issuedAt);
       const bursarName = currentUser.name || 'Sr. Clare Ohagwa, OSF';
 
-      // doc.image('assets/img/logo.jpg', 40, 30, 50, 50);
+      doc.addImage('assets/img/logo.jpg', 'JPEG', 40, 30, 50, 50);
             
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(18);
