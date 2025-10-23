@@ -18,6 +18,9 @@ git push origin master
    - **Build Command:** `npm install`
    - **Start Command:** `npm start`
    - **Plan:** Free
+   - **Environment Variables:**
+     - `NODE_ENV` = `production`
+     - `JWT_SECRET` = (generate a random string like `franciscan_jwt_secret_2025_xyz123`)
 
 ## Step 3: Test Your Deployment
 1. Wait for deployment to complete
