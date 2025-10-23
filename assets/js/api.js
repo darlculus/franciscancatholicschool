@@ -1,7 +1,7 @@
 // API Configuration and Helper Functions
 const API_BASE_URL = window.location.hostname === 'localhost' 
   ? 'http://localhost:3000/api' 
-  : 'https://api.franciscancnps.org/api';
+  : 'https://franciscan-school.onrender.com/api';
 
 class APIClient {
   constructor() {
