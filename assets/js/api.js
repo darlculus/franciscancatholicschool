@@ -1,7 +1,7 @@
 // API Configuration and Helper Functions
 const API_BASE_URL = window.location.hostname === 'localhost' 
   ? 'http://localhost:3000/api' 
-  : `${window.location.protocol}//${window.location.host}/api`;
+  : 'https://api.franciscancnps.org/api';
 
 class APIClient {
   constructor() {
