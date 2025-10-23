@@ -10,6 +10,9 @@ if (currentDateEl) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Payment storage
+  let payments = JSON.parse(localStorage.getItem('franciscan_payments') || '[]');
+  
   // Helper functions
   const formatCurrency = (value) => {
     if (!value && value !== 0) return '';
@@ -246,6 +249,56 @@ document.addEventListener('DOMContentLoaded', () => {
     previewBtn.addEventListener('click', buildReceiptPreview);
   }
 
+  // Update payments table
+  function updatePaymentsTable() {
+    const tableBody = document.querySelector('.payments-table tbody');
+    if (!tableBody) return;
+    
+    if (payments.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem;">No payments recorded yet</td></tr>';
+      return;
+    }
+    
+    tableBody.innerHTML = payments.slice(0, 10).map(payment => `
+      <tr>
+        <td><span class="badge">${payment.receiptId}</span></td>
+        <td>${payment.studentName}</td>
+        <td>${payment.studentClass || 'N/A'}</td>
+        <td>${formatCurrency(payment.amount)}</td>
+        <td><span class="status-pill paid">Paid</span></td>
+        <td>${formatPaymentMode(payment.paymentMode)}</td>
+        <td>${formatDate(payment.paymentDate)}</td>
+      </tr>
+    `).join('');
+  }
+  
+  // Update dashboard stats
+  function updateDashboardStats() {
+    const today = new Date().toISOString().split('T')[0];
+    const todayPayments = payments.filter(p => p.paymentDate === today);
+    const todayTotal = todayPayments.reduce((sum, p) => sum + p.amount, 0);
+    
+    const todayTotalEl = document.querySelector('.banner-stat strong');
+    const receiptsCountEl = document.querySelectorAll('.banner-stat strong')[1];
+    
+    if (todayTotalEl) todayTotalEl.textContent = formatCurrency(todayTotal);
+    if (receiptsCountEl) receiptsCountEl.textContent = todayPayments.length;
+  }
+  
+  // Record payment button
+  const recordPaymentBtn = document.getElementById('record-payment-btn');
+  if (recordPaymentBtn) {
+    recordPaymentBtn.addEventListener('click', () => {
+      // Scroll to receipt form
+      document.getElementById('receipts').scrollIntoView({ behavior: 'smooth' });
+      
+      // Focus on first field
+      setTimeout(() => {
+        receiptFormFields.student?.focus();
+      }, 500);
+    });
+  }
+  
   // Generate button
   const generateBtn = document.getElementById('generate-receipt');
   if (generateBtn) {
@@ -253,6 +306,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const student = receiptFormFields.student?.value.trim();
       const amount = receiptFormFields.amount?.value.trim();
       const purpose = receiptFormFields.purpose?.value.trim();
+      const studentClass = receiptFormFields.class?.value.trim();
+      const paymentMode = receiptFormFields.mode?.value;
+      const paymentDate = receiptFormFields.date?.value;
+      const term = receiptFormFields.term?.value;
+      const session = receiptFormFields.session?.value;
+      const notes = receiptFormFields.notes?.value.trim();
 
       if (!student || !amount || !purpose) {
         alert('Please fill in all required fields: Student Name, Amount, and Payment For.');
@@ -264,6 +323,30 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Save payment record
+      const { id: receiptId } = ensureReceiptIdentity();
+      const newPayment = {
+        id: `PAY-${Date.now()}`,
+        receiptId: receiptId,
+        studentName: student,
+        studentClass: studentClass,
+        amount: parseFloat(amount),
+        purpose: purpose,
+        paymentMode: paymentMode || 'cash',
+        paymentDate: paymentDate || new Date().toISOString().split('T')[0],
+        term: term,
+        session: session,
+        notes: notes,
+        createdAt: new Date().toISOString()
+      };
+      
+      payments.unshift(newPayment); // Add to beginning
+      localStorage.setItem('franciscan_payments', JSON.stringify(payments));
+      
+      // Update UI
+      updatePaymentsTable();
+      updateDashboardStats();
+      
       buildReceiptPreview();
       
       // Scroll to preview
@@ -272,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
         previewElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       
-      alert('e-Receipt generated successfully! Ready for download.');
+      alert('Payment recorded and e-Receipt generated successfully!');
     });
   }
 
@@ -362,6 +445,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Clear payments button
+  const clearPaymentsBtn = document.getElementById('clear-payments');
+  if (clearPaymentsBtn) {
+    clearPaymentsBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear all payment records? This action cannot be undone.')) {
+        payments = [];
+        localStorage.setItem('franciscan_payments', JSON.stringify(payments));
+        updatePaymentsTable();
+        updateDashboardStats();
+        alert('All payment records have been cleared.');
+      }
+    });
+  }
+  
   // Logout button
   const logoutButton = document.getElementById('logout-btn');
   if (logoutButton) {
@@ -372,5 +469,9 @@ document.addEventListener('DOMContentLoaded', () => {
       window.location.href = 'portal.html';
     });
   }
+  
+  // Initialize on load
+  updatePaymentsTable();
+  updateDashboardStats();
 
 });
