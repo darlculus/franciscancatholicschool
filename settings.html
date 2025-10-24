@@ -66,11 +66,6 @@
             </li>
           </ul>
         </div>
-        <div class="sidebar-footer">
-          <a href="#" id="logout-btn"
-            ><i class="fas fa-sign-out-alt"></i> Logout</a
-          >
-        </div>
       </aside>
 
       <!-- Main Content -->
@@ -349,6 +344,14 @@
                     <i class="fas fa-trash-alt"></i> Clear Cache
                   </button>
                 </div>
+                
+                <div class="logout-section">
+                  <h3>Account Actions</h3>
+                  <button id="logout-settings-btn" class="btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                  </button>
+                  <p class="help-text">This will log you out of the admin panel and redirect you to the login page.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -356,7 +359,47 @@
       </main>
     </div>
 
-    <script src="assets/js/admin-dashboard.js"></script>
+    <script>
+        // Check authentication first
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
+        if (!currentUser.role || currentUser.role !== 'admin') {
+            window.location.href = 'portal.html';
+        }
+        
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logout functionality
+            const logoutBtn = document.getElementById('logout-settings-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to logout?')) {
+                        // Clear all user data
+                        localStorage.removeItem('currentUser');
+                        sessionStorage.removeItem('currentUser');
+                        localStorage.removeItem('authToken');
+                        sessionStorage.removeItem('authToken');
+                        
+                        // Set logout flag to prevent auto-redirect
+                        sessionStorage.setItem('justLoggedOut', 'true');
+                        
+                        // Redirect to portal
+                        window.location.href = 'portal.html';
+                    }
+                });
+            }
+            
+            // Set current date
+            const dateElement = document.getElementById('current-date');
+            if (dateElement) {
+                dateElement.textContent = new Date().toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+        });
+    </script>
     <script src="assets/js/settings.js"></script>
   </body>
 </html>

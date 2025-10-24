@@ -19,7 +19,7 @@
             <div class="sidebar-menu">
                 <ul>
                     <li class="active">
-                        <a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                     </li>
                     <li>
                         <a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a>
@@ -47,9 +47,6 @@
                     </li>
                 </ul>
             </div>
-            <div class="sidebar-footer">
-                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
         </aside>
 
         <!-- Main Content -->
@@ -65,42 +62,41 @@
                         <span id="current-date">Loading...</span>
                     </div>
                     <div class="admin-profile">
-                        <img src="assets/images/admin-avatar.png" alt="Admin" class="avatar">
+                        <img src="assets/img/sister3.jpg" alt="Admin" class="avatar">
                         <div class="admin-info">
-                            <span id="admin-name">Admin User</span>
-                            <span id="admin-role">Administrator</span>
+                            <span id="admin-name">Super Administrator</span>
+                            <span id="admin-role">Rev. Sr. Victoria Ogunwande OSF.</span>
                         </div>
                     </div>
                 </div>
             </nav>
 
-            <!-- Dashboard Content -->
+            <!-- Page Content -->
             <div class="dashboard-content">
-                <div class="welcome-section">
-                    <h1>Welcome, <span id="welcome-name">Administrator</span></h1>
-                    <p>Manage your school efficiently with our comprehensive admin dashboard.</p>
+                <div class="page-header">
+                    <h1>Admin Dashboard</h1>
+                    <p>Welcome to the Franciscan Catholic School Management System</p>
                 </div>
 
-                <!-- Stats Overview -->
-                <div class="stats-overview">
+                <div class="overview-stats">
                     <div class="stat-card">
                         <div class="stat-icon" style="background-color: #4CAF50;">
-                            <i class="fas fa-user-graduate"></i>
+                            <i class="fas fa-chalkboard-teacher"></i>
                         </div>
                         <div class="stat-details">
-                            <h3>Students</h3>
-                            <p class="stat-count">0</p>
-                            <p class="stat-label">Total Students</p>
+                            <h3>Total Teachers</h3>
+                            <p class="stat-count" id="total-teachers">0</p>
+                            <p class="stat-label">Active and Inactive</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon" style="background-color: #2196F3;">
-                            <i class="fas fa-chalkboard-teacher"></i>
+                            <i class="fas fa-user-graduate"></i>
                         </div>
                         <div class="stat-details">
-                            <h3>Teachers</h3>
-                            <p class="stat-count">0</p>
-                            <p class="stat-label">Total Teachers</p>
+                            <h3>Total Students</h3>
+                            <p class="stat-count" id="total-students">0</p>
+                            <p class="stat-label">Enrolled Students</p>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -108,247 +104,81 @@
                             <i class="fas fa-school"></i>
                         </div>
                         <div class="stat-details">
-                            <h3>Classes</h3>
-                            <p class="stat-count">0</p>
-                            <p class="stat-label">Total Classes</p>
+                            <h3>Total Classes</h3>
+                            <p class="stat-count" id="total-classes">0</p>
+                            <p class="stat-label">Available Classes</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon" style="background-color: #9C27B0;">
-                            <i class="fas fa-book"></i>
+                            <i class="fas fa-money-bill-wave"></i>
                         </div>
                         <div class="stat-details">
-                            <h3>Subjects</h3>
-                            <p class="stat-count">0</p>
-                            <p class="stat-label">Total Subjects</p>
+                            <h3>Total Payments</h3>
+                            <p class="stat-count" id="total-payments">₦0</p>
+                            <p class="stat-label">This Term</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Quick Actions -->
                 <div class="quick-actions">
-                    <h2>Quick Actions</h2>
+                    <h3>Quick Actions</h3>
                     <div class="action-buttons">
-                        <button class="action-btn" id="add-teacher-btn">
+                        <button class="action-btn" onclick="window.location.href='teachers.html'">
                             <i class="fas fa-user-plus"></i>
-                            <span>Add Staff</span>
+                            <span>Add Teacher</span>
                         </button>
-                        <button class="action-btn" id="add-student-btn">
-                            <i class="fas fa-user-plus"></i>
+                        <button class="action-btn" onclick="window.location.href='students.html'">
+                            <i class="fas fa-graduation-cap"></i>
                             <span>Add Student</span>
                         </button>
-                        <button class="action-btn" id="add-class-btn">
-                            <i class="fas fa-plus-circle"></i>
-                            <span>Add Class</span>
+                        <button class="action-btn" onclick="window.location.href='classes.html'">
+                            <i class="fas fa-school"></i>
+                            <span>Manage Classes</span>
                         </button>
-                        <button class="action-btn" id="add-subject-btn">
-                            <i class="fas fa-plus-circle"></i>
-                            <span>Add Subject</span>
+                        <button class="action-btn" onclick="window.location.href='reports.html'">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>View Reports</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Recent Activities -->
                 <div class="recent-activities">
-                    <h2>Recent Activities</h2>
+                    <h3>Recent Activities</h3>
                     <div class="activity-list">
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-cog"></i>
-                            </div>
-                            <div class="activity-details">
-                                <p>System initialized and ready for setup</p>
-                                <span class="activity-time">Just now</span>
-                            </div>
+                        <div class="empty-state">
+                            <i class="fas fa-history"></i>
+                            <h4>No Recent Activities</h4>
+                            <p>System activities will appear here once users start interacting with the platform.</p>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Add Teacher Modal -->
-                <div id="add-teacher-modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close-modal">&times;</span>
-                        <h2>Add New Teacher</h2>
-                        <form id="add-teacher-form">
-                            <div class="form-group">
-                                <label for="teacher-name">Full Name</label>
-                                <input type="text" id="teacher-name" name="teacher-name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="teacher-email">Email</label>
-                                <input type="email" id="teacher-email" name="teacher-email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="teacher-phone">Phone</label>
-                                <input type="tel" id="teacher-phone" name="teacher-phone" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="teacher-role">Role</label>
-                                <select id="teacher-role" name="teacher-role" required>
-                                    <option value="">Select Role</option>
-                                    <option value="teacher">Class Teacher</option>
-                                    <option value="admin">Administrative Staff</option>
-                                </select>
-                            </div>
-                            <div class="form-group" id="teacher-subject-group">
-                                <label for="teacher-subject">Subject</label>
-                                <input type="text" id="teacher-subject" name="teacher-subject">
-                            </div>
-                            <div class="form-group" id="teacher-class-group">
-                                <label for="teacher-class">Assigned Class</label>
-                                <select id="teacher-class" name="teacher-class">
-                                    <option value="">Select Class (Optional)</option>
-                                    <!-- Classes will be populated dynamically -->
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="teacher-password">Temporary Password</label>
-                                <input type="password" id="teacher-password" name="teacher-password" required>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn-primary">Add Teacher</button>
-                                <button type="button" class="btn-secondary cancel-modal">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Add Student Modal -->
-                <div id="add-student-modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close-modal">&times;</span>
-                        <h2>Add New Student</h2>
-                        <form id="add-student-form">
-                            <div class="form-group">
-                                <label for="student-name">Full Name</label>
-                                <input type="text" id="student-name" name="student-name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="student-gender">Gender</label>
-                                <select id="student-gender" name="student-gender" required>
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="student-dob">Date of Birth</label>
-                                <input type="date" id="student-dob" name="student-dob" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="student-class">Class</label>
-                                <select id="student-class" name="student-class" required>
-                                    <option value="">Select Class</option>
-                                    <!-- Classes will be populated dynamically -->
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="parent-name">Parent/Guardian Name</label>
-                                <input type="text" id="parent-name" name="parent-name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="parent-phone">Parent/Guardian Phone</label>
-                                <input type="tel" id="parent-phone" name="parent-phone" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="parent-email">Parent/Guardian Email</label>
-                                <input type="email" id="parent-email" name="parent-email">
-                            </div>
-                            <div class="form-group">
-                                <label for="student-password">Temporary Password</label>
-                                <input type="password" id="student-password" name="student-password" required>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn-primary">Add Student</button>
-                                <button type="button" class="btn-secondary cancel-modal">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Add Class Modal -->
-                <div id="add-class-modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close-modal">&times;</span>
-                        <h2>Add New Class</h2>
-                        <form id="add-class-form">
-                            <div class="form-group">
-                                <label for="class-name">Class Name</label>
-                                <input type="text" id="class-name" name="class-name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="class-level">Class Level</label>
-                                <select id="class-level" name="class-level" required>
-                                    <option value="">Select Level</option>
-                                    <option value="Nursery">Nursery</option>
-                                    <option value="Primary">Primary</option>
-                                    <option value="Junior Secondary">Junior Secondary</option>
-                                    <option value="Senior Secondary">Senior Secondary</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="class-capacity">Maximum Capacity</label>
-                                <input type="number" id="class-capacity" name="class-capacity" min="1" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="class-teacher">Class Teacher</label>
-                                <select id="class-teacher" name="class-teacher">
-                                    <option value="">Select Class Teacher (Optional)</option>
-                                    <!-- Teachers will be populated dynamically -->
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="class-description">Description</label>
-                                <textarea id="class-description" name="class-description" rows="3"></textarea>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn-primary">Add Class</button>
-                                <button type="button" class="btn-secondary cancel-modal">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Add Subject Modal -->
-                <div id="add-subject-modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close-modal">&times;</span>
-                        <h2>Add New Subject</h2>
-                        <form id="add-subject-form">
-                            <div class="form-group">
-                                <label for="subject-name">Subject Name</label>
-                                <input type="text" id="subject-name" name="subject-name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="subject-code">Subject Code</label>
-                                <input type="text" id="subject-code" name="subject-code" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="subject-level">Subject Level</label>
-                                <select id="subject-level" name="subject-level" required>
-                                    <option value="">Select Level</option>
-                                    <option value="Nursery">Nursery</option>
-                                    <option value="Primary">Primary</option>
-                                    <option value="Junior Secondary">Junior Secondary</option>
-                                    <option value="Senior Secondary">Senior Secondary</option>
-                                    <option value="All Levels">All Levels</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="subject-description">Description</label>
-                                <textarea id="subject-description" name="subject-description" rows="3"></textarea>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn-primary">Add Subject</button>
-                                <button type="button" class="btn-secondary cancel-modal">Cancel</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <script src="assets/js/admin-dashboard.js"></script>
+    <script>
+        // Set current date
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // No additional settings functionality needed - handled by settings.html
+
+        // Check if user is authenticated
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
+        if (!currentUser.role || currentUser.role !== 'admin') {
+            sessionStorage.setItem('justLoggedOut', 'true');
+            window.location.href = 'portal.html';
+        }
+
+        // Mobile sidebar toggle
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            document.querySelector('.dashboard-sidebar').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
