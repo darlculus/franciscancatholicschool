@@ -336,10 +336,10 @@ function loadStudentsData() {
     }
     
     // In a real application, you would fetch data from a server
-    // For this demo, we'll use sample data
+    // Since the school hasn't opened yet, we'll show empty state
     setTimeout(() => {
-        // Generate sample students
-        const students = generateSampleStudents(50);
+        // Empty students array for new school
+        const students = [];
         
         // Update stats
         updateStudentStats(students);
@@ -349,57 +349,11 @@ function loadStudentsData() {
     }, 1000);
 }
 
-// Generate sample students
+// Generate sample students (currently disabled for new school)
 function generateSampleStudents(count) {
-    const students = [];
-    const classes = [
-        { id: 'nursery1', name: 'Nursery 1' },
-        { id: 'nursery2', name: 'Nursery 2' },
-        { id: 'primary1', name: 'Primary 1' },
-        { id: 'primary2', name: 'Primary 2' },
-        { id: 'primary3', name: 'Primary 3' },
-        { id: 'primary4', name: 'Primary 4' },
-        { id: 'primary5', name: 'Primary 5' },
-        { id: 'primary6', name: 'Primary 6' }
-    ];
-    
-    const firstNames = ['John', 'Mary', 'David', 'Sarah', 'Michael', 'Emma', 'James', 'Olivia', 'Daniel', 'Sophia', 'Matthew', 'Ava', 'Joseph', 'Isabella', 'Andrew', 'Mia', 'William', 'Charlotte', 'Alexander', 'Amelia'];
-    
-    const lastNames = ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson'];
-    
-    const genders = ['Male', 'Female'];
-    
-    for (let i = 1; i <= count; i++) {
-        const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-        const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-        const gender = genders[Math.floor(Math.random() * genders.length)];
-        const classInfo = classes[Math.floor(Math.random() * classes.length)];
-        
-        // Generate random date in the past 5 years
-        const enrollmentDate = new Date();
-        enrollmentDate.setFullYear(enrollmentDate.getFullYear() - Math.floor(Math.random() * 5));
-        enrollmentDate.setMonth(Math.floor(Math.random() * 12));
-        enrollmentDate.setDate(Math.floor(Math.random() * 28) + 1);
-        
-        students.push({
-            id: `STU${i.toString().padStart(4, '0')}`,
-            firstName,
-            lastName,
-            fullName: `${firstName} ${lastName}`,
-            gender,
-            dob: new Date(enrollmentDate.getFullYear() - (5 + Math.floor(Math.random() * 7)), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
-            classId: classInfo.id,
-            className: classInfo.name,
-            enrollmentDate,
-            status: Math.random() > 0.1 ? 'active' : 'inactive',
-            parentName: `${lastNames[Math.floor(Math.random() * lastNames.length)]} Parent`,
-            parentPhone: `+234${Math.floor(Math.random() * 1000000000)}`,
-            parentEmail: `parent${i}@example.com`,
-            address: '123 Sample Street, Lagos, Nigeria'
-        });
-    }
-    
-    return students;
+    // Return empty array since school hasn't opened yet
+    // This function can be used later when the school starts operating
+    return [];
 }
 
 // Update student statistics
@@ -629,8 +583,8 @@ function filterStudents() {
     const statusValue = document.getElementById('status-filter')?.value || '';
     
     // In a real application, you would fetch filtered data from a server
-    // For this demo, we'll filter the sample data
-    const allStudents = generateSampleStudents(50);
+    // Since the school hasn't opened yet, we have no students to filter
+    const allStudents = [];
     
     const filteredStudents = allStudents.filter(student => {
         // Search filter
@@ -658,13 +612,13 @@ function initEnrollmentChart() {
     if (!enrollmentChartCanvas) return;
     
     // In a real application, you would fetch this data from a server
-    // For this demo, we'll use sample data
+    // Since the school hasn't opened yet, we'll show empty data
     const enrollmentData = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [
             {
                 label: 'New Enrollments',
-                data: [12, 8, 5, 7, 10, 15, 20, 25, 18, 12, 8, 10],
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 backgroundColor: 'rgba(63, 81, 181, 0.2)',
                 borderColor: 'rgba(63, 81, 181, 1)',
                 borderWidth: 2,
@@ -672,7 +626,7 @@ function initEnrollmentChart() {
             },
             {
                 label: 'Withdrawals',
-                data: [2, 1, 3, 2, 1, 2, 3, 2, 1, 2, 1, 2],
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 backgroundColor: 'rgba(244, 67, 54, 0.2)',
                 borderColor: 'rgba(244, 67, 54, 1)',
                 borderWidth: 2,
@@ -722,12 +676,12 @@ function initEnrollmentChart() {
 // Update enrollment summary
 function updateEnrollmentSummary() {
     // In a real application, you would fetch this data from a server
-    // For this demo, we'll use sample data
-    const totalEnrollments = 150;
-    const newEnrollments = 25;
-    const withdrawals = 5;
+    // Since the school hasn't opened yet, we'll show zero data
+    const totalEnrollments = 0;
+    const newEnrollments = 0;
+    const withdrawals = 0;
     const netGrowth = newEnrollments - withdrawals;
-    const growthRate = (netGrowth / (totalEnrollments - newEnrollments + withdrawals)) * 100;
+    const growthRate = 0;
     
     // Update summary cards
     const totalCard = document.getElementById('total-enrollments');
