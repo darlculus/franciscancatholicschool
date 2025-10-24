@@ -48,9 +48,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="sidebar-footer">
-                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
+
         </aside>
 
         <!-- Main Content -->
@@ -66,10 +64,10 @@
                         <span id="current-date">Loading...</span>
                     </div>
                     <div class="admin-profile">
-                        <img src="assets/images/admin-avatar.png" alt="Admin" class="avatar">
+                        <img src="assets/img/sister3.jpg" alt="Admin" class="avatar">
                         <div class="admin-info">
-                            <span id="admin-name">Admin User</span>
-                            <span id="admin-role">Administrator</span>
+                            <span id="admin-name">Super Administrator</span>
+                            <span id="admin-role">Rev. Sr. Victoria Ogunwande OSF.</span>
                         </div>
                     </div>
                 </div>
@@ -222,12 +220,6 @@
                                 </select>
                                 <button id="add-teacher-btn" class="btn-primary">
                                     <i class="fas fa-plus"></i> Add Teacher
-                                </button>
-                                <button id="import-teachers-btn" class="btn-secondary">
-                                    <i class="fas fa-file-import"></i> Import
-                                </button>
-                                <button id="export-teachers-btn" class="btn-secondary">
-                                    <i class="fas fa-file-export"></i> Export
                                 </button>
                             </div>
                         </div>
@@ -446,6 +438,16 @@
                         <input type="email" id="email" name="email" required>
                     </div>
                     <div class="form-group">
+                        <label for="religion">Religion</label>
+                        <select id="religion" name="religion">
+                            <option value="">Select Religion</option>
+                            <option value="Christianity">Christianity</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Traditional">Traditional</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="address">Address</label>
                         <textarea id="address" name="address" rows="2"></textarea>
                     </div>
@@ -534,6 +536,7 @@
                             <option value="Teacher">Teacher</option>
                             <option value="Head Teacher">Head Teacher</option>
                             <option value="Subject Coordinator">Subject Coordinator</option>
+                            <option value="Admin">Admin</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -686,6 +689,7 @@
                             <option value="Teacher">Teacher</option>
                             <option value="Head Teacher">Head Teacher</option>
                             <option value="Subject Coordinator">Subject Coordinator</option>
+                            <option value="Admin">Admin</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1018,6 +1022,191 @@
         <button class="notification-close">&times;</button>
     </div>
 
+    <script>
+        // Check authentication
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
+        if (!currentUser.role || currentUser.role !== 'admin') {
+            sessionStorage.setItem('justLoggedOut', 'true');
+            window.location.href = 'portal.html';
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            const dateElement = document.getElementById('current-date');
+            if (dateElement) {
+                dateElement.textContent = new Date().toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+            
+            // Tab functionality
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs and panes
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabPanes.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding pane
+                    this.classList.add('active');
+                    const targetPane = document.getElementById(targetTab + '-tab');
+                    if (targetPane) {
+                        targetPane.classList.add('active');
+                    }
+                });
+            });
+            
+            // Quick action buttons
+            const addTeacherQuickBtn = document.getElementById('add-teacher-quick-btn');
+            const addTeacherBtn = document.getElementById('add-teacher-btn');
+            const addFirstTeacherBtn = document.getElementById('add-first-teacher-btn');
+            const assignClassBtn = document.getElementById('assign-class-btn');
+            const assignSubjectBtn = document.getElementById('assign-subject-btn');
+            const sendNotificationBtn = document.getElementById('send-notification-btn');
+            
+            // Add Teacher button functionality
+            [addTeacherQuickBtn, addTeacherBtn, addFirstTeacherBtn].forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', function() {
+                        const modal = document.getElementById('add-teacher-modal');
+                        if (modal) {
+                            modal.style.display = 'block';
+                        }
+                    });
+                }
+            });
+            
+            // Modal functionality
+            const modal = document.getElementById('add-teacher-modal');
+            const closeModal = document.querySelector('.close-modal');
+            
+            if (closeModal) {
+                closeModal.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            }
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Modal form tabs functionality
+            const formTabs = document.querySelectorAll('.form-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const prevBtn = document.querySelector('.prev-tab-btn');
+            const nextBtn = document.querySelector('.next-tab-btn');
+            const submitBtn = document.querySelector('.submit-form-btn');
+            
+            formTabs.forEach((tab, index) => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all form tabs and contents
+                    formTabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.style.display = 'none');
+                    
+                    // Add active class to clicked tab and show corresponding content
+                    this.classList.add('active');
+                    const targetContent = document.getElementById(targetTab + '-tab-content');
+                    if (targetContent) {
+                        targetContent.style.display = 'block';
+                    }
+                    
+                    // Update navigation buttons
+                    if (index === 0) {
+                        prevBtn.style.display = 'none';
+                        nextBtn.style.display = 'inline-block';
+                        submitBtn.style.display = 'none';
+                        nextBtn.setAttribute('data-tab', 'professional');
+                    } else if (index === 1) {
+                        prevBtn.style.display = 'inline-block';
+                        nextBtn.style.display = 'inline-block';
+                        submitBtn.style.display = 'none';
+                        prevBtn.setAttribute('data-tab', 'personal');
+                        nextBtn.setAttribute('data-tab', 'account');
+                    } else if (index === 2) {
+                        prevBtn.style.display = 'inline-block';
+                        nextBtn.style.display = 'none';
+                        submitBtn.style.display = 'inline-block';
+                        prevBtn.setAttribute('data-tab', 'professional');
+                    }
+                });
+            });
+            
+            // Navigation button functionality
+            if (prevBtn) {
+                prevBtn.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    const targetTabBtn = document.querySelector(`[data-tab="${targetTab}"]`);
+                    if (targetTabBtn) {
+                        targetTabBtn.click();
+                    }
+                });
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    const targetTabBtn = document.querySelector(`[data-tab="${targetTab}"]`);
+                    if (targetTabBtn) {
+                        targetTabBtn.click();
+                    }
+                });
+            }
+            
+            // Other quick action buttons
+            if (assignClassBtn) {
+                assignClassBtn.addEventListener('click', function() {
+                    const modal = document.getElementById('assign-class-modal');
+                    if (modal) {
+                        modal.style.display = 'block';
+                    } else {
+                        alert('Assign Class functionality will be implemented soon.');
+                    }
+                });
+            }
+            
+            if (assignSubjectBtn) {
+                assignSubjectBtn.addEventListener('click', function() {
+                    const modal = document.getElementById('assign-subject-modal');
+                    if (modal) {
+                        modal.style.display = 'block';
+                    } else {
+                        alert('Assign Subject functionality will be implemented soon.');
+                    }
+                });
+            }
+            
+            if (sendNotificationBtn) {
+                sendNotificationBtn.addEventListener('click', function() {
+                    const modal = document.getElementById('notification-modal');
+                    if (modal) {
+                        modal.style.display = 'block';
+                    } else {
+                        alert('Send Notification functionality will be implemented soon.');
+                    }
+                });
+            }
+            
+            // Mobile sidebar toggle
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    document.querySelector('.dashboard-sidebar').classList.toggle('active');
+                });
+            }
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="assets/js/teachers.js"></script>
 </body>

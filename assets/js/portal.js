@@ -134,7 +134,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Check if user is already logged in
+    // Check if user is already logged in (but not if they just logged out)
+    const justLoggedOut = sessionStorage.getItem('justLoggedOut');
+    if (justLoggedOut) {
+        sessionStorage.removeItem('justLoggedOut');
+        return; // Don't auto-redirect if user just logged out
+    }
+    
     const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
     if (currentUser.role) {
         // Redirect to appropriate dashboard if already logged in
