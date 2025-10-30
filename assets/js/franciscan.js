@@ -48,6 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Tab Switching Functionality
     initTabs();
     
+    // FAQ Functionality
+    initFAQ();
+    
     // Scroll to Top Button
     const scrollToTopBtn = document.getElementById('scrollToTop');
     
@@ -253,5 +256,70 @@ document.addEventListener('DOMContentLoaded', function() {
       currentTestimonial = (currentTestimonial === testimonials.length - 1) ? 0 : currentTestimonial + 1;
       updateTestimonial();
     }, 7000);
+  }
+  
+  // FAQ Functionality
+  function initFAQ() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      const toggle = item.querySelector('.faq-toggle');
+      const answer = item.querySelector('.faq-answer');
+      
+      if (question && answer) {
+        // Add click handler to the question div
+        question.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const isActive = item.classList.contains('active');
+          
+          // Close all other FAQ items
+          faqItems.forEach(otherItem => {
+            if (otherItem !== item) {
+              otherItem.classList.remove('active');
+              const otherAnswer = otherItem.querySelector('.faq-answer');
+              if (otherAnswer) {
+                otherAnswer.style.maxHeight = '0';
+                otherAnswer.style.padding = '0 1.5rem';
+              }
+            }
+          });
+          
+          // Toggle current item
+          if (!isActive) {
+            item.classList.add('active');
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+            answer.style.padding = '0 1.5rem 1.5rem';
+          } else {
+            item.classList.remove('active');
+            answer.style.maxHeight = '0';
+            answer.style.padding = '0 1.5rem';
+          }
+        });
+        
+        // Add click handler to toggle button if it exists
+        if (toggle) {
+          toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            question.click(); // Trigger the question click handler
+          });
+        }
+      }
+    });
+    
+    // Initialize FAQ state - all closed
+    faqItems.forEach(item => {
+      const answer = item.querySelector('.faq-answer');
+      if (answer) {
+        answer.style.maxHeight = '0';
+        answer.style.padding = '0 1.5rem';
+        answer.style.overflow = 'hidden';
+        answer.style.transition = 'max-height 0.3s ease, padding 0.3s ease';
+      }
+      item.classList.remove('active');
+    });
   }
   

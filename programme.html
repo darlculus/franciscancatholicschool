@@ -17,6 +17,19 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="assets/css/franciscan.css" />
+    <style>
+      .footer-content {
+        display: flex;
+        gap: 2rem;
+        align-items: stretch;
+        flex-wrap: nowrap;
+      }
+      @media (max-width: 768px) {
+        .footer-content {
+          flex-direction: column;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- Navbar begins -->
@@ -54,15 +67,8 @@
             >Programmes <i class="fas fa-chevron-down"></i
           ></a>
           <div class="dropdown-content">
-            <div class="nested-dropdown">
-              <a href="earlyyear.html" class="nested-trigger"
-                >Early Years <i class="fas fa-chevron-right"></i
-              ></a>
-              <div class="nested-content">
-                <a href="creche.html">Creche</a>
-                <a href="preschool.html">PreSchool</a>
-              </div>
-            </div>
+            <a href="creche.html">Creche</a>
+            <a href="earlyyear.html">Early Years</a>
             <a href="primary.html">Primary</a>
           </div>
         </div>
@@ -148,6 +154,7 @@
           <div class="early-years-content">
             <div class="section-header text-left">
               <h2>Early Years Programme</h2>
+              <h3 class="age-range">(Ages 1 – 4 years)</h3>
               <div class="divider-left">
                 <span class="divider-line"></span>
                 <i class="fas fa-cross"></i>
@@ -167,6 +174,12 @@
                 and development, enabling our educators to plan learning that is
                 appropriate for each child at every stage of their development
                 through a range of engaging activities.
+              </p>
+              <p>
+                The aim of our Early Years Programme is to help children achieve
+                the five outcomes of the "EVERY CHILD MATTERS" principle while
+                nurturing their spiritual growth and character development in a
+                Catholic environment.
               </p>
               <div class="programme-features">
                 <div class="programme-feature">
@@ -200,23 +213,12 @@
           <div class="early-years-levels">
             <div class="programme-level primary-level">
               <div class="level-icon">
-                <i class="fas fa-baby"></i>
-              </div>
-              <h4>Creche</h4>
-              <p>Playgroup 1 & 2</p>
-              <span class="level-age">Age 1</span>
-              <a href="creche.html" class="level-link"
-                >Explore <i class="fas fa-arrow-right"></i
-              ></a>
-            </div>
-            <div class="programme-level secondary-level">
-              <div class="level-icon">
                 <i class="fas fa-child"></i>
               </div>
-              <h4>PreSchool</h4>
-              <p>Nursery 1 & 2</p>
-              <span class="level-age">Ages 3-5 years</span>
-              <a href="preschool.html" class="level-link"
+              <h4>Early Years</h4>
+              <p>Creche (Age 1), Early Year 1 (Age 2), Early Year 2 (Age 3), Early Year 3 (Age 4)</p>
+              <span class="level-age">Ages 1-4 years</span>
+              <a href="earlyyear.html" class="level-link"
                 >Explore <i class="fas fa-arrow-right"></i
               ></a>
             </div>
@@ -618,13 +620,8 @@
                   >
                 </li>
                 <li>
-                  <a href="preschool.html"
-                    ><i class="fas fa-angle-right"></i> Pre-School</a
-                  >
-                </li>
-                <li>
-                  <a href="preschool.html"
-                    ><i class="fas fa-angle-right"></i> Nursery</a
+                  <a href="earlyyear.html"
+                    ><i class="fas fa-angle-right"></i> Early Years</a
                   >
                 </li>
                 <li>
@@ -642,10 +639,13 @@
                   <i class="fas fa-map-marker-alt"></i> First Unity Estate, Off
                   Cooperative Villa, Badore, Ajah, Lagos, Nigeria.
                 </li>
-                <li><i class="fas fa-phone"></i> +234 913 653 8240, +234 907 768 5251</li>
+                <li>
+                  <i class="fas fa-phone"></i> +234 913 653 8240, +234 907 768
+                  5251
+                </li>
                 <li>
                   <i class="fas fa-envelope"></i>
-                  info@franciscancatholicschool
+                  info@franciscancnps.org
                 </li>
                 <li>
                   <i class="fas fa-clock"></i> Monday - Friday: 7:30 AM - 3:30
