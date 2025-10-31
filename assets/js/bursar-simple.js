@@ -10,6 +10,30 @@ if (currentDateEl) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Sidebar toggle functionality
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const sidebar = document.getElementById('sidebar');
+  const dashboardContainer = document.querySelector('.dashboard-container');
+
+  if (sidebarToggle && sidebar) {
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      sidebarToggle.classList.toggle('active');
+      dashboardContainer.classList.toggle('sidebar-open');
+    });
+
+    // Close sidebar when clicking overlay
+    document.addEventListener('click', (e) => {
+      if (dashboardContainer.classList.contains('sidebar-open') && 
+          !sidebar.contains(e.target) && 
+          !sidebarToggle.contains(e.target)) {
+        sidebar.classList.remove('active');
+        sidebarToggle.classList.remove('active');
+        dashboardContainer.classList.remove('sidebar-open');
+      }
+    });
+  }
+
   // Payment storage
   let payments = JSON.parse(localStorage.getItem('franciscan_payments') || '[]');
   
@@ -147,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <section class="receipt-contact">
           <p class="contact-address">
-            Franciscan Catholic Nursery & Primary School<br />
             First Unity Estate, Off Cooperative Villa, Badore, Ajah, Lagos, Nigeria
           </p>
           <div class="contact-tags">
@@ -198,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <p>Payment for ${purpose}</p>
           </div>
           <div class="summary-card">
-            <span class="label">Student</span>
+            <span class="label">Learner</span>
             <strong>${student}</strong>
             <p>${studentClass || 'Class not recorded yet'}</p>
           </div>
