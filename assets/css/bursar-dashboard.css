@@ -9,6 +9,167 @@
 
 body.bursar-dashboard {
   background: linear-gradient(135deg, rgba(139, 90, 43, 0.12), rgba(20, 22, 63, 0.12));
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.dashboard-sidebar {
+  width: 280px;
+  background: linear-gradient(160deg, var(--bursar-primary), var(--primary));
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.logo-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.logo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-family: 'Lora', serif;
+  color: var(--white);
+}
+
+.user-info {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-details h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--white);
+}
+
+.user-details p {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem 0;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  margin: 0;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-nav li.active a {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  border-left-color: var(--bursar-accent);
+}
+
+.sidebar-nav a:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+}
+
+.sidebar-nav i {
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-footer a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.sidebar-footer a:hover {
+  color: var(--white);
+}
+
+/* Main Content */
+.dashboard-main {
+  flex: 1;
+  margin-left: 280px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 2rem;
 }
 
 .dashboard-sidebar.bursar-theme {
@@ -1130,46 +1291,18 @@ body.bursar-dashboard {
     overflow: hidden;
   }
 
-  .dashboard-container {
-    position: relative;
-    overflow: hidden;
-  }
-
   .dashboard-sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 280px;
     transform: translateX(-100%);
-    transition: transform 0.35s ease;
     z-index: 1100;
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 40px;
-    background: linear-gradient(160deg, var(--bursar-primary), var(--primary));
     box-shadow: 4px 0 18px rgba(20, 22, 63, 0.25);
-  }
-
-  .dashboard-sidebar::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 65%);
-    pointer-events: none;
-  }
-
-  .dashboard-sidebar .sidebar-header,
-  .dashboard-sidebar .user-info,
-  .dashboard-sidebar .sidebar-nav,
-  .dashboard-sidebar .sidebar-footer {
-    position: relative;
-    z-index: 2;
   }
 
   .dashboard-sidebar.active {
     transform: translateX(0);
-    left: 0;
+  }
+
+  .dashboard-main {
+    margin-left: 0;
   }
 
   .dashboard-container.sidebar-open::after {
@@ -1178,18 +1311,6 @@ body.bursar-dashboard {
     inset: 0;
     background: rgba(20, 22, 63, 0.65);
     z-index: 1000;
-  }
-
-  .dashboard-main,
-  .dashboard-header,
-  .dashboard-content {
-    transition: transform 0.35s ease;
-  }
-
-  .dashboard-container.sidebar-open .dashboard-main,
-  .dashboard-container.sidebar-open .dashboard-header,
-  .dashboard-container.sidebar-open .dashboard-content {
-    transform: translateX(200px);
   }
 
   .finance-quick-actions {
