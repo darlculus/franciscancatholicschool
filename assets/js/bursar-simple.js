@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Receipt form fields
   const receiptFormFields = {
     student: document.getElementById('receipt-student'),
+    payer: document.getElementById('receipt-payer'),
     class: document.getElementById('receipt-class'),
     amount: document.getElementById('receipt-amount'),
     purpose: document.getElementById('receipt-purpose'),
@@ -114,7 +115,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const buildReceiptPreview = () => {
     const receiptPreviewEl = document.getElementById('receipt-preview');
+    if (!receiptPreviewEl) return;
+
     const student = receiptFormFields.student?.value.trim();
+    const payer = receiptFormFields.payer?.value.trim();
     const studentClass = receiptFormFields.class?.value.trim();
     const rawAmount = receiptFormFields.amount?.value;
     const amount = formatCurrency(rawAmount || 0);
@@ -182,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <section class="receipt-body">
           <div class="info-row">
             <span>Received From</span>
-            <strong>${student}</strong>
+            <strong>${payer || student}</strong>
           </div>
           <div class="info-row">
             <span>Class</span>
@@ -247,13 +251,10 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="qr-block">
             <div class="qr-placeholder"><i class="fas fa-qrcode"></i></div>
-            <span>Verify Online</span>
           </div>
         </footer>
 
-        <div class="receipt-bottom">
-          Thank you for supporting our mission of formative education.
-        </div>
+
       </div>
     `;
   };
@@ -312,13 +313,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const recordPaymentBtn = document.getElementById('record-payment-btn');
   if (recordPaymentBtn) {
     recordPaymentBtn.addEventListener('click', () => {
-      // Scroll to receipt form
-      document.getElementById('receipts').scrollIntoView({ behavior: 'smooth' });
-      
-      // Focus on first field
-      setTimeout(() => {
-        receiptFormFields.student?.focus();
-      }, 500);
+      const receiptsSection = document.getElementById('receipts');
+      if (receiptsSection) {
+        receiptsSection.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => {
+          if (receiptFormFields.student) receiptFormFields.student.focus();
+        }, 500);
+      }
     });
   }
   
@@ -337,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const notes = receiptFormFields.notes?.value.trim();
 
       if (!student || !amount || !purpose) {
-        alert('Please fill in all required fields: Student Name, Amount, and Payment For.');
+        alert('Please fill in all required fields: Learner Name, Amount, and Payment For.');
         return;
       }
 
@@ -346,7 +347,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Save payment record
       const { id: receiptId } = ensureReceiptIdentity();
       const newPayment = {
         id: `PAY-${Date.now()}`,
@@ -363,16 +363,13 @@ document.addEventListener('DOMContentLoaded', () => {
         createdAt: new Date().toISOString()
       };
       
-      payments.unshift(newPayment); // Add to beginning
+      payments.unshift(newPayment);
       localStorage.setItem('franciscan_payments', JSON.stringify(payments));
       
-      // Update UI
       updatePaymentsTable();
       updateDashboardStats();
-      
       buildReceiptPreview();
       
-      // Scroll to preview
       const previewElement = document.getElementById('receipt-preview');
       if (previewElement) {
         previewElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -382,89 +379,76 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Download button
+  // Download button - Simple print fallback
   const downloadBtn = document.getElementById('download-receipt');
   if (downloadBtn) {
-    downloadBtn.addEventListener('click', async () => {
-      const student = receiptFormFields.student?.value.trim();
-      const rawAmount = receiptFormFields.amount?.value;
-      const purpose = receiptFormFields.purpose?.value.trim();
-
-      if (!student || !rawAmount || !purpose) {
-        alert('Please complete the receipt form before downloading the PDF.');
-        return;
-      }
-
-      // Ensure receipt is generated first
-      buildReceiptPreview();
-      
+    downloadBtn.addEventListener('click', () => {
       const receiptElement = document.querySelector('.receipt-shell');
       if (!receiptElement) {
         alert('Please generate the receipt preview first.');
         return;
       }
+      
+      // Create print window
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Receipt - ${ensureReceiptIdentity().id}</title>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+            <style>
+              body { font-family: 'Montserrat', sans-serif; margin: 0; padding: 5px; background: #fff; }
+              .receipt-shell { max-width: 480px; margin: 0 auto; background: #fff; border-radius: 8px; padding: 0.8rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-size: 0.85rem; }
+              .receipt-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #b88e5e; }
+              .receipt-brand { display: flex; align-items: center; gap: 0.8rem; }
+              .brand-logo { width: 45px; height: 45px; }
+              .brand-logo img { width: 100%; height: 100%; object-fit: contain; }
+              .receipt-brand h3 { color: #2c3e50; font-size: 0.9rem; font-weight: 600; margin: 0; line-height: 1.1; }
+              .receipt-brand p { color: #b88e5e; font-size: 0.75rem; margin: 0.15rem 0 0 0; font-style: italic; }
+              .receipt-meta { text-align: right; min-width: 240px; }
+              .meta-pill { background: linear-gradient(135deg, #b88e5e, #d4af37); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: inline-block; margin-bottom: 1rem; }
+              .meta-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+              .meta-row span { color: #666; font-size: 0.85rem; }
+              .meta-row strong { color: #2c3e50; font-weight: 600; font-size: 0.85rem; word-break: break-all; }
+              .receipt-contact { background: #f8f9fa; padding: 0.6rem; border-radius: 6px; margin-bottom: 0.6rem; text-align: center; }
+              .contact-address { color: #2c3e50; font-size: 0.8rem; line-height: 1.3; margin-bottom: 0.6rem; }
+              .contact-tags { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+              .contact-tags span { color: #b88e5e; font-size: 0.7rem; display: flex; align-items: center; gap: 0.3rem; }
+              .contact-tags i { color: #d4af37; }
+              .info-row { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 0; border-bottom: 1px solid #f0f0f0; }
+              .info-row span { color: #666; font-size: 0.8rem; }
+              .info-row strong { color: #2c3e50; font-weight: 600; font-size: 0.85rem; word-break: break-word; }
+              .info-row.amount strong { color: #27ae60; font-size: 1rem; font-weight: 700; }
+              .receipt-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.5rem; margin-bottom: 0.6rem; }
+              .summary-card { background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 0.6rem; border-radius: 6px; text-align: center; border: 1px solid #e0e0e0; }
+              .summary-card.amount { background: linear-gradient(135deg, #e8f5e8, #d4edda); border-color: #27ae60; }
+              .summary-card .label { color: #666; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.5rem; }
+              .summary-card strong { color: #2c3e50; font-size: 1.1rem; font-weight: 700; display: block; margin-bottom: 0.5rem; }
+              .summary-card.amount strong { color: #27ae60; font-size: 1.3rem; }
+              .summary-card p { color: #666; font-size: 0.85rem; margin: 0; line-height: 1.3; }
+              .receipt-notes { background: #fff8e1; padding: 1rem; border-radius: 8px; border-left: 4px solid #d4af37; margin-bottom: 1rem; }
+              .receipt-notes h4 { color: #b88e5e; font-size: 1rem; margin: 0 0 0.75rem 0; font-weight: 600; }
+              .receipt-notes p { color: #2c3e50; font-size: 0.95rem; line-height: 1.5; margin: 0; }
+              .receipt-footer { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 0.6rem; border-top: 2px solid #b88e5e; }
+              .signature-block { text-align: left; }
+              .signature-label { color: #666; font-size: 0.7rem; display: block; margin-bottom: 0.3rem; }
+              .signature-name { color: #2c3e50; font-weight: 600; font-size: 0.85rem; display: block; margin-bottom: 0.3rem; }
+              .signature-line { width: 150px; height: 1px; background: #b88e5e; margin-top: 0.3rem; }
+              .qr-block { text-align: center; }
+              .qr-placeholder { width: 45px; height: 45px; background: linear-gradient(135deg, #b88e5e, #d4af37); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.3rem; }
+              .qr-placeholder i { color: white; font-size: 1.2rem; }
+              .qr-block span { color: #666; font-size: 0.65rem; }
 
-      try {
-        // Show loading message
-        const originalText = downloadBtn.innerHTML;
-        downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
-        downloadBtn.disabled = true;
-
-        // Capture the receipt with html2canvas
-        const canvas = await html2canvas(receiptElement, {
-          scale: 1.5,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: '#ffffff',
-          width: 500,
-          height: receiptElement.offsetHeight
-        });
-
-        // Create PDF
-        const { jsPDF } = window.jspdf;
-        const imgData = canvas.toDataURL('image/png');
-        
-        // Calculate dimensions to fit A4 with margins
-        const doc = new jsPDF('p', 'mm', 'a4');
-        const pageWidth = 210; // A4 width in mm
-        const pageHeight = 297; // A4 height in mm
-        const margin = 10; // 10mm margin on all sides
-        
-        const maxWidth = pageWidth - (margin * 2);
-        const maxHeight = pageHeight - (margin * 2);
-        
-        // Calculate scaled dimensions to fit within margins
-        let imgWidth = maxWidth;
-        let imgHeight = (canvas.height * maxWidth) / canvas.width;
-        
-        // If still too tall, scale down further
-        if (imgHeight > maxHeight) {
-          imgHeight = maxHeight;
-          imgWidth = (canvas.width * maxHeight) / canvas.height;
-        }
-        
-        // Center the image on the page
-        const x = (pageWidth - imgWidth) / 2;
-        const y = (pageHeight - imgHeight) / 2;
-        
-        // Add image to PDF (single page, centered)
-        doc.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
-        
-        const { id: receiptId } = ensureReceiptIdentity();
-        doc.save(`receipt-${receiptId}.pdf`);
-        
-        // Restore button
-        downloadBtn.innerHTML = originalText;
-        downloadBtn.disabled = false;
-        
-      } catch (error) {
-        console.error('Error generating PDF:', error);
-        alert('Error generating PDF. Please try again.');
-        
-        // Restore button
-        downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-        downloadBtn.disabled = false;
-      }
+              @media print { body { margin: 0; padding: 10px; } .receipt-shell { box-shadow: none; } }
+            </style>
+          </head>
+          <body>
+            ${receiptElement.outerHTML}
+            <script>setTimeout(() => { window.print(); window.close(); }, 500);</script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
     });
   }
 
@@ -482,6 +466,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   
+  // Settings buttons
+  const profileSettingsBtn = document.getElementById('profile-settings-btn');
+  if (profileSettingsBtn) {
+    profileSettingsBtn.addEventListener('click', () => {
+      alert('Profile settings feature coming soon!');
+    });
+  }
+
+  const notificationSettingsBtn = document.getElementById('notification-settings-btn');
+  if (notificationSettingsBtn) {
+    notificationSettingsBtn.addEventListener('click', () => {
+      alert('Notification settings feature coming soon!');
+    });
+  }
+
+  const securitySettingsBtn = document.getElementById('security-settings-btn');
+  if (securitySettingsBtn) {
+    securitySettingsBtn.addEventListener('click', () => {
+      alert('Security settings feature coming soon!');
+    });
+  }
+
+  const systemSettingsBtn = document.getElementById('system-settings-btn');
+  if (systemSettingsBtn) {
+    systemSettingsBtn.addEventListener('click', () => {
+      alert('System settings feature coming soon!');
+    });
+  }
+
   // Logout button
   const logoutButton = document.getElementById('logout-btn');
   if (logoutButton) {
@@ -496,5 +509,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize on load
   updatePaymentsTable();
   updateDashboardStats();
-
 });
