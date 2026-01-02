@@ -1,0 +1,323 @@
+/* Mobile Responsive Enhancements for Bursar Dashboard */
+
+/* Enhanced Mobile Breakpoints */
+@media (max-width: 480px) {
+  .dashboard-content {
+    padding: 1rem;
+  }
+
+  /* Banner Mobile Optimization */
+  .finance-banner {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .finance-banner .banner-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .finance-banner .banner-stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .banner-stat {
+    min-width: auto;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Quick Actions Mobile */
+  .finance-quick-actions {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .action-card {
+    padding: 16px;
+    text-align: center;
+  }
+
+  .action-card .btn-action {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Table Mobile Optimization */
+  .table-wrapper {
+    margin: 0 -1rem;
+    padding: 0 1rem;
+  }
+
+  .payments-table {
+    font-size: 0.8rem;
+  }
+
+  .payments-table th,
+  .payments-table td {
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  /* Form Mobile Layout */
+  .receipt-form .form-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .receipt-form .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Split Panel Mobile */
+  .finance-split {
+    grid-template-columns: 1fr;
+  }
+
+  .split-panel {
+    padding: 16px;
+  }
+
+  /* Receipt Preview Mobile */
+  .receipt-shell {
+    padding: 20px;
+  }
+
+  .receipt-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .receipt-meta {
+    width: 100%;
+  }
+
+  .info-row {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .receipt-footer {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Card Headers Mobile */
+  .finance-card .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .finance-card .card-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .chip-btn {
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  /* Report Grid Mobile */
+  .report-grid {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  /* Settings Grid Mobile */
+  .settings-grid {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  /* Header Mobile */
+  .dashboard-header {
+    padding: 16px 20px;
+  }
+
+  .header-breadcrumb h1 {
+    font-size: 1.2rem;
+  }
+
+  .date-display {
+    font-size: 0.8rem;
+  }
+}
+
+/* Tablet Responsive (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .dashboard-content {
+    padding: 1.5rem;
+  }
+
+  .finance-banner .banner-stats {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .banner-stat {
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .finance-quick-actions {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .receipt-form .form-row {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .finance-split {
+    grid-template-columns: 1fr;
+  }
+
+  .report-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .settings-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
+/* Enhanced Sidebar Mobile */
+@media (max-width: 768px) {
+  .mobile-toggle {
+    display: flex;
+    z-index: 1200;
+  }
+
+  .dashboard-sidebar {
+    width: 280px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1100;
+  }
+
+  .dashboard-sidebar.active {
+    transform: translateX(0);
+  }
+
+  .dashboard-main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  /* Overlay for mobile sidebar */
+  .dashboard-container.sidebar-open::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+}
+
+/* Improved Touch Targets */
+@media (max-width: 768px) {
+  .btn,
+  .chip-btn,
+  .btn-action,
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline {
+    min-height: 44px;
+    padding: 12px 16px;
+  }
+
+  .sidebar-nav a {
+    padding: 16px 24px;
+    font-size: 1rem;
+  }
+
+  .mobile-toggle {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* Horizontal Scroll Indicators */
+.table-wrapper {
+  position: relative;
+}
+
+.table-wrapper::after {
+  content: '→';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(139, 90, 43, 0.5);
+  font-size: 1.2rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .table-wrapper::after {
+    opacity: 1;
+  }
+  
+  .table-wrapper::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .table-wrapper::-webkit-scrollbar-track {
+    background: rgba(139, 90, 43, 0.1);
+    border-radius: 3px;
+  }
+  
+  .table-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(139, 90, 43, 0.3);
+    border-radius: 3px;
+  }
+}
+
+/* Improved Form Validation on Mobile */
+@media (max-width: 768px) {
+  .receipt-form input:invalid,
+  .receipt-form select:invalid {
+    border-color: #f44336;
+    box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.2);
+  }
+
+  .receipt-form input:valid,
+  .receipt-form select:valid {
+    border-color: #4caf50;
+  }
+}
+
+/* Loading States for Mobile */
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Better Focus States for Mobile */
+@media (max-width: 768px) {
+  .btn:focus,
+  .chip-btn:focus,
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid var(--bursar-primary);
+    outline-offset: 2px;
+  }
+}
