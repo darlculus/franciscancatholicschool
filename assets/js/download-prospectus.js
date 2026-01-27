@@ -3,26 +3,22 @@ function downloadProspectus() {
     // Create a blob with the prospectus content
     const prospectusContent = `
 FRANCISCAN CATHOLIC NURSERY AND PRIMARY SCHOOL
-School Prospectus 2025
-"Quality Catholic Education Rooted in Franciscan Values"
+School Prospectus 2025/2026
+"Per Virtutem Ad Astra"
 
 📍 SCHOOL INFORMATION
 Address: First Unity Estate, Off Cooperative Villa, Badore, Ajah, Lagos, Nigeria
-Phone: +234 912 660 5391
-Email: info@franciscancatholicschool.edu.ng | admissions@franciscancatholicschool.edu.ng
+Phone: 09136538240, 09077685251
+Email: info@franciscancnps.org
 School Hours: Monday - Friday: 7:30 AM - 3:30 PM
 
 🎓 OUR ACADEMIC PROGRAMMES
 • Creche (Ages 1-2): Max 12 children - Basic care, sensory development
 • Pre-School (Ages 3-4): Max 15 children - Play-based learning, pre-literacy
-• Lower Primary (Ages 5-8): Max 20 children - Core subjects foundation
-• Upper Primary (Ages 9-11): Max 20 children - Advanced curriculum
 
-💰 FEE STRUCTURE (2025 Academic Year)
-• Creche: Registration ₦50,000 | Tuition ₦180,000/term | Development ₦30,000
-• Pre-School: Registration ₦60,000 | Tuition ₦200,000/term | Development ₦35,000  
-• Lower Primary: Registration ₦80,000 | Tuition ₦250,000/term | Development ₦40,000
-• Upper Primary: Registration ₦100,000 | Tuition ₦300,000/term | Development ₦50,000
+💰 FEE STRUCTURE (2025/2026 Academic Year)
+• Creche: Registration ₦10,000 | Acceptance Fee: ₦20,000 | Tuition ₦150,000 | Education material: ₦60,000 | Other fees (Development levy, End of the Term, Club, Medical, Portal, Complete Set of school uniform): ₦140,000
+• Early Year: Registration ₦10,000 | Acceptance Fee: ₦20,000 | Tuition: ₦150,000 | Other Fees (Development levy, End of the Term & Medical, Complete set of school uniform): ₦140,000
 
 💳 PAYMENT INFORMATION
 Account Name: Franciscan Sisters Project Account
@@ -46,7 +42,7 @@ Multi-purpose hall, School garden, CCTV security, First aid facilities
 📋 ADMISSION REQUIREMENTS
 • Completed application form
 • Birth certificate (original and photocopy)
-• Recent passport photographs (4 copies)  
+• Recent passport photographs (4 copies)
 • Immunization record
 • Previous school report (for transfers)
 • Medical report from recognized hospital
@@ -59,9 +55,10 @@ Academic Clubs: Debate society, Science club, Math olympiad
 Service: Environmental club, Community service, Peer mentoring
 
 📞 CONTACT FOR ADMISSION
-Phone: +234 912 660 5391
-Email: admissions@franciscancatholicschool.edu.ng
+Phone: 09136538240, 09077685251
+Email: info@franciscancnps.org
 Visit: First Unity Estate, Off Cooperative Villa, Badore, Ajah, Lagos
+	Our Lady Mother and Queen Catholic Church Badore, Ajah (Bookstore)
 
 We look forward to welcoming your child to our school community!
 
@@ -74,7 +71,7 @@ We look forward to welcoming your child to our school community!
     const a = document.createElement('a');
     a.style.display = 'none';
     a.href = url;
-    a.download = 'Franciscan-Catholic-School-Prospectus-2025.txt';
+    a.download = 'Franciscan-Catholic-School-Prospectus-2025-2026.txt';
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
