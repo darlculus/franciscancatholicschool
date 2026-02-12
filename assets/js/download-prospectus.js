@@ -26,10 +26,10 @@ Account Number: 2006324090
 Bank: First Bank
 
 ✨ OUR CORE VALUES
-• Faith: Deepening relationship with God through prayer and Franciscan spirituality
-• Stewardship: Cultivating excellence in academics and character
-• Solidarity: Building a compassionate, collaborative community
-• Integrity: Developing moral character through honesty and responsibility
+• Faith: Deepening our relationship with God through daily prayer, sacraments, and Franciscan spirituality, guiding learners to live as Christ's disciples.
+• Dedication: Excel academically and morally by honing God-given talents, serving purposefully, and sustaining creation through perseverance.
+• Compassion: Building a compassionate community where learners, families, and staff collaborate to uplift the marginalized and foster mutual dignity.
+• Integrity: Developing moral character through honesty, responsibility, and ethical decision-making in all aspects of life.
 
 📚 CORE SUBJECTS
 English Language, Mathematics, Science, Social Studies, Religious Education,
