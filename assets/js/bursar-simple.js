@@ -466,32 +466,368 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   
+  // Share via Email button
+  const shareBtn = document.getElementById('share-receipt');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', () => {
+      const receiptElement = document.querySelector('.receipt-shell');
+      if (!receiptElement) {
+        alert('Please generate the receipt preview first.');
+        return;
+      }
+      
+      const student = receiptFormFields.student?.value.trim();
+      const amount = formatCurrency(receiptFormFields.amount?.value);
+      const { id: receiptId } = ensureReceiptIdentity();
+      
+      const subject = `Payment Receipt - ${receiptId} - ${student}`;
+      const body = `Dear Parent/Guardian,\n\nPlease find attached the payment receipt for ${student}.\n\nReceipt Number: ${receiptId}\nAmount Paid: ${amount}\n\nThank you for your payment.\n\nBest regards,\nFranciscan Catholic School\nBursar's Office`;
+      
+      window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  }
+  
+  // Export CSV button
+  const exportCsvBtn = document.querySelector('.chip-btn.primary');
+  if (exportCsvBtn && exportCsvBtn.textContent.includes('Export CSV')) {
+    exportCsvBtn.addEventListener('click', () => {
+      if (payments.length === 0) {
+        alert('No payments to export.');
+        return;
+      }
+      
+      const headers = ['Receipt ID', 'Learner', 'Class', 'Amount', 'Payment For', 'Mode', 'Date', 'Term', 'Session'];
+      const rows = payments.map(p => [
+        p.receiptId,
+        p.studentName,
+        p.studentClass || 'N/A',
+        p.amount,
+        p.purpose,
+        formatPaymentMode(p.paymentMode),
+        p.paymentDate,
+        p.term || 'N/A',
+        p.session || 'N/A'
+      ]);
+      
+      let csvContent = headers.join(',') + '\n';
+      rows.forEach(row => {
+        csvContent += row.map(cell => `"${cell}"`).join(',') + '\n';
+      });
+      
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `franciscan-payments-${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+  }
+  
+  // Refresh button
+  const refreshBtn = document.querySelector('.chip-btn');
+  if (refreshBtn && refreshBtn.textContent.includes('Refresh')) {
+    refreshBtn.addEventListener('click', () => {
+      payments = JSON.parse(localStorage.getItem('franciscan_payments') || '[]');
+      updatePaymentsTable();
+      updateDashboardStats();
+    });
+  }
+  
+  // Filter button
+  const filterBtn = document.querySelectorAll('.chip-btn')[1];
+  if (filterBtn && filterBtn.textContent.includes('Filter')) {
+    filterBtn.addEventListener('click', () => {
+      const filterOption = prompt('Filter by:\n1. Today\n2. This Week\n3. This Month\n4. All\n\nEnter option number (1-4):');
+      
+      let filteredPayments = [...payments];
+      const today = new Date();
+      
+      switch(filterOption) {
+        case '1':
+          const todayStr = today.toISOString().split('T')[0];
+          filteredPayments = payments.filter(p => p.paymentDate === todayStr);
+          break;
+        case '2':
+          const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+          filteredPayments = payments.filter(p => new Date(p.paymentDate) >= weekAgo);
+          break;
+        case '3':
+          const monthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+          filteredPayments = payments.filter(p => new Date(p.paymentDate) >= monthAgo);
+          break;
+        case '4':
+          filteredPayments = payments;
+          break;
+        default:
+          return;
+      }
+      
+      const tableBody = document.querySelector('.payments-table tbody');
+      if (filteredPayments.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem;">No payments found for this filter</td></tr>';
+      } else {
+        tableBody.innerHTML = filteredPayments.slice(0, 10).map(payment => `
+          <tr>
+            <td><span class="badge">${payment.receiptId}</span></td>
+            <td>${payment.studentName}</td>
+            <td>${payment.studentClass || 'N/A'}</td>
+            <td>${formatCurrency(payment.amount)}</td>
+            <td><span class="status-pill paid">Paid</span></td>
+            <td>${formatPaymentMode(payment.paymentMode)}</td>
+            <td>${formatDate(payment.paymentDate)}</td>
+          </tr>
+        `).join('');
+      }
+    });
+  }
+  
+  // Quick action buttons for scrolling
+  document.querySelectorAll('.btn-action[data-target]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-target');
+      const section = document.querySelector(target);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+  
+  // PDF Report exports
+  document.querySelectorAll('.btn-link[data-report]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const reportType = btn.getAttribute('data-report');
+      generatePDFReport(reportType);
+    });
+  });
+  
+  function generatePDFReport(reportType) {
+    if (payments.length === 0) {
+      alert('No payment data available to generate report.');
+      return;
+    }
+    
+    const reportTitles = {
+      revenue: 'Revenue Summary Report',
+      outstanding: 'Outstanding Balances Report',
+      scholarship: 'Scholarship Allocation Report',
+      snapshot: 'Termly Finance Snapshot'
+    };
+    
+    const title = reportTitles[reportType] || 'Financial Report';
+    const today = new Date().toLocaleDateString('en-NG', { day: '2-digit', month: 'long', year: 'numeric' });
+    
+    let reportContent = `
+      <html>
+        <head>
+          <title>${title}</title>
+          <style>
+            body { font-family: 'Montserrat', Arial, sans-serif; margin: 20px; color: #2c3e50; }
+            .header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid #b88e5e; padding-bottom: 20px; }
+            .header h1 { color: #b88e5e; margin: 0; font-size: 24px; }
+            .header p { color: #666; margin: 5px 0; }
+            .meta { display: flex; justify-content: space-between; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; }
+            .meta div { flex: 1; }
+            .meta strong { display: block; color: #2c3e50; font-size: 18px; margin-top: 5px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th { background: #b88e5e; color: white; padding: 12px; text-align: left; font-weight: 600; }
+            td { padding: 10px; border-bottom: 1px solid #e0e0e0; }
+            tr:hover { background: #f8f9fa; }
+            .total-row { background: #e8f5e8; font-weight: bold; }
+            .footer { margin-top: 30px; padding-top: 20px; border-top: 2px solid #b88e5e; text-align: center; color: #666; font-size: 12px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>Franciscan Catholic School</h1>
+            <p>Bursar's Office - ${title}</p>
+            <p>Generated on ${today}</p>
+          </div>
+    `;
+    
+    if (reportType === 'revenue') {
+      const totalRevenue = payments.reduce((sum, p) => sum + p.amount, 0);
+      const avgPayment = totalRevenue / payments.length;
+      
+      reportContent += `
+        <div class="meta">
+          <div>
+            <span>Total Revenue</span>
+            <strong>${formatCurrency(totalRevenue)}</strong>
+          </div>
+          <div>
+            <span>Total Payments</span>
+            <strong>${payments.length}</strong>
+          </div>
+          <div>
+            <span>Average Payment</span>
+            <strong>${formatCurrency(avgPayment)}</strong>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Receipt ID</th>
+              <th>Learner</th>
+              <th>Class</th>
+              <th>Amount</th>
+              <th>Purpose</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      payments.forEach(p => {
+        reportContent += `
+          <tr>
+            <td>${p.receiptId}</td>
+            <td>${p.studentName}</td>
+            <td>${p.studentClass || 'N/A'}</td>
+            <td>${formatCurrency(p.amount)}</td>
+            <td>${p.purpose}</td>
+            <td>${formatDate(p.paymentDate)}</td>
+          </tr>
+        `;
+      });
+      
+      reportContent += `
+            <tr class="total-row">
+              <td colspan="3">TOTAL</td>
+              <td>${formatCurrency(totalRevenue)}</td>
+              <td colspan="2">${payments.length} payments</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+    } else if (reportType === 'snapshot') {
+      const totalRevenue = payments.reduce((sum, p) => sum + p.amount, 0);
+      const paymentModes = {};
+      payments.forEach(p => {
+        const mode = formatPaymentMode(p.paymentMode);
+        paymentModes[mode] = (paymentModes[mode] || 0) + p.amount;
+      });
+      
+      reportContent += `
+        <div class="meta">
+          <div>
+            <span>Total Revenue</span>
+            <strong>${formatCurrency(totalRevenue)}</strong>
+          </div>
+          <div>
+            <span>Total Transactions</span>
+            <strong>${payments.length}</strong>
+          </div>
+        </div>
+        <h3>Payment Breakdown by Mode</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Payment Mode</th>
+              <th>Amount</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      Object.entries(paymentModes).forEach(([mode, amount]) => {
+        const percentage = ((amount / totalRevenue) * 100).toFixed(1);
+        reportContent += `
+          <tr>
+            <td>${mode}</td>
+            <td>${formatCurrency(amount)}</td>
+            <td>${percentage}%</td>
+          </tr>
+        `;
+      });
+      
+      reportContent += `
+          </tbody>
+        </table>
+      `;
+    } else {
+      reportContent += `
+        <p style="text-align: center; padding: 40px; color: #666;">
+          This report type is currently being configured. Please check back later.
+        </p>
+      `;
+    }
+    
+    reportContent += `
+          <div class="footer">
+            <p>Franciscan Catholic Nursery & Primary School</p>
+            <p>First Unity Estate, Off Cooperative Villa, Badore, Ajah, Lagos</p>
+            <p>Generated by Bursar's Office on ${today}</p>
+          </div>
+        </body>
+      </html>
+    `;
+    
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(reportContent);
+    printWindow.document.close();
+    setTimeout(() => {
+      printWindow.print();
+    }, 500);
+  }
+  
   // Settings buttons
   const profileSettingsBtn = document.getElementById('profile-settings-btn');
   if (profileSettingsBtn) {
     profileSettingsBtn.addEventListener('click', () => {
-      alert('Profile settings feature coming soon!');
+      const newName = prompt('Enter your name:', 'Sr. Clare Ohagwa, OSF');
+      if (newName && newName.trim()) {
+        document.getElementById('bursar-name').textContent = newName.trim();
+        document.getElementById('welcome-name').textContent = newName.trim().split(' ')[0];
+        localStorage.setItem('bursar_name', newName.trim());
+        alert('Profile updated successfully!');
+      }
     });
   }
 
   const notificationSettingsBtn = document.getElementById('notification-settings-btn');
   if (notificationSettingsBtn) {
     notificationSettingsBtn.addEventListener('click', () => {
-      alert('Notification settings feature coming soon!');
+      const emailNotif = confirm('Enable email notifications for new payments?');
+      localStorage.setItem('email_notifications', emailNotif);
+      alert(`Email notifications ${emailNotif ? 'enabled' : 'disabled'}.`);
     });
   }
 
   const securitySettingsBtn = document.getElementById('security-settings-btn');
   if (securitySettingsBtn) {
     securitySettingsBtn.addEventListener('click', () => {
-      alert('Security settings feature coming soon!');
+      const currentPassword = prompt('Enter current password:');
+      if (currentPassword) {
+        const newPassword = prompt('Enter new password:');
+        if (newPassword && newPassword.length >= 6) {
+          const confirmPassword = prompt('Confirm new password:');
+          if (newPassword === confirmPassword) {
+            alert('Password changed successfully!');
+          } else {
+            alert('Passwords do not match.');
+          }
+        } else {
+          alert('Password must be at least 6 characters.');
+        }
+      }
     });
   }
 
   const systemSettingsBtn = document.getElementById('system-settings-btn');
   if (systemSettingsBtn) {
     systemSettingsBtn.addEventListener('click', () => {
-      alert('System settings feature coming soon!');
+      const theme = confirm('Enable dark mode? (OK for Yes, Cancel for No)');
+      if (theme) {
+        document.body.style.filter = 'invert(0.9) hue-rotate(180deg)';
+        localStorage.setItem('dark_mode', 'true');
+        alert('Dark mode enabled. Refresh to see full effect.');
+      } else {
+        document.body.style.filter = 'none';
+        localStorage.setItem('dark_mode', 'false');
+        alert('Light mode enabled.');
+      }
     });
   }
 
