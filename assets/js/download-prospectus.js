@@ -3,6 +3,7 @@ function downloadProspectus() {
     // Create a blob with the prospectus content
     const prospectusContent = `
 FRANCISCAN CATHOLIC NURSERY AND PRIMARY SCHOOL
+First Unity Estate, Last Bus-stop, Badore - Ajah, Lagos.
 School Prospectus 2025/2026
 "Per Virtutem Ad Astra"
 
@@ -12,24 +13,61 @@ Phone: 09136538240, 09077685251
 Email: info@franciscancnps.org
 School Hours: Monday - Friday: 7:30 AM - 3:30 PM
 
-🎓 OUR ACADEMIC PROGRAMMES
-• Creche (Ages 1-2): Max 12 children - Basic care, sensory development
-• Pre-School (Ages 3-4): Max 15 children - Play-based learning, pre-literacy
-
 💰 FEE STRUCTURE (2025/2026 Academic Year)
-• Creche: Registration ₦10,000 | Acceptance Fee: ₦20,000 | Tuition ₦150,000 | Education material: ₦60,000 | Other fees (Development levy, End of the Term, Club, Medical, Portal, Complete Set of school uniform): ₦140,000
-• Early Year: Registration ₦10,000 | Acceptance Fee: ₦20,000 | Tuition: ₦150,000 | Other Fees (Development levy, End of the Term & Medical, Complete set of school uniform): ₦140,000
+
+EARLY YEARS 1, 2, 3 - SCHOOL BILL
+S/N | DETAILS | NEW INTAKE/SECOND TERM | SUMMER/THIRD TERM
+1 | Registration | ₦10,000 | -
+2 | Acceptance Fee | ₦20,000 | -
+3 | Tuition Fee | ₦150,000 | ₦150,000
+4 | Educational Materials | ₦60,000 | -
+5 | Other fees (Development levy, End of term & Medical, Club, Portal, Complete set of School Uniform) | ₦160,000 | ₦90,000
+TOTAL | ₦400,000 | ₦240,000
+
+CRECHE - SCHOOL BILL
+S/N | DETAILS | NEW INTAKE/SECOND TERM | SUMMER/THIRD TERM
+1 | Registration | ₦10,000 | -
+2 | Acceptance Fee | ₦20,000 | -
+3 | Tuition Fee | ₦150,000 | ₦150,000
+4 | Development levy, End of term & Medical & Complete set of School | ₦140,000 | ₦50,000
+TOTAL | ₦320,000 | ₦200,000
+
+NOTE: All fees are to be paid in full before resumption. Cash payments is not welcomed. All payments should be made to the school bank account. Below is the school bank account details.
 
 💳 PAYMENT INFORMATION
-Account Name: Franciscan Sisters Project Account
 Account Number: 2006324090
+Account Name: Franciscan Sisters Project
 Bank: First Bank
+Kindly come along with the teller/payment receipt to the school office to obtain the school's receipt for payment.
+
+👔 SCHOOL UNIFORM TIME-TABLE
+MONDAYS: Blue School Uniform, School Socks and Black shoes.
+TUESDAYS: Blue School Uniform, School Socks and Black shoes.
+WEDNESDAYS: Sports Wear, School Socks and White Sneakers.
+THURSDAYS: Gray School Uniform, School Socks and Black shoes.
+FRIDAYS: Gray School Uniform, School Socks and Black shoes.
+
+💇 HAIR STYLE
+GIRLS: Weaved or thread Hair style without beads or hair extensions.
+BOYS: Low haircut.
+
+🎨 LEARNERS CLUB
+• Cookery
+• Art
+• Science
+• Sports
+• Music
+
+NOTE (CRECHE): Learners are required to come with the following items:
+• Extra Clothes
+• Baby wipes
+• Baby pampers
 
 ✨ OUR CORE VALUES
-• Faith: Deepening our relationship with God through daily prayer, sacraments, and Franciscan spirituality, guiding learners to live as Christ's disciples.
-• Dedication: Excel academically and morally by honing God-given talents, serving purposefully, and sustaining creation through perseverance.
-• Compassion: Building a compassionate community where learners, families, and staff collaborate to uplift the marginalized and foster mutual dignity.
-• Integrity: Developing moral character through honesty, responsibility, and ethical decision-making in all aspects of life.
+• Faith: Deepening relationship with God through prayer and Franciscan spirituality
+• Stewardship: Cultivating excellence in academics and character
+• Solidarity: Building a compassionate, collaborative community
+• Integrity: Developing moral character through honesty and responsibility
 
 📚 CORE SUBJECTS
 English Language, Mathematics, Science, Social Studies, Religious Education,
@@ -58,7 +96,7 @@ Service: Environmental club, Community service, Peer mentoring
 Phone: 09136538240, 09077685251
 Email: info@franciscancnps.org
 Visit: First Unity Estate, Off Cooperative Villa, Badore, Ajah, Lagos
-	Our Lady Mother and Queen Catholic Church Badore, Ajah (Bookstore)
+Bookstore: Our Lady Mother and Queen Catholic Church Badore, Ajah
 
 We look forward to welcoming your child to our school community!
 
@@ -76,17 +114,6 @@ We look forward to welcoming your child to our school community!
     a.click();
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
-}
-
-// Alternative function to download HTML version
-function downloadHTMLProspectus() {
-    const link = document.createElement('a');
-    link.href = 'assets/docs/franciscan-prospectus-2025.html';
-    link.download = 'Franciscan-School-Prospectus-2025.html';
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
 }
 
 // Download programme guide functionality
