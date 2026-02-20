@@ -949,6 +949,107 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('dark-theme');
   }
 
+  // Parents & Guardians Management
+  let parents = JSON.parse(localStorage.getItem('franciscan_parents') || '[]');
+
+  function updateParentsGrid() {
+    const grid = document.getElementById('parents-grid');
+    if (!grid) return;
+
+    if (parents.length === 0) {
+      grid.innerHTML = `
+        <div style="text-align: center; padding: 3rem; color: #666; grid-column: 1 / -1;">
+          <i class="fas fa-users" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+          <h3>No Parent Records Yet</h3>
+          <p>Click "Add Parent" to start managing parent and guardian information.</p>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = parents.map(parent => {
+      const statusClass = parent.status === 'paid' ? 'success' : parent.status === 'overdue' ? 'overdue' : 'accent';
+      const statusText = parent.status.charAt(0).toUpperCase() + parent.status.slice(1);
+      const initials = parent.name.split(' ').map(n => n[0]).join('').substring(0, 2);
+
+      return `
+        <div class="client-card">
+          <div class="client-avatar ${parent.status === 'pending' ? 'pending' : ''}">
+            ${initials}
+          </div>
+          <div>
+            <h4 style="margin: 0; font-size: 0.95rem; color: var(--primary);">${parent.name}</h4>
+            <p style="margin: 0.25rem 0 0; font-size: 0.8rem; color: #666;">${parent.student} - ${parent.class || 'N/A'}</p>
+          </div>
+          <div class="client-chip ${statusClass}">${statusText}</div>
+          <button class="btn-ghost" onclick="deleteParent('${parent.id}')" title="Remove">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  window.deleteParent = function(id) {
+    if (confirm('Are you sure you want to remove this parent record?')) {
+      parents = parents.filter(p => p.id !== id);
+      localStorage.setItem('franciscan_parents', JSON.stringify(parents));
+      updateParentsGrid();
+      showToast('Parent record removed successfully!');
+    }
+  };
+
+  // Add Parent button
+  document.getElementById('add-parent-btn')?.addEventListener('click', () => openModal('parent-modal'));
+
+  // Parent form
+  document.getElementById('parent-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('parent-name').value.trim();
+    const email = document.getElementById('parent-email').value.trim();
+    const phone = document.getElementById('parent-phone').value.trim();
+    const student = document.getElementById('parent-student').value.trim();
+    const studentClass = document.getElementById('parent-class').value.trim();
+    const status = document.getElementById('parent-status').value;
+
+    const newParent = {
+      id: `PAR-${Date.now()}`,
+      name,
+      email,
+      phone,
+      student,
+      class: studentClass,
+      status,
+      createdAt: new Date().toISOString()
+    };
+
+    parents.push(newParent);
+    localStorage.setItem('franciscan_parents', JSON.stringify(parents));
+    updateParentsGrid();
+    closeModal('parent-modal');
+    document.getElementById('parent-form').reset();
+    showToast('Parent record added successfully!');
+  });
+
+  // Send Reminder button
+  document.getElementById('send-reminder-btn')?.addEventListener('click', () => {
+    const pendingParents = parents.filter(p => p.status === 'pending' || p.status === 'overdue');
+    
+    if (pendingParents.length === 0) {
+      showToast('No pending payments to remind about.', 'error');
+      return;
+    }
+
+    const emails = pendingParents.map(p => p.email).join(',');
+    const subject = 'Payment Reminder - Franciscan Catholic School';
+    const body = `Dear Parent/Guardian,\n\nThis is a friendly reminder about pending school fees payment.\n\nPlease contact the Bursar's Office for more details.\n\nThank you.\n\nFranciscan Catholic School\nBursar's Office`;
+    
+    window.location.href = `mailto:${emails}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+
+  // Initialize parents grid
+  updateParentsGrid();
+
   // Logout button
   const logoutButton = document.getElementById('logout-btn');
   if (logoutButton) {

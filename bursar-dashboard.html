@@ -440,22 +440,22 @@
             <div class="card-header">
               <div>
                 <h2>Parents & Guardians</h2>
-                <p>Track interactions and communication history at a glance.</p>
+                <p style="color: white;">Track interactions and communication history at a glance.</p>
               </div>
               <div class="card-actions">
-                <button class="chip-btn">
+                <button class="chip-btn" id="add-parent-btn">
                   <i class="fas fa-user-plus"></i> Add Parent
                 </button>
-                <button class="chip-btn primary">
+                <button class="chip-btn primary" id="send-reminder-btn">
                   <i class="fas fa-message"></i> Send Reminder
                 </button>
               </div>
             </div>
-            <div class="client-grid">
-              <div style="text-align: center; padding: 3rem; color: #666;">
+            <div class="client-grid" id="parents-grid">
+              <div style="text-align: center; padding: 3rem; color: #666; grid-column: 1 / -1;">
                 <i class="fas fa-users" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
                 <h3>No Parent Records Yet</h3>
-                <p>Parent and guardian information will appear here once school resumes and enrollment begins.</p>
+                <p>Click "Add Parent" to start managing parent and guardian information.</p>
               </div>
             </div>
           </div>
@@ -681,6 +681,52 @@
             <div class="modal-actions">
               <button type="button" class="btn-outline" data-modal="system-modal">Cancel</button>
               <button type="submit" class="btn-primary">Save Settings</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Parent Modal -->
+    <div class="modal" id="parent-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add Parent/Guardian</h2>
+          <button class="modal-close" data-modal="parent-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="parent-form">
+            <div class="form-group">
+              <label for="parent-name">Parent/Guardian Name</label>
+              <input type="text" id="parent-name" placeholder="e.g. Mrs. Johnson" required>
+            </div>
+            <div class="form-group">
+              <label for="parent-email">Email Address</label>
+              <input type="email" id="parent-email" placeholder="parent@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="parent-phone">Phone Number</label>
+              <input type="tel" id="parent-phone" placeholder="+234 XXX XXX XXXX" required>
+            </div>
+            <div class="form-group">
+              <label for="parent-student">Student Name</label>
+              <input type="text" id="parent-student" placeholder="e.g. Michael Johnson" required>
+            </div>
+            <div class="form-group">
+              <label for="parent-class">Student Class</label>
+              <input type="text" id="parent-class" placeholder="e.g. Primary 4">
+            </div>
+            <div class="form-group">
+              <label for="parent-status">Payment Status</label>
+              <select id="parent-status">
+                <option value="paid">Paid</option>
+                <option value="pending">Pending</option>
+                <option value="overdue">Overdue</option>
+              </select>
+            </div>
+            <div class="modal-actions">
+              <button type="button" class="btn-outline" data-modal="parent-modal">Cancel</button>
+              <button type="submit" class="btn-primary">Add Parent</button>
             </div>
           </form>
         </div>
