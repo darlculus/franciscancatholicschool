@@ -1,14 +1,9 @@
-const sqlite3 = require('sqlite3');
+const { createClient } = require('@supabase/supabase-js');
 const bcrypt = require('bcrypt');
 
-let db;
-
-function getDb() {
-  if (!db) {
-    db = new sqlite3.Database('/tmp/users.db');
-  }
-  return db;
-}
+const supabaseUrl = 'https://srmunnnqtokbavdfomaj.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNybXVubm5xdG9rYmF2ZGZvbWFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1ODE1NjAsImV4cCI6MjA4NzE1NzU2MH0.tFJNSG7ZTEBzmclvx5HD2xBhQ349y5gS7FDktf5z5vM';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -19,19 +14,20 @@ module.exports = async (req, res) => {
     return res.status(200).end();
   }
 
-  const database = getDb();
   const { username, currentPassword, newPassword } = req.body;
 
   if (!username || !currentPassword || !newPassword) {
     return res.status(400).json({ success: false, message: 'All fields required' });
   }
 
-  database.get('SELECT * FROM users WHERE username = ?', [username], async (err, user) => {
-    if (err) {
-      return res.status(500).json({ success: false, message: 'Database error' });
-    }
+  try {
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('username', username)
+      .single();
 
-    if (!user) {
+    if (error || !user) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
 
@@ -43,14 +39,18 @@ module.exports = async (req, res) => {
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
     
-    database.run('UPDATE users SET password = ?, updatedAt = CURRENT_TIMESTAMP WHERE username = ?',
-      [hashedNewPassword, username],
-      (err) => {
-        if (err) {
-          return res.status(500).json({ success: false, message: 'Failed to update password' });
-        }
-        res.json({ success: true, message: 'Password changed successfully' });
-      }
-    );
-  });
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ password: hashedNewPassword, updated_at: new Date().toISOString() })
+      .eq('username', username);
+
+    if (updateError) {
+      return res.status(500).json({ success: false, message: 'Failed to update password' });
+    }
+
+    res.json({ success: true, message: 'Password changed successfully' });
+  } catch (error) {
+    console.error('Password change error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
 };
