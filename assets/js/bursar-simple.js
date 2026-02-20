@@ -889,11 +889,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('auto_refresh', autoRefresh);
     localStorage.setItem('currency_format', currencyFormat);
     
-    if (darkMode) {
-      document.body.classList.add('dark-theme');
-    } else {
-      document.body.classList.remove('dark-theme');
-    }
+    document.body.classList.toggle('dark-theme', darkMode);
     
     closeModal('system-modal');
     showToast('System preferences saved!');
