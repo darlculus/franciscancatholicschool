@@ -1,209 +1,150 @@
 const express = require('express');
-const cors = require('cors');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const sqlite3 = require('sqlite3').verbose();
+const bcrypt = require('bcrypt');
 const path = require('path');
+const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'franciscan_school_secret_2025';
+const PORT = 3000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// In-memory storage for production (replace with database in real deployment)
-let users = {
-  bursar: [
-    {
-      id: 'BUR001',
-      username: 'bursar',
-      password: '$2a$10$Q/7qypw5N6ZH.mr1tHv/4entiZxSlX1rr2VYHLwMIsqzEK/7FnE.i', // bursar123
-      name: 'Sr. Clare Ohagwa, OSF',
-      role: 'bursar',
-      email: 'bursar@franciscancnps.org',
-      active: true
-    }
-  ],
-  admin: [
-    {
-      id: 'ADM001',
-      username: 'admin',
-      password: '$2a$10$d1etOkRJEikZSbFpqbksJ.Szhxb.sHnhxbY4rU3y/BY64DPiJ0txa', // admin123
-      name: 'Rev. Fr. Principal',
-      role: 'admin',
-      email: 'admin@franciscancnps.org',
-      active: true
-    }
-  ]
-};
-
-let payments = [];
-let receipts = [];
-
-// Authentication middleware
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ error: 'Access token required' });
+// Initialize SQLite database
+const db = new sqlite3.Database('./users.db', (err) => {
+  if (err) {
+    console.error('Database connection error:', err);
+  } else {
+    console.log('Connected to SQLite database');
+    initializeDatabase();
   }
+});
 
-  jwt.verify(token, JWT_SECRET, (err, user) => {
+// Create users table and default admin
+function initializeDatabase() {
+  db.run(`CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    fullName TEXT NOT NULL,
+    role TEXT NOT NULL,
+    email TEXT,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`, async (err) => {
     if (err) {
-      return res.status(403).json({ error: 'Invalid or expired token' });
+      console.error('Table creation error:', err);
+      return;
     }
-    req.user = user;
-    next();
+    
+    // Create default bursar account
+    const defaultPassword = await bcrypt.hash('bursar123', 10);
+    db.run(`INSERT OR IGNORE INTO users (username, password, fullName, role, email) 
+            VALUES (?, ?, ?, ?, ?)`,
+      ['bursar', defaultPassword, 'Sr. Clare Ohagwa, OSF', 'bursar', 'bursar@franciscan.edu'],
+      (err) => {
+        if (err && !err.message.includes('UNIQUE')) {
+          console.error('Default user creation error:', err);
+        } else {
+          console.log('Database initialized with default bursar account');
+          console.log('Username: bursar | Password: bursar123');
+        }
+      }
+    );
   });
 }
 
 // Login endpoint
-app.post('/api/login', async (req, res) => {
-  try {
-    const { username, password, role } = req.body;
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
 
-    if (!username || !password || !role) {
-      return res.status(400).json({ error: 'Username, password, and role are required' });
+  if (!username || !password) {
+    return res.status(400).json({ success: false, message: 'Username and password required' });
+  }
+
+  db.get('SELECT * FROM users WHERE username = ?', [username], async (err, user) => {
+    if (err) {
+      return res.status(500).json({ success: false, message: 'Database error' });
     }
-
-    const userList = users[role] || [];
-    const user = userList.find(u => u.username === username && u.active);
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    const token = jwt.sign(
-      { id: user.id, username: user.username, role: user.role },
-      JWT_SECRET,
-      { expiresIn: '24h' }
-    );
-
-    res.json({
-      success: true,
-      token,
-      user: {
-        id: user.id,
-        name: user.name,
-        role: user.role,
-        email: user.email
-      }
-    });
-
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Get payments (bursar only)
-app.get('/api/payments', authenticateToken, async (req, res) => {
-  try {
-    if (req.user.role !== 'bursar') {
-      return res.status(403).json({ error: 'Access denied' });
-    }
-
-    res.json({ success: true, payments });
-
-  } catch (error) {
-    console.error('Get payments error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Add payment (bursar only)
-app.post('/api/payments', authenticateToken, async (req, res) => {
-  try {
-    if (req.user.role !== 'bursar') {
-      return res.status(403).json({ error: 'Access denied' });
-    }
-
-    const { studentName, studentClass, amount, purpose, paymentMode, paymentDate, notes } = req.body;
-
-    if (!studentName || !amount || !purpose) {
-      return res.status(400).json({ error: 'Student name, amount, and purpose are required' });
-    }
-
-    const newPayment = {
-      id: `PAY-${Date.now()}`,
-      receiptId: `RCPT-${Date.now()}`,
-      studentName,
-      studentClass: studentClass || '',
-      amount: parseFloat(amount),
-      purpose,
-      paymentMode: paymentMode || 'cash',
-      paymentDate: paymentDate || new Date().toISOString().split('T')[0],
-      notes: notes || '',
-      status: 'paid',
-      createdBy: req.user.id,
-      createdAt: new Date().toISOString()
-    };
-
-    payments.push(newPayment);
-    res.json({ success: true, payment: newPayment });
-
-  } catch (error) {
-    console.error('Add payment error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Clear payments (bursar only)
-app.delete('/api/payments', authenticateToken, async (req, res) => {
-  try {
-    if (req.user.role !== 'bursar') {
-      return res.status(403).json({ error: 'Access denied' });
-    }
-
-    payments = [];
-    res.json({ success: true, message: 'All payments cleared' });
-
-  } catch (error) {
-    console.error('Clear payments error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Get dashboard stats (bursar only)
-app.get('/api/dashboard/stats', authenticateToken, async (req, res) => {
-  try {
-    if (req.user.role !== 'bursar') {
-      return res.status(403).json({ error: 'Access denied' });
-    }
-
-    const today = new Date().toISOString().split('T')[0];
-    const todayPayments = payments.filter(p => p.paymentDate === today);
+    const passwordMatch = await bcrypt.compare(password, user.password);
     
-    const stats = {
-      todayTotal: todayPayments.reduce((sum, p) => sum + p.amount, 0),
-      todayCount: todayPayments.length,
-      totalPayments: payments.length,
-      pendingCount: payments.filter(p => p.status === 'pending').length
-    };
+    if (!passwordMatch) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
 
-    res.json({ success: true, stats });
+    // Return user data without password
+    const { password: _, ...userData } = user;
+    res.json({ 
+      success: true, 
+      user: userData,
+      message: 'Login successful'
+    });
+  });
+});
 
-  } catch (error) {
-    console.error('Get stats error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+// Change password endpoint
+app.post('/api/change-password', async (req, res) => {
+  const { username, currentPassword, newPassword } = req.body;
+
+  if (!username || !currentPassword || !newPassword) {
+    return res.status(400).json({ success: false, message: 'All fields required' });
   }
+
+  db.get('SELECT * FROM users WHERE username = ?', [username], async (err, user) => {
+    if (err) {
+      return res.status(500).json({ success: false, message: 'Database error' });
+    }
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+    
+    if (!passwordMatch) {
+      return res.status(401).json({ success: false, message: 'Current password is incorrect' });
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    
+    db.run('UPDATE users SET password = ?, updatedAt = CURRENT_TIMESTAMP WHERE username = ?',
+      [hashedNewPassword, username],
+      (err) => {
+        if (err) {
+          return res.status(500).json({ success: false, message: 'Failed to update password' });
+        }
+        res.json({ success: true, message: 'Password changed successfully' });
+      }
+    );
+  });
 });
 
-// Serve the main application
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+// Update profile endpoint
+app.post('/api/update-profile', (req, res) => {
+  const { username, fullName, email } = req.body;
+
+  if (!username) {
+    return res.status(400).json({ success: false, message: 'Username required' });
+  }
+
+  db.run('UPDATE users SET fullName = ?, email = ?, updatedAt = CURRENT_TIMESTAMP WHERE username = ?',
+    [fullName, email, username],
+    (err) => {
+      if (err) {
+        return res.status(500).json({ success: false, message: 'Failed to update profile' });
+      }
+      res.json({ success: true, message: 'Profile updated successfully' });
+    }
+  );
 });
 
-// Start server
 app.listen(PORT, () => {
-  console.log(`Franciscan School Portal Server running on port ${PORT}`);
-  console.log(`Visit: http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
+  console.log('Default login - Username: bursar | Password: bursar123');
 });

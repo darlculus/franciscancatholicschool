@@ -1,152 +1,102 @@
-// API Configuration and Helper Functions
+// API Client for Franciscan Catholic School
 const API_BASE_URL = window.location.hostname === 'localhost' 
-  ? 'http://localhost:3000/api' 
-  : 'https://franciscan-school.onrender.com/api';
+  ? 'http://localhost:3000/api'
+  : '/api';
 
-class APIClient {
-  constructor() {
-    this.token = this.getStoredToken();
-  }
+window.api = {
+  token: null,
 
-  getStoredToken() {
-    return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-  }
-
+  // Set authentication token
   setToken(token, remember = false) {
     this.token = token;
     const storage = remember ? localStorage : sessionStorage;
     storage.setItem('authToken', token);
-  }
+  },
 
-  clearToken() {
-    this.token = null;
-    localStorage.removeItem('authToken');
-    sessionStorage.removeItem('authToken');
-  }
+  // Get authentication token
+  getToken() {
+    if (this.token) return this.token;
+    return sessionStorage.getItem('authToken') || localStorage.getItem('authToken');
+  },
 
-  async request(endpoint, options = {}) {
-    const url = `${API_BASE_URL}${endpoint}`;
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-      },
-      ...options
-    };
-
-    if (this.token) {
-      config.headers.Authorization = `Bearer ${this.token}`;
-    }
-
+  // Login user
+  async login(username, password, role) {
     try {
-      const response = await fetch(url, config);
+      const response = await fetch(`${API_BASE_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password })
+      });
+
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Request failed');
+        throw new Error(data.message || 'Login failed');
+      }
+
+      if (!data.success) {
+        throw new Error(data.message || 'Invalid credentials');
+      }
+
+      // Store token if provided
+      if (data.token) {
+        this.token = data.token;
+      }
+
+      return data.user;
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
+  },
+
+  // Change password
+  async changePassword(username, currentPassword, newPassword) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/change-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, currentPassword, newPassword })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Password change failed');
       }
 
       return data;
     } catch (error) {
-      // If it's a network error and we're trying to reach the backend,
-      // it might be unavailable (development mode)
-      if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        console.warn('Backend API unavailable, using local mode');
+      console.error('Password change error:', error);
+      throw error;
+    }
+  },
+
+  // Update profile
+  async updateProfile(username, fullName, email) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/update-profile`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, fullName, email })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Profile update failed');
       }
+
+      return data;
+    } catch (error) {
+      console.error('Profile update error:', error);
       throw error;
     }
   }
-
-  // Authentication
-  async login(username, password, role) {
-    // Local authentication for demo/development
-    const localUsers = {
-      'superadmin': {
-        password: 'FranciscanAdmin2025!',
-        role: 'admin',
-        name: 'Super Administrator',
-        id: 'admin001'
-      },
-      'bursar': {
-        password: 'bursar123',
-        role: 'bursar',
-        name: 'School Bursar',
-        id: 'bursar001'
-      }
-    };
-
-    // Check local users first
-    const user = localUsers[username.toLowerCase()];
-    if (user && user.password === password) {
-      const token = 'demo-token-' + Date.now();
-      this.setToken(token);
-      return {
-        id: user.id,
-        username: username,
-        name: user.name,
-        role: user.role
-      };
-    }
-
-    // If no local user found, try backend API
-    try {
-      const response = await this.request('/login', {
-        method: 'POST',
-        body: JSON.stringify({ username, password, role })
-      });
-
-      if (response.success) {
-        this.setToken(response.token);
-        return response.user;
-      }
-    } catch (error) {
-      // Backend not available, fall through to error
-    }
-    
-    throw new Error('Invalid credentials');
-  }
-
-  // Payments
-  async getPayments() {
-    return await this.request('/payments');
-  }
-
-  async addPayment(paymentData) {
-    return await this.request('/payments', {
-      method: 'POST',
-      body: JSON.stringify(paymentData)
-    });
-  }
-
-  async clearPayments() {
-    return await this.request('/payments', {
-      method: 'DELETE'
-    });
-  }
-
-  // Dashboard Stats
-  async getDashboardStats() {
-    try {
-      return await this.request('/dashboard/stats');
-    } catch (error) {
-      // Return mock data if backend unavailable
-      return {
-        totalStudents: 0,
-        totalTeachers: 0,
-        totalPayments: 0,
-        pendingPayments: 0
-      };
-    }
-  }
-
-  // Receipts
-  async generateReceipt(paymentId) {
-    return await this.request('/receipts', {
-      method: 'POST',
-      body: JSON.stringify({ paymentId })
-    });
-  }
-}
-
-// Global API instance
-window.api = new APIClient();
+};

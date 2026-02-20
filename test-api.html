@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - Franciscan Catholic School</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #b88e5e;
+            text-align: center;
+        }
+        button {
+            background: #b88e5e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #a07d4f;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 API Connection Test</h1>
+    
+    <div class="test-box">
+        <h3>1. Test Login</h3>
+        <label>Username:</label>
+        <input type="text" id="username" value="bursar">
+        <label>Password:</label>
+        <input type="password" id="password" value="bursar123">
+        <button onclick="testLogin()">Test Login</button>
+        <div id="login-result"></div>
+    </div>
+
+    <div class="test-box">
+        <h3>2. Test Password Change</h3>
+        <label>Current Password:</label>
+        <input type="password" id="current-pwd" value="bursar123">
+        <label>New Password:</label>
+        <input type="password" id="new-pwd" value="newpass123">
+        <button onclick="testPasswordChange()">Test Password Change</button>
+        <div id="password-result"></div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script>
+        async function testLogin() {
+            const resultDiv = document.getElementById('login-result');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                resultDiv.innerHTML = '<div class="result">Testing...</div>';
+                const user = await window.api.login(username, password, 'bursar');
+                resultDiv.innerHTML = `<div class="result success">✓ Login successful!<br>User: ${JSON.stringify(user, null, 2)}</div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">✗ Login failed: ${error.message}</div>`;
+            }
+        }
+
+        async function testPasswordChange() {
+            const resultDiv = document.getElementById('password-result');
+            const currentPwd = document.getElementById('current-pwd').value;
+            const newPwd = document.getElementById('new-pwd').value;
+            
+            try {
+                resultDiv.innerHTML = '<div class="result">Testing...</div>';
+                const result = await window.api.changePassword('bursar', currentPwd, newPwd);
+                resultDiv.innerHTML = `<div class="result success">✓ Password change successful!<br>${JSON.stringify(result, null, 2)}</div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">✗ Password change failed: ${error.message}</div>`;
+            }
+        }
+
+        // Test server connection on load
+        window.addEventListener('load', () => {
+            fetch('http://localhost:3000/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: 'test', password: 'test' })
+            })
+            .then(() => {
+                console.log('✓ Server is running');
+            })
+            .catch(() => {
+                alert('⚠️ Server is not running!\n\nPlease start the server by running:\nnpm start\n\nOr double-click: start-server.bat');
+            });
+        });
+    </script>
+</body>
+</html>

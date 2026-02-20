@@ -856,7 +856,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Security form
-  document.getElementById('security-form')?.addEventListener('submit', (e) => {
+  document.getElementById('security-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const currentPassword = document.getElementById('current-password').value;
     const newPassword = document.getElementById('new-password').value;
@@ -872,10 +872,25 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    localStorage.setItem('bursar_password', newPassword);
-    closeModal('security-modal');
-    document.getElementById('security-form').reset();
-    showToast('Password changed successfully!');
+    // Get current user
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
+    const username = currentUser.username || 'bursar';
+    
+    // Update password via API
+    try {
+      const result = await window.api.changePassword(username, currentPassword, newPassword);
+      
+      if (result.success) {
+        closeModal('security-modal');
+        document.getElementById('security-form').reset();
+        showToast('Password changed successfully!');
+      } else {
+        showToast(result.message || 'Password change failed!', 'error');
+      }
+    } catch (error) {
+      console.error('Password change error:', error);
+      showToast(error.message || 'Failed to change password. Please try again.', 'error');
+    }
   });
 
   // System form
