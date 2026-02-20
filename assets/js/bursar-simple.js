@@ -772,63 +772,185 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500);
   }
   
+  // Modal Management
+  function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.classList.add('active');
+  }
+
+  function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.classList.remove('active');
+  }
+
   // Settings buttons
-  const profileSettingsBtn = document.getElementById('profile-settings-btn');
-  if (profileSettingsBtn) {
-    profileSettingsBtn.addEventListener('click', () => {
-      const newName = prompt('Enter your name:', 'Sr. Clare Ohagwa, OSF');
-      if (newName && newName.trim()) {
-        document.getElementById('bursar-name').textContent = newName.trim();
-        document.getElementById('welcome-name').textContent = newName.trim().split(' ')[0];
-        localStorage.setItem('bursar_name', newName.trim());
-        alert('Profile updated successfully!');
-      }
+  document.getElementById('profile-settings-btn')?.addEventListener('click', () => openModal('profile-modal'));
+  document.getElementById('notification-settings-btn')?.addEventListener('click', () => openModal('notification-modal'));
+  document.getElementById('security-settings-btn')?.addEventListener('click', () => openModal('security-modal'));
+  document.getElementById('system-settings-btn')?.addEventListener('click', () => openModal('system-modal'));
+
+  // Close modal buttons
+  document.querySelectorAll('.modal-close, .btn-outline[data-modal]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modalId = btn.getAttribute('data-modal');
+      if (modalId) closeModal(modalId);
     });
+  });
+
+  // Close modal on outside click
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+  });
+
+  // Profile photo upload
+  document.getElementById('upload-photo-btn')?.addEventListener('click', () => {
+    document.getElementById('profile-photo-input').click();
+  });
+
+  document.getElementById('profile-photo-input')?.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imgData = event.target.result;
+        document.getElementById('profile-preview').src = imgData;
+        document.querySelector('.user-avatar.bursar img').src = imgData;
+        localStorage.setItem('bursar_photo', imgData);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Profile form
+  document.getElementById('profile-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('profile-name').value.trim();
+    const email = document.getElementById('profile-email').value.trim();
+    const phone = document.getElementById('profile-phone').value.trim();
+    
+    if (name) {
+      document.getElementById('bursar-name').textContent = name;
+      document.getElementById('welcome-name').textContent = name.split(' ')[0];
+      localStorage.setItem('bursar_name', name);
+      localStorage.setItem('bursar_email', email);
+      localStorage.setItem('bursar_phone', phone);
+      closeModal('profile-modal');
+      showToast('Profile updated successfully!');
+    }
+  });
+
+  // Notification form
+  document.getElementById('notification-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const emailNotif = document.getElementById('email-notif').checked;
+    const paymentReminders = document.getElementById('payment-reminders').checked;
+    const dailySummary = document.getElementById('daily-summary').checked;
+    
+    localStorage.setItem('email_notifications', emailNotif);
+    localStorage.setItem('payment_reminders', paymentReminders);
+    localStorage.setItem('daily_summary', dailySummary);
+    closeModal('notification-modal');
+    showToast('Notification preferences saved!');
+  });
+
+  // Security form
+  document.getElementById('security-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const currentPassword = document.getElementById('current-password').value;
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+    
+    if (newPassword !== confirmPassword) {
+      showToast('Passwords do not match!', 'error');
+      return;
+    }
+    
+    if (newPassword.length < 6) {
+      showToast('Password must be at least 6 characters!', 'error');
+      return;
+    }
+    
+    localStorage.setItem('bursar_password', newPassword);
+    closeModal('security-modal');
+    document.getElementById('security-form').reset();
+    showToast('Password changed successfully!');
+  });
+
+  // System form
+  document.getElementById('system-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const darkMode = document.getElementById('dark-mode').checked;
+    const autoRefresh = document.getElementById('auto-refresh').checked;
+    const currencyFormat = document.getElementById('currency-format').value;
+    
+    localStorage.setItem('dark_mode', darkMode);
+    localStorage.setItem('auto_refresh', autoRefresh);
+    localStorage.setItem('currency_format', currencyFormat);
+    
+    if (darkMode) {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
+    
+    closeModal('system-modal');
+    showToast('System preferences saved!');
+  });
+
+  // Toast notification
+  function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: ${type === 'success' ? '#28a745' : '#dc3545'};
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 10000;
+      animation: slideIn 0.3s ease;
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
   }
 
-  const notificationSettingsBtn = document.getElementById('notification-settings-btn');
-  if (notificationSettingsBtn) {
-    notificationSettingsBtn.addEventListener('click', () => {
-      const emailNotif = confirm('Enable email notifications for new payments?');
-      localStorage.setItem('email_notifications', emailNotif);
-      alert(`Email notifications ${emailNotif ? 'enabled' : 'disabled'}.`);
-    });
+  // Load saved settings
+  const savedName = localStorage.getItem('bursar_name');
+  const savedPhoto = localStorage.getItem('bursar_photo');
+  const savedEmail = localStorage.getItem('bursar_email');
+  const savedPhone = localStorage.getItem('bursar_phone');
+  
+  if (savedName) {
+    document.getElementById('bursar-name').textContent = savedName;
+    document.getElementById('welcome-name').textContent = savedName.split(' ')[0];
+    document.getElementById('profile-name').value = savedName;
   }
-
-  const securitySettingsBtn = document.getElementById('security-settings-btn');
-  if (securitySettingsBtn) {
-    securitySettingsBtn.addEventListener('click', () => {
-      const currentPassword = prompt('Enter current password:');
-      if (currentPassword) {
-        const newPassword = prompt('Enter new password:');
-        if (newPassword && newPassword.length >= 6) {
-          const confirmPassword = prompt('Confirm new password:');
-          if (newPassword === confirmPassword) {
-            alert('Password changed successfully!');
-          } else {
-            alert('Passwords do not match.');
-          }
-        } else {
-          alert('Password must be at least 6 characters.');
-        }
-      }
-    });
+  if (savedPhoto) {
+    document.getElementById('profile-preview').src = savedPhoto;
+    document.querySelector('.user-avatar.bursar img').src = savedPhoto;
   }
-
-  const systemSettingsBtn = document.getElementById('system-settings-btn');
-  if (systemSettingsBtn) {
-    systemSettingsBtn.addEventListener('click', () => {
-      const theme = confirm('Enable dark mode? (OK for Yes, Cancel for No)');
-      if (theme) {
-        document.body.style.filter = 'invert(0.9) hue-rotate(180deg)';
-        localStorage.setItem('dark_mode', 'true');
-        alert('Dark mode enabled. Refresh to see full effect.');
-      } else {
-        document.body.style.filter = 'none';
-        localStorage.setItem('dark_mode', 'false');
-        alert('Light mode enabled.');
-      }
-    });
+  if (savedEmail) document.getElementById('profile-email').value = savedEmail;
+  if (savedPhone) document.getElementById('profile-phone').value = savedPhone;
+  
+  // Load notification settings
+  document.getElementById('email-notif').checked = localStorage.getItem('email_notifications') !== 'false';
+  document.getElementById('payment-reminders').checked = localStorage.getItem('payment_reminders') !== 'false';
+  document.getElementById('daily-summary').checked = localStorage.getItem('daily_summary') === 'true';
+  
+  // Load system settings
+  document.getElementById('dark-mode').checked = localStorage.getItem('dark_mode') === 'true';
+  document.getElementById('auto-refresh').checked = localStorage.getItem('auto_refresh') !== 'false';
+  if (localStorage.getItem('dark_mode') === 'true') {
+    document.body.classList.add('dark-theme');
   }
 
   // Logout button
