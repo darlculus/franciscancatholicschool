@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Account form submission (password change)
     const accountForm = document.getElementById('account-form');
-    accountForm.addEventListener('submit', function(e) {
+    accountForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         // Get form values
@@ -147,19 +147,21 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Password strength validation
-        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-        if (!passwordRegex.test(newPassword)) {
-            alert('Password does not meet the requirements. Please ensure it has at least 8 characters, one uppercase letter, one number, and one special character.');
+        if (newPassword.length < 6) {
+            alert('Password must be at least 6 characters long.');
             return;
         }
         
-        // In a real application, you would verify the current password and update with the new one
-        // For this demo, we'll just show a success message
-        alert('Password updated successfully!');
+        // Get current user
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
         
-        // Reset form
-        accountForm.reset();
+        try {
+            const response = await window.api.changePassword(currentUser.username, currentPassword, newPassword);
+            alert('Password updated successfully!');
+            accountForm.reset();
+        } catch (error) {
+            alert(error.message || 'Failed to update password. Please check your current password and try again.');
+        }
     });
     
     // Notifications form submission
