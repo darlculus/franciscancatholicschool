@@ -168,11 +168,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show success message
             alert('Teacher added successfully!');
             
-            // Update teacher count in dashboard
-            const teacherCountElement = document.querySelector('.stat-card:nth-child(2) .stat-count');
-            if (teacherCountElement) {
-                teacherCountElement.textContent = teachers.length;
-            }
+            // Reload page to refresh counts
+            window.location.reload();
             
             // Add to recent activities
             const activityList = document.querySelector('.activity-list');

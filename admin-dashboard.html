@@ -157,6 +157,7 @@
         </main>
     </div>
 
+    <script src="assets/js/api.js"></script>
     <script>
         // Set current date
         document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
@@ -166,14 +167,24 @@
             day: 'numeric'
         });
 
-        // No additional settings functionality needed - handled by settings.html
-
         // Check if user is authenticated
         const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
         if (!currentUser.role || (currentUser.role !== 'admin' && currentUser.role !== 'headteacher')) {
             sessionStorage.setItem('justLoggedOut', 'true');
             window.location.href = 'portal.html';
         }
+
+        // Load teacher count from API
+        async function loadTeacherCount() {
+            try {
+                const teachers = await window.api.getTeachers();
+                document.getElementById('total-teachers').textContent = teachers.length;
+            } catch (error) {
+                console.error('Error loading teacher count:', error);
+            }
+        }
+        
+        loadTeacherCount();
 
         // Mobile sidebar toggle
         document.getElementById('sidebar-toggle').addEventListener('click', function() {
