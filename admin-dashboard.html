@@ -170,7 +170,7 @@
 
         // Check if user is authenticated
         const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
-        if (!currentUser.role || currentUser.role !== 'admin') {
+        if (!currentUser.role || (currentUser.role !== 'admin' && currentUser.role !== 'headteacher')) {
             sessionStorage.setItem('justLoggedOut', 'true');
             window.location.href = 'portal.html';
         }

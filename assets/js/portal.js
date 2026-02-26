@@ -112,9 +112,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             window.location.href = 'student-dashboard.html';
                             break;
                         case 'teacher':
+                        case 'coordinator':
                             window.location.href = 'teacher-dashboard.html';
                             break;
                         case 'admin':
+                        case 'headteacher':
                             window.location.href = 'admin-dashboard.html';
                             break;
                         case 'bursar':
@@ -149,9 +151,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = 'student-dashboard.html';
                 break;
             case 'teacher':
+            case 'coordinator':
                 window.location.href = 'teacher-dashboard.html';
                 break;
             case 'admin':
+            case 'headteacher':
                 window.location.href = 'admin-dashboard.html';
                 break;
             case 'bursar':

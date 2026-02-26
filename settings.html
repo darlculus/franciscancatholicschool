@@ -114,6 +114,9 @@
                   <i class="fas fa-bell"></i> Notifications
                 </li>
                 <li data-tab="system"><i class="fas fa-server"></i> System</li>
+                <li data-tab="users" id="users-tab-link" style="display: none;">
+                  <i class="fas fa-users-cog"></i> User Management
+                </li>
               </ul>
             </div>
 
@@ -353,6 +356,19 @@
                   <p class="help-text">This will log you out of the admin panel and redirect you to the login page.</p>
                 </div>
               </div>
+
+              <!-- User Management (Super Admin Only) -->
+              <div class="settings-tab" id="users-tab">
+                <h2>User Management</h2>
+                <p class="help-text">Manage headteacher and administrative accounts (Super Admin only)</p>
+                
+                <div class="users-list">
+                  <h3>Headteacher Account</h3>
+                  <div id="headteacher-info" class="user-card">
+                    <p>Loading...</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -362,12 +378,17 @@
     <script>
         // Check authentication first
         const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
-        if (!currentUser.role || currentUser.role !== 'admin') {
+        if (!currentUser.role || (currentUser.role !== 'admin' && currentUser.role !== 'headteacher')) {
             window.location.href = 'portal.html';
         }
         
         // Wait for DOM to load
         document.addEventListener('DOMContentLoaded', function() {
+            // Show User Management tab only for Super Admin
+            if (currentUser.role === 'admin') {
+                document.getElementById('users-tab-link').style.display = 'block';
+            }
+            
             // Logout functionality
             const logoutBtn = document.getElementById('logout-settings-btn');
             if (logoutBtn) {
