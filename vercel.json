@@ -32,6 +32,10 @@
     {
       "source": "/api/change-password",
       "destination": "/api/change-password.js"
+    },
+    {
+      "source": "/api/teachers",
+      "destination": "/api/teachers.js"
     }
   ]
 }

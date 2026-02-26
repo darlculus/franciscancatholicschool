@@ -98,5 +98,57 @@ window.api = {
       console.error('Profile update error:', error);
       throw error;
     }
+  },
+
+  // Teachers API
+  async getTeachers() {
+    const response = await fetch(`${API_BASE_URL}/teachers`, {
+      headers: { 'Authorization': `Bearer ${this.getToken()}` }
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error);
+    return data.teachers;
+  },
+
+  async addTeacher(teacher) {
+    const response = await fetch(`${API_BASE_URL}/teachers`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.getToken()}`
+      },
+      body: JSON.stringify(teacher)
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error);
+    return data.teacher;
+  },
+
+  async updateTeacher(id, updates) {
+    const response = await fetch(`${API_BASE_URL}/teachers`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.getToken()}`
+      },
+      body: JSON.stringify({ id, ...updates })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error);
+    return data.teacher;
+  },
+
+  async deleteTeacher(id) {
+    const response = await fetch(`${API_BASE_URL}/teachers`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.getToken()}`
+      },
+      body: JSON.stringify({ id })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error);
+    return data;
   }
 };
