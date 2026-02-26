@@ -33,12 +33,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize charts (empty state)
     initEmptyCharts();
     
-    // Show empty state for teachers
-    showEmptyState();
+    // Load teachers from API
+    loadTeachers();
     
     // Initialize event listeners
     initEventListeners();
 });
+
+// Load teachers from API
+async function loadTeachers() {
+    try {
+        teachers = await window.api.getTeachers();
+        if (teachers.length === 0) {
+            showEmptyState();
+        } else {
+            filterTeachers();
+            updateTeacherStats();
+        }
+    } catch (error) {
+        console.error('Error loading teachers:', error);
+        showEmptyState();
+    }
+}
 
 // Update date display
 function updateDateDisplay() {
@@ -488,6 +504,19 @@ function updateStats(total, active, inactive, newTeachers) {
     document.getElementById('new-teachers').textContent = newTeachers;
 }
 
+// Update teacher stats from teachers array
+function updateTeacherStats() {
+    const total = teachers.length;
+    const active = teachers.filter(t => t.status === 'active').length;
+    const newTeachers = teachers.filter(t => {
+        const joinDate = new Date(t.joinDate || t.join_date);
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        return joinDate >= thirtyDaysAgo;
+    }).length;
+    updateStats(total, active, total - active, newTeachers);
+}
+
 // Initialize event listeners
 function initEventListeners() {
     // Search input
@@ -636,14 +665,10 @@ function resetAddTeacherForm() {
 }
 
 // Add teacher
-function addTeacher() {
-    // In a real application, this would send data to a server
-    // For this demo, we'll simulate adding a teacher to our local array
-    
+async function addTeacher() {
     const form = document.getElementById('add-teacher-form');
     
     const teacher = {
-        id: generateTeacherId(),
         firstName: document.getElementById('first-name').value,
         lastName: document.getElementById('last-name').value,
         gender: document.getElementById('gender').value,
@@ -658,35 +683,21 @@ function addTeacher() {
         assignedClass: document.getElementById('assigned-class').value,
         employmentType: document.getElementById('employment-type').value,
         username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
         role: document.getElementById('role').value,
-        status: document.getElementById('status').value,
-        profileColor: document.getElementById('profile-color').value,
-        createdAt: new Date().toISOString()
+        status: document.getElementById('status').value
     };
     
-    // Add to teachers array
-    teachers.push(teacher);
-    
-    // Save to localStorage (in a real app, this would be a server API call)
-    localStorage.setItem('teachers', JSON.stringify(teachers));
-    
-    // Refresh the teachers list
-    filterTeachers();
-    
-    // Update stats
-    updateTeacherStats();
-    
-    // Show teachers table and hide empty state
-    const teachersTable = document.querySelector('.teachers-container');
-    const noTeachersMessage = document.getElementById('no-teachers-message');
-    
-    if (teachersTable && noTeachersMessage) {
-        teachersTable.style.display = 'block';
-        noTeachersMessage.style.display = 'none';
+    try {
+        await window.api.addTeacher(teacher);
+        form.reset();
+        teachers = await window.api.getTeachers();
+        filterTeachers();
+        updateTeacherStats();
+    } catch (error) {
+        console.error('Error adding teacher:', error);
+        showNotification('Error adding teacher: ' + error.message, 'error');
     }
-    
-    // Reset form
-    form.reset();
 }
 
 // Generate teacher ID
