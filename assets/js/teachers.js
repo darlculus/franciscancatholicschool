@@ -691,9 +691,7 @@ async function addTeacher() {
     try {
         await window.api.addTeacher(teacher);
         form.reset();
-        teachers = await window.api.getTeachers();
-        filterTeachers();
-        updateTeacherStats();
+        await loadTeachers();
     } catch (error) {
         console.error('Error adding teacher:', error);
         showNotification('Error adding teacher: ' + error.message, 'error');

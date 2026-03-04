@@ -174,13 +174,13 @@
             window.location.href = 'portal.html';
         }
 
-        // Load teacher count from API
+        // Load teacher count
         async function loadTeacherCount() {
             try {
                 const teachers = await window.api.getTeachers();
                 document.getElementById('total-teachers').textContent = teachers.length;
             } catch (error) {
-                console.error('Error loading teacher count:', error);
+                console.error('Error loading teachers:', error);
             }
         }
         
@@ -190,7 +190,16 @@
         document.getElementById('sidebar-toggle').addEventListener('click', function() {
             document.querySelector('.dashboard-sidebar').classList.toggle('active');
         });
-    </script>
+    </script> }
+        }
+        
+        loadTeacherCount();
+
+        // Mobile sidebar toggle
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            document.querySelector('.dashboard-sidebar').classList.toggle('active');
+        });
+    </script></script>
 </body>
 </html></script>
 </body>

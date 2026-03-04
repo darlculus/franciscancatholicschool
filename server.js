@@ -53,6 +53,35 @@ function initializeDatabase() {
       }
     );
   });
+  
+  // Create teachers table
+  db.run(`CREATE TABLE IF NOT EXISTS teachers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    firstName TEXT NOT NULL,
+    lastName TEXT NOT NULL,
+    gender TEXT,
+    dob TEXT,
+    phone TEXT,
+    email TEXT,
+    address TEXT,
+    qualification TEXT,
+    specialization TEXT,
+    experience TEXT,
+    joinDate TEXT,
+    assignedClass TEXT,
+    employmentType TEXT,
+    username TEXT UNIQUE,
+    password TEXT,
+    role TEXT,
+    status TEXT,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`, (err) => {
+    if (err) {
+      console.error('Teachers table creation error:', err);
+    } else {
+      console.log('Teachers table ready');
+    }
+  });
 }
 
 // Login endpoint
@@ -142,6 +171,70 @@ app.post('/api/update-profile', (req, res) => {
       res.json({ success: true, message: 'Profile updated successfully' });
     }
   );
+});
+
+// Get all teachers
+app.get('/api/teachers', (req, res) => {
+  db.all('SELECT * FROM teachers ORDER BY createdAt DESC', [], (err, teachers) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json({ teachers });
+  });
+});
+
+// Add teacher
+app.post('/api/teachers', async (req, res) => {
+  const teacher = req.body;
+  const hashedPassword = teacher.password ? await bcrypt.hash(teacher.password, 10) : null;
+  
+  db.run(`INSERT INTO teachers (firstName, lastName, gender, dob, phone, email, address, 
+          qualification, specialization, experience, joinDate, assignedClass, employmentType, 
+          username, password, role, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [teacher.firstName, teacher.lastName, teacher.gender, teacher.dob, teacher.phone, 
+     teacher.email, teacher.address, teacher.qualification, teacher.specialization, 
+     teacher.experience, teacher.joinDate, teacher.assignedClass, teacher.employmentType,
+     teacher.username, hashedPassword, teacher.role, teacher.status],
+    function(err) {
+      if (err) {
+        return res.status(500).json({ error: 'Failed to add teacher' });
+      }
+      res.json({ teacher: { id: this.lastID, ...teacher } });
+    }
+  );
+});
+
+// Update teacher
+app.put('/api/teachers', async (req, res) => {
+  const { id, password, ...updates } = req.body;
+  const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
+  
+  const fields = Object.keys(updates).map(key => `${key} = ?`).join(', ');
+  const values = Object.values(updates);
+  
+  if (hashedPassword) {
+    values.push(hashedPassword);
+    db.run(`UPDATE teachers SET ${fields}, password = ? WHERE id = ?`, [...values, id], (err) => {
+      if (err) return res.status(500).json({ error: 'Failed to update teacher' });
+      res.json({ teacher: { id, ...updates } });
+    });
+  } else {
+    db.run(`UPDATE teachers SET ${fields} WHERE id = ?`, [...values, id], (err) => {
+      if (err) return res.status(500).json({ error: 'Failed to update teacher' });
+      res.json({ teacher: { id, ...updates } });
+    });
+  }
+});
+
+// Delete teacher
+app.delete('/api/teachers', (req, res) => {
+  const { id } = req.body;
+  db.run('DELETE FROM teachers WHERE id = ?', [id], (err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to delete teacher' });
+    }
+    res.json({ success: true });
+  });
 });
 
 app.listen(PORT, () => {

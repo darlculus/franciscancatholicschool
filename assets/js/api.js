@@ -117,7 +117,15 @@ window.api = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${this.getToken()}`
       },
-      body: JSON.stringify(teacher)
+      body: JSON.stringify({
+        teacher_id: teacher.username,
+        full_name: `${teacher.firstName} ${teacher.lastName}`,
+        email: teacher.email,
+        phone: teacher.phone,
+        subject: teacher.specialization,
+        qualification: teacher.qualification,
+        password: teacher.password
+      })
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data.error);
