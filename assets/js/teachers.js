@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadTeachers() {
     try {
         teachers = await window.api.getTeachers();
+        localStorage.setItem('teachers', JSON.stringify(teachers));
         if (teachers.length === 0) {
             showEmptyState();
         } else {
@@ -52,7 +53,13 @@ async function loadTeachers() {
         }
     } catch (error) {
         console.error('Error loading teachers:', error);
-        showEmptyState();
+        teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+        if (teachers.length === 0) {
+            showEmptyState();
+        } else {
+            filterTeachers();
+            updateTeacherStats();
+        }
     }
 }
 
@@ -690,12 +697,12 @@ async function addTeacher() {
     
     try {
         await window.api.addTeacher(teacher);
-        form.reset();
         await loadTeachers();
     } catch (error) {
         console.error('Error adding teacher:', error);
-        showNotification('Error adding teacher: ' + error.message, 'error');
     }
+    
+    form.reset();
 }
 
 // Generate teacher ID
