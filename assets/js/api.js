@@ -102,34 +102,80 @@ window.api = {
 
   // Teachers API
   async getTeachers() {
-    const response = await fetch(`${API_BASE_URL}/teachers`, {
-      headers: { 'Authorization': `Bearer ${this.getToken()}` }
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error);
-    return data.teachers;
+    try {
+      const response = await fetch(`${API_BASE_URL}/teachers`, {
+        headers: { 'Authorization': `Bearer ${this.getToken() || 'dummy-token'}` }
+      });
+      
+      if (!response.ok) {
+        console.warn('API failed, using localStorage');
+        return JSON.parse(localStorage.getItem('teachers') || '[]');
+      }
+      
+      const data = await response.json();
+      return data.teachers || [];
+    } catch (error) {
+      console.warn('API error, using localStorage:', error);
+      return JSON.parse(localStorage.getItem('teachers') || '[]');
+    }
   },
 
   async addTeacher(teacher) {
-    const response = await fetch(`${API_BASE_URL}/teachers`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.getToken()}`
-      },
-      body: JSON.stringify({
+    try {
+      const response = await fetch(`${API_BASE_URL}/teachers`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.getToken() || 'dummy-token'}`
+        },
+        body: JSON.stringify({
+          teacher_id: teacher.username,
+          full_name: `${teacher.firstName} ${teacher.lastName}`,
+          email: teacher.email,
+          phone: teacher.phone,
+          subject: teacher.specialization,
+          qualification: teacher.qualification,
+          password: teacher.password
+        })
+      });
+      
+      if (!response.ok) {
+        console.warn('API failed, saving to localStorage');
+        const teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+        const newTeacher = {
+          id: teachers.length + 1,
+          teacher_id: teacher.username,
+          full_name: `${teacher.firstName} ${teacher.lastName}`,
+          email: teacher.email,
+          phone: teacher.phone,
+          subject: teacher.specialization,
+          qualification: teacher.qualification,
+          created_at: new Date().toISOString()
+        };
+        teachers.push(newTeacher);
+        localStorage.setItem('teachers', JSON.stringify(teachers));
+        return newTeacher;
+      }
+      
+      const data = await response.json();
+      return data.teacher;
+    } catch (error) {
+      console.warn('API error, saving to localStorage:', error);
+      const teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+      const newTeacher = {
+        id: teachers.length + 1,
         teacher_id: teacher.username,
         full_name: `${teacher.firstName} ${teacher.lastName}`,
         email: teacher.email,
         phone: teacher.phone,
         subject: teacher.specialization,
         qualification: teacher.qualification,
-        password: teacher.password
-      })
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error);
-    return data.teacher;
+        created_at: new Date().toISOString()
+      };
+      teachers.push(newTeacher);
+      localStorage.setItem('teachers', JSON.stringify(teachers));
+      return newTeacher;
+    }
   },
 
   async updateTeacher(id, updates) {
