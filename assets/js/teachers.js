@@ -695,9 +695,13 @@ async function addTeacher() {
         status: document.getElementById('status').value
     };
     
+    console.log('Adding teacher:', teacher);
+    
     try {
-        await window.api.addTeacher(teacher);
+        const result = await window.api.addTeacher(teacher);
+        console.log('Teacher added:', result);
         await loadTeachers();
+        console.log('Teachers reloaded, count:', teachers.length);
     } catch (error) {
         console.error('Error adding teacher:', error);
     }
