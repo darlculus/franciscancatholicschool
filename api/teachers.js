@@ -51,7 +51,7 @@ module.exports = async (req, res) => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return res.status(200).json({ teachers: data.map(mapTeacher) });
+      return res.status(200).json({ teachers: data });
     }
 
     // POST - Add new teacher

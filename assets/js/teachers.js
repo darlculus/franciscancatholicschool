@@ -133,8 +133,8 @@ async function addTeacher() {
     try {
         await window.api.addTeacher({
             username: teacher.teacher_id,
-            firstName,
-            lastName: `${title} ${lastName}`.trim(),
+            firstName: full_name,
+            lastName: '',
             email: teacher.email,
             phone: teacher.phone,
             specialization: teacher.subject,
