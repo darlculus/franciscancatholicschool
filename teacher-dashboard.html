@@ -98,9 +98,6 @@
                         <h1>Welcome back, <span id="welcome-name">Teacher</span>!</h1>
                         <p>Here's an overview of your classes and upcoming tasks</p>
                     </div>
-                    <div class="welcome-image">
-                        <img src="assets/img/team-3.jpg" alt="Teacher Illustration">
-                    </div>
                 </div>
                 
                 <div class="quick-stats">
@@ -109,7 +106,7 @@
                             <i class="fas fa-users"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>3</h3>
+                            <h3 id="stat-active-classes">—</h3>
                             <p>Active Classes</p>
                         </div>
                     </div>
@@ -119,7 +116,7 @@
                             <i class="fas fa-tasks"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>8</h3>
+                            <h3 id="stat-pending-assignments">—</h3>
                             <p>Pending Assignments</p>
                         </div>
                     </div>
@@ -129,7 +126,7 @@
                             <i class="fas fa-clipboard-check"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>12</h3>
+                            <h3 id="stat-submissions">—</h3>
                             <p>Submissions to Grade</p>
                         </div>
                     </div>
@@ -139,7 +136,7 @@
                             <i class="fas fa-calendar-day"></i>
                         </div>
                         <div class="stat-info">
-                            <h3>4</h3>
+                            <h3 id="stat-classes-today">—</h3>
                             <p>Classes Today</p>
                         </div>
                     </div>
@@ -152,56 +149,7 @@
                             <a href="my-classes.html" class="view-all">View All</a>
                         </div>
                         <div class="card-content">
-                            <ul class="class-list">
-                                <li class="class-item">
-                                    <div class="class-info">
-                                        <h4>Primary 5 - Mathematics</h4>
-                                        <p>25 students</p>
-                                        <div class="class-progress">
-                                            <div class="progress-bar">
-                                                <div class="progress" style="width: 75%"></div>
-                                            </div>
-                                            <span>75% through curriculum</span>
-                                        </div>
-                                    </div>
-                                    <div class="class-actions">
-                                        <a href="#" class="btn-class-action"><i class="fas fa-clipboard-check"></i> Attendance</a>
-                                        <a href="#" class="btn-class-action"><i class="fas fa-book"></i> Lesson Plan</a>
-                                    </div>
-                                </li>
-                                <li class="class-item">
-                                    <div class="class-info">
-                                        <h4>Primary 6 - Mathematics</h4>
-                                        <p>22 students</p>
-                                        <div class="class-progress">
-                                            <div class="progress-bar">
-                                                <div class="progress" style="width: 60%"></div>
-                                            </div>
-                                            <span>60% through curriculum</span>
-                                        </div>
-                                    </div>
-                                    <div class="class-actions">
-                                        <a href="#" class="btn-class-action"><i class="fas fa-clipboard-check"></i> Attendance</a>
-                                        <a href="#" class="btn-class-action"><i class="fas fa-book"></i> Lesson Plan</a>
-                                    </div>
-                                </li>
-                                <li class="class-item">
-                                    <div class="class-info">
-                                        <h4>Primary 4 - Mathematics</h4>
-                                        <p>28 students</p>
-                                        <div class="class-progress">
-                                            <div class="progress-bar">
-                                                <div class="progress" style="width: 85%"></div>
-                                            </div>
-                                            <span>85% through curriculum</span>
-                                        </div>
-                                    </div>
-                                    <div class="class-actions">
-                                        <a href="#" class="btn-class-action"><i class="fas fa-clipboard-check"></i> Attendance</a>
-                                        <a href="#" class="btn-class-action"><i class="fas fa-book"></i> Lesson Plan</a>
-                                    </div>
-                                </li>
-                            </ul>
+                            <ul class="class-list" id="class-list"></ul>
                         </div>
                     </div>
                     
@@ -299,44 +247,11 @@
                             <a href="#" class="btn-create-announcement">Create Announcement</a>
                         </div>
                         <div class="card-content">
-                            <ul class="announcement-list">
-                                <li class="announcement-item">
-                                    <div class="announcement-header">
-                                        <h4 class="announcement-title">Staff Development Day</h4>
-                                        <span class="announcement-date">Posted: 1 day ago</span>
-                                    </div>
-                                    <p class="announcement-content">
-                                        Please be reminded that April 22nd is Staff Development Day. All teachers are required to attend the professional development workshop from 9:00 AM to 3:00 PM.
-                                    </p>
-                                    <div class="announcement-footer">
-                                        <span class="announcement-author">Posted by: Dr. James Anderson</span>
-                                    </div>
-                                </li>
-                                <li class="announcement-item">
-                                    <div class="announcement-header">
-                                        <h4 class="announcement-title">Term Progress Reports Due</h4>
-                                        <span class="announcement-date">Posted: 3 days ago</span>
-                                    </div>
-                                    <p class="announcement-content">
-                                        All teachers are required to submit their mid-term progress reports by Friday. Please use the new template shared via email.
-                                    </p>
-                                    <div class="announcement-footer">
-                                        <span class="announcement-author">Posted by: Academic Coordinator</span>
-                                    </div>
-                                </li>
-                                <li class="announcement-item">
-                                    <div class="announcement-header">
-                                        <h4 class="announcement-title">Annual Science Fair</h4>
-                                        <span class="announcement-date">Posted: 1 week ago</span>
-                                    </div>
-                                    <p class="announcement-content">
-                                        The Annual Science Fair will be held on March 15th. Please encourage your students to participate and help them prepare their projects. Registration forms are available in the staff room.
-                                    </p>
-                                    <div class="announcement-footer">
-                                        <span class="announcement-author">Posted by: Science Department</span>
-                                    </div>
-                                </li>
-                            </ul>
+                            <div class="empty-state">
+                                <i class="fas fa-bullhorn empty-icon"></i>
+                                <h3>No Announcements</h3>
+                                <p>School announcements will appear here once posted by the administration.</p>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,245 +1,89 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if user is logged in
-    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || JSON.parse(sessionStorage.getItem('currentUser'));
-    
-    if (!currentUser) {
-        // Redirect to login page if not logged in
+document.addEventListener('DOMContentLoaded', async function () {
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || 'null');
+
+    if (!currentUser || !['teacher', 'headteacher', 'coordinator', 'admin'].includes(currentUser.role)) {
         window.location.href = 'portal.html';
         return;
     }
-    
-    // Verify this is a teacher or admin account
-    if (currentUser.role !== 'teacher' && currentUser.role !== 'admin') {
-        alert('You are not authorized to access this page.');
-        window.location.href = 'portal.html';
-        return;
-    }
-    
-    // Set current date
-    updateDateDisplay();
-    
-    // Update teacher/admin information
-    updateTeacherInfo(currentUser);
-    
-    // Initialize sidebar toggle functionality
-    initSidebarToggle();
-    
-    // Initialize YouTube event videos
-    initEventVideos();
-    
-    // Initialize document downloads
-    initDocumentDownloads();
-    
-    // Navigation functionality - Updated to handle real page navigation
-    initNavigation();
-    
-    // Initialize notification bell functionality
-    initNotificationBell();
-    
-    // Initialize announcement creation
-    initAnnouncementCreation();
-    
-    // Initialize class action buttons
-    initClassActionButtons();
-    
-    // Initialize task management
-    initTaskManagement();
-    
-    // Initialize schedule management
-    initScheduleManagement();
-});
 
-// Update date display
-function updateDateDisplay() {
-    const now = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const dateString = now.toLocaleDateString('en-US', options);
-    
-    const currentDateElements = document.querySelectorAll('#current-date');
-    currentDateElements.forEach(element => {
-        element.textContent = dateString;
-    });
-}
+    // Date
+    document.getElementById('current-date').textContent =
+        new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-// Update teacher information
-function updateTeacherInfo(currentUser) {
-    const teacherNameElements = document.querySelectorAll('#teacher-name, #welcome-name');
-    const teacherSubjectElements = document.querySelectorAll('#teacher-subject');
-    
-    teacherNameElements.forEach(element => {
-        element.textContent = currentUser.name;
-    });
-    
-    teacherSubjectElements.forEach(element => {
-        if (currentUser.role === 'teacher') {
-            element.textContent = currentUser.subject || 'Subject Teacher';
-        } else {
-            element.textContent = currentUser.position;
+    // Name in sidebar + welcome
+    const displayName = currentUser.full_name || currentUser.username || 'Teacher';
+    document.getElementById('teacher-name').textContent = displayName;
+    document.getElementById('welcome-name').textContent = displayName.split(' ')[0];
+
+    // Load teacher record from API to get subject, assigned_class etc.
+    let teacherRecord = null;
+    try {
+        const token = sessionStorage.getItem('authToken') || localStorage.getItem('authToken') || 'dummy-token';
+        const res = await fetch('/api/teachers', { headers: { Authorization: `Bearer ${token}` } });
+        if (res.ok) {
+            const data = await res.json();
+            teacherRecord = (data.teachers || []).find(
+                t => t.teacher_id === currentUser.username || t.email === currentUser.email
+            );
         }
-    });
-}
+    } catch (e) { /* silently fall through */ }
 
-// Initialize sidebar toggle for mobile
-function initSidebarToggle() {
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    const dashboardSidebar = document.querySelector('.dashboard-sidebar');
-    const dashboardContainer = document.querySelector('.dashboard-container');
-    
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', function() {
-            dashboardSidebar.classList.toggle('active');
-            dashboardContainer.classList.toggle('sidebar-open');
+    const subject = teacherRecord?.subject || currentUser.subject || '';
+    const assignedClass = teacherRecord?.assigned_class || currentUser.assigned_class || '';
+
+    // Sidebar subject line
+    document.getElementById('teacher-subject').textContent =
+        subject ? `${subject} Teacher` : (currentUser.role === 'headteacher' ? 'Head Teacher' : 'Teacher');
+
+    // ── Stats ──────────────────────────────────────────────────────────────────
+    // Active classes: 1 if assigned, else 0
+    const activeClasses = assignedClass ? 1 : 0;
+    document.getElementById('stat-active-classes').textContent = activeClasses;
+    document.getElementById('stat-pending-assignments').textContent = '0';
+    document.getElementById('stat-submissions').textContent = '0';
+    document.getElementById('stat-classes-today').textContent = activeClasses;
+
+    // ── My Classes card ────────────────────────────────────────────────────────
+    const classList = document.getElementById('class-list');
+    if (activeClasses === 0) {
+        classList.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-school empty-icon"></i>
+                <h3>No Classes Assigned</h3>
+                <p>You have not been assigned to any class yet. Contact the administrator.</p>
+            </div>`;
+    } else {
+        classList.innerHTML = `
+            <li class="class-item">
+                <div class="class-info">
+                    <h4>${assignedClass}${subject ? ' — ' + subject : ''}</h4>
+                    <p>Assigned class</p>
+                </div>
+                <div class="class-actions">
+                    <a href="attendance.html" class="btn-class-action"><i class="fas fa-clipboard-check"></i> Attendance</a>
+                    <a href="assignments.html" class="btn-class-action"><i class="fas fa-book"></i> Assignments</a>
+                </div>
+            </li>`;
+    }
+
+    // ── Sidebar toggle ─────────────────────────────────────────────────────────
+    const toggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.dashboard-sidebar');
+    if (toggle && sidebar) {
+        toggle.addEventListener('click', e => { sidebar.classList.toggle('active'); e.stopPropagation(); });
+        document.addEventListener('click', e => {
+            if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && e.target !== toggle)
+                sidebar.classList.remove('active');
         });
     }
-    
-    // Close sidebar when clicking outside on mobile
-    document.addEventListener('click', function(event) {
-        const isClickInsideSidebar = dashboardSidebar.contains(event.target);
-        const isClickOnToggle = sidebarToggle.contains(event.target);
-        
-        if (!isClickInsideSidebar && !isClickOnToggle && window.innerWidth < 768 && dashboardSidebar.classList.contains('active')) {
-            dashboardSidebar.classList.remove('active');
-            dashboardContainer.classList.remove('sidebar-open');
-        }
-    });
-}
 
-// Initialize YouTube event videos
-function initEventVideos() {
-    const prevButton = document.getElementById('prev-video');
-    const nextButton = document.getElementById('next-video');
-    const videoFrame = document.getElementById('event-video');
-    const videoTitle = document.getElementById('video-title');
-    
-    // Sample video data - would normally come from a database or API
-    const videos = [
-        { id: 'placeholder1', title: 'Annual Sports Day Highlights' },
-        { id: 'placeholder2', title: 'School Cultural Festival' },
-        { id: 'placeholder3', title: 'Science Fair Projects' },
-        { id: 'placeholder4', title: 'Graduation Ceremony' }
-    ];
-    
-    let currentVideoIndex = 0;
-    
-    // Function to update the video
-    function updateVideo() {
-        if (videoFrame && videoTitle) {
-            videoFrame.src = `https://www.youtube.com/embed/${videos[currentVideoIndex].id}`;
-            videoTitle.textContent = videos[currentVideoIndex].title;
-        }
-    }
-    
-    // Initialize with first video
-    updateVideo();
-    
-    // Add event listeners for navigation buttons
-    if (prevButton) {
-        prevButton.addEventListener('click', function() {
-            currentVideoIndex = (currentVideoIndex - 1 + videos.length) % videos.length;
-            updateVideo();
-        });
-    }
-    
-    if (nextButton) {
-        nextButton.addEventListener('click', function() {
-            currentVideoIndex = (currentVideoIndex + 1) % videos.length;
-            updateVideo();
-        });
-    }
-}
-
-// Initialize document downloads
-function initDocumentDownloads() {
-    const documentItems = document.querySelectorAll('.document-item');
-    
-    documentItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            const documentName = this.querySelector('.document-name').textContent;
-            
-            // This would normally trigger a download from the server
-            // For now, just show a notification
-            alert(`Downloading ${documentName}... This feature will be available when the system launches.`);
-        });
-    });
-}
-
-// Initialize navigation
-function initNavigation() {
-    const navLinks = document.querySelectorAll('.sidebar-nav a');
-    
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Only prevent default if it's a placeholder link
-            if (this.getAttribute('href').startsWith('#')) {
-                e.preventDefault();
-                
-                // Get the section name from the href
-                const section = this.getAttribute('href').substring(1);
-                
-                // Show alert for sections that don't have dedicated pages yet
-                alert(`Navigating to ${this.textContent.trim()} page. This functionality will be implemented in the future.`);
-            }
-            // Otherwise, let the browser handle the navigation to the actual page
-        });
-    });
-}
-
-// Initialize notification bell functionality
-function initNotificationBell() {
-    const notificationBell = document.querySelector('.notification-bell');
-    
-    if (notificationBell) {
-        notificationBell.addEventListener('click', function() {
-            alert('Notifications feature will be implemented in the future.');
-        });
-    }
-}
-
-// Initialize announcement creation
-function initAnnouncementCreation() {
-    const createAnnouncementBtn = document.querySelector('.btn-create-announcement');
-    
-    if (createAnnouncementBtn) {
-        createAnnouncementBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Create announcement feature will be implemented in the future.');
-        });
-    }
-}
-
-// Initialize class action buttons
-function initClassActionButtons() {
-    const classActionButtons = document.querySelectorAll('.btn-class-action');
-    
-    classActionButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Get the class name from the parent element
-            const classItem = this.closest('.class-item');
-            const className = classItem.querySelector('h4').textContent;
-            
-            // Get the action text
-            const actionText = this.textContent.trim();
-            
-            alert(`${actionText} feature for ${className} will be implemented in the future.`);
-        });
-    });
-}
-
-// Logout functionality
-const logoutBtn = document.getElementById('logout-btn');
-
-if (logoutBtn) {
-    logoutBtn.addEventListener('click', function(e) {
+    // ── Logout ─────────────────────────────────────────────────────────────────
+    document.getElementById('logout-btn')?.addEventListener('click', e => {
         e.preventDefault();
-        
-        // Clear user data from storage
         localStorage.removeItem('currentUser');
         sessionStorage.removeItem('currentUser');
-        
-        // Redirect to login page
+        localStorage.removeItem('authToken');
+        sessionStorage.removeItem('authToken');
         window.location.href = 'portal.html';
     });
-}
+});
