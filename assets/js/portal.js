@@ -164,3 +164,46 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+function openForgotPassword(role) {
+    const modal = document.getElementById('forgot-password-modal');
+    document.getElementById('forgot-role').value = role;
+    document.getElementById('forgot-username').value = '';
+    document.getElementById('forgot-msg').style.display = 'none';
+    modal.style.display = 'flex';
+}
+
+async function submitForgotPassword() {
+    const username = document.getElementById('forgot-username').value.trim();
+    const role = document.getElementById('forgot-role').value;
+    const msgEl = document.getElementById('forgot-msg');
+
+    if (!username) {
+        showForgotMsg('Please enter your username.', 'error');
+        return;
+    }
+
+    try {
+        const res = await fetch(`${window.API_BASE_URL || 'http://localhost:3000'}/api/forgot-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, role })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            showForgotMsg(data.message, 'success');
+        } else {
+            showForgotMsg(data.error || 'Something went wrong.', 'error');
+        }
+    } catch {
+        showForgotMsg('Could not reach the server. Please try again later.', 'error');
+    }
+}
+
+function showForgotMsg(msg, type) {
+    const el = document.getElementById('forgot-msg');
+    el.textContent = msg;
+    el.style.display = 'block';
+    el.style.background = type === 'success' ? '#d4edda' : '#f8d7da';
+    el.style.color = type === 'success' ? '#155724' : '#721c24';
+}

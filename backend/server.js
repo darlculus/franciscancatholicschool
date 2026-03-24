@@ -4,6 +4,22 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const fs = require('fs').promises;
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
+// In-memory store for reset tokens: { token: { username, role, expires } }
+const resetTokens = {};
+
+// Configure email transporter — set SMTP env vars in production
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: process.env.SMTP_PORT || 587,
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER || '',
+    pass: process.env.SMTP_PASS || ''
+  }
+});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -280,6 +296,74 @@ app.get('/api/dashboard/stats', authenticateToken, async (req, res) => {
 
   } catch (error) {
     console.error('Get stats error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Forgot password — sends reset link to the user's registered email
+app.post('/api/forgot-password', async (req, res) => {
+  try {
+    const { username, role } = req.body;
+    if (!username || !role) return res.status(400).json({ error: 'Username and role are required' });
+
+    const users = await readJsonFile(USERS_FILE);
+    const userList = users[role] || [];
+    const user = userList.find(u => u.username === username && u.active);
+
+    // Always respond success to avoid username enumeration
+    if (!user || !user.email) {
+      return res.json({ success: true, message: 'If that account exists, a reset link has been sent.' });
+    }
+
+    const token = crypto.randomBytes(32).toString('hex');
+    resetTokens[token] = { username, role, expires: Date.now() + 3600000 }; // 1 hour
+
+    const resetUrl = `${process.env.APP_URL || 'http://localhost:3000'}/reset-password.html?token=${token}`;
+
+    await transporter.sendMail({
+      from: `"Franciscan Catholic School" <${process.env.SMTP_USER}>`,
+      to: user.email,
+      subject: 'Password Reset Request',
+      html: `
+        <p>Hello ${user.name},</p>
+        <p>A password reset was requested for your account (<strong>${username}</strong>).</p>
+        <p><a href="${resetUrl}">Click here to reset your password</a></p>
+        <p>This link expires in 1 hour. If you did not request this, ignore this email.</p>
+        <p>— Franciscan Catholic Nursery and Primary School</p>
+      `
+    });
+
+    res.json({ success: true, message: 'If that account exists, a reset link has been sent.' });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    res.status(500).json({ error: 'Failed to send reset email. Check server email configuration.' });
+  }
+});
+
+// Reset password — consumes the token and sets the new password
+app.post('/api/reset-password', async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    if (!token || !newPassword) return res.status(400).json({ error: 'Token and new password are required' });
+    if (newPassword.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
+
+    const record = resetTokens[token];
+    if (!record || Date.now() > record.expires) {
+      return res.status(400).json({ error: 'Reset link is invalid or has expired' });
+    }
+
+    const users = await readJsonFile(USERS_FILE);
+    const userList = users[record.role] || [];
+    const user = userList.find(u => u.username === record.username);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await writeJsonFile(USERS_FILE, users);
+    delete resetTokens[token];
+
+    res.json({ success: true, message: 'Password has been reset successfully.' });
+  } catch (error) {
+    console.error('Reset password error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

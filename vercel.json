@@ -33,9 +33,8 @@
       "source": "/api/change-password",
       "destination": "/api/change-password.js"
     },
-    {
-      "source": "/api/teachers",
-      "destination": "/api/teachers.js"
-    }
+    { "source": "/api/teachers", "destination": "/api/teachers.js" },
+    { "source": "/api/forgot-password", "destination": "/api/forgot-password.js" },
+    { "source": "/api/reset-password", "destination": "/api/reset-password.js" }
   ]
 }

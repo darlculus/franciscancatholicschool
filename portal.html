@@ -109,7 +109,7 @@
                 <button type="submit" class="btn-login">
                   Login <i class="fas fa-sign-in-alt"></i>
                 </button>
-                <a href="#" class="forgot-password">Forgot Password?</a>
+                <a href="#" class="forgot-password" onclick="openForgotPassword('teacher')">Forgot Password?</a>
               </div>
             </form>
 
@@ -168,7 +168,7 @@
               <button type="submit" class="btn-login">
                 Login <i class="fas fa-sign-in-alt"></i>
               </button>
-              <a href="#" class="forgot-password">Need assistance?</a>
+              <a href="#" class="forgot-password" onclick="openForgotPassword('bursar')">Forgot Password?</a>
             </div>
           </form>
         </div>
@@ -183,6 +183,29 @@
     <a href="index.html" class="home-button" title="Back to Home">
       <i class="fas fa-home"></i>
     </a>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-password-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
+      <div style="background:#fff; border-radius:12px; padding:2rem; width:90%; max-width:420px; position:relative;">
+        <button onclick="document.getElementById('forgot-password-modal').style.display='none'" style="position:absolute; top:1rem; right:1rem; background:none; border:none; font-size:1.2rem; cursor:pointer;"><i class="fas fa-times"></i></button>
+        <h3 style="margin-bottom:0.5rem; color:#8B4513;">Reset Password</h3>
+        <p style="margin-bottom:1.2rem; font-size:0.9rem; color:#666;">Enter your username and we'll send a reset link to your registered email.</p>
+        <div id="forgot-msg" style="display:none; margin-bottom:1rem; padding:0.75rem; border-radius:6px; font-size:0.9rem;"></div>
+        <div class="form-group">
+          <label for="forgot-username">Username</label>
+          <input type="text" id="forgot-username" placeholder="Enter your username" style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:6px;" />
+        </div>
+        <div class="form-group" style="margin-top:0.5rem;">
+          <label for="forgot-role">Account Type</label>
+          <select id="forgot-role" style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:6px;">
+            <option value="bursar">Bursar</option>
+            <option value="admin">Admin</option>
+            <option value="teacher">Teacher</option>
+          </select>
+        </div>
+        <button onclick="submitForgotPassword()" style="margin-top:1rem; width:100%; padding:0.75rem; background:#8B4513; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:1rem;">Send Reset Link</button>
+      </div>
+    </div>
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/portal.js"></script>
