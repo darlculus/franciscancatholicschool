@@ -10,12 +10,22 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('current-date').textContent =
         new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-    // Name in sidebar + welcome
     const displayName = currentUser.full_name || currentUser.username || 'Teacher';
-    document.getElementById('teacher-name').textContent = displayName;
-    document.getElementById('welcome-name').textContent = displayName.split(' ')[0];
+    const firstName = displayName.split(' ')[0];
 
-    // Load teacher record from API to get subject, assigned_class etc.
+    document.getElementById('teacher-name').textContent = displayName;
+    document.getElementById('welcome-name').textContent = firstName;
+
+    // Avatar initials
+    const initials = displayName.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+    document.getElementById('teacher-avatar').textContent = initials;
+
+    // Role label
+    const roleLabels = { teacher: 'Teacher', headteacher: 'Head Teacher', coordinator: 'Coordinator', admin: 'Administrator' };
+    const roleLabel = roleLabels[currentUser.role] || 'Teacher';
+    document.getElementById('stat-role').textContent = roleLabel;
+
+    // Load teacher record from API
     let teacherRecord = null;
     try {
         const token = sessionStorage.getItem('authToken') || localStorage.getItem('authToken') || 'dummy-token';
@@ -26,47 +36,42 @@ document.addEventListener('DOMContentLoaded', async function () {
                 t => t.teacher_id === currentUser.username || t.email === currentUser.email
             );
         }
-    } catch (e) { /* silently fall through */ }
+    } catch (e) { /* fall through */ }
 
     const subject = teacherRecord?.subject || currentUser.subject || '';
     const assignedClass = teacherRecord?.assigned_class || currentUser.assigned_class || '';
 
     // Sidebar subject line
-    document.getElementById('teacher-subject').textContent =
-        subject ? `${subject} Teacher` : (currentUser.role === 'headteacher' ? 'Head Teacher' : 'Teacher');
+    document.getElementById('teacher-subject').textContent = subject ? `${subject} Teacher` : roleLabel;
 
-    // ── Stats ──────────────────────────────────────────────────────────────────
-    // Active classes: 1 if assigned, else 0
-    const activeClasses = assignedClass ? 1 : 0;
-    document.getElementById('stat-active-classes').textContent = activeClasses;
-    document.getElementById('stat-pending-assignments').textContent = '0';
-    document.getElementById('stat-submissions').textContent = '0';
-    document.getElementById('stat-classes-today').textContent = activeClasses;
+    // Stats
+    document.getElementById('stat-assigned-class').textContent = assignedClass || 'None';
+    document.getElementById('stat-subject').textContent = subject || 'None';
 
-    // ── My Classes card ────────────────────────────────────────────────────────
-    const classList = document.getElementById('class-list');
-    if (activeClasses === 0) {
-        classList.innerHTML = `
+    // Class info panel
+    const panel = document.getElementById('class-info-panel');
+    if (!assignedClass && !subject) {
+        panel.innerHTML = `
             <div class="empty-state">
-                <i class="fas fa-school empty-icon"></i>
-                <h3>No Classes Assigned</h3>
-                <p>You have not been assigned to any class yet. Contact the administrator.</p>
+                <i class="fas fa-school"></i>
+                <h4>No Class Assigned</h4>
+                <p>You have not been assigned to a class yet. Contact the administrator.</p>
             </div>`;
     } else {
-        classList.innerHTML = `
-            <li class="class-item">
-                <div class="class-info">
-                    <h4>${assignedClass}${subject ? ' — ' + subject : ''}</h4>
-                    <p>Assigned class</p>
+        panel.innerHTML = `
+            <div class="stat-card" style="margin-top:10px;">
+                <div class="stat-icon" style="background-color:#4CAF50;">
+                    <i class="fas fa-chalkboard-teacher"></i>
                 </div>
-                <div class="class-actions">
-                    <a href="attendance.html" class="btn-class-action"><i class="fas fa-clipboard-check"></i> Attendance</a>
-                    <a href="assignments.html" class="btn-class-action"><i class="fas fa-book"></i> Assignments</a>
+                <div class="stat-details">
+                    <h3>${assignedClass || 'No class assigned'}</h3>
+                    <p class="stat-count" style="font-size:1rem;">${subject || ''}</p>
+                    <p class="stat-label">${roleLabel}</p>
                 </div>
-            </li>`;
+            </div>`;
     }
 
-    // ── Sidebar toggle ─────────────────────────────────────────────────────────
+    // Sidebar toggle
     const toggle = document.getElementById('sidebar-toggle');
     const sidebar = document.querySelector('.dashboard-sidebar');
     if (toggle && sidebar) {
@@ -77,13 +82,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    // ── Logout ─────────────────────────────────────────────────────────────────
+    // Logout
     document.getElementById('logout-btn')?.addEventListener('click', e => {
         e.preventDefault();
-        localStorage.removeItem('currentUser');
-        sessionStorage.removeItem('currentUser');
-        localStorage.removeItem('authToken');
-        sessionStorage.removeItem('authToken');
+        ['currentUser', 'authToken'].forEach(k => {
+            localStorage.removeItem(k);
+            sessionStorage.removeItem(k);
+        });
         window.location.href = 'portal.html';
     });
 });

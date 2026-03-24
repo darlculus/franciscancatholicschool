@@ -3,46 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard - Franciscan Catholic Nursery and Primary School</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Teacher Dashboard - Franciscan Catholic Nursery & Primary School</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/franciscan.css">
-    <link rel="stylesheet" href="assets/css/dashboard.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin-dashboard.css">
 </head>
-<body class="dashboard-body">
+<body>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="dashboard-sidebar">
             <div class="sidebar-header">
-                <div class="logo-circle">
-                    <img src="assets/img/logo.jpg" alt="Franciscan Catholic School Logo">
-                </div>
+                <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
                 <h3>Teacher Portal</h3>
             </div>
-            
-            <div class="user-info">
-                <div class="user-avatar">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                <div class="user-details">
-                    <h4 id="teacher-name">Loading...</h4>
-                    <p id="teacher-subject">Loading...</p>
-                </div>
-            </div>
-            
-            <nav class="sidebar-nav">
+            <div class="sidebar-menu">
                 <ul>
                     <li class="active">
-                        <a href="teacher-dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
+                        <a href="teacher-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                     </li>
                     <li>
                         <a href="my-classes.html"><i class="fas fa-users"></i> My Classes</a>
                     </li>
                     <li>
                         <a href="assignments.html"><i class="fas fa-book"></i> Assignments</a>
+                    </li>
+                    <li>
+                        <a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a>
                     </li>
                     <li>
                         <a href="e-learning.html"><i class="fas fa-laptop"></i> E-Learning</a>
@@ -59,206 +45,122 @@
                     <li>
                         <a href="teacher-messages.html"><i class="fas fa-envelope"></i> Messages</a>
                     </li>
+                    <li>
+                        <a href="teacher-settings.html"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
                 </ul>
-            </nav>
-            
+            </div>
             <div class="sidebar-footer">
-                <a href="teacher-settings.html"><i class="fas fa-cog"></i> Settings</a>
                 <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </aside>
-        
+
         <!-- Main Content -->
         <main class="dashboard-main">
-            <header class="dashboard-header">
-                <div class="mobile-toggle" id="sidebar-toggle">
+            <!-- Top Navigation -->
+            <nav class="dashboard-nav">
+                <button id="sidebar-toggle" class="mobile-toggle">
                     <i class="fas fa-bars"></i>
-                </div>
-                
-                <div class="header-search">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search...">
-                </div>
-                
-                <div class="header-actions">
-                    <div class="notification-bell">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge">5</span>
-                    </div>
+                </button>
+                <div class="nav-right">
                     <div class="date-display">
-                        <i class="fas fa-calendar"></i>
+                        <i class="far fa-calendar-alt"></i>
                         <span id="current-date">Loading...</span>
                     </div>
+                    <div class="admin-profile">
+                        <div class="avatar" id="teacher-avatar" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-weight:600;font-size:0.9rem;"></div>
+                        <div class="admin-info">
+                            <span id="teacher-name">Loading...</span>
+                            <span id="teacher-subject">Teacher</span>
+                        </div>
+                    </div>
                 </div>
-            </header>
-            
+            </nav>
+
+            <!-- Page Content -->
             <div class="dashboard-content">
-                <div class="welcome-banner">
-                    <div class="welcome-text">
-                        <h1>Welcome back, <span id="welcome-name">Teacher</span>!</h1>
-                        <p>Here's an overview of your classes and upcoming tasks</p>
-                    </div>
+                <div class="page-header">
+                    <h1>Welcome, <span id="welcome-name">Teacher</span>!</h1>
+                    <p>Here's an overview of your classes and tasks</p>
                 </div>
-                
-                <div class="quick-stats">
+
+                <!-- Stats -->
+                <div class="overview-stats">
                     <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-users"></i>
+                        <div class="stat-icon" style="background-color:#4CAF50;">
+                            <i class="fas fa-school"></i>
                         </div>
-                        <div class="stat-info">
-                            <h3 id="stat-active-classes">—</h3>
-                            <p>Active Classes</p>
+                        <div class="stat-details">
+                            <h3>Assigned Class</h3>
+                            <p class="stat-count" id="stat-assigned-class">—</p>
+                            <p class="stat-label">Your class</p>
                         </div>
                     </div>
-                    
                     <div class="stat-card">
-                        <div class="stat-icon">
+                        <div class="stat-icon" style="background-color:#2196F3;">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Subject</h3>
+                            <p class="stat-count" id="stat-subject">—</p>
+                            <p class="stat-label">Your subject</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color:#FF9800;">
                             <i class="fas fa-tasks"></i>
                         </div>
-                        <div class="stat-info">
-                            <h3 id="stat-pending-assignments">—</h3>
-                            <p>Pending Assignments</p>
+                        <div class="stat-details">
+                            <h3>Assignments</h3>
+                            <p class="stat-count" id="stat-assignments">0</p>
+                            <p class="stat-label">Pending</p>
                         </div>
                     </div>
-                    
                     <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-clipboard-check"></i>
+                        <div class="stat-icon" style="background-color:#9C27B0;">
+                            <i class="fas fa-user-tie"></i>
                         </div>
-                        <div class="stat-info">
-                            <h3 id="stat-submissions">—</h3>
-                            <p>Submissions to Grade</p>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-calendar-day"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="stat-classes-today">—</h3>
-                            <p>Classes Today</p>
+                        <div class="stat-details">
+                            <h3>Role</h3>
+                            <p class="stat-count" id="stat-role">—</p>
+                            <p class="stat-label">Your role</p>
                         </div>
                     </div>
                 </div>
-                
-                <div class="dashboard-grid">
-                    <div class="dashboard-card my-classes">
-                        <div class="card-header">
-                            <h2>My Classes</h2>
-                            <a href="my-classes.html" class="view-all">View All</a>
-                        </div>
-                        <div class="card-content">
-                            <ul class="class-list" id="class-list"></ul>
-                        </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="window.location.href='my-classes.html'">
+                            <i class="fas fa-users"></i>
+                            <span>My Classes</span>
+                        </button>
+                        <button class="action-btn" onclick="window.location.href='attendance.html'">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Take Attendance</span>
+                        </button>
+                        <button class="action-btn" onclick="window.location.href='assignments.html'">
+                            <i class="fas fa-book"></i>
+                            <span>Assignments</span>
+                        </button>
+                        <button class="action-btn" onclick="window.location.href='leave-application.html'">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Leave Application</span>
+                        </button>
                     </div>
-                    
-                    <div class="dashboard-card school-events">
-                        <div class="card-header">
-                            <h2>School Events</h2>
-                        </div>
-                        <div class="card-content">
-                            <div class="video-container">
-                                <iframe id="event-video" width="100%" height="200" src="https://www.youtube.com/embed/placeholder" frameborder="0" allowfullscreen></iframe>
-                                <div class="video-controls">
-                                    <button id="prev-video" class="video-nav-btn"><i class="fas fa-chevron-left"></i> Previous</button>
-                                    <button id="next-video" class="video-nav-btn">Next <i class="fas fa-chevron-right"></i></button>
-                                </div>
-                                <p id="video-title" class="video-title">Latest School Event</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="dashboard-card school-documents">
-                        <div class="card-header">
-                            <h2>School Documents</h2>
-                        </div>
-                        <div class="card-content">
-                            <div class="document-grid">
-                                <a href="#" class="document-item">
-                                    <i class="fas fa-calendar-alt document-icon"></i>
-                                    <span class="document-name">Term Planner</span>
-                                </a>
-                                <a href="#" class="document-item">
-                                    <i class="fas fa-newspaper document-icon"></i>
-                                    <span class="document-name">Newsletter</span>
-                                </a>
-                                <a href="#" class="document-item">
-                                    <i class="fas fa-utensils document-icon"></i>
-                                    <span class="document-name">Lunch Menu</span>
-                                </a>
-                                <a href="#" class="document-item">
-                                    <i class="fas fa-file-alt document-icon"></i>
-                                    <span class="document-name">School Policies</span>
-                                </a>
-                                <a href="#" class="document-item">
-                                    <i class="fas fa-bus document-icon"></i>
-                                    <span class="document-name">Bus Policies</span>
-                                </a>
-                                <a href="#" class="document-item">
-                                    <i class="fas fa-child document-icon"></i>
-                                    <span class="document-name">Behavior Policies</span>
-                                </a>
-                                <a href="#" class="document-item">
-                                    <i class="fas fa-clipboard document-icon"></i>
-                                    <span class="document-name">Meeting Minutes</span>
-                                </a>
-                                <a href="#" class="document-item">
-                                    <i class="fas fa-folder-open document-icon"></i>
-                                    <span class="document-name">All Documents</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="dashboard-card pending-tasks">
-                        <div class="card-header">
-                            <h2>Pending Tasks</h2>
-                            <a href="#" class="btn-add-task"><i class="fas fa-plus"></i> Add Task</a>
-                        </div>
-                        <div class="card-content">
-                            <div class="empty-state">
-                                <i class="fas fa-tasks empty-icon"></i>
-                                <h3>No Pending Tasks</h3>
-                                <p>You don't have any pending tasks at the moment. When the school year begins, your tasks will appear here.</p>
-                                <button class="btn-create-task">Create a Task</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="dashboard-card today-schedule">
-                        <div class="card-header">
-                            <h2>Today's Schedule</h2>
-                            <a href="#" class="btn-view-calendar"><i class="fas fa-calendar-alt"></i> View Calendar</a>
-                        </div>
-                        <div class="card-content">
-                            <div class="empty-state">
-                                <i class="fas fa-calendar-day empty-icon"></i>
-                                <h3>No Scheduled Classes</h3>
-                                <p>Your teaching schedule will appear here once the school year begins and classes are assigned.</p>
-                                <button class="btn-view-academic-calendar">View Academic Calendar</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="dashboard-card announcements">
-                        <div class="card-header">
-                            <h2>School Announcements</h2>
-                            <a href="#" class="btn-create-announcement">Create Announcement</a>
-                        </div>
-                        <div class="card-content">
-                            <div class="empty-state">
-                                <i class="fas fa-bullhorn empty-icon"></i>
-                                <h3>No Announcements</h3>
-                                <p>School announcements will appear here once posted by the administration.</p>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+
+                <!-- My Class Info -->
+                <div class="recent-activities">
+                    <h3>My Class</h3>
+                    <div id="class-info-panel"></div>
                 </div>
             </div>
         </main>
     </div>
 
+    <script src="assets/js/api.js"></script>
     <script src="assets/js/teacher-dashboard.js"></script>
 </body>
 </html>
