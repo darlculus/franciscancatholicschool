@@ -21,6 +21,28 @@ module.exports = async (req, res) => {
   }
 
   try {
+    // Map Supabase row to frontend-expected shape
+    const mapTeacher = (t) => ({
+      id: t.id,
+      firstName: (t.full_name || '').split(' ')[0] || '',
+      lastName: (t.full_name || '').split(' ').slice(1).join(' ') || '',
+      email: t.email,
+      phone: t.phone,
+      specialization: t.subject,
+      qualification: t.qualification,
+      assignedClass: t.assigned_class || '',
+      status: t.status || 'active',
+      role: t.role || 'teacher',
+      joinDate: t.join_date || t.created_at,
+      gender: t.gender || '',
+      dob: t.dob || '',
+      address: t.address || '',
+      experience: t.experience || '0',
+      employmentType: t.employment_type || 'full-time',
+      username: t.teacher_id,
+      profileColor: t.profile_color || '#4CAF50'
+    });
+
     // GET - List all teachers
     if (req.method === 'GET') {
       const { data, error } = await supabase
@@ -29,7 +51,7 @@ module.exports = async (req, res) => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return res.status(200).json({ teachers: data });
+      return res.status(200).json({ teachers: data.map(mapTeacher) });
     }
 
     // POST - Add new teacher
@@ -40,32 +62,27 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      // Insert teacher
       const { data: teacher, error: teacherError } = await supabase
         .from('teachers')
-        .insert([{ teacher_id, full_name, email, phone, subject, qualification }])
+        .insert([{ teacher_id, full_name, email, phone, subject, qualification, status: 'active' }])
         .select()
         .single();
 
       if (teacherError) throw teacherError;
 
-      // Create login credentials if password provided
       if (password) {
         const bcrypt = require('bcrypt');
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        await supabase
-          .from('users')
-          .insert([{
-            username: teacher_id,
-            password: hashedPassword,
-            full_name,
-            role: 'teacher',
-            email
-          }]);
+        await supabase.from('users').insert([{
+          username: teacher_id,
+          password: hashedPassword,
+          full_name,
+          role: 'teacher',
+          email
+        }]);
       }
 
-      return res.status(201).json({ teacher });
+      return res.status(201).json({ teacher: mapTeacher(teacher) });
     }
 
     // PUT - Update teacher

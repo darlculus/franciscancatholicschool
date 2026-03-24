@@ -159,48 +159,27 @@
 
     <script src="assets/js/api.js"></script>
     <script>
-        // Set current date
         document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         });
 
-        // Check if user is authenticated
         const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
         if (!currentUser.role || (currentUser.role !== 'admin' && currentUser.role !== 'headteacher')) {
             sessionStorage.setItem('justLoggedOut', 'true');
             window.location.href = 'portal.html';
         }
 
-        // Load teacher count directly from localStorage
-        function loadTeacherCount() {
-            const teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+        // Load teacher count from API
+        window.api.getTeachers().then(teachers => {
             document.getElementById('total-teachers').textContent = teachers.length;
-        }
-        
-        // Load immediately
-        loadTeacherCount();
-        
-        // Also reload every 2 seconds to catch updates
-        setInterval(loadTeacherCount, 2000);
+        }).catch(() => {
+            const cached = JSON.parse(localStorage.getItem('teachers') || '[]');
+            document.getElementById('total-teachers').textContent = cached.length;
+        });
 
-        // Mobile sidebar toggle
         document.getElementById('sidebar-toggle').addEventListener('click', function() {
             document.querySelector('.dashboard-sidebar').classList.toggle('active');
         });
     </script>
-        }
-        
-        loadTeacherCount();
-
-        // Mobile sidebar toggle
-        document.getElementById('sidebar-toggle').addEventListener('click', function() {
-            document.querySelector('.dashboard-sidebar').classList.toggle('active');
-        });
-    </script></script>
-</body>
-</html></script>
 </body>
 </html>
