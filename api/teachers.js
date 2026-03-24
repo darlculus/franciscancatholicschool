@@ -56,7 +56,8 @@ module.exports = async (req, res) => {
 
     // POST - Add new teacher
     if (req.method === 'POST') {
-      const { teacher_id, full_name, email, phone, subject, qualification, password } = req.body;
+      const { teacher_id, full_name, email, phone, subject, qualification, password,
+              status, role, assigned_class, join_date, gender, dob, address, experience, employment_type } = req.body;
 
       if (!teacher_id || !full_name || !email) {
         return res.status(400).json({ error: 'Missing required fields' });
@@ -64,7 +65,15 @@ module.exports = async (req, res) => {
 
       const { data: teacher, error: teacherError } = await supabase
         .from('teachers')
-        .insert([{ teacher_id, full_name, email, phone, subject, qualification, status: 'active' }])
+        .insert([{ teacher_id, full_name, email, phone, subject, qualification,
+                   status: status || 'active', role: role || 'teacher',
+                   assigned_class: assigned_class || null,
+                   join_date: join_date || null,
+                   gender: gender || null,
+                   dob: dob || null,
+                   address: address || null,
+                   experience: experience || null,
+                   employment_type: employment_type || null }])
         .select()
         .single();
 
@@ -77,7 +86,7 @@ module.exports = async (req, res) => {
           username: teacher_id,
           password: hashedPassword,
           full_name,
-          role: 'teacher',
+          role: role || 'teacher',
           email
         }]);
       }

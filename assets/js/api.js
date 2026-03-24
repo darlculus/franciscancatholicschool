@@ -130,12 +130,21 @@ window.api = {
         },
         body: JSON.stringify({
           teacher_id: teacher.username,
-          full_name: `${teacher.firstName} ${teacher.lastName}`,
+          full_name: `${teacher.firstName} ${teacher.lastName}`.trim(),
           email: teacher.email,
           phone: teacher.phone,
           subject: teacher.specialization,
           qualification: teacher.qualification,
-          password: teacher.password
+          password: teacher.password,
+          status: teacher.status || 'active',
+          role: teacher.role || 'teacher',
+          assigned_class: teacher.assignedClass || '',
+          join_date: teacher.joinDate || null,
+          gender: teacher.gender || '',
+          dob: teacher.dob || null,
+          address: teacher.address || '',
+          experience: teacher.experience || '0',
+          employment_type: teacher.employmentType || 'Full-time'
         })
       });
       
