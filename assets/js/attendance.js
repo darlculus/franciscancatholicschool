@@ -583,7 +583,7 @@ function initAttendanceReports() {
     }
 }
 
-// Set today's date as default
+// Set today's date as default and pre-select teacher's class
 function setTodayAsDefault() {
     const today = new Date().toISOString().split('T')[0];
     
@@ -591,6 +591,15 @@ function setTodayAsDefault() {
     dateInputs.forEach(input => {
         if (input) input.value = today;
     });
+
+    // Auto-select teacher's assigned class
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || 'null');
+    if (currentUser && currentUser.assigned_class) {
+        const classSelect = getElement('attendance-class');
+        const modalClassSelect = getElement('modal-attendance-class');
+        if (classSelect) classSelect.value = currentUser.assigned_class;
+        if (modalClassSelect) modalClassSelect.value = currentUser.assigned_class;
+    }
 }
 
 // Load attendance data

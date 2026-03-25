@@ -15,36 +15,39 @@
         <aside class="dashboard-sidebar">
             <div class="sidebar-header">
                 <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
-                <h3>Admin Portal</h3>
+                <div class="teacher-profile">
+                    <div class="teacher-avatar" id="nav-avatar">T</div>
+                    <div>
+                        <p id="teacher-name">Loading...</p>
+                        <small id="teacher-subject">Teacher</small>
+                    </div>
+                </div>
             </div>
             <div class="sidebar-menu">
                 <ul>
                     <li>
-                        <a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+                        <a href="teacher-dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
                     </li>
                     <li>
-                        <a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> <span>Teachers</span></a>
-                    </li>
-                    <li>
-                        <a href="students.html"><i class="fas fa-user-graduate"></i> <span>Students</span></a>
-                    </li>
-                    <li>
-                        <a href="classes.html"><i class="fas fa-school"></i> <span>Classes</span></a>
-                    </li>
-                    <li>
-                        <a href="subjects.html"><i class="fas fa-book"></i> <span>Subjects</span></a>
+                        <a href="my-classes.html"><i class="fas fa-school"></i> <span>My Classes</span></a>
                     </li>
                     <li class="active">
                         <a href="attendance.html"><i class="fas fa-calendar-check"></i> <span>Attendance</span></a>
                     </li>
                     <li>
-                        <a href="exams.html"><i class="fas fa-file-alt"></i> <span>Exams</span></a>
+                        <a href="assignments.html"><i class="fas fa-tasks"></i> <span>Assignments</span></a>
                     </li>
                     <li>
-                        <a href="reports.html"><i class="fas fa-chart-bar"></i> <span>Reports</span></a>
+                        <a href="e-learning.html"><i class="fas fa-laptop"></i> <span>E-Learning</span></a>
                     </li>
                     <li>
-                        <a href="settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a>
+                        <a href="teacher-messages.html"><i class="fas fa-envelope"></i> <span>Messages</span></a>
+                    </li>
+                    <li>
+                        <a href="leave-application.html"><i class="fas fa-calendar-minus"></i> <span>Leave</span></a>
+                    </li>
+                    <li>
+                        <a href="teacher-settings.html"><i class="fas fa-cog"></i> <span>Settings</span></a>
                     </li>
                 </ul>
             </div>
@@ -66,10 +69,9 @@
                         <span id="current-date">Loading...</span>
                     </div>
                     <div class="admin-profile">
-                        <img src="assets/images/admin-avatar.png" alt="Admin" class="avatar">
                         <div class="admin-info">
-                            <span id="admin-name">Admin User</span>
-                            <span id="admin-role">Administrator</span>
+                            <span id="nav-name">Loading...</span>
+                            <span id="nav-role">Teacher</span>
                         </div>
                     </div>
                 </div>
@@ -498,7 +500,7 @@
         </div>
     </div>
 
-    <script src="assets/js/admin-nav.js"></script>
+    <script src="assets/js/teacher-nav.js"></script>
     <script src="assets/js/attendance.js"></script>
 </body>
 </html>
