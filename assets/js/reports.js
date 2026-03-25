@@ -77,23 +77,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Populate class dropdowns
-    function populateClassDropdowns() {
+    async function populateClassDropdowns() {
         const classDropdowns = document.querySelectorAll('#report-class, #view-class, #archive-class');
-        
-        classDropdowns.forEach(dropdown => {
-            if (!dropdown) return;
-            
-            // Get current options
-            const currentOptions = dropdown.innerHTML;
-            
-            // Add class options
-            let options = currentOptions;
-            sampleClasses.forEach(cls => {
-                options += `<option value="${cls.name}">${cls.name}</option>`;
+        try {
+            const res = await fetch('/api/classes');
+            const data = await res.json();
+            const classes = data.classes || [];
+            classDropdowns.forEach(dropdown => {
+                if (!dropdown) return;
+                classes.forEach(cls => {
+                    dropdown.innerHTML += `<option value="${cls.name}">${cls.name}</option>`;
+                });
             });
-            
-            dropdown.innerHTML = options;
-        });
+        } catch (e) {
+            console.error('Failed to load classes:', e);
+        }
     }
     
     // Set up tab navigation

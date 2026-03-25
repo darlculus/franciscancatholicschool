@@ -103,35 +103,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Populate class dropdowns
-    function populateClassDropdowns() {
-        const classes = [
-            "Nursery 1", "Nursery 2", "Nursery 3",
-            "Primary 1", "Primary 2", "Primary 3", "Primary 4", "Primary 5", "Primary 6"
-        ];
-        
-        const classDropdowns = [
+    async function populateClassDropdowns() {
+        const classDropdownIds = [
             'upcoming-class-filter', 'ongoing-class-filter', 'completed-class-filter',
             'archive-class', 'exam-class'
         ];
-        
-        classDropdowns.forEach(dropdownId => {
-            const dropdown = document.getElementById(dropdownId);
-            if (dropdown) {
-                classes.forEach(className => {
+
+        try {
+            const res = await fetch('/api/classes');
+            const data = await res.json();
+            const classes = data.classes || [];
+
+            classDropdownIds.forEach(dropdownId => {
+                const dropdown = document.getElementById(dropdownId);
+                if (!dropdown) return;
+                classes.forEach(cls => {
                     const option = document.createElement('option');
-                    option.value = className;
-                    option.textContent = className;
+                    option.value = cls.name;
+                    option.textContent = cls.name;
                     dropdown.appendChild(option);
                 });
-            }
-        });
-        
+            });
+        } catch (e) {
+            console.error('Failed to load classes:', e);
+        }
+
         // Populate subject dropdown
         const subjects = [
             "Mathematics", "English Language", "Science", "Social Studies",
             "Religious Studies", "Creative Arts", "Physical Education", "Computer Studies"
         ];
-        
         const subjectDropdown = document.getElementById('exam-subject');
         if (subjectDropdown) {
             subjects.forEach(subject => {
