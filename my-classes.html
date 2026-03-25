@@ -4,118 +4,50 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Classes - Franciscan Catholic Nursery and Primary School</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="assets/css/franciscan.css" />
-    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/admin-dashboard.css" />
     <link rel="stylesheet" href="assets/css/my-classes.css" />
   </head>
-  <body class="dashboard-body">
+  <body>
     <div class="dashboard-container">
       <!-- Sidebar -->
       <aside class="dashboard-sidebar">
         <div class="sidebar-header">
-          <div class="logo-circle">
-            <img
-              src="assets/img/logo.jpg"
-              alt="Franciscan Catholic School Logo"
-            />
-          </div>
+          <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo" />
           <h3>Teacher Portal</h3>
         </div>
-
-        <div class="user-info">
-          <div class="user-avatar">
-            <i class="fas fa-user-circle"></i>
-          </div>
-          <div class="user-details">
-            <h4 id="teacher-name">Loading...</h4>
-            <p id="teacher-subject">Loading...</p>
-          </div>
-        </div>
-
-        <nav class="sidebar-nav">
+        <div class="sidebar-menu">
           <ul>
-            <li>
-              <a href="teacher-dashboard.html"
-                ><i class="fas fa-th-large"></i> Dashboard</a
-              >
-            </li>
-            <li class="active">
-              <a href="my-classes.html"
-                ><i class="fas fa-users"></i> My Classes</a
-              >
-            </li>
-            <li>
-              <a href="assignments.html"
-                ><i class="fas fa-book"></i> Assignments</a
-              >
-            </li>
-            <li>
-              <a href="e-learning.html"
-                ><i class="fas fa-laptop"></i> E-Learning</a
-              >
-            </li>
-            <li>
-              <a href="staff-appraisal.html"
-                ><i class="fas fa-chart-bar"></i> Staff Appraisal</a
-              >
-            </li>
-            <li>
-              <a href="leave-application.html"
-                ><i class="fas fa-calendar-alt"></i> Leave Application</a
-              >
-            </li>
-            <li>
-              <a href="resources.html"
-                ><i class="fas fa-folder"></i> Resources</a
-              >
-            </li>
-            <li>
-              <a href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
-            </li>
+            <li><a href="teacher-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="active"><a href="my-classes.html"><i class="fas fa-users"></i> My Classes</a></li>
+            <li><a href="assignments.html"><i class="fas fa-book"></i> Assignments</a></li>
+            <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+            <li><a href="e-learning.html"><i class="fas fa-laptop"></i> E-Learning</a></li>
+            <li><a href="staff-appraisal.html"><i class="fas fa-chart-bar"></i> Staff Appraisal</a></li>
+            <li><a href="leave-application.html"><i class="fas fa-calendar-alt"></i> Leave Application</a></li>
+            <li><a href="resources.html"><i class="fas fa-folder"></i> Resources</a></li>
+            <li><a href="teacher-messages.html"><i class="fas fa-envelope"></i> Messages</a></li>
+            <li><a href="teacher-settings.html"><i class="fas fa-cog"></i> Settings</a></li>
           </ul>
-        </nav>
-
+        </div>
         <div class="sidebar-footer">
-          <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
-          <a href="#" id="logout-btn"
-            ><i class="fas fa-sign-out-alt"></i> Logout</a
-          >
+          <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
       </aside>
 
       <!-- Main Content -->
       <main class="dashboard-main">
-        <header class="dashboard-header">
-          <div class="mobile-toggle" id="sidebar-toggle">
-            <i class="fas fa-bars"></i>
-          </div>
-
-          <div class="header-search">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search classes..." />
-          </div>
-
-          <div class="header-actions">
-            <div class="notification-bell">
-              <i class="fas fa-bell"></i>
-              <span class="notification-badge">3</span>
-            </div>
-            <div class="date-display">
-              <i class="fas fa-calendar"></i>
-              <span id="current-date">Loading...</span>
+        <nav class="dashboard-nav">
+          <button id="sidebar-toggle" class="mobile-toggle"><i class="fas fa-bars"></i></button>
+          <div class="nav-right">
+            <div class="date-display"><i class="far fa-calendar-alt"></i><span id="current-date">Loading...</span></div>
+            <div class="admin-profile">
+              <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-weight:600;font-size:0.9rem;" id="nav-avatar"></div>
+              <div class="admin-info"><span id="nav-name">Loading...</span><span id="nav-role">Teacher</span></div>
             </div>
           </div>
-        </header>
+        </nav>
 
         <div class="dashboard-content">
           <div class="page-header">
