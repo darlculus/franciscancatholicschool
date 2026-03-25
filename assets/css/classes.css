@@ -1,156 +1,237 @@
-.setup-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+.classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+    padding: 10px 0;
 }
 
-.setup-card {
-    background: white;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+.loading-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: #888;
+    font-size: 16px;
+}
+
+.loading-state i {
+    font-size: 32px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+/* Class Card */
+.class-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.class-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.class-card-header {
+    padding: 28px 20px 20px;
+    color: #fff;
     text-align: center;
 }
 
-.setup-icon {
-    font-size: 48px;
-    color: #3f51b5;
-    margin-bottom: 20px;
-}
-
-.setup-card h3 {
-    color: #333;
+.class-card-header i {
+    font-size: 32px;
     margin-bottom: 10px;
+    display: block;
+    opacity: 0.9;
 }
 
-.setup-card p {
-    color: #666;
-    margin-bottom: 30px;
+.class-card-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
 }
 
-.quick-setup h4 {
-    color: #333;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.class-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.class-option-btn {
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
+.class-card-body {
     padding: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
+    gap: 12px;
+}
+
+.class-detail {
+    display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.class-option-btn:hover {
-    background: #3f51b5;
-    color: white;
-    border-color: #3f51b5;
-}
-
-.class-option-btn i {
-    font-size: 24px;
-}
-
-.custom-class-btn {
-    background: #28a745;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 15px 30px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-    transition: background 0.3s ease;
-}
-
-.custom-class-btn:hover {
-    background: #218838;
-}
-
-.custom-class-btn i {
-    margin-right: 8px;
-}
-
-.created-classes {
-    text-align: left;
-    margin-top: 30px;
-    padding-top: 30px;
-    border-top: 1px solid #eee;
-}
-
-.created-classes h4 {
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.classes-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.class-item {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.class-info h5 {
-    margin: 0 0 5px 0;
-    color: #333;
-}
-
-.class-info p {
-    margin: 0 0 5px 0;
-    color: #666;
     font-size: 14px;
+    color: #555;
 }
 
-.class-info small {
-    color: #999;
-    font-size: 12px;
+.class-detail i {
+    width: 18px;
+    color: #888;
+    flex-shrink: 0;
 }
 
-.delete-btn {
-    background: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 12px;
+.class-detail em {
+    color: #bbb;
+    font-style: italic;
+}
+
+.assign-btn {
+    margin-top: 6px;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    border: none;
+    background: #3f51b5;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
 }
 
-.delete-btn:hover {
-    background: #c82333;
+.assign-btn:hover {
+    background: #303f9f;
 }
 
-@media (max-width: 768px) {
-    .class-options {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .setup-container {
-        padding: 10px;
-    }
-    
-    .setup-card {
-        padding: 20px;
-    }
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    position: relative;
+}
+
+.modal-content h2 {
+    margin: 0 0 6px;
+    font-size: 20px;
+    color: #333;
+}
+
+.close-modal {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #888;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #333;
+    background: #fafafa;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group select:focus {
+    border-color: #3f51b5;
+    background: #fff;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.btn-primary {
+    background: #3f51b5;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover { background: #303f9f; }
+
+.btn-secondary {
+    background: #f1f1f1;
+    color: #555;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-secondary:hover { background: #e0e0e0; }
+
+/* Toast notification */
+.notification {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 14px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 2000;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification-success { background: #4CAF50; }
+.notification-error   { background: #f44336; }
+
+@media (max-width: 600px) {
+    .classes-grid { grid-template-columns: 1fr; }
+    .modal-content { margin: 16px; padding: 24px; }
 }
