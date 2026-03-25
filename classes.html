@@ -124,12 +124,9 @@
         </main>
     </div>
 
+    <script src="assets/js/admin-nav.js"></script>
     <script>
         let classes = JSON.parse(localStorage.getItem('classes') || '[]');
-        
-        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-        });
         
         function createClass(className) {
             if (classes.find(c => c.name === className)) {

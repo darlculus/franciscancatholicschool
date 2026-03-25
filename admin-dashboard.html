@@ -158,27 +158,16 @@
     </div>
 
     <script src="assets/js/api.js"></script>
+    <script src="assets/js/admin-nav.js"></script>
     <script>
-        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-        });
-
-        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
-        if (!currentUser.role || (currentUser.role !== 'admin' && currentUser.role !== 'headteacher')) {
-            sessionStorage.setItem('justLoggedOut', 'true');
-            window.location.href = 'portal.html';
-        }
-
         // Load teacher count from API
-        window.api.getTeachers().then(teachers => {
-            document.getElementById('total-teachers').textContent = teachers.length;
-        }).catch(() => {
-            const cached = JSON.parse(localStorage.getItem('teachers') || '[]');
-            document.getElementById('total-teachers').textContent = cached.length;
-        });
-
-        document.getElementById('sidebar-toggle').addEventListener('click', function() {
-            document.querySelector('.dashboard-sidebar').classList.toggle('active');
+        window.addEventListener('DOMContentLoaded', function () {
+            window.api.getTeachers().then(teachers => {
+                document.getElementById('total-teachers').textContent = teachers.length;
+            }).catch(() => {
+                const cached = JSON.parse(localStorage.getItem('teachers') || '[]');
+                document.getElementById('total-teachers').textContent = cached.length;
+            });
         });
     </script>
 </body>

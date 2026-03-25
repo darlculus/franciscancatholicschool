@@ -1040,14 +1040,7 @@
         <button class="notification-close">&times;</button>
     </div>
 
-    <script>
-        // Check authentication
-        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
-        if (!currentUser.role || (currentUser.role !== 'admin' && currentUser.role !== 'headteacher')) {
-            sessionStorage.setItem('justLoggedOut', 'true');
-            window.location.href = 'portal.html';
-        }
-    </script>
+    <script src="assets/js/admin-nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="assets/js/api.js"></script>
     <script src="assets/js/teachers.js"></script>
