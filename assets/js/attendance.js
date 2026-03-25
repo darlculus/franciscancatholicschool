@@ -2251,45 +2251,87 @@ function setStorageItem(key, value) {
     }
 }
 
-// AttendanceAPI - Mock API for demo purposes
-// In a real application, this would make actual API calls to a server
+// AttendanceAPI - connects to Supabase via /api/attendance
 const AttendanceAPI = {
-    // Get authentication token
     getAuthToken() {
-        return sessionStorage.getItem('authToken') || '';
+        return sessionStorage.getItem('authToken') || localStorage.getItem('authToken') || 'x';
     },
-    
-    // Get attendance data
-    async getAttendance(date, className) {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 800));
-        
-        // Check if we have stored data
-        const storedData = getStorageItem(`attendance_${date}_${className}`);
-        if (storedData) {
-            return storedData;
+
+    getCurrentUser() {
+        return JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || 'null');
+    },
+
+    // Load students for a class from Supabase, then merge with any saved attendance for that date
+    async getAttendance(date, classKey) {
+        try {
+            // 1. Get students in this class
+            const studRes = await fetch(`/api/students?class_key=${encodeURIComponent(classKey)}`, {
+                headers: { Authorization: `Bearer ${this.getAuthToken()}` }
+            });
+            let students = [];
+            if (studRes.ok) {
+                const d = await studRes.json();
+                students = (d.students || []).map(s => ({
+                    studentId: s.student_id || s.id,
+                    studentName: s.full_name,
+                    status: '',
+                    timeIn: '',
+                    notes: ''
+                }));
+            }
+
+            // 2. Get any already-saved attendance for this date+class
+            const attRes = await fetch(`/api/attendance?date=${date}&class_key=${encodeURIComponent(classKey)}`);
+            if (attRes.ok) {
+                const attData = await attRes.json();
+                const saved = {};
+                (attData.records || []).forEach(r => { saved[r.student_id] = r; });
+
+                // Merge saved status into student list
+                students = students.map(s => {
+                    const rec = saved[s.studentId];
+                    return rec ? { ...s, status: rec.status, timeIn: rec.time_in || '', notes: rec.notes || '' } : s;
+                });
+
+                // If no students from DB yet, fall back to saved records directly
+                if (!students.length && attData.records?.length) {
+                    students = attData.records.map(r => ({
+                        studentId: r.student_id,
+                        studentName: r.student_name,
+                        status: r.status,
+                        timeIn: r.time_in || '',
+                        notes: r.notes || ''
+                    }));
+                }
+            }
+
+            return students;
+        } catch (err) {
+            console.error('getAttendance error:', err);
+            return [];
         }
-        
-        // Generate sample data
-        const students = this.getSampleStudents(className);
-        return students.map(student => ({
-            studentId: student.id,
-            studentName: student.name,
-            status: '',
-            timeIn: '',
-            notes: ''
-        }));
     },
-    
-    // Save attendance data
-    async saveAttendance(date, className, attendanceData) {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Store in localStorage for demo
-        setStorageItem(`attendance_${date}_${className}`, attendanceData);
-        
-        return { success: true, message: 'Attendance saved successfully' };
+
+    // Save attendance to Supabase
+    async saveAttendance(date, classKey, attendanceData) {
+        const user = this.getCurrentUser();
+        // Get class display name from the select element
+        const classSelect = document.getElementById('attendance-class');
+        const className = classSelect?.options[classSelect.selectedIndex]?.text || classKey;
+
+        const res = await fetch('/api/attendance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${this.getAuthToken()}` },
+            body: JSON.stringify({
+                date,
+                class_key: classKey,
+                class_name: className,
+                teacher_id: user?.username || null,
+                records: attendanceData
+            })
+        });
+        if (!res.ok) throw new Error('Save failed');
+        return { success: true };
     },
     
     // Generate attendance report

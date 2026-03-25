@@ -118,14 +118,6 @@
                                 <label for="attendance-class">Class</label>
                                 <select id="attendance-class" name="attendance-class">
                                     <option value="">Select Class</option>
-                                    <option value="nursery1">Nursery 1</option>
-                                    <option value="nursery2">Nursery 2</option>
-                                    <option value="primary1">Primary 1</option>
-                                    <option value="primary2">Primary 2</option>
-                                    <option value="primary3">Primary 3</option>
-                                    <option value="primary4">Primary 4</option>
-                                    <option value="primary5">Primary 5</option>
-                                    <option value="primary6">Primary 6</option>
                                 </select>
                             </div>
                             <div class="filter-actions">
@@ -263,14 +255,6 @@
                                 <label for="report-class">Class</label>
                                 <select id="report-class" name="report-class">
                                     <option value="">All Classes</option>
-                                    <option value="nursery1">Nursery 1</option>
-                                    <option value="nursery2">Nursery 2</option>
-                                    <option value="primary1">Primary 1</option>
-                                    <option value="primary2">Primary 2</option>
-                                    <option value="primary3">Primary 3</option>
-                                    <option value="primary4">Primary 4</option>
-                                    <option value="primary5">Primary 5</option>
-                                    <option value="primary6">Primary 6</option>
                                 </select>
                             </div>
                             <div class="filter-group student-filter" style="display: none;">
@@ -408,14 +392,6 @@
                     <label for="modal-attendance-class">Class</label>
                     <select id="modal-attendance-class" name="modal-attendance-class" required>
                         <option value="">Select Class</option>
-                        <option value="nursery1">Nursery 1</option>
-                        <option value="nursery2">Nursery 2</option>
-                        <option value="primary1">Primary 1</option>
-                        <option value="primary2">Primary 2</option>
-                        <option value="primary3">Primary 3</option>
-                        <option value="primary4">Primary 4</option>
-                        <option value="primary5">Primary 5</option>
-                        <option value="primary6">Primary 6</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -500,7 +476,24 @@
         </div>
     </div>
 
+    <script src="assets/js/api.js"></script>
     <script src="assets/js/teacher-nav.js"></script>
+    <script>
+    // Populate class dropdowns from Supabase on page load
+    document.addEventListener('DOMContentLoaded', async function () {
+        try {
+            const res = await fetch('/api/classes');
+            const data = await res.json();
+            const classes = data.classes || [];
+            const options = classes.map(c => `<option value="${c.class_key}">${c.name}</option>`).join('');
+            document.getElementById('attendance-class').innerHTML += options;
+            document.getElementById('modal-attendance-class').innerHTML += options;
+            // Also populate report class dropdowns
+            const reportClass = document.getElementById('report-class');
+            if (reportClass) reportClass.innerHTML += classes.map(c => `<option value="${c.class_key}">${c.name}</option>`).join('');
+        } catch (e) { console.warn('Could not load classes for dropdowns', e); }
+    });
+    </script>
     <script src="assets/js/attendance.js"></script>
 </body>
 </html>

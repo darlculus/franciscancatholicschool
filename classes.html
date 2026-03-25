@@ -3,190 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class Management - Franciscan Catholic Nursery & Primary School</title>
+    <title>Classes - Franciscan Catholic Nursery & Primary School</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/admin-dashboard.css">
     <link rel="stylesheet" href="assets/css/classes.css">
 </head>
 <body>
-    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <aside class="dashboard-sidebar">
-            <div class="sidebar-header">
-                <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
-                <h3>Admin Portal</h3>
-            </div>
-            <div class="sidebar-menu">
-                <ul>
-                    <li>
-                        <a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a>
-                    </li>
-                    <li>
-                        <a href="students.html"><i class="fas fa-user-graduate"></i> Students</a>
-                    </li>
-                    <li class="active">
-                        <a href="classes.html"><i class="fas fa-school"></i> Classes</a>
-                    </li>
-                    <li>
-                        <a href="subjects.html"><i class="fas fa-book"></i> Subjects</a>
-                    </li>
-                    <li>
-                        <a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a>
-                    </li>
-                    <li>
-                        <a href="exams.html"><i class="fas fa-file-alt"></i> Exams</a>
-                    </li>
-                    <li>
-                        <a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a>
-                    </li>
-                    <li>
-                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
-                    </li>
-                </ul>
-            </div>
-        </aside>
+<div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
+            <h3>Admin Portal</h3>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+                <li><a href="students.html"><i class="fas fa-user-graduate"></i> Students</a></li>
+                <li class="active"><a href="classes.html"><i class="fas fa-school"></i> Classes</a></li>
+                <li><a href="subjects.html"><i class="fas fa-book"></i> Subjects</a></li>
+                <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                <li><a href="exams.html"><i class="fas fa-file-alt"></i> Exams</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-footer">
+            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </aside>
 
-        <!-- Main Content -->
-        <main class="dashboard-main">
-            <!-- Top Navigation -->
-            <nav class="dashboard-nav">
-                <button id="sidebar-toggle" class="mobile-toggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="nav-right">
-                    <div class="date-display">
-                        <i class="far fa-calendar-alt"></i>
-                        <span id="current-date">Loading...</span>
-                    </div>
-                    <div class="admin-profile">
-                        <img src="assets/img/sister3.jpg" alt="Admin" class="avatar">
-                        <div class="admin-info">
-                            <span id="admin-name">Super Administrator</span>
-                            <span id="admin-role">Rev. Sr. Victoria Ogunwande OSF.</span>
-                        </div>
-                    </div>
+    <main class="dashboard-main">
+        <nav class="dashboard-nav">
+            <button id="sidebar-toggle" class="mobile-toggle"><i class="fas fa-bars"></i></button>
+            <div class="nav-right">
+                <div class="date-display">
+                    <i class="far fa-calendar-alt"></i>
+                    <span id="current-date">Loading...</span>
                 </div>
-            </nav>
-
-            <!-- Page Content -->
-            <div class="dashboard-content">
-                <div class="page-header">
-                    <h1>Classes</h1>
-                    <p>Set up your school classes</p>
-                </div>
-
-                <div class="setup-container">
-                    <div class="setup-card">
-                        <div class="setup-icon">
-                            <i class="fas fa-school"></i>
-                        </div>
-                        <h3>Create Your First Classes</h3>
-                        <p>Start by setting up the classes for your school. You can add Nursery and Primary classes.</p>
-                        
-                        <div class="quick-setup">
-                            <h4>Quick Setup</h4>
-                            <div class="class-options">
-                                <button class="class-option-btn" onclick="createClass('Nursery 1')">
-                                    <i class="fas fa-baby"></i>
-                                    <span>Nursery 1</span>
-                                </button>
-                                <button class="class-option-btn" onclick="createClass('Nursery 2')">
-                                    <i class="fas fa-child"></i>
-                                    <span>Nursery 2</span>
-                                </button>
-                                <button class="class-option-btn" onclick="createClass('Primary 1')">
-                                    <i class="fas fa-user-graduate"></i>
-                                    <span>Primary 1</span>
-                                </button>
-                                <button class="class-option-btn" onclick="createClass('Primary 2')">
-                                    <i class="fas fa-user-graduate"></i>
-                                    <span>Primary 2</span>
-                                </button>
-                            </div>
-                            <button class="custom-class-btn" onclick="createCustomClass()">
-                                <i class="fas fa-plus"></i> Add Custom Class
-                            </button>
-                        </div>
-
-                        <div class="created-classes" id="created-classes" style="display: none;">
-                            <h4>Your Classes</h4>
-                            <div class="classes-list" id="classes-list">
-                                <!-- Created classes will appear here -->
-                            </div>
-                        </div>
+                <div class="admin-profile">
+                    <div class="admin-info">
+                        <span id="admin-name">Loading...</span>
+                        <span id="admin-role">Administrator</span>
                     </div>
                 </div>
             </div>
-        </main>
+        </nav>
+
+        <div class="dashboard-content">
+            <div class="page-header">
+                <h1>Classes</h1>
+                <p>Manage classes and assign class teachers</p>
+            </div>
+
+            <div id="classes-grid" class="classes-grid">
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading classes...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Assign Teacher Modal -->
+<div id="assign-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Assign Class Teacher</h2>
+        <p id="assign-modal-class-name" style="font-weight:600; margin-bottom:1rem;"></p>
+        <input type="hidden" id="assign-class-id">
+        <input type="hidden" id="assign-class-key">
+        <div class="form-group">
+            <label for="teacher-select">Select Teacher</label>
+            <select id="teacher-select">
+                <option value="">-- No teacher assigned --</option>
+            </select>
+        </div>
+        <div class="form-actions">
+            <button class="btn-primary" id="confirm-assign-btn">Save</button>
+            <button class="btn-secondary cancel-modal">Cancel</button>
+        </div>
     </div>
+</div>
 
-    <script src="assets/js/admin-nav.js"></script>
-    <script>
-        let classes = JSON.parse(localStorage.getItem('classes') || '[]');
-        
-        function createClass(className) {
-            if (classes.find(c => c.name === className)) {
-                alert('This class already exists!');
-                return;
-            }
-            
-            const newClass = {
-                id: 'cls_' + Date.now().toString(36),
-                name: className,
-                capacity: 30,
-                students: 0,
-                created: new Date().toLocaleDateString()
-            };
-            
-            classes.push(newClass);
-            localStorage.setItem('classes', JSON.stringify(classes));
-            displayClasses();
+<script src="assets/js/api.js"></script>
+<script src="assets/js/admin-nav.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async function () {
+    let teachers = [];
+
+    // Load teachers for the dropdown
+    try {
+        const res = await fetch('/api/teachers', { headers: { Authorization: 'Bearer x' } });
+        const data = await res.json();
+        teachers = data.teachers || [];
+    } catch (e) { console.warn('Could not load teachers', e); }
+
+    // Load classes
+    async function loadClasses() {
+        const grid = document.getElementById('classes-grid');
+        try {
+            const res = await fetch('/api/classes');
+            const data = await res.json();
+            renderClasses(data.classes || []);
+        } catch (e) {
+            grid.innerHTML = '<p style="color:red">Failed to load classes. Please refresh.</p>';
         }
-        
-        function createCustomClass() {
-            const className = prompt('Enter class name:');
-            if (className && className.trim()) {
-                createClass(className.trim());
-            }
+    }
+
+    function renderClasses(classes) {
+        const grid = document.getElementById('classes-grid');
+        if (!classes.length) {
+            grid.innerHTML = '<p>No classes found. Please run the Supabase setup SQL.</p>';
+            return;
         }
-        
-        function displayClasses() {
-            const container = document.getElementById('created-classes');
-            const list = document.getElementById('classes-list');
-            
-            if (classes.length === 0) {
-                container.style.display = 'none';
-                return;
-            }
-            
-            container.style.display = 'block';
-            list.innerHTML = classes.map(cls => `
-                <div class="class-item">
-                    <div class="class-info">
-                        <h5>${cls.name}</h5>
-                        <p>Capacity: ${cls.capacity} | Students: ${cls.students}</p>
-                        <small>Created: ${cls.created}</small>
+        grid.innerHTML = classes.map(cls => `
+            <div class="class-card">
+                <div class="class-card-header" style="background-color:${cls.color || '#4CAF50'}">
+                    <i class="fas fa-school"></i>
+                    <h3>${cls.name}</h3>
+                </div>
+                <div class="class-card-body">
+                    <div class="class-detail">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>${cls.teacher_name || '<em>No teacher assigned</em>'}</span>
                     </div>
-                    <button onclick="deleteClass('${cls.id}')" class="delete-btn">
-                        <i class="fas fa-trash"></i>
+                    <div class="class-detail">
+                        <i class="fas fa-users"></i>
+                        <span>Capacity: ${cls.capacity || 30}</span>
+                    </div>
+                    <button class="btn-primary assign-btn"
+                        data-id="${cls.id}"
+                        data-key="${cls.class_key}"
+                        data-name="${cls.name}"
+                        data-teacher="${cls.teacher_id || ''}">
+                        <i class="fas fa-user-plus"></i>
+                        ${cls.teacher_name ? 'Change Teacher' : 'Assign Teacher'}
                     </button>
                 </div>
-            `).join('');
+            </div>
+        `).join('');
+    }
+
+    // Open assign modal
+    document.getElementById('classes-grid').addEventListener('click', function (e) {
+        const btn = e.target.closest('.assign-btn');
+        if (!btn) return;
+
+        document.getElementById('assign-class-id').value = btn.dataset.id;
+        document.getElementById('assign-class-key').value = btn.dataset.key;
+        document.getElementById('assign-modal-class-name').textContent = btn.dataset.name;
+
+        const select = document.getElementById('teacher-select');
+        select.innerHTML = '<option value="">-- No teacher assigned --</option>' +
+            teachers.map(t => `<option value="${t.teacher_id}" ${t.teacher_id === btn.dataset.teacher ? 'selected' : ''}>${t.full_name}</option>`).join('');
+
+        document.getElementById('assign-modal').classList.add('active');
+    });
+
+    // Save assignment
+    document.getElementById('confirm-assign-btn').addEventListener('click', async function () {
+        const classId = document.getElementById('assign-class-id').value;
+        const select = document.getElementById('teacher-select');
+        const teacherId = select.value;
+        const teacherName = teacherId ? select.options[select.selectedIndex].text : null;
+
+        try {
+            const res = await fetch('/api/classes', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', Authorization: 'Bearer x' },
+                body: JSON.stringify({ class_id: classId, teacher_id: teacherId || null, teacher_name: teacherName })
+            });
+            if (!res.ok) throw new Error('Save failed');
+            document.getElementById('assign-modal').classList.remove('active');
+            loadClasses();
+            showToast('Teacher assigned successfully!');
+        } catch (e) {
+            showToast('Failed to save. Please try again.', 'error');
         }
-        
-        function deleteClass(id) {
-            if (confirm('Delete this class?')) {
-                classes = classes.filter(c => c.id !== id);
-                localStorage.setItem('classes', JSON.stringify(classes));
-                displayClasses();
-            }
-        }
-        
-        displayClasses();
-    </script>
+    });
+
+    // Modal close
+    document.querySelectorAll('.close-modal, .cancel-modal').forEach(el => {
+        el.addEventListener('click', () => document.getElementById('assign-modal').classList.remove('active'));
+    });
+
+    function showToast(msg, type = 'success') {
+        const t = document.createElement('div');
+        t.className = `notification notification-${type}`;
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.classList.add('show'), 10);
+        setTimeout(() => t.remove(), 3500);
+    }
+
+    loadClasses();
+});
+</script>
 </body>
 </html>
