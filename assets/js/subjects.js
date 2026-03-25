@@ -42,11 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize search and filters
     initSearchAndFilters();
-    
-    // Show welcome notification
-    setTimeout(() => {
-        showNotification('Welcome to Subject Management', 'info');
-    }, 1000);
 });
 
 // Update date display
@@ -552,66 +547,34 @@ function initSearchAndFilters() {
 // Load subjects from localStorage
 function loadSubjects() {
     const storedSubjects = localStorage.getItem('subjects');
-    if (storedSubjects) {
-        subjects = JSON.parse(storedSubjects);
-    } else {
-        // Load sample subjects if none exist
-        subjects = getSampleSubjects();
-        saveSubjects();
-    }
-    
+    subjects = storedSubjects ? JSON.parse(storedSubjects) : [];
     displaySubjects();
 }
 
 // Load categories from localStorage
 function loadCategories() {
     const storedCategories = localStorage.getItem('categories');
-    if (storedCategories) {
-        categories = JSON.parse(storedCategories);
-    } else {
-        // Load sample categories if none exist
-        categories = getSampleCategories();
-        saveCategories();
-    }
-    
+    categories = storedCategories ? JSON.parse(storedCategories) : [];
     displayCategories();
 }
 
 // Load assignments from localStorage
 function loadAssignments() {
     const storedAssignments = localStorage.getItem('subjectAssignments');
-    if (storedAssignments) {
-        assignments = JSON.parse(storedAssignments);
-    } else {
-        // Initialize empty array
-        assignments = [];
-    }
-    
+    assignments = storedAssignments ? JSON.parse(storedAssignments) : [];
     displayAssignments();
 }
 
 // Load teachers from localStorage
 function loadTeachers() {
     const storedTeachers = localStorage.getItem('teachers');
-    if (storedTeachers) {
-        teachers = JSON.parse(storedTeachers);
-    } else {
-        // Load sample teachers if none exist
-        teachers = getSampleTeachers();
-        localStorage.setItem('teachers', JSON.stringify(teachers));
-    }
+    teachers = storedTeachers ? JSON.parse(storedTeachers) : [];
 }
 
 // Load classes from localStorage
 function loadClasses() {
     const storedClasses = localStorage.getItem('classes');
-    if (storedClasses) {
-        classes = JSON.parse(storedClasses);
-    } else {
-        // Load sample classes if none exist
-        classes = getSampleClasses();
-        localStorage.setItem('classes', JSON.stringify(classes));
-    }
+    classes = storedClasses ? JSON.parse(storedClasses) : [];
 }
 
 // Save subjects to localStorage
