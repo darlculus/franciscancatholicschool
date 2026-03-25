@@ -11,7 +11,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
     const displayName = currentUser.full_name || currentUser.username || 'Teacher';
-    const firstName = displayName.split(' ')[0];
+    const titleWords = ['mr.', 'mrs.', 'ms.', 'dr.', 'prof.', 'rev.'];
+    const nameParts = displayName.split(' ').filter(Boolean);
+    const firstName = nameParts.find(p => !titleWords.includes(p.toLowerCase())) || nameParts[0] || 'Teacher';
 
     document.getElementById('teacher-name').textContent = displayName;
     document.getElementById('welcome-name').textContent = firstName;
@@ -71,24 +73,5 @@ document.addEventListener('DOMContentLoaded', async function () {
             </div>`;
     }
 
-    // Sidebar toggle
-    const toggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.querySelector('.dashboard-sidebar');
-    if (toggle && sidebar) {
-        toggle.addEventListener('click', e => { sidebar.classList.toggle('active'); e.stopPropagation(); });
-        document.addEventListener('click', e => {
-            if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && e.target !== toggle)
-                sidebar.classList.remove('active');
-        });
-    }
-
-    // Logout
-    document.getElementById('logout-btn')?.addEventListener('click', e => {
-        e.preventDefault();
-        ['currentUser', 'authToken'].forEach(k => {
-            localStorage.removeItem(k);
-            sessionStorage.removeItem(k);
-        });
-        window.location.href = 'portal.html';
-    });
+    // Sidebar toggle + logout handled by teacher-nav.js
 });
