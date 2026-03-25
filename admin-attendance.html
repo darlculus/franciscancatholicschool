@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Monitor - Franciscan Catholic Nursery & Primary School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin-dashboard.css">
+    <style>
+        .filter-bar { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; margin-bottom:24px; background:#fff; padding:16px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+        .filter-bar .filter-group { display:flex; flex-direction:column; gap:4px; }
+        .filter-bar label { font-size:.78rem; font-weight:600; color:#666; }
+        .filter-bar select, .filter-bar input { padding:8px 12px; border:1px solid #ddd; border-radius:6px; font-family:inherit; font-size:.88rem; }
+        .filter-bar .btn-primary { padding:9px 20px; }
+
+        .class-summary { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; margin-bottom:28px; }
+        .class-card { background:#fff; border-radius:10px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,.06); border-left:4px solid #4CAF50; }
+        .class-card.has-flagged { border-left-color:#F44336; }
+        .class-card h4 { margin:0 0 8px; font-size:.95rem; color:#333; }
+        .class-card .rate { font-size:1.6rem; font-weight:700; color:#333; }
+        .class-card .meta { font-size:.78rem; color:#888; margin-top:4px; }
+        .class-card .flag-badge { display:inline-block; background:#FFEBEE; color:#C62828; font-size:.72rem; font-weight:600; padding:2px 8px; border-radius:10px; margin-top:6px; }
+
+        .section-title { font-size:1rem; font-weight:600; color:#333; margin:0 0 14px; display:flex; align-items:center; gap:8px; }
+        .section-title .count { background:#F44336; color:#fff; font-size:.72rem; padding:2px 8px; border-radius:10px; }
+
+        .students-table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+        .students-table th { background:#f8f9fa; padding:12px 16px; text-align:left; font-size:.82rem; font-weight:600; color:#555; border-bottom:2px solid #eee; }
+        .students-table td { padding:12px 16px; font-size:.88rem; color:#333; border-bottom:1px solid #f0f0f0; }
+        .students-table tr:last-child td { border-bottom:none; }
+        .students-table tr.flagged { background:#FFF8F8; }
+
+        .rate-bar { display:flex; align-items:center; gap:10px; }
+        .rate-bar .bar { flex:1; height:8px; background:#eee; border-radius:4px; overflow:hidden; }
+        .rate-bar .fill { height:100%; border-radius:4px; }
+        .rate-bar .pct { font-size:.82rem; font-weight:600; min-width:38px; }
+
+        .flag-icon { color:#F44336; margin-right:4px; }
+        .empty-msg { text-align:center; padding:48px; color:#aaa; }
+        .empty-msg i { font-size:2.5rem; display:block; margin-bottom:12px; }
+
+        .legend { display:flex; gap:20px; font-size:.8rem; color:#666; margin-bottom:16px; }
+        .legend span { display:flex; align-items:center; gap:6px; }
+        .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
+            <h3>Admin Portal</h3>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+                <li><a href="students.html"><i class="fas fa-user-graduate"></i> Students</a></li>
+                <li><a href="classes.html"><i class="fas fa-school"></i> Classes</a></li>
+                <li><a href="subjects.html"><i class="fas fa-book"></i> Subjects</a></li>
+                <li class="active"><a href="admin-attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                <li><a href="exams.html"><i class="fas fa-file-alt"></i> Exams</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-footer">
+            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <nav class="dashboard-nav">
+            <button id="sidebar-toggle" class="mobile-toggle"><i class="fas fa-bars"></i></button>
+            <div class="nav-right">
+                <div class="date-display">
+                    <i class="far fa-calendar-alt"></i>
+                    <span id="current-date">Loading...</span>
+                </div>
+                <div class="admin-profile">
+                    <img src="assets/img/sister3.jpg" alt="Admin" class="avatar">
+                    <div class="admin-info">
+                        <span id="admin-name">Admin User</span>
+                        <span id="admin-role">Administrator</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard-content">
+            <div class="page-header">
+                <h1>Attendance Monitor</h1>
+                <p>Track student attendance across all classes and identify students who need follow-up</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Class</label>
+                    <select id="filter-class">
+                        <option value="">All Classes</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>From Date</label>
+                    <input type="date" id="filter-from">
+                </div>
+                <div class="filter-group">
+                    <label>To Date</label>
+                    <input type="date" id="filter-to">
+                </div>
+                <button class="btn-primary" onclick="loadData()"><i class="fas fa-search"></i> Load</button>
+            </div>
+
+            <!-- Class Summary Cards -->
+            <div id="class-summary" class="class-summary"></div>
+
+            <!-- Flagged Students -->
+            <div id="flagged-section" style="margin-bottom:32px;">
+                <div class="section-title">
+                    <i class="fas fa-exclamation-triangle" style="color:#F44336;"></i>
+                    Students Below 70% Attendance
+                    <span class="count" id="flagged-count">0</span>
+                </div>
+                <div class="legend">
+                    <span><span class="dot" style="background:#F44336;"></span> Below 70% — needs follow-up</span>
+                    <span><span class="dot" style="background:#FF9800;"></span> 70–85%</span>
+                    <span><span class="dot" style="background:#4CAF50;"></span> Above 85%</span>
+                </div>
+                <div id="flagged-table-wrap"></div>
+            </div>
+
+            <!-- All Students -->
+            <div>
+                <div class="section-title">
+                    <i class="fas fa-users" style="color:#2196F3;"></i>
+                    All Students
+                    <span style="font-size:.8rem;font-weight:400;color:#888;" id="all-count"></span>
+                </div>
+                <div id="all-table-wrap"></div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="assets/js/admin-nav.js"></script>
+<script>
+document.getElementById('current-date').textContent =
+    new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+// Set default date range: start of current month → today
+const today = new Date();
+const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+document.getElementById('filter-from').value = firstOfMonth;
+document.getElementById('filter-to').value = today.toISOString().split('T')[0];
+
+// Load classes into filter
+fetch('/api/classes').then(r => r.json()).then(d => {
+    const sel = document.getElementById('filter-class');
+    (d.classes || []).forEach(c => {
+        sel.innerHTML += `<option value="${c.class_key}">${c.name}</option>`;
+    });
+});
+
+async function loadData() {
+    const cls = document.getElementById('filter-class').value;
+    const from = document.getElementById('filter-from').value;
+    const to = document.getElementById('filter-to').value;
+
+    let url = '/api/admin-attendance?';
+    if (cls) url += `class_key=${cls}&`;
+    if (from) url += `from_date=${from}&`;
+    if (to) url += `to_date=${to}&`;
+
+    document.getElementById('class-summary').innerHTML = `<p style="color:#aaa;font-size:.88rem;"><i class="fas fa-spinner fa-spin"></i> Loading...</p>`;
+    document.getElementById('flagged-table-wrap').innerHTML = '';
+    document.getElementById('all-table-wrap').innerHTML = '';
+
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        renderClassSummary(data.classes || []);
+        renderStudentTable('flagged-table-wrap', (data.students || []).filter(s => s.flagged), true);
+        renderStudentTable('all-table-wrap', data.students || [], false);
+        document.getElementById('flagged-count').textContent = (data.students || []).filter(s => s.flagged).length;
+        document.getElementById('all-count').textContent = `(${(data.students || []).length} students)`;
+    } catch (e) {
+        document.getElementById('class-summary').innerHTML = `<p style="color:#F44336;">Error: ${e.message}</p>`;
+    }
+}
+
+function renderClassSummary(classes) {
+    const el = document.getElementById('class-summary');
+    if (!classes.length) { el.innerHTML = `<p style="color:#aaa;font-size:.88rem;">No attendance data yet.</p>`; return; }
+    el.innerHTML = classes.map(c => `
+        <div class="class-card ${c.flagged > 0 ? 'has-flagged' : ''}">
+            <h4>${c.class_name}</h4>
+            <div class="rate">${c.avg_rate !== null ? c.avg_rate + '%' : '—'}</div>
+            <div class="meta">${c.students} student${c.students !== 1 ? 's' : ''} tracked</div>
+            ${c.flagged > 0 ? `<div class="flag-badge"><i class="fas fa-exclamation-circle"></i> ${c.flagged} need${c.flagged === 1 ? 's' : ''} follow-up</div>` : ''}
+        </div>
+    `).join('');
+}
+
+function rateColor(rate) {
+    if (rate === null) return '#ccc';
+    if (rate < 70) return '#F44336';
+    if (rate < 85) return '#FF9800';
+    return '#4CAF50';
+}
+
+function renderStudentTable(wrapperId, students, flaggedOnly) {
+    const wrap = document.getElementById(wrapperId);
+    if (!students.length) {
+        wrap.innerHTML = `<div class="empty-msg"><i class="fas fa-${flaggedOnly ? 'check-circle' : 'users'}"></i>${flaggedOnly ? 'No students below 70% — great attendance!' : 'No attendance records found for this period.'}</div>`;
+        return;
+    }
+    wrap.innerHTML = `
+        <table class="students-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Class</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                    <th>Late</th>
+                    <th>Attendance Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${students.map(s => `
+                    <tr class="${s.flagged ? 'flagged' : ''}">
+                        <td>${s.flagged ? '<i class="fas fa-flag flag-icon"></i>' : ''}${s.student_name}</td>
+                        <td>${s.class_name}</td>
+                        <td>${s.present}</td>
+                        <td>${s.absent}</td>
+                        <td>${s.late}</td>
+                        <td>
+                            <div class="rate-bar">
+                                <div class="bar"><div class="fill" style="width:${s.rate ?? 0}%;background:${rateColor(s.rate)};"></div></div>
+                                <span class="pct" style="color:${rateColor(s.rate)};">${s.rate !== null ? s.rate + '%' : '—'}</span>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+// Auto-load on page open
+loadData();
+</script>
+</body>
+</html>
