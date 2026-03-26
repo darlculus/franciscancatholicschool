@@ -310,6 +310,126 @@ function buildSubjectsModal(student) {
     document.body.appendChild(modal);
 }
 
+// ── Files modal ───────────────────────────────────────────────────────────────
+function buildFilesModal(student) {
+    const existing = document.getElementById('files-modal');
+    if (existing) existing.remove();
+
+    let files = Array.isArray(student.files) ? [...student.files] : [];
+
+    const modal = document.createElement('div');
+    modal.id = 'files-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
+
+    function render() {
+        const filesHtml = files.length
+            ? files.map((f, i) => `
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border:1px solid #eee;border-radius:6px;margin-bottom:6px">
+                    <div style="display:flex;align-items:center;gap:10px;overflow:hidden">
+                        <i class="fas fa-file-alt" style="color:#5c6bc0;flex-shrink:0"></i>
+                        <div style="overflow:hidden">
+                            <div style="font-size:0.88rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${f.title}</div>
+                            <div style="font-size:0.75rem;color:#aaa">${f.uploaded_at || ''}</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-shrink:0">
+                        <a href="${f.url}" target="_blank" style="color:#5c6bc0;font-size:0.82rem;text-decoration:none" title="View"><i class="fas fa-external-link-alt"></i></a>
+                        <button data-del="${i}" style="background:none;border:none;cursor:pointer;color:#e53935;font-size:0.9rem" title="Remove"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>`).join('')
+            : '<p style="color:#aaa;font-size:0.85rem;text-align:center;padding:16px 0">No files uploaded yet</p>';
+
+        modal.innerHTML = `
+            <div style="background:#fff;border-radius:10px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:28px;position:relative">
+                <button id="files-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
+                <h2 style="margin:0 0 4px">Student Files</h2>
+                <p style="margin:0 0 20px;color:#888;font-size:0.88rem">${student.first_name} ${student.last_name}</p>
+
+                <div id="files-list">${filesHtml}</div>
+
+                <div style="border-top:1px solid #eee;padding-top:16px;margin-top:10px">
+                    <p style="font-weight:600;font-size:0.85rem;color:#555;margin:0 0 10px">Add New File</p>
+                    <div style="display:flex;flex-direction:column;gap:10px">
+                        <div>
+                            <label style="font-size:0.82rem;color:#666">File Title / Name *</label>
+                            <input id="file-title" placeholder="e.g. Birth Certificate" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px;box-sizing:border-box">
+                        </div>
+                        <div>
+                            <label style="font-size:0.82rem;color:#666">Upload File *</label>
+                            <input type="file" id="file-input" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px;box-sizing:border-box">
+                        </div>
+                        <button id="file-add-btn" style="padding:9px 18px;background:#5c6bc0;color:#fff;border:none;border-radius:5px;cursor:pointer;align-self:flex-end">
+                            <i class="fas fa-upload"></i> Upload & Add
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+                    <button id="files-cancel" style="padding:9px 20px;border:1px solid #ddd;border-radius:5px;background:#fff;cursor:pointer">Cancel</button>
+                    <button id="files-save" style="padding:9px 20px;background:#5c6bc0;color:#fff;border:none;border-radius:5px;cursor:pointer">Save</button>
+                </div>
+            </div>`;
+
+        modal.querySelector('#files-close').onclick = () => modal.remove();
+        modal.querySelector('#files-cancel').onclick = () => modal.remove();
+        modal.onclick = e => { if (e.target === modal) modal.remove(); };
+
+        // Delete a file entry
+        modal.querySelectorAll('[data-del]').forEach(btn => {
+            btn.onclick = () => {
+                files.splice(parseInt(btn.dataset.del), 1);
+                render();
+            };
+        });
+
+        // Upload file → convert to base64 data URL and add to list
+        modal.querySelector('#file-add-btn').onclick = () => {
+            const title = modal.querySelector('#file-title').value.trim();
+            const fileInput = modal.querySelector('#file-input');
+            const file = fileInput.files[0];
+            if (!title) { alert('Please enter a file title.'); return; }
+            if (!file) { alert('Please select a file to upload.'); return; }
+
+            const reader = new FileReader();
+            reader.onload = e => {
+                files.push({
+                    title,
+                    url: e.target.result,
+                    uploaded_at: new Date().toLocaleDateString('en-GB')
+                });
+                render();
+            };
+            reader.readAsDataURL(file);
+        };
+
+        // Save to Supabase
+        modal.querySelector('#files-save').onclick = async () => {
+            const saveBtn = modal.querySelector('#files-save');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+            try {
+                const res = await fetch('/api/students', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: student.id, files })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error);
+                student.files = files;
+                modal.remove();
+                alert(`Files saved for ${student.first_name} ${student.last_name}.`);
+            } catch (err) {
+                alert('Error saving files: ' + err.message);
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save';
+            }
+        };
+    }
+
+    render();
+    document.body.appendChild(modal);
+}
+
 async function loadMyClass(currentUser) {
     const grid = document.getElementById('classes-grid');
     const studentSection = document.getElementById('students-list-section');
@@ -484,6 +604,11 @@ async function loadMyClass(currentUser) {
 
                 if (action === 'subjects') {
                     buildSubjectsModal(student);
+                    return;
+                }
+
+                if (action === 'files') {
+                    buildFilesModal(student);
                     return;
                 }
 
