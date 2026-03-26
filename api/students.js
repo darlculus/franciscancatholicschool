@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const bcrypt = require('bcrypt');
 
 const supabase = createClient(
   process.env.SUPABASE_URL || 'https://srmunnnqtokbavdfomaj.supabase.co',
@@ -36,7 +37,28 @@ module.exports = async (req, res) => {
         parent_name, parent_phone, parent_email, address, medical_conditions
       }]).select().single();
       if (error) throw error;
-      return res.status(201).json({ student: data });
+
+      // Auto-create login account
+      // Username = admission number, password = DOB as DDMMYYYY (or 'student123' if no DOB)
+      const username = data.admission_number;
+      let defaultPassword = 'student123';
+      if (date_of_birth) {
+        const d = new Date(date_of_birth);
+        const dd = String(d.getUTCDate()).padStart(2, '0');
+        const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+        const yyyy = d.getUTCFullYear();
+        defaultPassword = `${dd}${mm}${yyyy}`;
+      }
+      const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+      await supabase.from('users').insert([{
+        username,
+        password: hashedPassword,
+        full_name: `${first_name} ${last_name}`,
+        role: 'student',
+        email: parent_email || null
+      }]);
+
+      return res.status(201).json({ student: data, default_password: defaultPassword });
     }
 
     // PUT - update student

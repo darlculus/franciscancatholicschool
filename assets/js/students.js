@@ -199,7 +199,9 @@ async function addStudent() {
         if (!res.ok) throw new Error(data.error);
         closeModal('add-student-modal');
         document.getElementById('add-student-form').reset();
-        showNotification(`${payload.first_name} ${payload.last_name} enrolled successfully. Admission No: ${data.student.admission_number}`, 'success');
+        const admNo = data.student.admission_number;
+        const pwd = data.default_password;
+        showCredentialsModal(payload.first_name + ' ' + payload.last_name, admNo, pwd);
         await loadStudents();
     } catch (e) {
         showNotification('Error: ' + e.message, 'error');
@@ -285,4 +287,29 @@ function showNotification(message, type = 'info') {
     n.textContent = message;
     n.className = `notification notification-${type} show`;
     setTimeout(() => n.classList.remove('show'), 4000);
+}
+
+// ── Credentials Modal ─────────────────────────────────────────────────────────
+function showCredentialsModal(name, username, password) {
+    const existing = document.getElementById('credentials-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'credentials-modal';
+    modal.className = 'modal active';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:420px;text-align:center">
+            <h2 style="color:#4CAF50"><i class="fas fa-check-circle"></i> Student Enrolled!</h2>
+            <p style="margin:10px 0 20px"><strong>${name}</strong> has been successfully enrolled.</p>
+            <div style="background:#f0f9f0;border:2px solid #4CAF50;border-radius:8px;padding:20px;margin-bottom:20px">
+                <p style="margin:0 0 8px;font-weight:600;color:#333">Login Credentials</p>
+                <p style="margin:6px 0"><span style="color:#666">Username:</span> <strong style="font-size:1.1rem">${username}</strong></p>
+                <p style="margin:6px 0"><span style="color:#666">Password:</span> <strong style="font-size:1.1rem">${password}</strong></p>
+                <p style="margin:12px 0 0;font-size:0.82rem;color:#888">Password is the student's date of birth (DDMMYYYY).<br>Please share these with the parent/guardian.</p>
+            </div>
+            <button class="btn-primary" onclick="document.getElementById('credentials-modal').remove()" style="width:100%">Done</button>
+        </div>
+    `;
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+    document.body.appendChild(modal);
 }
