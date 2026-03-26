@@ -430,6 +430,224 @@ function buildFilesModal(student) {
     document.body.appendChild(modal);
 }
 
+// ── Update Result modal ───────────────────────────────────────────────────────
+const PSD_TRAITS = ['Teamwork', 'Attendance', 'Presentation of Work', 'Punctuality', 'Neatness', 'Respect'];
+
+async function buildUpdateResultModal(student, classKey) {
+    const existing = document.getElementById('update-result-modal');
+    if (existing) existing.remove();
+
+    const subjects = Array.isArray(student.subjects) && student.subjects.length
+        ? student.subjects : ALL_SUBJECTS;
+
+    const midResult = (typeof student.mid_result === 'object' && student.mid_result) ? student.mid_result : {};
+    const saved = (typeof student.result === 'object' && student.result) ? student.result : {};
+    const psd = saved.psd || {};
+
+    // Fetch attendance count for this student
+    let timesPresent = '—';
+    try {
+        const aRes = await fetch(`/api/admin-attendance?class_key=${classKey}`);
+        const aData = await aRes.json();
+        const rec = (aData.students || []).find(s => s.student_id === student.id);
+        if (rec) timesPresent = rec.present + (rec.late || 0);
+    } catch (e) { /* ignore */ }
+
+    const modal = document.createElement('div');
+    modal.id = 'update-result-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
+
+    const subjectRows = subjects.map(subj => {
+        const ca1   = midResult[subj]?.ca1 ?? '—';
+        const ca2   = midResult[subj]?.ca2 ?? '—';
+        const caTotal = midResult[subj]?.total ?? null;
+        const exam  = saved[subj]?.exam ?? '';
+        const total = (caTotal !== null && exam !== '') ? (caTotal + parseFloat(exam)) : '';
+        const remark = saved[subj]?.remark ?? '';
+        return `
+        <tr style="border-bottom:1px solid #f5f5f5">
+            <td style="padding:8px 10px;font-size:0.85rem;font-weight:500">${subj}</td>
+            <td style="padding:8px 6px;text-align:center;font-size:0.85rem;color:#888">${ca1}</td>
+            <td style="padding:8px 6px;text-align:center;font-size:0.85rem;color:#888">${ca2}</td>
+            <td style="padding:8px 6px;text-align:center;font-size:0.85rem;color:#5c6bc0;font-weight:600">${caTotal !== null ? caTotal : '—'}</td>
+            <td style="padding:8px 6px">
+                <input type="number" min="0" max="60" data-subj="${subj}" data-field="exam"
+                    value="${exam}" placeholder="0"
+                    style="width:60px;padding:6px;border:1px solid #ddd;border-radius:4px;text-align:center">
+            </td>
+            <td style="padding:8px 6px;text-align:center">
+                <span class="res-total" data-subj="${subj}" style="font-weight:700;color:#2e7d32;font-size:0.9rem">${total !== '' ? total : '—'}</span>
+            </td>
+            <td style="padding:8px 6px">
+                <input type="text" data-subj="${subj}" data-field="remark"
+                    value="${remark}" placeholder="e.g. Excellent"
+                    style="width:110px;padding:6px;border:1px solid #ddd;border-radius:4px;font-size:0.82rem">
+            </td>
+        </tr>`;
+    }).join('');
+
+    const psdRatingHtml = PSD_TRAITS.map(trait => {
+        const val = psd[trait] ?? 0;
+        const stars = [1,2,3,4,5].map(n => `
+            <label style="cursor:pointer;font-size:1.2rem;color:${n <= val ? '#f59e0b' : '#ddd'}" title="${n}">
+                <input type="radio" name="psd-${trait}" value="${n}" ${n === val ? 'checked' : ''} style="display:none">&#9733;
+            </label>`).join('');
+        return `
+        <tr style="border-bottom:1px solid #f5f5f5">
+            <td style="padding:8px 10px;font-size:0.85rem">${trait}</td>
+            <td style="padding:8px 10px">
+                <div class="psd-stars" data-trait="${trait}" style="display:flex;gap:2px">${stars}</div>
+            </td>
+        </tr>`;
+    }).join('');
+
+    modal.innerHTML = `
+        <div style="background:#fff;border-radius:10px;width:100%;max-width:820px;max-height:90vh;overflow-y:auto;padding:28px;position:relative">
+            <button id="ur-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
+            <h2 style="margin:0 0 4px">Update Result</h2>
+            <p style="margin:0 0 18px;color:#888;font-size:0.88rem">${student.first_name} ${student.last_name}</p>
+
+            <!-- Subject scores -->
+            <p style="font-weight:600;font-size:0.85rem;color:#555;margin:0 0 8px;border-bottom:1px solid #eee;padding-bottom:6px">Subject Scores</p>
+            <div style="overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse">
+                    <thead>
+                        <tr style="background:#f5f6fa">
+                            <th style="padding:9px 10px;text-align:left;font-size:0.8rem;color:#555">Subject</th>
+                            <th style="padding:9px 6px;text-align:center;font-size:0.8rem;color:#555">1st CA<br><span style="font-weight:400;color:#aaa">(20%)</span></th>
+                            <th style="padding:9px 6px;text-align:center;font-size:0.8rem;color:#555">2nd CA<br><span style="font-weight:400;color:#aaa">(20%)</span></th>
+                            <th style="padding:9px 6px;text-align:center;font-size:0.8rem;color:#555">CA Total<br><span style="font-weight:400;color:#aaa">(40%)</span></th>
+                            <th style="padding:9px 6px;text-align:center;font-size:0.8rem;color:#555">Exam<br><span style="font-weight:400;color:#aaa">(60%)</span></th>
+                            <th style="padding:9px 6px;text-align:center;font-size:0.8rem;color:#555">Total<br><span style="font-weight:400;color:#aaa">(100%)</span></th>
+                            <th style="padding:9px 6px;text-align:center;font-size:0.8rem;color:#555">Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>${subjectRows}</tbody>
+                </table>
+            </div>
+
+            <!-- Attendance -->
+            <div style="margin-top:22px;display:flex;align-items:center;gap:12px;padding:12px 16px;background:#f5f6fa;border-radius:8px">
+                <i class="fas fa-calendar-check" style="color:#5c6bc0;font-size:1.2rem"></i>
+                <span style="font-size:0.88rem;color:#555">Times Present This Term:</span>
+                <span style="font-weight:700;font-size:1rem;color:#2e7d32">${timesPresent}</span>
+            </div>
+
+            <!-- Comments -->
+            <div style="margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                <div>
+                    <label style="font-size:0.85rem;font-weight:600;color:#555">Class Teacher's Comment</label>
+                    <textarea id="ur-teacher-comment" rows="3" placeholder="Enter comment..." style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:6px;font-size:0.85rem;box-sizing:border-box">${saved.teacher_comment || ''}</textarea>
+                </div>
+                <div>
+                    <label style="font-size:0.85rem;font-weight:600;color:#555">Head Teacher's Comment</label>
+                    <textarea id="ur-head-comment" rows="3" placeholder="Enter comment..." style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:6px;font-size:0.85rem;box-sizing:border-box">${saved.head_comment || ''}</textarea>
+                </div>
+            </div>
+
+            <!-- PSD -->
+            <p style="font-weight:600;font-size:0.85rem;color:#555;margin:22px 0 8px;border-bottom:1px solid #eee;padding-bottom:6px">Personal Social Development</p>
+            <table style="width:100%;border-collapse:collapse;max-width:420px">
+                <thead>
+                    <tr style="background:#f5f6fa">
+                        <th style="padding:8px 10px;text-align:left;font-size:0.8rem;color:#555">Trait</th>
+                        <th style="padding:8px 10px;text-align:left;font-size:0.8rem;color:#555">Rating (1–5)</th>
+                    </tr>
+                </thead>
+                <tbody>${psdRatingHtml}</tbody>
+            </table>
+            <div style="margin-top:12px">
+                <label style="font-size:0.85rem;font-weight:600;color:#555">P.S.D Comment</label>
+                <textarea id="ur-psd-comment" rows="2" placeholder="Enter PSD comment..." style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:6px;font-size:0.85rem;box-sizing:border-box">${psd.comment || ''}</textarea>
+            </div>
+
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:24px">
+                <button id="ur-cancel" style="padding:9px 20px;border:1px solid #ddd;border-radius:5px;background:#fff;cursor:pointer">Cancel</button>
+                <button id="ur-save" style="padding:9px 24px;background:#5c6bc0;color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:600">Save Result</button>
+            </div>
+        </div>`;
+
+    modal.querySelector('#ur-close').onclick = () => modal.remove();
+    modal.querySelector('#ur-cancel').onclick = () => modal.remove();
+    modal.onclick = e => { if (e.target === modal) modal.remove(); };
+
+    // Live total calculation
+    modal.querySelectorAll('input[data-field="exam"]').forEach(input => {
+        input.addEventListener('input', () => {
+            const subj = input.dataset.subj;
+            const caTotal = midResult[subj]?.total ?? null;
+            const exam = parseFloat(input.value);
+            const totalEl = modal.querySelector(`.res-total[data-subj="${subj}"]`);
+            totalEl.textContent = (caTotal !== null && !isNaN(exam)) ? (caTotal + exam) : '—';
+        });
+    });
+
+    // Star rating interaction
+    modal.querySelectorAll('.psd-stars').forEach(starGroup => {
+        starGroup.querySelectorAll('label').forEach(label => {
+            label.addEventListener('click', () => {
+                const val = parseInt(label.querySelector('input').value);
+                starGroup.querySelectorAll('label').forEach((l, idx) => {
+                    l.style.color = (idx + 1) <= val ? '#f59e0b' : '#ddd';
+                });
+            });
+        });
+    });
+
+    // Save
+    modal.querySelector('#ur-save').onclick = async () => {
+        const saveBtn = modal.querySelector('#ur-save');
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving...';
+
+        const result = {
+            teacher_comment: modal.querySelector('#ur-teacher-comment').value.trim(),
+            head_comment: modal.querySelector('#ur-head-comment').value.trim(),
+            psd: { comment: modal.querySelector('#ur-psd-comment').value.trim() }
+        };
+
+        // Collect subject scores
+        subjects.forEach(subj => {
+            const exam = parseFloat(modal.querySelector(`input[data-subj="${subj}"][data-field="exam"]`).value);
+            const remark = modal.querySelector(`input[data-subj="${subj}"][data-field="remark"]`).value.trim();
+            const caTotal = midResult[subj]?.total ?? null;
+            result[subj] = {
+                ca1: midResult[subj]?.ca1 ?? null,
+                ca2: midResult[subj]?.ca2 ?? null,
+                ca_total: caTotal,
+                exam: isNaN(exam) ? null : exam,
+                total: (caTotal !== null && !isNaN(exam)) ? caTotal + exam : null,
+                remark
+            };
+        });
+
+        // Collect PSD ratings
+        PSD_TRAITS.forEach(trait => {
+            const checked = modal.querySelector(`input[name="psd-${trait}"]:checked`);
+            result.psd[trait] = checked ? parseInt(checked.value) : null;
+        });
+
+        try {
+            const res = await fetch('/api/students', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: student.id, result })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
+            student.result = result;
+            modal.remove();
+            alert(`Result saved for ${student.first_name} ${student.last_name}.`);
+        } catch (err) {
+            alert('Error saving result: ' + err.message);
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Save Result';
+        }
+    };
+
+    document.body.appendChild(modal);
+}
+
 // ── Mid-Result modal ─────────────────────────────────────────────────────────
 function buildMidResultModal(student) {
     const existing = document.getElementById('mid-result-modal');
@@ -738,6 +956,11 @@ async function loadMyClass(currentUser) {
 
                 if (action === 'update-mid-result') {
                     buildMidResultModal(student);
+                    return;
+                }
+
+                if (action === 'update-result') {
+                    buildUpdateResultModal(student, assignedClassKey);
                     return;
                 }
 
