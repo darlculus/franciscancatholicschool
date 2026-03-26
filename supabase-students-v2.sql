@@ -7,3 +7,6 @@ ALTER TABLE students ADD COLUMN IF NOT EXISTS guardian_name TEXT;
 ALTER TABLE students ADD COLUMN IF NOT EXISTS guardian_phone TEXT;
 ALTER TABLE students ADD COLUMN IF NOT EXISTS guardian_relationship TEXT;
 ALTER TABLE students ADD COLUMN IF NOT EXISTS photo_url TEXT;
+
+-- Add subjects column to students table
+ALTER TABLE students ADD COLUMN IF NOT EXISTS subjects JSONB DEFAULT '[]'::jsonb;

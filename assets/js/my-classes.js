@@ -210,6 +210,106 @@ function buildBiodataModal(student) {
     document.body.appendChild(modal);
 }
 
+// ── Subjects modal ────────────────────────────────────────────────────────────
+const ALL_SUBJECTS = [
+    'Mathematics', 'English Language', 'Science', 'Social Studies',
+    'Religious Studies', 'Physical Education', 'Art & Craft', 'Music',
+    'Phonics', 'Handwriting', 'Verbal Reasoning', 'Quantitative Reasoning',
+    'Computer Studies', 'French', 'Yoruba', 'Igbo', 'Hausa'
+];
+
+function buildSubjectsModal(student) {
+    const existing = document.getElementById('subjects-modal');
+    if (existing) existing.remove();
+
+    let selected = Array.isArray(student.subjects) ? [...student.subjects] : [];
+
+    const modal = document.createElement('div');
+    modal.id = 'subjects-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
+
+    function render() {
+        const selectedHtml = selected.length
+            ? selected.map(s => `
+                <span style="display:inline-flex;align-items:center;gap:6px;background:#e8eaf6;color:#3949ab;border-radius:20px;padding:4px 10px;font-size:0.82rem;margin:3px">
+                    ${s}
+                    <button data-remove="${s}" style="background:none;border:none;cursor:pointer;color:#e53935;font-size:1rem;line-height:1;padding:0" title="Remove">&times;</button>
+                </span>`).join('')
+            : '<span style="color:#aaa;font-size:0.85rem">No subjects selected yet</span>';
+
+        const checkboxHtml = ALL_SUBJECTS.map(s => `
+            <label style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;cursor:pointer;${selected.includes(s) ? 'background:#e8eaf6' : ''}">
+                <input type="checkbox" value="${s}" ${selected.includes(s) ? 'checked' : ''} style="width:16px;height:16px;accent-color:#5c6bc0;cursor:pointer">
+                <span style="font-size:0.9rem">${s}</span>
+            </label>`).join('');
+
+        modal.innerHTML = `
+            <div style="background:#fff;border-radius:10px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:28px;position:relative">
+                <button id="subj-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
+                <h2 style="margin:0 0 4px">Edit Subjects</h2>
+                <p style="margin:0 0 16px;color:#888;font-size:0.88rem">${student.first_name} ${student.last_name}</p>
+
+                <p style="font-weight:600;font-size:0.85rem;color:#555;margin:0 0 8px">Selected Subjects</p>
+                <div id="subj-selected" style="min-height:36px;margin-bottom:18px;padding:6px;border:1px dashed #ddd;border-radius:6px">${selectedHtml}</div>
+
+                <p style="font-weight:600;font-size:0.85rem;color:#555;margin:0 0 8px;border-top:1px solid #eee;padding-top:14px">Choose Subjects</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;max-height:280px;overflow-y:auto;border:1px solid #eee;border-radius:6px;padding:6px">
+                    ${checkboxHtml}
+                </div>
+
+                <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+                    <button id="subj-cancel" style="padding:9px 20px;border:1px solid #ddd;border-radius:5px;background:#fff;cursor:pointer">Cancel</button>
+                    <button id="subj-save" style="padding:9px 20px;background:#5c6bc0;color:#fff;border:none;border-radius:5px;cursor:pointer">Save Subjects</button>
+                </div>
+            </div>`;
+
+        modal.querySelector('#subj-close').onclick = () => modal.remove();
+        modal.querySelector('#subj-cancel').onclick = () => modal.remove();
+
+        modal.querySelectorAll('[data-remove]').forEach(btn => {
+            btn.onclick = () => {
+                selected = selected.filter(s => s !== btn.dataset.remove);
+                render();
+            };
+        });
+
+        modal.querySelectorAll('input[type=checkbox]').forEach(cb => {
+            cb.onchange = () => {
+                if (cb.checked) { if (!selected.includes(cb.value)) selected.push(cb.value); }
+                else { selected = selected.filter(s => s !== cb.value); }
+                render();
+            };
+        });
+
+        modal.querySelector('#subj-save').onclick = async () => {
+            const saveBtn = modal.querySelector('#subj-save');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+            try {
+                const res = await fetch('/api/students', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: student.id, subjects: selected })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error);
+                student.subjects = selected;
+                modal.remove();
+                alert(`Subjects saved for ${student.first_name} ${student.last_name}.`);
+            } catch (err) {
+                alert('Error saving subjects: ' + err.message);
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save Subjects';
+            }
+        };
+
+        modal.onclick = e => { if (e.target === modal) modal.remove(); };
+    }
+
+    render();
+    document.body.appendChild(modal);
+}
+
 async function loadMyClass(currentUser) {
     const grid = document.getElementById('classes-grid');
     const studentSection = document.getElementById('students-list-section');
@@ -381,6 +481,11 @@ async function loadMyClass(currentUser) {
                 const sid = this.dataset.id;
                 const student = students.find(s => s.id === sid);
                 const name = student ? `${student.first_name} ${student.last_name}` : sid;
+
+                if (action === 'subjects') {
+                    buildSubjectsModal(student);
+                    return;
+                }
 
                 if (action === 'biodata') {
                     buildBiodataModal(student);
