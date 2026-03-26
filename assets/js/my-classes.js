@@ -964,6 +964,13 @@ async function loadMyClass(currentUser) {
                     return;
                 }
 
+                if (action === 'report-card') {
+                    const term = encodeURIComponent('1st Term');
+                    const session = encodeURIComponent('2025/2026');
+                    window.open(`report-card.html?id=${student.id}&class_key=${assignedClassKey}&term=${term}&session=${session}`, '_blank');
+                    return;
+                }
+
                 if (action === 'biodata') {
                     buildBiodataModal(student);
                     return;

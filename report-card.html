@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Report Card – Franciscan Catholic School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #e8eaf6; min-height: 100vh; padding: 30px 20px; }
+
+        .toolbar {
+            max-width: 820px; margin: 0 auto 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .toolbar h4 { color: #5c6bc0; font-size: 0.95rem; }
+        .btn-print {
+            background: #5c6bc0; color: #fff; border: none; padding: 10px 22px;
+            border-radius: 6px; cursor: pointer; font-size: 0.88rem; font-family: 'Poppins', sans-serif;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .btn-print:hover { background: #3949ab; }
+
+        /* ── Report Card ── */
+        .report-card {
+            max-width: 820px; margin: 0 auto;
+            background: #fff; border-radius: 4px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+            overflow: hidden;
+        }
+
+        /* Header band */
+        .rc-header {
+            background: linear-gradient(135deg, #1a237e 0%, #5c6bc0 100%);
+            padding: 24px 28px;
+            display: grid; grid-template-columns: auto 1fr auto;
+            gap: 20px; align-items: center;
+        }
+        .rc-logo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.4); object-fit: cover; background: #fff; }
+        .rc-school-name { text-align: center; color: #fff; }
+        .rc-school-name h1 { font-size: 1.15rem; font-weight: 700; letter-spacing: 0.5px; line-height: 1.3; }
+        .rc-school-name p { font-size: 0.72rem; opacity: 0.85; margin-top: 3px; }
+        .rc-contact { text-align: right; color: rgba(255,255,255,0.9); font-size: 0.72rem; line-height: 1.8; }
+        .rc-contact i { margin-right: 4px; opacity: 0.8; }
+
+        /* Student info strip */
+        .rc-student-strip {
+            background: #f5f6fa; border-bottom: 2px solid #e8eaf6;
+            padding: 16px 28px;
+            display: grid; grid-template-columns: 1fr auto auto; gap: 20px; align-items: center;
+        }
+        .rc-student-details { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; }
+        .rc-detail { display: flex; flex-direction: column; }
+        .rc-detail span:first-child { font-size: 0.68rem; color: #999; text-transform: uppercase; letter-spacing: 0.5px; }
+        .rc-detail span:last-child { font-size: 0.88rem; font-weight: 600; color: #333; }
+        .rc-attendance-box {
+            text-align: center; background: #fff; border: 1px solid #e0e0e0;
+            border-radius: 8px; padding: 10px 18px;
+        }
+        .rc-attendance-box .att-num { font-size: 1.6rem; font-weight: 700; color: #5c6bc0; line-height: 1; }
+        .rc-attendance-box .att-label { font-size: 0.68rem; color: #888; margin-top: 2px; }
+        .rc-photo {
+            width: 80px; height: 80px; border-radius: 8px; object-fit: cover;
+            border: 2px solid #e0e0e0; background: #f0f0f0;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        .rc-photo i { font-size: 2rem; color: #ccc; }
+
+        /* Report title */
+        .rc-title {
+            text-align: center; padding: 16px 28px 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .rc-title h2 { font-size: 1rem; font-weight: 700; color: #1a237e; text-transform: uppercase; letter-spacing: 1px; }
+        .rc-title p { font-size: 0.78rem; color: #888; margin-top: 2px; }
+
+        /* Scores table */
+        .rc-section { padding: 18px 28px; }
+        .rc-section-title {
+            font-size: 0.78rem; font-weight: 700; color: #5c6bc0;
+            text-transform: uppercase; letter-spacing: 0.8px;
+            border-bottom: 2px solid #e8eaf6; padding-bottom: 6px; margin-bottom: 12px;
+        }
+
+        table.rc-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        table.rc-table thead tr { background: #1a237e; color: #fff; }
+        table.rc-table thead th { padding: 9px 10px; text-align: center; font-weight: 600; font-size: 0.75rem; }
+        table.rc-table thead th:first-child { text-align: left; }
+        table.rc-table tbody tr:nth-child(even) { background: #f9f9ff; }
+        table.rc-table tbody td { padding: 8px 10px; text-align: center; border-bottom: 1px solid #f0f0f0; }
+        table.rc-table tbody td:first-child { text-align: left; font-weight: 500; }
+
+        .grade-badge {
+            display: inline-block; padding: 2px 8px; border-radius: 10px;
+            font-size: 0.72rem; font-weight: 700;
+        }
+        .grade-A { background: #e8f5e9; color: #2e7d32; }
+        .grade-B { background: #e3f2fd; color: #1565c0; }
+        .grade-C { background: #fff8e1; color: #f57f17; }
+        .grade-D { background: #fce4ec; color: #c62828; }
+        .grade-F { background: #ffebee; color: #b71c1c; }
+
+        /* Comments */
+        .rc-comments { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .rc-comment-box {
+            background: #f9f9ff; border: 1px solid #e8eaf6; border-radius: 8px; padding: 12px 14px;
+        }
+        .rc-comment-box .cb-label { font-size: 0.72rem; font-weight: 700; color: #5c6bc0; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .rc-comment-box .cb-text { font-size: 0.82rem; color: #444; line-height: 1.5; min-height: 36px; }
+        .rc-comment-box .cb-sig { margin-top: 10px; border-top: 1px dashed #ddd; padding-top: 8px; font-size: 0.72rem; color: #aaa; }
+
+        /* PSD */
+        .psd-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .psd-item { background: #f9f9ff; border: 1px solid #e8eaf6; border-radius: 8px; padding: 10px 12px; }
+        .psd-item .psd-trait { font-size: 0.75rem; color: #666; margin-bottom: 4px; }
+        .psd-stars { color: #f59e0b; font-size: 0.9rem; letter-spacing: 1px; }
+        .psd-stars .empty { color: #ddd; }
+        .psd-comment-box { margin-top: 10px; background: #f9f9ff; border: 1px solid #e8eaf6; border-radius: 8px; padding: 10px 14px; font-size: 0.82rem; color: #444; }
+
+        /* Grading key */
+        .grading-key { display: flex; gap: 10px; flex-wrap: wrap; }
+        .gk-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #555; }
+
+        /* Resumption */
+        .rc-resumption {
+            background: linear-gradient(135deg, #1a237e, #5c6bc0);
+            color: #fff; text-align: center; padding: 14px 28px;
+            font-size: 0.85rem;
+        }
+        .rc-resumption strong { font-size: 1rem; }
+
+        /* Footer */
+        .rc-footer {
+            background: #f5f6fa; border-top: 1px solid #e8eaf6;
+            padding: 10px 28px; text-align: center;
+            font-size: 0.7rem; color: #aaa;
+        }
+
+        /* Loading / error */
+        #loading-state { text-align: center; padding: 80px 20px; color: #5c6bc0; }
+        #loading-state i { font-size: 2.5rem; margin-bottom: 12px; }
+
+        @media print {
+            body { background: #fff; padding: 0; }
+            .toolbar { display: none; }
+            .report-card { box-shadow: none; max-width: 100%; }
+            @page { margin: 1cm; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="toolbar">
+    <h4><i class="fas fa-file-alt"></i> Student Report Card</h4>
+    <button class="btn-print" onclick="window.print()">
+        <i class="fas fa-print"></i> Print / Save as PDF
+    </button>
+</div>
+
+<div id="loading-state">
+    <i class="fas fa-spinner fa-spin"></i>
+    <p>Loading report card...</p>
+</div>
+
+<div class="report-card" id="report-card" style="display:none"></div>
+
+<script>
+const SCHOOL = {
+    name: 'Franciscan Catholic Nursery & Primary School',
+    tagline: 'Nurturing Minds, Building Futures in Faith',
+    address: 'Franciscan Avenue, Enugu State, Nigeria',
+    phone: '+234 803 000 0000',
+    email: 'info@franciscancatholicschool.edu.ng',
+    website: 'www.franciscancatholicschool.edu.ng',
+    logo: 'assets/img/logo.jpg',
+    resumption: 'Monday, 14th September 2026'
+};
+
+const GRADING = [
+    { min: 75, max: 100, grade: 'A',  label: 'Excellent' },
+    { min: 60, max: 74,  grade: 'B',  label: 'Very Good' },
+    { min: 50, max: 59,  grade: 'C',  label: 'Good' },
+    { min: 40, max: 49,  grade: 'D',  label: 'Fair' },
+    { min: 0,  max: 39,  grade: 'F',  label: 'Fail' }
+];
+
+function getGrade(score) {
+    if (score === null || score === undefined || isNaN(score)) return { grade: '—', label: '—' };
+    return GRADING.find(g => score >= g.min && score <= g.max) || { grade: '—', label: '—' };
+}
+
+function stars(val) {
+    val = parseInt(val) || 0;
+    return [1,2,3,4,5].map(n =>
+        `<span class="${n <= val ? '' : 'empty'}">★</span>`
+    ).join('');
+}
+
+function calcAge(dob) {
+    if (!dob) return '—';
+    const diff = Date.now() - new Date(dob).getTime();
+    return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)) + ' yrs';
+}
+
+async function loadReport() {
+    const params = new URLSearchParams(window.location.search);
+    const studentId = params.get('id');
+    const classKey  = params.get('class_key');
+    const term      = params.get('term') || '1st Term';
+    const session   = params.get('session') || '2025/2026';
+
+    if (!studentId) {
+        document.getElementById('loading-state').innerHTML =
+            '<i class="fas fa-exclamation-circle" style="color:#e53935"></i><p style="color:#e53935">No student ID provided.</p>';
+        return;
+    }
+
+    try {
+        // Fetch student
+        const sRes = await fetch(`/api/students`);
+        const sData = await sRes.json();
+        const student = (sData.students || []).find(s => s.id === studentId);
+        if (!student) throw new Error('Student not found');
+
+        // Fetch attendance
+        let timesPresent = '—';
+        try {
+            const aRes = await fetch(`/api/admin-attendance?class_key=${classKey || student.class_key}`);
+            const aData = await aRes.json();
+            const rec = (aData.students || []).find(s => s.student_id === studentId);
+            if (rec) timesPresent = rec.present + (rec.late || 0);
+        } catch(e) {}
+
+        renderReport(student, timesPresent, term, session);
+    } catch(e) {
+        document.getElementById('loading-state').innerHTML =
+            `<i class="fas fa-exclamation-circle" style="color:#e53935;font-size:2.5rem"></i><p style="color:#e53935;margin-top:12px">${e.message}</p>`;
+    }
+}
+
+function renderReport(student, timesPresent, term, session) {
+    const result   = (typeof student.result === 'object' && student.result) ? student.result : {};
+    const midResult = (typeof student.mid_result === 'object' && student.mid_result) ? student.mid_result : {};
+    const psd      = result.psd || {};
+    const subjects = Array.isArray(student.subjects) && student.subjects.length
+        ? student.subjects
+        : Object.keys(result).filter(k => !['psd','teacher_comment','head_comment'].includes(k));
+
+    const fullName = [student.first_name, student.middle_name, student.last_name].filter(Boolean).join(' ');
+
+    // ── Subject rows ──
+    const subjectRows = subjects.map(subj => {
+        const r = result[subj] || {};
+        const ca1    = r.ca1 ?? midResult[subj]?.ca1 ?? null;
+        const ca2    = r.ca2 ?? midResult[subj]?.ca2 ?? null;
+        const caTotal = r.ca_total ?? midResult[subj]?.total ?? null;
+        const exam   = r.exam ?? null;
+        const total  = r.total ?? ((caTotal !== null && exam !== null) ? caTotal + exam : null);
+        const remark = r.remark || '';
+        const { grade, label } = getGrade(total);
+        const gradeClass = grade !== '—' ? `grade-${grade}` : '';
+        return `
+        <tr>
+            <td>${subj}</td>
+            <td>${ca1 !== null ? ca1 : '—'}</td>
+            <td>${ca2 !== null ? ca2 : '—'}</td>
+            <td><strong>${caTotal !== null ? caTotal : '—'}</strong></td>
+            <td>${exam !== null ? exam : '—'}</td>
+            <td><strong style="color:#1a237e">${total !== null ? total : '—'}</strong></td>
+            <td><span class="grade-badge ${gradeClass}">${grade}</span></td>
+            <td>${remark || label}</td>
+        </tr>`;
+    }).join('');
+
+    // ── PSD ──
+    const PSD_TRAITS = ['Teamwork','Attendance','Presentation of Work','Punctuality','Neatness','Respect'];
+    const psdItems = PSD_TRAITS.map(trait => `
+        <div class="psd-item">
+            <div class="psd-trait">${trait}</div>
+            <div class="psd-stars">${stars(psd[trait])}</div>
+        </div>`).join('');
+
+    // ── Photo ──
+    const photoHtml = student.photo_url
+        ? `<img src="${student.photo_url}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;border:2px solid #e0e0e0">`
+        : `<div class="rc-photo"><i class="fas fa-user"></i></div>`;
+
+    // ── Grading key ──
+    const gradingKeyHtml = GRADING.map(g =>
+        `<div class="gk-item"><span class="grade-badge grade-${g.grade}">${g.grade}</span> ${g.min}–${g.max}% &nbsp;${g.label}</div>`
+    ).join('');
+
+    document.getElementById('report-card').innerHTML = `
+        <!-- Header -->
+        <div class="rc-header">
+            <img src="${SCHOOL.logo}" class="rc-logo" alt="School Logo" onerror="this.style.display='none'">
+            <div class="rc-school-name">
+                <h1>${SCHOOL.name}</h1>
+                <p>${SCHOOL.tagline}</p>
+            </div>
+            <div class="rc-contact">
+                <div><i class="fas fa-map-marker-alt"></i>${SCHOOL.address}</div>
+                <div><i class="fas fa-phone"></i>${SCHOOL.phone}</div>
+                <div><i class="fas fa-envelope"></i>${SCHOOL.email}</div>
+                <div><i class="fas fa-globe"></i>${SCHOOL.website}</div>
+            </div>
+        </div>
+
+        <!-- Student strip -->
+        <div class="rc-student-strip">
+            <div class="rc-student-details">
+                <div class="rc-detail"><span>Full Name</span><span>${fullName}</span></div>
+                <div class="rc-detail"><span>Class</span><span>${student.class_name || student.class_key || '—'}</span></div>
+                <div class="rc-detail"><span>Gender</span><span>${student.gender || '—'}</span></div>
+                <div class="rc-detail"><span>Age</span><span>${calcAge(student.date_of_birth)}</span></div>
+                <div class="rc-detail"><span>Admission No.</span><span>${student.admission_number || '—'}</span></div>
+                <div class="rc-detail"><span>Term / Session</span><span>${term} &nbsp;|&nbsp; ${session}</span></div>
+            </div>
+            <div class="rc-attendance-box">
+                <div class="att-num">${timesPresent}</div>
+                <div class="att-label">Times Present</div>
+            </div>
+            ${photoHtml}
+        </div>
+
+        <!-- Title -->
+        <div class="rc-title">
+            <h2>End of Term Report — ${term}, ${session}</h2>
+            <p>Academic performance and personal development assessment</p>
+        </div>
+
+        <!-- Scores -->
+        <div class="rc-section">
+            <div class="rc-section-title">Academic Performance</div>
+            <table class="rc-table">
+                <thead>
+                    <tr>
+                        <th style="text-align:left;width:22%">Subject</th>
+                        <th>1st CA<br><small style="font-weight:400;opacity:.8">/20</small></th>
+                        <th>2nd CA<br><small style="font-weight:400;opacity:.8">/20</small></th>
+                        <th>CA Total<br><small style="font-weight:400;opacity:.8">/40</small></th>
+                        <th>Exam<br><small style="font-weight:400;opacity:.8">/60</small></th>
+                        <th>Total<br><small style="font-weight:400;opacity:.8">/100</small></th>
+                        <th>Grade</th>
+                        <th>Remark</th>
+                    </tr>
+                </thead>
+                <tbody>${subjectRows || '<tr><td colspan="8" style="text-align:center;color:#aaa;padding:20px">No results recorded yet</td></tr>'}</tbody>
+            </table>
+        </div>
+
+        <!-- Comments -->
+        <div class="rc-section">
+            <div class="rc-section-title">Teacher's Comments</div>
+            <div class="rc-comments">
+                <div class="rc-comment-box">
+                    <div class="cb-label"><i class="fas fa-chalkboard-teacher"></i> Class Teacher's Comment</div>
+                    <div class="cb-text">${result.teacher_comment || '<em style="color:#bbb">No comment recorded</em>'}</div>
+                    <div class="cb-sig">Signature: ___________________________</div>
+                </div>
+                <div class="rc-comment-box">
+                    <div class="cb-label"><i class="fas fa-user-tie"></i> Head Teacher's Comment</div>
+                    <div class="cb-text">${result.head_comment || '<em style="color:#bbb">No comment recorded</em>'}</div>
+                    <div class="cb-sig">Signature: ___________________________</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PSD -->
+        <div class="rc-section">
+            <div class="rc-section-title">Personal Social Development</div>
+            <div class="psd-grid">${psdItems}</div>
+            ${psd.comment ? `<div class="psd-comment-box" style="margin-top:10px"><strong style="font-size:0.75rem;color:#5c6bc0">PSD Comment:</strong> ${psd.comment}</div>` : ''}
+        </div>
+
+        <!-- Grading key -->
+        <div class="rc-section" style="padding-top:0">
+            <div class="rc-section-title">Grading System</div>
+            <div class="grading-key">${gradingKeyHtml}</div>
+        </div>
+
+        <!-- Resumption -->
+        <div class="rc-resumption">
+            <i class="fas fa-calendar-alt"></i>&nbsp;
+            Next Term Resumes: <strong>${SCHOOL.resumption}</strong>
+        </div>
+
+        <!-- Footer -->
+        <div class="rc-footer">
+            This report is computer-generated. For enquiries contact the school office. &nbsp;|&nbsp; ${SCHOOL.name} &copy; ${new Date().getFullYear()}
+        </div>
+    `;
+
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('report-card').style.display = 'block';
+    document.title = `Report Card – ${fullName}`;
+}
+
+loadReport();
+</script>
+</body>
+</html>
