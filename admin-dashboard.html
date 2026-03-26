@@ -160,14 +160,35 @@
     <script src="assets/js/api.js"></script>
     <script src="assets/js/admin-nav.js"></script>
     <script>
-        // Load teacher count from API
-        window.addEventListener('DOMContentLoaded', function () {
-            window.api.getTeachers().then(teachers => {
-                document.getElementById('total-teachers').textContent = teachers.length;
-            }).catch(() => {
-                const cached = JSON.parse(localStorage.getItem('teachers') || '[]');
-                document.getElementById('total-teachers').textContent = cached.length;
-            });
+        window.addEventListener('DOMContentLoaded', async function () {
+            // Teachers
+            window.api.getTeachers()
+                .then(t => document.getElementById('total-teachers').textContent = t.length)
+                .catch(() => document.getElementById('total-teachers').textContent =
+                    JSON.parse(localStorage.getItem('teachers') || '[]').length);
+
+            // Students
+            fetch('/api/students')
+                .then(r => r.json())
+                .then(d => document.getElementById('total-students').textContent = (d.students || []).length)
+                .catch(() => {});
+
+            // Classes
+            fetch('/api/classes')
+                .then(r => r.json())
+                .then(d => document.getElementById('total-classes').textContent = (d.classes || []).length)
+                .catch(() => {});
+
+            // Payments — use bursar stats if available
+            if (window.api.getDashboardStats) {
+                window.api.getDashboardStats()
+                    .then(d => {
+                        const total = d?.stats?.termTotal ?? d?.stats?.todayTotal ?? 0;
+                        document.getElementById('total-payments').textContent =
+                            new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 }).format(total);
+                    })
+                    .catch(() => {});
+            }
         });
     </script>
 </body>
