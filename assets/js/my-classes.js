@@ -430,6 +430,130 @@ function buildFilesModal(student) {
     document.body.appendChild(modal);
 }
 
+// ── Mid-Result modal ─────────────────────────────────────────────────────────
+function buildMidResultModal(student) {
+    const existing = document.getElementById('mid-result-modal');
+    if (existing) existing.remove();
+
+    const subjects = Array.isArray(student.subjects) && student.subjects.length
+        ? student.subjects
+        : ALL_SUBJECTS;
+
+    // mid_result stored as { subjectName: { ca1, ca2 }, ... }
+    const saved = (typeof student.mid_result === 'object' && student.mid_result !== null)
+        ? student.mid_result : {};
+
+    const modal = document.createElement('div');
+    modal.id = 'mid-result-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
+
+    const rowsHtml = subjects.map(subj => {
+        const ca1 = saved[subj]?.ca1 ?? '';
+        const ca2 = saved[subj]?.ca2 ?? '';
+        const total = (ca1 !== '' && ca2 !== '') ? (parseFloat(ca1) + parseFloat(ca2)) : '';
+        return `
+        <tr>
+            <td style="padding:8px 10px;font-size:0.88rem">${subj}</td>
+            <td style="padding:8px 6px">
+                <input type="number" min="0" max="20" data-subj="${subj}" data-ca="1"
+                    value="${ca1}" placeholder="0"
+                    style="width:60px;padding:6px;border:1px solid #ddd;border-radius:4px;text-align:center">
+            </td>
+            <td style="padding:8px 6px">
+                <input type="number" min="0" max="20" data-subj="${subj}" data-ca="2"
+                    value="${ca2}" placeholder="0"
+                    style="width:60px;padding:6px;border:1px solid #ddd;border-radius:4px;text-align:center">
+            </td>
+            <td style="padding:8px 10px;text-align:center">
+                <span class="ca-total" data-subj="${subj}"
+                    style="font-weight:600;color:#5c6bc0;font-size:0.9rem">${total !== '' ? total : '—'}</span>
+            </td>
+        </tr>`;
+    }).join('');
+
+    modal.innerHTML = `
+        <div style="background:#fff;border-radius:10px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;padding:28px;position:relative">
+            <button id="mr-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
+            <h2 style="margin:0 0 4px">Update Mid-Term Result</h2>
+            <p style="margin:0 0 18px;color:#888;font-size:0.88rem">${student.first_name} ${student.last_name}</p>
+
+            <div style="overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse">
+                    <thead>
+                        <tr style="background:#f5f6fa">
+                            <th style="padding:10px;text-align:left;font-size:0.82rem;color:#555;border-bottom:2px solid #eee">Subject</th>
+                            <th style="padding:10px;text-align:center;font-size:0.82rem;color:#555;border-bottom:2px solid #eee">1st CA<br><span style="font-weight:400;color:#aaa">(20%)</span></th>
+                            <th style="padding:10px;text-align:center;font-size:0.82rem;color:#555;border-bottom:2px solid #eee">2nd CA<br><span style="font-weight:400;color:#aaa">(20%)</span></th>
+                            <th style="padding:10px;text-align:center;font-size:0.82rem;color:#555;border-bottom:2px solid #eee">Total<br><span style="font-weight:400;color:#aaa">(40%)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="mr-tbody">${rowsHtml}</tbody>
+                </table>
+            </div>
+
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+                <button id="mr-cancel" style="padding:9px 20px;border:1px solid #ddd;border-radius:5px;background:#fff;cursor:pointer">Cancel</button>
+                <button id="mr-save" style="padding:9px 20px;background:#5c6bc0;color:#fff;border:none;border-radius:5px;cursor:pointer">Save Results</button>
+            </div>
+        </div>`;
+
+    modal.querySelector('#mr-close').onclick = () => modal.remove();
+    modal.querySelector('#mr-cancel').onclick = () => modal.remove();
+    modal.onclick = e => { if (e.target === modal) modal.remove(); };
+
+    // Auto-compute total on input
+    modal.querySelectorAll('input[type=number]').forEach(input => {
+        input.addEventListener('input', () => {
+            const subj = input.dataset.subj;
+            const ca1Input = modal.querySelector(`input[data-subj="${subj}"][data-ca="1"]`);
+            const ca2Input = modal.querySelector(`input[data-subj="${subj}"][data-ca="2"]`);
+            const totalEl = modal.querySelector(`.ca-total[data-subj="${subj}"]`);
+            const v1 = parseFloat(ca1Input.value);
+            const v2 = parseFloat(ca2Input.value);
+            totalEl.textContent = (!isNaN(v1) && !isNaN(v2)) ? (v1 + v2) : '—';
+        });
+    });
+
+    // Save to Supabase
+    modal.querySelector('#mr-save').onclick = async () => {
+        const saveBtn = modal.querySelector('#mr-save');
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving...';
+
+        const mid_result = {};
+        subjects.forEach(subj => {
+            const ca1 = parseFloat(modal.querySelector(`input[data-subj="${subj}"][data-ca="1"]`).value);
+            const ca2 = parseFloat(modal.querySelector(`input[data-subj="${subj}"][data-ca="2"]`).value);
+            if (!isNaN(ca1) || !isNaN(ca2)) {
+                mid_result[subj] = {
+                    ca1: isNaN(ca1) ? null : ca1,
+                    ca2: isNaN(ca2) ? null : ca2,
+                    total: (!isNaN(ca1) && !isNaN(ca2)) ? ca1 + ca2 : null
+                };
+            }
+        });
+
+        try {
+            const res = await fetch('/api/students', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: student.id, mid_result })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
+            student.mid_result = mid_result;
+            modal.remove();
+            alert(`Mid-term results saved for ${student.first_name} ${student.last_name}.`);
+        } catch (err) {
+            alert('Error saving results: ' + err.message);
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Save Results';
+        }
+    };
+
+    document.body.appendChild(modal);
+}
+
 async function loadMyClass(currentUser) {
     const grid = document.getElementById('classes-grid');
     const studentSection = document.getElementById('students-list-section');
@@ -609,6 +733,11 @@ async function loadMyClass(currentUser) {
 
                 if (action === 'files') {
                     buildFilesModal(student);
+                    return;
+                }
+
+                if (action === 'update-mid-result') {
+                    buildMidResultModal(student);
                     return;
                 }
 
