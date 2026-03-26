@@ -38,6 +38,10 @@ function initModals() {
         m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); });
     });
 
+    // Photo upload previews
+    initPhotoUpload('photo-upload', 'photo-preview');
+    initPhotoUpload('edit-photo-upload', 'edit-photo-preview');
+
     // Multi-step form tabs
     initFormSteps('add-student-form', ['personal', 'academic', 'parent', 'medical'], 'prev-tab-btn', 'next-tab-btn', 'submit-student-btn');
     initFormSteps('edit-student-form', ['edit-personal', 'edit-academic', 'edit-parent', 'edit-medical'], 'edit-prev-tab-btn', 'edit-next-tab-btn', 'update-student-btn');
@@ -49,6 +53,22 @@ function initModals() {
     document.getElementById('edit-student-form')?.addEventListener('submit', async e => {
         e.preventDefault();
         await updateStudent();
+    });
+}
+
+function initPhotoUpload(inputId, previewId) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+    if (!input || !preview) return;
+    input.addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+            preview.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover">`;
+            preview.dataset.photoUrl = e.target.result;
+        };
+        reader.readAsDataURL(file);
     });
 }
 
@@ -125,9 +145,13 @@ function renderStudents(students) {
             <td>${s.admission_number || '—'}</td>
             <td>
                 <div class="student-name">
-                    <div class="student-avatar"><i class="fas fa-user"></i></div>
+                    <div class="student-avatar" style="width:36px;height:36px;border-radius:50%;overflow:hidden;background:#f0f0f0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                        ${s.photo_url
+                            ? `<img src="${s.photo_url}" style="width:100%;height:100%;object-fit:cover">`
+                            : `<i class="fas fa-user" style="color:#bbb"></i>`}
+                    </div>
                     <div class="student-info">
-                        <span>${s.first_name} ${s.last_name}</span>
+                        <span>${s.first_name}${s.middle_name ? ' ' + s.middle_name : ''} ${s.last_name}</span>
                         <span class="student-id">${s.gender}</span>
                     </div>
                 </div>
@@ -180,9 +204,13 @@ async function addStudent() {
 
     const payload = {
         first_name: document.getElementById('first-name').value.trim(),
+        middle_name: document.getElementById('middle-name').value.trim(),
         last_name: document.getElementById('last-name').value.trim(),
         gender: document.getElementById('gender').value,
         date_of_birth: document.getElementById('dob').value || null,
+        religion: document.getElementById('religion').value || null,
+        state_of_origin: document.getElementById('state-of-origin').value.trim(),
+        lga: document.getElementById('lga').value.trim(),
         class_key: classKey,
         class_name: className,
         enrollment_date: document.getElementById('enrollment-date').value || null,
@@ -190,7 +218,11 @@ async function addStudent() {
         parent_phone: document.getElementById('parent-phone').value.trim(),
         parent_email: document.getElementById('parent-email').value.trim(),
         address: document.getElementById('address').value.trim(),
-        medical_conditions: document.getElementById('medical-conditions').value.trim()
+        guardian_name: document.getElementById('guardian-name').value.trim(),
+        guardian_phone: document.getElementById('guardian-phone').value.trim(),
+        guardian_relationship: document.getElementById('guardian-relationship').value.trim(),
+        medical_conditions: document.getElementById('medical-conditions').value.trim(),
+        photo_url: document.getElementById('photo-preview')?.dataset.photoUrl || null
     };
 
     try {
@@ -214,9 +246,13 @@ function openEditModal(id) {
     if (!s) return;
     document.getElementById('edit-student-id').value = s.id;
     document.getElementById('edit-first-name').value = s.first_name;
+    document.getElementById('edit-middle-name').value = s.middle_name || '';
     document.getElementById('edit-last-name').value = s.last_name;
     document.getElementById('edit-gender').value = s.gender;
     document.getElementById('edit-dob').value = s.date_of_birth || '';
+    document.getElementById('edit-religion').value = s.religion || '';
+    document.getElementById('edit-state-of-origin').value = s.state_of_origin || '';
+    document.getElementById('edit-lga').value = s.lga || '';
     document.getElementById('edit-class').value = s.class_key;
     document.getElementById('edit-enrollment-date').value = s.enrollment_date || '';
     document.getElementById('edit-status').value = s.status;
@@ -224,7 +260,21 @@ function openEditModal(id) {
     document.getElementById('edit-parent-phone').value = s.parent_phone || '';
     document.getElementById('edit-parent-email').value = s.parent_email || '';
     document.getElementById('edit-address').value = s.address || '';
+    document.getElementById('edit-guardian-name').value = s.guardian_name || '';
+    document.getElementById('edit-guardian-phone').value = s.guardian_phone || '';
+    document.getElementById('edit-guardian-relationship').value = s.guardian_relationship || '';
     document.getElementById('edit-medical-conditions').value = s.medical_conditions || '';
+    // Photo preview
+    const preview = document.getElementById('edit-photo-preview');
+    if (preview) {
+        if (s.photo_url) {
+            preview.innerHTML = `<img src="${s.photo_url}" style="width:100%;height:100%;object-fit:cover">`;
+            preview.dataset.photoUrl = s.photo_url;
+        } else {
+            preview.innerHTML = `<i class="fas fa-user" style="font-size:2rem;color:#bbb"></i>`;
+            delete preview.dataset.photoUrl;
+        }
+    }
     openModal('edit-student-modal');
 }
 
@@ -237,9 +287,13 @@ async function updateStudent() {
     const payload = {
         id: document.getElementById('edit-student-id').value,
         first_name: document.getElementById('edit-first-name').value.trim(),
+        middle_name: document.getElementById('edit-middle-name').value.trim(),
         last_name: document.getElementById('edit-last-name').value.trim(),
         gender: document.getElementById('edit-gender').value,
         date_of_birth: document.getElementById('edit-dob').value || null,
+        religion: document.getElementById('edit-religion').value || null,
+        state_of_origin: document.getElementById('edit-state-of-origin').value.trim(),
+        lga: document.getElementById('edit-lga').value.trim(),
         class_key: classKey,
         class_name: className,
         enrollment_date: document.getElementById('edit-enrollment-date').value || null,
@@ -248,7 +302,11 @@ async function updateStudent() {
         parent_phone: document.getElementById('edit-parent-phone').value.trim(),
         parent_email: document.getElementById('edit-parent-email').value.trim(),
         address: document.getElementById('edit-address').value.trim(),
-        medical_conditions: document.getElementById('edit-medical-conditions').value.trim()
+        guardian_name: document.getElementById('edit-guardian-name').value.trim(),
+        guardian_phone: document.getElementById('edit-guardian-phone').value.trim(),
+        guardian_relationship: document.getElementById('edit-guardian-relationship').value.trim(),
+        medical_conditions: document.getElementById('edit-medical-conditions').value.trim(),
+        photo_url: document.getElementById('edit-photo-preview')?.dataset.photoUrl || null
     };
 
     try {

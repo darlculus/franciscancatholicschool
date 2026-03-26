@@ -358,17 +358,29 @@
                 </div>
                 
                 <div id="personal-info-tab" class="form-tab-content active">
+                    <!-- Photo upload -->
+                    <div class="form-group" style="text-align:center;margin-bottom:16px">
+                        <div id="photo-preview" style="width:90px;height:90px;border-radius:50%;background:#f0f0f0;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px dashed #ccc">
+                            <i class="fas fa-user" style="font-size:2rem;color:#bbb"></i>
+                        </div>
+                        <label for="photo-upload" style="cursor:pointer;color:#5c6bc0;font-size:0.85rem"><i class="fas fa-camera"></i> Upload Photo</label>
+                        <input type="file" id="photo-upload" accept="image/*" style="display:none">
+                    </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="first-name">First Name</label>
                             <input type="text" id="first-name" name="first-name" required>
                         </div>
                         <div class="form-group">
-                            <label for="last-name">Last Name</label>
-                            <input type="text" id="last-name" name="last-name" required>
+                            <label for="middle-name">Middle Name</label>
+                            <input type="text" id="middle-name" name="middle-name">
                         </div>
                     </div>
                     <div class="form-row">
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" id="last-name" name="last-name" required>
+                        </div>
                         <div class="form-group">
                             <label for="gender">Gender</label>
                             <select id="gender" name="gender" required>
@@ -377,13 +389,34 @@
                                 <option value="Female">Female</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group">
                             <label for="dob">Date of Birth</label>
                             <input type="date" id="dob" name="dob" required>
                         </div>
+                        <div class="form-group">
+                            <label for="religion">Religion</label>
+                            <select id="religion" name="religion">
+                                <option value="">Select Religion</option>
+                                <option value="Christianity">Christianity</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="state-of-origin">State of Origin</label>
+                            <input type="text" id="state-of-origin" name="state-of-origin">
+                        </div>
+                        <div class="form-group">
+                            <label for="lga">Local Government of Origin</label>
+                            <input type="text" id="lga" name="lga">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="address">Address</label>
+                        <label for="address">Home Address</label>
                         <textarea id="address" name="address" rows="2"></textarea>
                     </div>
                 </div>
@@ -431,6 +464,22 @@
                             <option value="Sibling">Sibling</option>
                             <option value="Other">Other</option>
                         </select>
+                    </div>
+                    <hr style="margin:16px 0;border:none;border-top:1px solid #eee">
+                    <p style="font-weight:600;margin-bottom:10px">Legal Guardian <small style="font-weight:400;color:#888">(if different from parent)</small></p>
+                    <div class="form-group">
+                        <label for="guardian-name">Guardian Name</label>
+                        <input type="text" id="guardian-name" name="guardian-name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="guardian-phone">Guardian Phone</label>
+                            <input type="tel" id="guardian-phone" name="guardian-phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="guardian-relationship">Relationship</label>
+                            <input type="text" id="guardian-relationship" name="guardian-relationship" placeholder="e.g. Uncle, Aunt">
+                        </div>
                     </div>
                 </div>
                 
@@ -486,17 +535,29 @@
                 </div>
                 
                 <div id="edit-personal-info-tab" class="form-tab-content active">
+                    <!-- Photo upload -->
+                    <div class="form-group" style="text-align:center;margin-bottom:16px">
+                        <div id="edit-photo-preview" style="width:90px;height:90px;border-radius:50%;background:#f0f0f0;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px dashed #ccc">
+                            <i class="fas fa-user" style="font-size:2rem;color:#bbb"></i>
+                        </div>
+                        <label for="edit-photo-upload" style="cursor:pointer;color:#5c6bc0;font-size:0.85rem"><i class="fas fa-camera"></i> Change Photo</label>
+                        <input type="file" id="edit-photo-upload" accept="image/*" style="display:none">
+                    </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="edit-first-name">First Name</label>
                             <input type="text" id="edit-first-name" name="edit-first-name" required>
                         </div>
                         <div class="form-group">
-                            <label for="edit-last-name">Last Name</label>
-                            <input type="text" id="edit-last-name" name="edit-last-name" required>
+                            <label for="edit-middle-name">Middle Name</label>
+                            <input type="text" id="edit-middle-name" name="edit-middle-name">
                         </div>
                     </div>
                     <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-last-name">Last Name</label>
+                            <input type="text" id="edit-last-name" name="edit-last-name" required>
+                        </div>
                         <div class="form-group">
                             <label for="edit-gender">Gender</label>
                             <select id="edit-gender" name="edit-gender" required>
@@ -505,13 +566,34 @@
                                 <option value="Female">Female</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group">
                             <label for="edit-dob">Date of Birth</label>
                             <input type="date" id="edit-dob" name="edit-dob" required>
                         </div>
+                        <div class="form-group">
+                            <label for="edit-religion">Religion</label>
+                            <select id="edit-religion" name="edit-religion">
+                                <option value="">Select Religion</option>
+                                <option value="Christianity">Christianity</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-state-of-origin">State of Origin</label>
+                            <input type="text" id="edit-state-of-origin" name="edit-state-of-origin">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-lga">Local Government of Origin</label>
+                            <input type="text" id="edit-lga" name="edit-lga">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="edit-address">Address</label>
+                        <label for="edit-address">Home Address</label>
                         <textarea id="edit-address" name="edit-address" rows="2"></textarea>
                     </div>
                 </div>
@@ -568,6 +650,22 @@
                             <option value="Sibling">Sibling</option>
                             <option value="Other">Other</option>
                         </select>
+                    </div>
+                    <hr style="margin:16px 0;border:none;border-top:1px solid #eee">
+                    <p style="font-weight:600;margin-bottom:10px">Legal Guardian <small style="font-weight:400;color:#888">(if different from parent)</small></p>
+                    <div class="form-group">
+                        <label for="edit-guardian-name">Guardian Name</label>
+                        <input type="text" id="edit-guardian-name" name="edit-guardian-name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-guardian-phone">Guardian Phone</label>
+                            <input type="tel" id="edit-guardian-phone" name="edit-guardian-phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-guardian-relationship">Relationship</label>
+                            <input type="text" id="edit-guardian-relationship" name="edit-guardian-relationship" placeholder="e.g. Uncle, Aunt">
+                        </div>
                     </div>
                 </div>
                 

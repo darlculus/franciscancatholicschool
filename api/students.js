@@ -26,15 +26,21 @@ module.exports = async (req, res) => {
 
     // POST - add new student
     if (req.method === 'POST') {
-      const { first_name, last_name, gender, date_of_birth, class_key, class_name,
-              enrollment_date, parent_name, parent_phone, parent_email, address, medical_conditions } = req.body;
+      const { first_name, last_name, middle_name, gender, date_of_birth, class_key, class_name,
+              enrollment_date, parent_name, parent_phone, parent_email, address, medical_conditions,
+              religion, state_of_origin, lga, guardian_name, guardian_phone, guardian_relationship,
+              photo_url } = req.body;
       if (!first_name || !last_name || !gender || !class_key || !class_name)
         return res.status(400).json({ error: 'first_name, last_name, gender, class_key and class_name are required' });
 
       const { data, error } = await supabase.from('students').insert([{
-        first_name, last_name, gender, date_of_birth: date_of_birth || null,
-        class_key, class_name, enrollment_date: enrollment_date || null,
-        parent_name, parent_phone, parent_email, address, medical_conditions
+        first_name, last_name, middle_name: middle_name || null, gender,
+        date_of_birth: date_of_birth || null, class_key, class_name,
+        enrollment_date: enrollment_date || null, parent_name, parent_phone, parent_email,
+        address, medical_conditions, religion: religion || null,
+        state_of_origin: state_of_origin || null, lga: lga || null,
+        guardian_name: guardian_name || null, guardian_phone: guardian_phone || null,
+        guardian_relationship: guardian_relationship || null, photo_url: photo_url || null
       }]).select().single();
       if (error) throw error;
 

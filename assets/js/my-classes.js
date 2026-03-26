@@ -25,6 +25,191 @@ document.addEventListener('DOMContentLoaded', async function () {
     await loadMyClass(currentUser);
 });
 
+let _currentUser = null;
+
+document.addEventListener('DOMContentLoaded', async function () {
+    _currentUser = JSON.parse(localStorage.getItem('currentUser')) || JSON.parse(sessionStorage.getItem('currentUser'));
+
+    if (!_currentUser) { window.location.href = 'portal.html'; return; }
+    if (!['teacher','coordinator','admin','headteacher'].includes(_currentUser.role)) {
+        window.location.href = 'portal.html'; return;
+    }
+
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    const sidebar = document.querySelector('.dashboard-sidebar');
+    document.getElementById('sidebar-toggle')?.addEventListener('click', () => sidebar.classList.toggle('active'));
+
+    document.getElementById('logout-btn')?.addEventListener('click', e => {
+        e.preventDefault();
+        localStorage.removeItem('currentUser'); sessionStorage.removeItem('currentUser');
+        window.location.href = 'portal.html';
+    });
+
+    await ensureClasses();
+    await loadMyClass(_currentUser);
+});
+
+// ── Shared biodata modal (same edit modal used by admin students page) ─────────
+let _allClasses = [];
+
+async function ensureClasses() {
+    if (_allClasses.length) return;
+    try {
+        const r = await fetch('/api/classes');
+        const d = await r.json();
+        _allClasses = d.classes || [];
+    } catch (e) { /* ignore */ }
+}
+
+function buildBiodataModal(student) {
+    const existing = document.getElementById('biodata-modal');
+    if (existing) existing.remove();
+
+    const photoHtml = student.photo_url
+        ? `<img src="${student.photo_url}" style="width:100%;height:100%;object-fit:cover">`
+        : `<i class="fas fa-user" style="font-size:2rem;color:#bbb"></i>`;
+
+    const classOpts = _allClasses.map(c =>
+        `<option value="${c.class_key}" data-name="${c.name}" ${c.class_key === student.class_key ? 'selected' : ''}>${c.name}</option>`
+    ).join('');
+
+    const modal = document.createElement('div');
+    modal.id = 'biodata-modal';
+    modal.className = 'modal active';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
+    modal.innerHTML = `
+        <div style="background:#fff;border-radius:10px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;padding:28px;position:relative">
+            <button onclick="document.getElementById('biodata-modal').remove()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
+            <h2 style="margin:0 0 20px">Edit Student Biodata</h2>
+            <form id="biodata-form">
+                <input type="hidden" id="bd-id" value="${student.id}">
+
+                <!-- Photo -->
+                <div style="text-align:center;margin-bottom:20px">
+                    <div id="bd-photo-preview" data-photo-url="${student.photo_url || ''}" style="width:90px;height:90px;border-radius:50%;background:#f0f0f0;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px dashed #ccc">${photoHtml}</div>
+                    <label for="bd-photo-upload" style="cursor:pointer;color:#5c6bc0;font-size:0.85rem"><i class="fas fa-camera"></i> Change Photo</label>
+                    <input type="file" id="bd-photo-upload" accept="image/*" style="display:none">
+                </div>
+
+                <p style="font-weight:600;margin:0 0 12px;color:#555;border-bottom:1px solid #eee;padding-bottom:6px">Personal Information</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                    <div><label style="font-size:.85rem">First Name *</label><input id="bd-first" value="${student.first_name}" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                    <div><label style="font-size:.85rem">Middle Name</label><input id="bd-middle" value="${student.middle_name || ''}" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                    <div><label style="font-size:.85rem">Last Name *</label><input id="bd-last" value="${student.last_name}" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                    <div><label style="font-size:.85rem">Gender *</label>
+                        <select id="bd-gender" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px">
+                            <option value="Male" ${student.gender==='Male'?'selected':''}>Male</option>
+                            <option value="Female" ${student.gender==='Female'?'selected':''}>Female</option>
+                        </select></div>
+                    <div><label style="font-size:.85rem">Date of Birth *</label><input type="date" id="bd-dob" value="${student.date_of_birth || ''}" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                    <div><label style="font-size:.85rem">Religion</label>
+                        <select id="bd-religion" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px">
+                            <option value="">Select</option>
+                            <option value="Christianity" ${student.religion==='Christianity'?'selected':''}>Christianity</option>
+                            <option value="Islam" ${student.religion==='Islam'?'selected':''}>Islam</option>
+                            <option value="Other" ${student.religion==='Other'?'selected':''}>Other</option>
+                        </select></div>
+                    <div><label style="font-size:.85rem">State of Origin</label><input id="bd-state" value="${student.state_of_origin || ''}" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                    <div><label style="font-size:.85rem">LGA</label><input id="bd-lga" value="${student.lga || ''}" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                </div>
+                <div style="margin-top:12px"><label style="font-size:.85rem">Home Address</label><textarea id="bd-address" rows="2" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px">${student.address || ''}</textarea></div>
+
+                <p style="font-weight:600;margin:18px 0 12px;color:#555;border-bottom:1px solid #eee;padding-bottom:6px">Academic</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                    <div><label style="font-size:.85rem">Class *</label>
+                        <select id="bd-class" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px">
+                            <option value="">Select Class</option>${classOpts}
+                        </select></div>
+                    <div><label style="font-size:.85rem">Enrollment Date</label><input type="date" id="bd-enroll" value="${student.enrollment_date || ''}" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                </div>
+
+                <p style="font-weight:600;margin:18px 0 12px;color:#555;border-bottom:1px solid #eee;padding-bottom:6px">Parent / Guardian</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                    <div style="grid-column:1/-1"><label style="font-size:.85rem">Parent/Guardian Name</label><input id="bd-parent" value="${student.parent_name || ''}" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                    <div><label style="font-size:.85rem">Phone</label><input id="bd-parent-phone" value="${student.parent_phone || ''}" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                    <div><label style="font-size:.85rem">Email</label><input type="email" id="bd-parent-email" value="${student.parent_email || ''}" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                </div>
+                <p style="font-size:.85rem;font-weight:600;margin:14px 0 8px;color:#777">Legal Guardian <span style="font-weight:400">(if different from parent)</span></p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                    <div><label style="font-size:.85rem">Guardian Name</label><input id="bd-guardian" value="${student.guardian_name || ''}" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                    <div><label style="font-size:.85rem">Phone</label><input id="bd-guardian-phone" value="${student.guardian_phone || ''}" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                    <div><label style="font-size:.85rem">Relationship</label><input id="bd-guardian-rel" value="${student.guardian_relationship || ''}" placeholder="e.g. Uncle, Aunt" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px"></div>
+                </div>
+
+                <p style="font-weight:600;margin:18px 0 12px;color:#555;border-bottom:1px solid #eee;padding-bottom:6px">Medical</p>
+                <div><label style="font-size:.85rem">Medical Conditions / Allergies</label><textarea id="bd-medical" rows="2" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px">${student.medical_conditions || ''}</textarea></div>
+
+                <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+                    <button type="button" onclick="document.getElementById('biodata-modal').remove()" style="padding:9px 20px;border:1px solid #ddd;border-radius:5px;background:#fff;cursor:pointer">Cancel</button>
+                    <button type="submit" style="padding:9px 20px;background:#5c6bc0;color:#fff;border:none;border-radius:5px;cursor:pointer">Save Changes</button>
+                </div>
+            </form>
+        </div>`;
+
+    // Photo upload inside modal
+    modal.querySelector('#bd-photo-upload').addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+            const p = document.getElementById('bd-photo-preview');
+            p.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover">`;
+            p.dataset.photoUrl = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Close on backdrop click
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+
+    // Form submit
+    modal.querySelector('#biodata-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const classEl = document.getElementById('bd-class');
+        const classKey = classEl.value;
+        const classOpt = classEl.options[classEl.selectedIndex];
+        const className = classOpt?.dataset.name || classOpt?.text || '';
+        const payload = {
+            id: document.getElementById('bd-id').value,
+            first_name: document.getElementById('bd-first').value.trim(),
+            middle_name: document.getElementById('bd-middle').value.trim(),
+            last_name: document.getElementById('bd-last').value.trim(),
+            gender: document.getElementById('bd-gender').value,
+            date_of_birth: document.getElementById('bd-dob').value || null,
+            religion: document.getElementById('bd-religion').value || null,
+            state_of_origin: document.getElementById('bd-state').value.trim(),
+            lga: document.getElementById('bd-lga').value.trim(),
+            address: document.getElementById('bd-address').value.trim(),
+            class_key: classKey,
+            class_name: className,
+            enrollment_date: document.getElementById('bd-enroll').value || null,
+            parent_name: document.getElementById('bd-parent').value.trim(),
+            parent_phone: document.getElementById('bd-parent-phone').value.trim(),
+            parent_email: document.getElementById('bd-parent-email').value.trim(),
+            guardian_name: document.getElementById('bd-guardian').value.trim(),
+            guardian_phone: document.getElementById('bd-guardian-phone').value.trim(),
+            guardian_relationship: document.getElementById('bd-guardian-rel').value.trim(),
+            medical_conditions: document.getElementById('bd-medical').value.trim(),
+            photo_url: document.getElementById('bd-photo-preview')?.dataset.photoUrl || student.photo_url || null
+        };
+        try {
+            const res = await fetch('/api/students', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
+            modal.remove();
+            alert(`${payload.first_name} ${payload.last_name} updated successfully.`);
+            await loadMyClass(_currentUser);
+        } catch (err) {
+            alert('Error saving: ' + err.message);
+        }
+    });
+
+    document.body.appendChild(modal);
+}
+
 async function loadMyClass(currentUser) {
     const grid = document.getElementById('classes-grid');
     const studentSection = document.getElementById('students-list-section');
@@ -134,7 +319,16 @@ async function loadMyClass(currentUser) {
                         <tr style="border-bottom:1px solid #f5f5f5">
                             <td style="padding:10px">${i + 1}</td>
                             <td style="padding:10px">${s.admission_number || '—'}</td>
-                            <td style="padding:10px">${s.first_name} ${s.last_name}</td>
+                            <td style="padding:10px">
+                                <div style="display:flex;align-items:center;gap:10px">
+                                    <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;background:#f0f0f0;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #eee">
+                                        ${s.photo_url
+                                            ? `<img src="${s.photo_url}" style="width:100%;height:100%;object-fit:cover">`
+                                            : `<i class="fas fa-user" style="color:#bbb;font-size:1rem"></i>`}
+                                    </div>
+                                    <span>${s.first_name}${s.middle_name ? ' ' + s.middle_name : ''} ${s.last_name}</span>
+                                </div>
+                            </td>
                             <td style="padding:10px">${s.gender}</td>
                             <td style="padding:10px">
                                 <div class="dropdown-wrapper">
@@ -187,6 +381,11 @@ async function loadMyClass(currentUser) {
                 const sid = this.dataset.id;
                 const student = students.find(s => s.id === sid);
                 const name = student ? `${student.first_name} ${student.last_name}` : sid;
+
+                if (action === 'biodata') {
+                    buildBiodataModal(student);
+                    return;
+                }
 
                 if (action === 'delete') {
                     if (!confirm(`Remove ${name} from this class?\n\nThis will permanently delete the student record. This cannot be undone.`)) return;
