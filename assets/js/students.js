@@ -39,7 +39,8 @@ function initModals() {
     });
 
     // Multi-step form tabs
-    initFormSteps('add-student-form', ['personal', 'academic', 'parent'], 'prev-tab-btn', 'next-tab-btn', 'submit-student-btn');
+    initFormSteps('add-student-form', ['personal', 'academic', 'parent', 'medical'], 'prev-tab-btn', 'next-tab-btn', 'submit-student-btn');
+    initFormSteps('edit-student-form', ['edit-personal', 'edit-academic', 'edit-parent', 'edit-medical'], 'edit-prev-tab-btn', 'edit-next-tab-btn', 'update-student-btn');
 
     document.getElementById('add-student-form')?.addEventListener('submit', async e => {
         e.preventDefault();
