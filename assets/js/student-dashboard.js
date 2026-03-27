@@ -91,19 +91,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Only prevent default if it's a placeholder link
             if (this.getAttribute('href').startsWith('#')) {
                 e.preventDefault();
-                
-                // Remove active class from all links
                 navLinks.forEach(l => l.parentElement.classList.remove('active'));
-                
-                // Add active class to clicked link
                 this.parentElement.classList.add('active');
-                
-                // Handle specific navigation
                 const target = this.getAttribute('href').substring(1);
-                handleNavigation(target);
+                if (target === 'report-card') {
+                    openStudentReportCard(currentUser);
+                } else {
+                    handleNavigation(target);
+                }
             }
         });
     });
@@ -301,6 +298,34 @@ function initSearchFunctionality() {
                 }
             }
         });
+    }
+}
+
+// Report card access for students
+async function openStudentReportCard(currentUser) {
+    try {
+        const res = await fetch('/api/students');
+        const data = await res.json();
+        const student = (data.students || []).find(s =>
+            s.admission_number === currentUser.username ||
+            s.admission_number === currentUser.admission_number
+        );
+
+        if (!student) {
+            showNotification('Student record not found. Please contact the school office.', 'error');
+            return;
+        }
+
+        if (!student.result_published) {
+            showNotification('Your report card has not been published yet. Please check back later.', 'info');
+            return;
+        }
+
+        const term = encodeURIComponent('2nd Term');
+        const session = encodeURIComponent('2025/2026');
+        window.open(`report-card.html?id=${student.id}&class_key=${student.class_key}&term=${term}&session=${session}`, '_blank');
+    } catch (e) {
+        showNotification('Could not load report card. Please try again.', 'error');
     }
 }
 

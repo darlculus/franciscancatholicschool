@@ -168,6 +168,7 @@ function renderStudents(students) {
             <td>
                 <div class="action-buttons">
                     <button class="action-btn edit" onclick="openEditModal('${s.id}')" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn" onclick="openAdminReportModal('${s.id}')" title="View Report" style="background:#e8eaf6;color:#5c6bc0;border:none;border-radius:5px;padding:6px 10px;cursor:pointer"><i class="fas fa-file-alt"></i></button>
                     <button class="action-btn delete" onclick="confirmDelete('${s.id}', '${s.first_name} ${s.last_name}')" title="Delete"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </td>
@@ -347,7 +348,160 @@ function showNotification(message, type = 'info') {
     setTimeout(() => n.classList.remove('show'), 4000);
 }
 
-// ── Credentials Modal ─────────────────────────────────────────────────────────
+// ── Admin Report Modal ───────────────────────────────────────────────────────
+const TERM = '2nd Term';
+const SESSION = '2025/2026';
+
+function openAdminReportModal(id) {
+    const s = allStudents.find(x => x.id === id);
+    if (!s) return;
+
+    const existing = document.getElementById('admin-report-modal');
+    if (existing) existing.remove();
+
+    const result = (typeof s.result === 'object' && s.result) ? s.result : {};
+    const fullName = [s.first_name, s.middle_name, s.last_name].filter(Boolean).join(' ');
+    const isPublished = !!s.result_published;
+
+    const modal = document.createElement('div');
+    modal.id = 'admin-report-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
+    modal.innerHTML = `
+        <div style="background:#fff;border-radius:10px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;padding:28px;position:relative">
+            <button id="arm-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
+            <h2 style="margin:0 0 4px">Report Card Review</h2>
+            <p style="margin:0 0 6px;color:#888;font-size:0.88rem">${fullName} &mdash; ${s.class_name || ''} &mdash; ${TERM}, ${SESSION}</p>
+            <div style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.78rem;font-weight:600;margin-bottom:18px;background:${isPublished ? '#e8f5e9' : '#fff8e1'};color:${isPublished ? '#2e7d32' : '#f57f17'}">
+                ${isPublished ? '✓ Published' : '⏳ Not yet published'}
+            </div>
+
+            <div style="margin-bottom:18px">
+                <label style="font-size:0.85rem;font-weight:600;color:#555">Head Teacher's Comment</label>
+                <textarea id="arm-head-comment" rows="3" placeholder="Enter head teacher's comment..." style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:6px;font-size:0.85rem;box-sizing:border-box">${result.head_comment || ''}</textarea>
+            </div>
+
+            <div style="background:#f5f6fa;border-radius:8px;padding:12px 16px;margin-bottom:18px;font-size:0.85rem;color:#555">
+                <strong>Class Teacher's Comment:</strong><br>
+                <span style="color:#333">${result.teacher_comment || '<em style="color:#bbb">Not recorded yet</em>'}</span>
+            </div>
+
+            <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
+                <button id="arm-cancel" style="padding:9px 20px;border:1px solid #ddd;border-radius:5px;background:#fff;cursor:pointer">Cancel</button>
+                <a href="report-card.html?id=${s.id}&class_key=${s.class_key}&term=${encodeURIComponent(TERM)}&session=${encodeURIComponent(SESSION)}" target="_blank"
+                    style="padding:9px 18px;background:#e8eaf6;color:#3949ab;border-radius:5px;font-size:0.88rem;text-decoration:none;display:inline-flex;align-items:center;gap:6px">
+                    <i class="fas fa-eye"></i> Preview Report Card
+                </a>
+                <button id="arm-save" style="padding:9px 20px;background:#5c6bc0;color:#fff;border:none;border-radius:5px;cursor:pointer">Save Comment</button>
+            </div>
+        </div>`;
+
+    modal.querySelector('#arm-close').onclick = () => modal.remove();
+    modal.querySelector('#arm-cancel').onclick = () => modal.remove();
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+
+    modal.querySelector('#arm-save').onclick = async () => {
+        const btn = modal.querySelector('#arm-save');
+        btn.disabled = true; btn.textContent = 'Saving...';
+        const head_comment = modal.querySelector('#arm-head-comment').value.trim();
+        const updatedResult = { ...result, head_comment };
+        try {
+            const res = await fetch('/api/students', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: s.id, result: updatedResult })
+            });
+            if (!res.ok) throw new Error((await res.json()).error);
+            s.result = updatedResult;
+            modal.remove();
+            showNotification(`Comment saved for ${fullName}.`, 'success');
+        } catch (err) {
+            showNotification('Error: ' + err.message, 'error');
+            btn.disabled = false; btn.textContent = 'Save Comment';
+        }
+    };
+
+    document.body.appendChild(modal);
+}
+
+// ── Publish Results by Class ──────────────────────────────────────────────────
+function openPublishModal() {
+    const existing = document.getElementById('publish-modal');
+    if (existing) existing.remove();
+
+    // Group students by class
+    const classMap = {};
+    allStudents.forEach(s => {
+        const key = s.class_key;
+        if (!classMap[key]) classMap[key] = { name: s.class_name || key, students: [] };
+        classMap[key].students.push(s);
+    });
+
+    const classRows = Object.entries(classMap).map(([key, cls]) => {
+        const total = cls.students.length;
+        const withComments = cls.students.filter(s => s.result && s.result.head_comment).length;
+        const published = cls.students.filter(s => s.result_published).length;
+        const allPublished = published === total && total > 0;
+        const ready = withComments === total && total > 0;
+        return `
+        <div style="border:1px solid #eee;border-radius:8px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div>
+                <div style="font-weight:600;font-size:0.92rem">${cls.name}</div>
+                <div style="font-size:0.78rem;color:#888;margin-top:3px">
+                    ${total} student${total !== 1 ? 's' : ''} &nbsp;&bull;&nbsp;
+                    ${withComments}/${total} comments added &nbsp;&bull;&nbsp;
+                    <span style="color:${allPublished ? '#2e7d32' : '#f57f17'}">${allPublished ? '✓ Published' : published + ' published'}</span>
+                </div>
+            </div>
+            <button data-class-key="${key}" class="pub-btn"
+                style="padding:7px 16px;background:${allPublished ? '#e8f5e9' : ready ? '#5c6bc0' : '#bdbdbd'};color:${allPublished ? '#2e7d32' : '#fff'};border:none;border-radius:5px;cursor:${ready || allPublished ? 'pointer' : 'not-allowed'};font-size:0.82rem;white-space:nowrap"
+                ${!ready && !allPublished ? 'disabled title="Add head teacher comments to all students first"' : ''}>
+                ${allPublished ? '✓ Published' : 'Publish Results'}
+            </button>
+        </div>`;
+    }).join('');
+
+    const modal = document.createElement('div');
+    modal.id = 'publish-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
+    modal.innerHTML = `
+        <div style="background:#fff;border-radius:10px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;padding:28px;position:relative">
+            <button id="pub-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
+            <h2 style="margin:0 0 4px">Publish Results</h2>
+            <p style="margin:0 0 20px;color:#888;font-size:0.88rem">${TERM}, ${SESSION} &mdash; Once published, students can view their report cards.</p>
+            <div style="display:flex;flex-direction:column;gap:10px">${classRows || '<p style="color:#aaa;text-align:center">No students enrolled yet.</p>'}</div>
+            <p style="margin-top:16px;font-size:0.78rem;color:#bbb;text-align:center">You must add your head teacher comment to every student in a class before publishing.</p>
+        </div>`;
+
+    modal.querySelector('#pub-close').onclick = () => modal.remove();
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+
+    modal.querySelectorAll('.pub-btn:not([disabled])').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const classKey = btn.dataset.classKey;
+            const cls = classMap[classKey];
+            if (!confirm(`Publish results for ${cls.name}? Students will be able to view their report cards.`)) return;
+            btn.disabled = true; btn.textContent = 'Publishing...';
+            try {
+                await Promise.all(cls.students.map(s =>
+                    fetch('/api/students', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: s.id, result_published: true })
+                    })
+                ));
+                cls.students.forEach(s => s.result_published = true);
+                showNotification(`Results published for ${cls.name}!`, 'success');
+                modal.remove();
+                openPublishModal(); // refresh
+            } catch (err) {
+                showNotification('Error publishing: ' + err.message, 'error');
+                btn.disabled = false; btn.textContent = 'Publish Results';
+            }
+        });
+    });
+
+    document.body.appendChild(modal);
+}
 function showCredentialsModal(name, username, password) {
     const existing = document.getElementById('credentials-modal');
     if (existing) existing.remove();
