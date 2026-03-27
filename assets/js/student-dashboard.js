@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const studentGradeElements = document.querySelectorAll('#student-grade');
     
     studentNameElements.forEach(element => {
-        element.textContent = currentUser.name;
+        element.textContent = currentUser.name || currentUser.full_name || currentUser.username;
     });
     
     studentGradeElements.forEach(element => {
-        element.textContent = currentUser.grade;
+        element.textContent = currentUser.class_name || 'Student';
     });
     
     // Mobile sidebar toggle functionality
@@ -304,12 +304,19 @@ function initSearchFunctionality() {
 // Report card access for students
 async function openStudentReportCard(currentUser) {
     try {
+        // Use student_id stored at login if available
+        const studentId = currentUser.student_id;
+        const classKey = currentUser.class_key;
+
+        if (!studentId) {
+            showNotification('Student record not found. Please contact the school office.', 'error');
+            return;
+        }
+
+        // Fetch just this student to check published status
         const res = await fetch('/api/students');
         const data = await res.json();
-        const student = (data.students || []).find(s =>
-            s.admission_number === currentUser.username ||
-            s.admission_number === currentUser.admission_number
-        );
+        const student = (data.students || []).find(s => s.id === studentId);
 
         if (!student) {
             showNotification('Student record not found. Please contact the school office.', 'error');
@@ -323,7 +330,7 @@ async function openStudentReportCard(currentUser) {
 
         const term = encodeURIComponent('2nd Term');
         const session = encodeURIComponent('2025/2026');
-        window.open(`report-card.html?id=${student.id}&class_key=${student.class_key}&term=${term}&session=${session}`, '_blank');
+        window.open(`report-card.html?id=${student.id}&class_key=${classKey || student.class_key}&term=${term}&session=${session}`, '_blank');
     } catch (e) {
         showNotification('Could not load report card. Please try again.', 'error');
     }

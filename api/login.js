@@ -38,6 +38,24 @@ module.exports = async (req, res) => {
     }
 
     const { password: _, ...userData } = user;
+
+    // For students, enrich with their student record
+    if (userData.role === 'student') {
+      const { data: student } = await supabase
+        .from('students')
+        .select('id, admission_number, class_key, class_name, first_name, last_name, middle_name, photo_url')
+        .eq('admission_number', userData.username)
+        .single();
+      if (student) {
+        userData.student_id = student.id;
+        userData.admission_number = student.admission_number;
+        userData.class_key = student.class_key;
+        userData.class_name = student.class_name;
+        userData.name = [student.first_name, student.middle_name, student.last_name].filter(Boolean).join(' ');
+        userData.photo_url = student.photo_url || null;
+      }
+    }
+
     res.json({ 
       success: true, 
       user: userData,
