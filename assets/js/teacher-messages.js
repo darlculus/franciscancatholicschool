@@ -137,36 +137,45 @@ function initComposeMessage() {
     
     // Handle form submission
     if (composeForm) {
-        composeForm.addEventListener('submit', function(event) {
+        composeForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             
-            // Get form data
             const recipients = Array.from(document.getElementById('message-to').selectedOptions).map(option => option.value);
-            const subject = document.getElementById('message-subject').value;
-            const body = document.getElementById('message-body').value;
+            const subject = document.getElementById('message-subject').value.trim();
+            const body = document.getElementById('message-body').value.trim();
             
-            // Validate form
-            if (recipients.length === 0) {
-                alert('Please select at least one recipient.');
-                return;
+            if (recipients.length === 0) { alert('Please select at least one recipient.'); return; }
+            if (!subject) { alert('Please enter a subject for your message.'); return; }
+            if (!body) { alert('Please enter a message body.'); return; }
+
+            const currentUser = JSON.parse(localStorage.getItem('currentUser')) || JSON.parse(sessionStorage.getItem('currentUser'));
+            const submitBtn = composeForm.querySelector('[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            try {
+                await Promise.all(recipients.map(recipient =>
+                    fetch('/api/messages', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            sender_name: currentUser?.full_name || currentUser?.name || 'Teacher',
+                            sender_role: currentUser?.role || 'teacher',
+                            recipient,
+                            subject,
+                            body
+                        })
+                    })
+                ));
+                alert('Message sent successfully!');
+                composeForm.reset();
+                closeComposeModal();
+            } catch (err) {
+                alert('Failed to send message. Please try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
             }
-            
-            if (!subject) {
-                alert('Please enter a subject for your message.');
-                return;
-            }
-            
-            if (!body) {
-                alert('Please enter a message body.');
-                return;
-            }
-            
-            // Since the school hasn't resumed yet, we'll just show a confirmation
-            alert('Your message has been saved and will be sent when the school year begins.');
-            
-            // Reset form and close modal
-            composeForm.reset();
-            closeComposeModal();
         });
     }
     

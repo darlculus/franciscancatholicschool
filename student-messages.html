@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Franciscan Catholic Nursery & Primary School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin-dashboard.css">
+    <link rel="stylesheet" href="assets/css/teacher-messages.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
+                <h3>Student Portal</h3>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li><a href="student-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="#report-card" id="report-card-link"><i class="fas fa-id-card"></i> My Report Card</a></li>
+                    <li><a href="student-assignments.html"><i class="fas fa-book"></i> Assignments</a></li>
+                    <li class="active"><a href="student-messages.html"><i class="fas fa-envelope"></i> Messages</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <nav class="dashboard-nav">
+                <button id="sidebar-toggle" class="mobile-toggle"><i class="fas fa-bars"></i></button>
+                <div class="nav-right">
+                    <div class="date-display"><i class="far fa-calendar-alt"></i><span id="current-date">Loading...</span></div>
+                    <div class="admin-profile">
+                        <div id="student-avatar" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-weight:600;font-size:0.9rem;flex-shrink:0"></div>
+                        <div class="admin-info">
+                            <span id="student-name">Loading...</span>
+                            <span id="student-grade">Student</span>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="dashboard-content">
+                <div class="page-header">
+                    <h1>Messages</h1>
+                    <p>Messages from your teacher and school administration</p>
+                </div>
+
+                <div class="messages-container">
+                    <!-- Left panel -->
+                    <div class="messages-sidebar">
+                        <div class="messages-actions">
+                            <div class="messages-filter">
+                                <select id="message-filter">
+                                    <option value="all">All Messages</option>
+                                    <option value="unread">Unread</option>
+                                    <option value="teacher">From Teacher</option>
+                                    <option value="admin">From Admin</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="messages-folders">
+                            <h3>Folders</h3>
+                            <ul>
+                                <li class="active" data-folder="inbox">
+                                    <a href="#inbox">
+                                        <i class="fas fa-inbox"></i>
+                                        <span>Inbox</span>
+                                        <span class="badge" id="unread-badge" style="display:none">0</span>
+                                    </a>
+                                </li>
+                                <li data-folder="starred">
+                                    <a href="#starred">
+                                        <i class="fas fa-star"></i>
+                                        <span>Starred</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Message list -->
+                        <div id="message-list" style="flex:1;overflow-y:auto;padding:10px 0">
+                            <div style="text-align:center;padding:20px;color:#aaa;font-size:0.85rem">
+                                <i class="fas fa-spinner fa-spin"></i> Loading...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right panel: message view -->
+                    <div class="messages-content" id="message-view">
+                        <div class="messages-empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-envelope-open"></i>
+                            </div>
+                            <h2>Your Inbox</h2>
+                            <p>Messages from your teacher and the school administration will appear here.</p>
+                            <p class="empty-state-tip">Select a message on the left to read it.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/student-dashboard.js"></script>
+    <script src="assets/js/student-messages.js"></script>
+</body>
+</html>

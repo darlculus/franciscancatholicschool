@@ -39,6 +39,7 @@
     { "source": "/api/students", "destination": "/api/students.js" },
     { "source": "/api/admin-attendance", "destination": "/api/admin-attendance.js" },
     { "source": "/api/forgot-password", "destination": "/api/forgot-password.js" },
-    { "source": "/api/reset-password", "destination": "/api/reset-password.js" }
+    { "source": "/api/reset-password", "destination": "/api/reset-password.js" },
+    { "source": "/api/messages", "destination": "/api/messages.js" }
   ]
 }
