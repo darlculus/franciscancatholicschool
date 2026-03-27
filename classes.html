@@ -143,9 +143,118 @@ document.addEventListener('DOMContentLoaded', async function () {
                         <i class="fas fa-user-plus"></i>
                         ${cls.teacher_name ? 'Change Teacher' : 'Assign Teacher'}
                     </button>
+                    <button class="btn-secondary view-class-btn" style="margin-top:8px;width:100%"
+                        data-key="${cls.class_key}"
+                        data-name="${cls.name}">
+                        <i class="fas fa-eye"></i> View Class
+                    </button>
                 </div>
             </div>
         `).join('');
+    }
+
+    // Open view class modal
+    document.getElementById('classes-grid').addEventListener('click', async function (e) {
+        const viewBtn = e.target.closest('.view-class-btn');
+        if (!viewBtn) return;
+        const classKey = viewBtn.dataset.key;
+        const className = viewBtn.dataset.name;
+        await openViewClassModal(classKey, className);
+    });
+
+    async function openViewClassModal(classKey, className) {
+        const existing = document.getElementById('view-class-modal');
+        if (existing) existing.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'view-class-modal';
+        modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
+        modal.innerHTML = `
+            <div style="background:#fff;border-radius:10px;width:100%;max-width:700px;max-height:90vh;overflow-y:auto;padding:28px;position:relative">
+                <button id="vcm-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
+                <h2 style="margin:0 0 4px">${className}</h2>
+                <p style="margin:0 0 18px;color:#888;font-size:0.88rem">2nd Term &mdash; 2025/2026</p>
+                <div id="vcm-body"><i class="fas fa-spinner fa-spin"></i> Loading students...</div>
+            </div>`;
+        modal.querySelector('#vcm-close').onclick = () => modal.remove();
+        modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+        document.body.appendChild(modal);
+
+        try {
+            const res = await fetch(`/api/students?class_key=${classKey}`);
+            const data = await res.json();
+            const students = data.students || [];
+            const body = document.getElementById('vcm-body');
+
+            if (!students.length) {
+                body.innerHTML = '<p style="color:#aaa;text-align:center;padding:30px 0">No students enrolled in this class yet.</p>';
+                return;
+            }
+
+            const GRADING = [
+                { min:75, grade:'A', label:'Excellent' },
+                { min:60, grade:'B', label:'Very Good' },
+                { min:50, grade:'C', label:'Good' },
+                { min:40, grade:'D', label:'Fair' },
+                { min:0,  grade:'F', label:'Fail' }
+            ];
+            const getGrade = score => GRADING.find(g => score >= g.min) || { grade:'—', label:'—' };
+
+            body.innerHTML = `
+                <table style="width:100%;border-collapse:collapse;font-size:0.88rem">
+                    <thead>
+                        <tr style="background:#f5f6fa">
+                            <th style="padding:10px;text-align:left;border-bottom:2px solid #eee">#</th>
+                            <th style="padding:10px;text-align:left;border-bottom:2px solid #eee">Student</th>
+                            <th style="padding:10px;text-align:center;border-bottom:2px solid #eee">Result</th>
+                            <th style="padding:10px;text-align:center;border-bottom:2px solid #eee">Head Comment</th>
+                            <th style="padding:10px;text-align:center;border-bottom:2px solid #eee">Published</th>
+                            <th style="padding:10px;text-align:center;border-bottom:2px solid #eee">Report Card</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${students.map((s, i) => {
+                            const result = (typeof s.result === 'object' && s.result) ? s.result : {};
+                            const subjects = Array.isArray(s.subjects) ? s.subjects : Object.keys(result).filter(k => !['psd','teacher_comment','head_comment'].includes(k));
+                            const scores = subjects.map(subj => result[subj]?.total).filter(t => t !== null && t !== undefined);
+                            const avg = scores.length ? Math.round(scores.reduce((a,b) => a+b, 0) / scores.length) : null;
+                            const { grade } = avg !== null ? getGrade(avg) : { grade: '—' };
+                            const hasComment = !!result.head_comment;
+                            const isPublished = !!s.result_published;
+                            const fullName = [s.first_name, s.middle_name, s.last_name].filter(Boolean).join(' ');
+                            return `
+                            <tr style="border-bottom:1px solid #f5f5f5">
+                                <td style="padding:10px">${i+1}</td>
+                                <td style="padding:10px">
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <div style="width:32px;height:32px;border-radius:50%;overflow:hidden;background:#f0f0f0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                                            ${s.photo_url ? `<img src="${s.photo_url}" style="width:100%;height:100%;object-fit:cover">` : '<i class="fas fa-user" style="color:#bbb;font-size:0.9rem"></i>'}
+                                        </div>
+                                        <span>${fullName}</span>
+                                    </div>
+                                </td>
+                                <td style="padding:10px;text-align:center">
+                                    ${avg !== null ? `<span style="font-weight:700;color:#1a237e">${avg}%</span> <span style="font-size:0.78rem;color:#888">(${grade})</span>` : '<span style="color:#bbb">No result</span>'}
+                                </td>
+                                <td style="padding:10px;text-align:center">
+                                    <span style="color:${hasComment ? '#2e7d32' : '#f57f17'};font-size:0.82rem">${hasComment ? '✓ Added' : '✗ Missing'}</span>
+                                </td>
+                                <td style="padding:10px;text-align:center">
+                                    <span style="color:${isPublished ? '#2e7d32' : '#bbb'};font-size:0.82rem">${isPublished ? '✓ Yes' : '—'}</span>
+                                </td>
+                                <td style="padding:10px;text-align:center">
+                                    <a href="report-card.html?id=${s.id}&class_key=${classKey}&term=${encodeURIComponent('2nd Term')}&session=${encodeURIComponent('2025/2026')}" target="_blank"
+                                        style="color:#5c6bc0;font-size:0.82rem;text-decoration:none">
+                                        <i class="fas fa-external-link-alt"></i> View
+                                    </a>
+                                </td>
+                            </tr>`;
+                        }).join('')}
+                    </tbody>
+                </table>`;
+        } catch (err) {
+            document.getElementById('vcm-body').innerHTML = '<p style="color:red">Failed to load students.</p>';
+        }
     }
 
     // Open assign modal

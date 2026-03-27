@@ -537,7 +537,13 @@ async function buildUpdateResultModal(student, classKey) {
             <div style="margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
                 <div>
                     <label style="font-size:0.85rem;font-weight:600;color:#555">Class Teacher's Comment</label>
-                    <textarea id="ur-teacher-comment" rows="3" placeholder="Enter comment..." style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:6px;font-size:0.85rem;box-sizing:border-box">${saved.teacher_comment || ''}</textarea>
+                    <div style="margin-top:6px;padding:8px 10px;background:#f0f9f0;border:1px solid #c8e6c9;border-radius:6px;font-size:0.78rem;color:#2e7d32;margin-bottom:6px">
+                        <strong>Doing well:</strong> <span id="ur-doing-well">${subjects.filter(subj => { const t = (midResult[subj]?.total ?? 0) + (saved[subj]?.exam ?? 0); return t >= 60; }).join(', ') || 'Enter exam scores to see'}</span>
+                    </div>
+                    <div style="margin-bottom:6px;padding:8px 10px;background:#fff8e1;border:1px solid #ffe082;border-radius:6px;font-size:0.78rem;color:#f57f17">
+                        <strong>Needs improvement:</strong> <span id="ur-needs-improvement">${subjects.filter(subj => { const ca = midResult[subj]?.total ?? null; const ex = saved[subj]?.exam ?? null; return ca !== null && ex !== null && (ca + ex) < 60; }).join(', ') || 'Enter exam scores to see'}</span>
+                    </div>
+                    <textarea id="ur-teacher-comment" rows="3" placeholder="Enter comment..." style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:2px;font-size:0.85rem;box-sizing:border-box">${saved.teacher_comment || ''}</textarea>
                 </div>
                 <div>
                     <label style="font-size:0.85rem;font-weight:600;color:#555">Head Teacher's Comment</label>
@@ -579,6 +585,21 @@ async function buildUpdateResultModal(student, classKey) {
             const exam = parseFloat(input.value);
             const totalEl = modal.querySelector(`.res-total[data-subj="${subj}"]`);
             totalEl.textContent = (caTotal !== null && !isNaN(exam)) ? (caTotal + exam) : '—';
+            // Refresh performance summary
+            const wellEl = modal.querySelector('#ur-doing-well');
+            const needsEl = modal.querySelector('#ur-needs-improvement');
+            if (wellEl && needsEl) {
+                const well = [], needs = [];
+                subjects.forEach(s => {
+                    const ca = midResult[s]?.total ?? null;
+                    const ex = parseFloat(modal.querySelector(`input[data-subj="${s}"][data-field="exam"]`)?.value);
+                    if (ca !== null && !isNaN(ex)) {
+                        (ca + ex >= 60 ? well : needs).push(s);
+                    }
+                });
+                wellEl.textContent = well.join(', ') || 'None yet';
+                needsEl.textContent = needs.join(', ') || 'None yet';
+            }
         });
     });
 
