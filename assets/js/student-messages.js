@@ -2,6 +2,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     const currentUser = JSON.parse(localStorage.getItem('currentUser')) || JSON.parse(sessionStorage.getItem('currentUser'));
     if (!currentUser || currentUser.role !== 'student') { window.location.href = 'portal.html'; return; }
 
+    // Nav info — reuse student-dashboard.js helper
+    const initials = (currentUser.name || currentUser.full_name || 'S').split(' ').filter(Boolean).map(w => w[0]).join('').substring(0, 2).toUpperCase();
+    document.getElementById('student-name').textContent = currentUser.name || currentUser.full_name || currentUser.username;
+    document.getElementById('student-grade').textContent = currentUser.class_name || 'Student';
+    setStudentAvatar(document.getElementById('student-avatar'), currentUser, initials);
+
     let allMessages = [];
     let currentFolder = 'inbox';
     let starred = JSON.parse(localStorage.getItem('student-starred-msgs') || '[]');

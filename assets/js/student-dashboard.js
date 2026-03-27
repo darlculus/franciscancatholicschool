@@ -16,9 +16,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('welcome-name').textContent = firstName;
     document.getElementById('student-name').textContent = currentUser.name || currentUser.full_name || currentUser.username;
     document.getElementById('student-grade').textContent = currentUser.class_name || 'Student';
-    document.getElementById('student-avatar').textContent = initials;
     document.getElementById('stat-class').textContent = currentUser.class_name || '—';
     document.getElementById('stat-admission').textContent = currentUser.admission_number || currentUser.username || '—';
+
+    // Avatar — show photo if available, otherwise initials
+    setStudentAvatar(document.getElementById('student-avatar'), currentUser, initials);
 
     // Sidebar toggle
     const sidebar = document.querySelector('.dashboard-sidebar');
@@ -100,6 +102,16 @@ async function openStudentReportCard(currentUser) {
         window.open(`report-card.html?id=${student.id}&class_key=${classKey || student.class_key}&term=${term}&session=${session}`, '_blank');
     } catch (e) {
         showNotification('Could not load report card. Please try again.', 'error');
+    }
+}
+
+function setStudentAvatar(el, currentUser, initials) {
+    if (!el) return;
+    if (currentUser.photo_url) {
+        el.innerHTML = `<img src="${currentUser.photo_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+        el.textContent = '';
+    } else {
+        el.textContent = initials || 'S';
     }
 }
 
