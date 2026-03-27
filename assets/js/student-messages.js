@@ -15,20 +15,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         sidebar.classList.toggle('active');
         e.stopPropagation();
     });
-    document.addEventListener('click', e => {
-        if (sidebar.classList.contains('active') && !sidebar.contains(e.target))
-            sidebar.classList.remove('active');
-    });
-
-    // Logout
-    document.getElementById('logout-btn')?.addEventListener('click', e => {
-        e.preventDefault();
-        ['currentUser', 'authToken'].forEach(k => {
-            localStorage.removeItem(k);
-            sessionStorage.removeItem(k);
-        });
-        window.location.href = 'portal.html';
-    });
 
     // Report card link
     document.getElementById('report-card-link')?.addEventListener('click', e => {
