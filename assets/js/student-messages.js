@@ -2,11 +2,39 @@ document.addEventListener('DOMContentLoaded', async function () {
     const currentUser = JSON.parse(localStorage.getItem('currentUser')) || JSON.parse(sessionStorage.getItem('currentUser'));
     if (!currentUser || currentUser.role !== 'student') { window.location.href = 'portal.html'; return; }
 
-    // Nav info — reuse student-dashboard.js helper
+    // Nav info
     const initials = (currentUser.name || currentUser.full_name || 'S').split(' ').filter(Boolean).map(w => w[0]).join('').substring(0, 2).toUpperCase();
     document.getElementById('student-name').textContent = currentUser.name || currentUser.full_name || currentUser.username;
     document.getElementById('student-grade').textContent = currentUser.class_name || 'Student';
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
     setStudentAvatar(document.getElementById('student-avatar'), currentUser, initials);
+
+    // Sidebar toggle
+    const sidebar = document.querySelector('.dashboard-sidebar');
+    document.getElementById('sidebar-toggle')?.addEventListener('click', e => {
+        sidebar.classList.toggle('active');
+        e.stopPropagation();
+    });
+    document.addEventListener('click', e => {
+        if (sidebar.classList.contains('active') && !sidebar.contains(e.target))
+            sidebar.classList.remove('active');
+    });
+
+    // Logout
+    document.getElementById('logout-btn')?.addEventListener('click', e => {
+        e.preventDefault();
+        ['currentUser', 'authToken'].forEach(k => {
+            localStorage.removeItem(k);
+            sessionStorage.removeItem(k);
+        });
+        window.location.href = 'portal.html';
+    });
+
+    // Report card link
+    document.getElementById('report-card-link')?.addEventListener('click', e => {
+        e.preventDefault();
+        openStudentReportCard(currentUser);
+    });
 
     let allMessages = [];
     let currentFolder = 'inbox';
