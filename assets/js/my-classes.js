@@ -772,6 +772,66 @@ function buildMidResultModal(student) {
     document.body.appendChild(modal);
 }
 
+// ── Result Archive modal ─────────────────────────────────────────────────────
+function buildResultArchiveModal(student, classKey) {
+    const existing = document.getElementById('archive-modal');
+    if (existing) existing.remove();
+
+    const fullName = [student.first_name, student.middle_name, student.last_name].filter(Boolean).join(' ');
+
+    const TERMS = [
+        { term: '1st Term', session: '2025/2026' },
+        { term: '2nd Term', session: '2025/2026' },
+        { term: '3rd Term', session: '2025/2026' },
+        { term: '1st Term', session: '2024/2025' },
+        { term: '2nd Term', session: '2024/2025' },
+        { term: '3rd Term', session: '2024/2025' },
+    ];
+
+    // Determine which terms have result data
+    const result = (typeof student.result === 'object' && student.result) ? student.result : null;
+    const hasCurrentResult = result && Object.keys(result).some(k => !['psd','teacher_comment','head_comment'].includes(k));
+
+    const cardsHtml = TERMS.map(({ term, session }) => {
+        const isCurrent = term === '1st Term' && session === '2025/2026';
+        const hasData = isCurrent && hasCurrentResult;
+        const url = `report-card.html?id=${student.id}&class_key=${classKey}&term=${encodeURIComponent(term)}&session=${encodeURIComponent(session)}`;
+
+        return `
+        <div style="border:1px solid ${hasData ? '#c5cae9' : '#eee'};border-radius:8px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;background:${hasData ? '#f5f6ff' : '#fafafa'}">
+            <div style="display:flex;align-items:center;gap:14px">
+                <div style="width:40px;height:40px;border-radius:8px;background:${hasData ? '#e8eaf6' : '#f0f0f0'};display:flex;align-items:center;justify-content:center">
+                    <i class="fas fa-file-alt" style="color:${hasData ? '#5c6bc0' : '#ccc'};font-size:1.1rem"></i>
+                </div>
+                <div>
+                    <div style="font-weight:600;font-size:0.9rem;color:${hasData ? '#333' : '#aaa'}">${term} &mdash; ${session}</div>
+                    <div style="font-size:0.78rem;color:${hasData ? '#5c6bc0' : '#bbb'};margin-top:2px">${hasData ? 'Report card available' : 'No record yet'}</div>
+                </div>
+            </div>
+            ${hasData
+                ? `<a href="${url}" target="_blank" style="padding:7px 16px;background:#5c6bc0;color:#fff;border-radius:5px;font-size:0.82rem;text-decoration:none;white-space:nowrap"><i class="fas fa-eye"></i> View</a>`
+                : `<span style="font-size:0.78rem;color:#ccc;font-style:italic">Not available</span>`
+            }
+        </div>`;
+    }).join('');
+
+    const modal = document.createElement('div');
+    modal.id = 'archive-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
+    modal.innerHTML = `
+        <div style="background:#fff;border-radius:10px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;padding:28px;position:relative">
+            <button id="archive-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
+            <h2 style="margin:0 0 4px">Result Archive</h2>
+            <p style="margin:0 0 20px;color:#888;font-size:0.88rem">${fullName} &mdash; ${student.class_name || classKey}</p>
+            <div style="display:flex;flex-direction:column;gap:10px">${cardsHtml}</div>
+            <p style="margin-top:18px;font-size:0.78rem;color:#bbb;text-align:center">Report cards are generated from saved term results. Past terms will appear here once results are recorded.</p>
+        </div>`;
+
+    modal.querySelector('#archive-close').onclick = () => modal.remove();
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+    document.body.appendChild(modal);
+}
+
 async function loadMyClass(currentUser) {
     const grid = document.getElementById('classes-grid');
     const studentSection = document.getElementById('students-list-section');
@@ -907,7 +967,6 @@ async function loadMyClass(currentUser) {
                                         <a href="#" data-action="update-mid-result" data-id="${s.id}"><i class="fas fa-pen-square"></i> Update Mid-Result</a>
                                         <a href="#" data-action="report-card" data-id="${s.id}"><i class="fas fa-id-card"></i> Report Card</a>
                                         <a href="#" data-action="result-archive" data-id="${s.id}"><i class="fas fa-archive"></i> Result Archive</a>
-                                        <a href="#" data-action="medical" data-id="${s.id}"><i class="fas fa-heartbeat"></i> Medical</a>
                                         <a href="#" data-action="delete" data-id="${s.id}" style="color:#e53935"><i class="fas fa-trash-alt" style="color:#e53935"></i> Remove Student</a>
                                     </div>
                                 </div>
@@ -968,6 +1027,11 @@ async function loadMyClass(currentUser) {
                     const term = encodeURIComponent('1st Term');
                     const session = encodeURIComponent('2025/2026');
                     window.open(`report-card.html?id=${student.id}&class_key=${assignedClassKey}&term=${term}&session=${session}`, '_blank');
+                    return;
+                }
+
+                if (action === 'result-archive') {
+                    buildResultArchiveModal(student, assignedClassKey);
                     return;
                 }
 
