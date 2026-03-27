@@ -780,12 +780,8 @@ function buildResultArchiveModal(student, classKey) {
     const fullName = [student.first_name, student.middle_name, student.last_name].filter(Boolean).join(' ');
 
     const TERMS = [
-        { term: '1st Term', session: '2025/2026' },
         { term: '2nd Term', session: '2025/2026' },
         { term: '3rd Term', session: '2025/2026' },
-        { term: '1st Term', session: '2024/2025' },
-        { term: '2nd Term', session: '2024/2025' },
-        { term: '3rd Term', session: '2024/2025' },
     ];
 
     // Determine which terms have result data
@@ -793,7 +789,7 @@ function buildResultArchiveModal(student, classKey) {
     const hasCurrentResult = result && Object.keys(result).some(k => !['psd','teacher_comment','head_comment'].includes(k));
 
     const cardsHtml = TERMS.map(({ term, session }) => {
-        const isCurrent = term === '1st Term' && session === '2025/2026';
+        const isCurrent = term === '2nd Term' && session === '2025/2026';
         const hasData = isCurrent && hasCurrentResult;
         const url = `report-card.html?id=${student.id}&class_key=${classKey}&term=${encodeURIComponent(term)}&session=${encodeURIComponent(session)}`;
 
@@ -1024,7 +1020,7 @@ async function loadMyClass(currentUser) {
                 }
 
                 if (action === 'report-card') {
-                    const term = encodeURIComponent('1st Term');
+                    const term = encodeURIComponent('2nd Term');
                     const session = encodeURIComponent('2025/2026');
                     window.open(`report-card.html?id=${student.id}&class_key=${assignedClassKey}&term=${term}&session=${session}`, '_blank');
                     return;
