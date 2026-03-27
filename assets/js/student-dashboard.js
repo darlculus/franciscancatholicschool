@@ -43,32 +43,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         window.location.href = 'portal.html';
     });
 
-    // Check report card status
-    await checkReportStatus(currentUser);
-
-    // Report card button
+    // Report card buttons — all open the term picker modal
     document.getElementById('view-report-btn')?.addEventListener('click', () => openStudentReportCard(currentUser));
-    document.getElementById('report-card-link')?.addEventListener('click', e => {
-        e.preventDefault();
-        openStudentReportCard(currentUser);
-    });
+    document.getElementById('report-card-link')?.addEventListener('click', e => { e.preventDefault(); openStudentReportCard(currentUser); });
+    document.getElementById('report-card-stat')?.addEventListener('click', () => openStudentReportCard(currentUser));
 });
-
-async function checkReportStatus(currentUser) {
-    try {
-        const res = await fetch('/api/students');
-        const data = await res.json();
-        const student = (data.students || []).find(s => s.id === currentUser.student_id);
-        const statusEl = document.getElementById('stat-report');
-        if (!student) { statusEl.textContent = '—'; return; }
-        if (student.result_published) {
-            statusEl.textContent = 'Ready';
-            statusEl.style.color = '#2e7d32';
-        } else {
-            statusEl.textContent = 'Pending';
-            statusEl.style.color = '#f57f17';
-        }
-    } catch (e) {
-        document.getElementById('stat-report').textContent = '—';
-    }
-}
