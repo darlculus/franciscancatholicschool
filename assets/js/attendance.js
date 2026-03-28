@@ -1,9 +1,9 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     updateDateDisplay();
     initTabs();
     initModals();
     initAttendance();
-    setTodayAsDefault();
+    await setTodayAsDefault();
 });
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -16,17 +16,35 @@ function updateDateDisplay() {
     });
 }
 
-function setTodayAsDefault() {
+async function setTodayAsDefault() {
     const today = new Date().toISOString().split('T')[0];
     document.querySelectorAll('input[type="date"]').forEach(i => { if (i) i.value = today; });
 
-    // Auto-select teacher's assigned class
+    // Auto-select teacher's assigned class then load students
     const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || 'null');
-    if (currentUser?.assigned_class) {
+
+    // Try to get assigned class from teacher record
+    let assignedClass = currentUser?.assigned_class || null;
+
+    if (!assignedClass && currentUser) {
+        try {
+            const tRes = await fetch('/api/teachers');
+            const tData = await tRes.json();
+            const teacher = (tData.teachers || []).find(t =>
+                t.teacher_id === currentUser.username ||
+                t.email === currentUser.email
+            );
+            assignedClass = teacher?.assigned_class || null;
+        } catch (e) { /* ignore */ }
+    }
+
+    if (assignedClass) {
         ['attendance-class', 'modal-attendance-class'].forEach(id => {
             const el = getElement(id);
-            if (el) el.value = currentUser.assigned_class;
+            if (el) el.value = assignedClass;
         });
+        // Auto-load today's attendance
+        await loadAttendanceData(today, assignedClass);
     }
 }
 
