@@ -1,7 +1,5 @@
 // API Client for Franciscan Catholic School
-const API_BASE_URL = window.location.hostname === 'localhost' 
-  ? 'http://localhost:3000/api'
-  : '/api';
+const API_BASE_URL = '/api';
 
 window.api = {
   token: null,
