@@ -115,7 +115,7 @@ module.exports = async (req, res) => {
 
     // DELETE - Remove teacher
     if (req.method === 'DELETE') {
-      const { id } = req.body;
+      const id = req.query.id || (req.body && req.body.id);
 
       if (!id) {
         return res.status(400).json({ error: 'Teacher ID required' });
