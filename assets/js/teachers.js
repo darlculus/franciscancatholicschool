@@ -58,6 +58,7 @@ function renderTeachers() {
         const status = t.status || 'active';
         const initials = (t.full_name || '?').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
         const row = document.createElement('tr');
+        const safeId = String(t.id);
         row.innerHTML = `
             <td>${t.teacher_id || t.id}</td>
             <td>
@@ -75,10 +76,13 @@ function renderTeachers() {
             <td>${t.join_date ? new Date(t.join_date).toLocaleDateString() : (t.created_at ? new Date(t.created_at).toLocaleDateString() : '-')}</td>
             <td><span class="status-badge status-${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span></td>
             <td>
-                <button class="action-icon view" onclick="openViewModal(${t.id})" title="View"><i class="fas fa-eye"></i></button>
-                <button class="action-icon edit" onclick="openEditModal(${t.id})" title="Edit"><i class="fas fa-edit"></i></button>
-                <button class="action-icon delete" onclick="confirmDelete(${t.id})" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                <button class="action-icon view" data-id="${safeId}" title="View"><i class="fas fa-eye"></i></button>
+                <button class="action-icon edit" data-id="${safeId}" title="Edit"><i class="fas fa-edit"></i></button>
+                <button class="action-icon delete" data-id="${safeId}" title="Delete"><i class="fas fa-trash-alt"></i></button>
             </td>`;
+        row.querySelector('.action-icon.view').addEventListener('click', () => openViewModal(safeId));
+        row.querySelector('.action-icon.edit').addEventListener('click', () => openEditModal(safeId));
+        row.querySelector('.action-icon.delete').addEventListener('click', () => confirmDelete(safeId));
         tbody.appendChild(row);
     });
 }
@@ -163,7 +167,7 @@ async function addTeacher() {
 // ── View Modal ────────────────────────────────────────────────────────────────
 
 function openViewModal(id) {
-    const t = teachers.find(x => x.id === id);
+    const t = teachers.find(x => String(x.id) === String(id));
     if (!t) return;
     currentTeacherId = id;
 
@@ -201,7 +205,7 @@ function openViewModal(id) {
 // ── Edit Modal ────────────────────────────────────────────────────────────────
 
 function openEditModal(id) {
-    const t = teachers.find(x => x.id === id);
+    const t = teachers.find(x => String(x.id) === String(id));
     if (!t) return;
     currentTeacherId = id;
 
@@ -275,7 +279,7 @@ async function updateTeacher() {
 
 function confirmDelete(id) {
     currentTeacherId = id;
-    const t = teachers.find(x => x.id === id);
+    const t = teachers.find(x => String(x.id) === String(id));
     const msg = document.getElementById('delete-confirmation-message');
     if (msg) msg.textContent = `Are you sure you want to delete ${t?.full_name || 'this teacher'}? This cannot be undone.`;
     document.getElementById('delete-confirmation-modal')?.classList.add('active');
