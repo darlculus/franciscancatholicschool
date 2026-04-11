@@ -849,6 +849,109 @@ function buildResultArchiveModal(student, classKey) {
     document.body.appendChild(modal);
 }
 
+// ── Add Student modal (teacher) ─────────────────────────────────────────────
+function buildAddStudentModal(classKey, className, currentUser) {
+    const existing = document.getElementById('add-student-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'add-student-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
+    modal.innerHTML = `
+        <div style="background:#fff;border-radius:10px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;padding:28px;position:relative">
+            <button id="asm-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
+            <h2 style="margin:0 0 4px">Add Student</h2>
+            <p style="margin:0 0 20px;color:#888;font-size:0.88rem">Enrolling into: <strong>${className}</strong></p>
+            <form id="asm-form">
+                <p style="font-weight:600;margin:0 0 12px;color:#555;border-bottom:1px solid #eee;padding-bottom:6px">Personal Information</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                    <div><label style="font-size:.85rem">First Name *</label><input id="asm-first" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px;box-sizing:border-box"></div>
+                    <div><label style="font-size:.85rem">Middle Name</label><input id="asm-middle" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px;box-sizing:border-box"></div>
+                    <div><label style="font-size:.85rem">Last Name *</label><input id="asm-last" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px;box-sizing:border-box"></div>
+                    <div><label style="font-size:.85rem">Gender *</label>
+                        <select id="asm-gender" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select></div>
+                    <div><label style="font-size:.85rem">Date of Birth</label><input type="date" id="asm-dob" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px;box-sizing:border-box"></div>
+                    <div><label style="font-size:.85rem">Enrollment Date</label><input type="date" id="asm-enroll" value="${new Date().toISOString().split('T')[0]}" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px;box-sizing:border-box"></div>
+                </div>
+
+                <p style="font-weight:600;margin:18px 0 12px;color:#555;border-bottom:1px solid #eee;padding-bottom:6px">Parent / Guardian</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                    <div style="grid-column:1/-1"><label style="font-size:.85rem">Parent/Guardian Name</label><input id="asm-parent" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px;box-sizing:border-box"></div>
+                    <div><label style="font-size:.85rem">Phone</label><input id="asm-parent-phone" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px;box-sizing:border-box"></div>
+                    <div><label style="font-size:.85rem">Email</label><input type="email" id="asm-parent-email" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:4px;box-sizing:border-box"></div>
+                </div>
+
+                <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:24px">
+                    <button type="button" id="asm-cancel" style="padding:9px 20px;border:1px solid #ddd;border-radius:5px;background:#fff;cursor:pointer">Cancel</button>
+                    <button type="submit" id="asm-submit" style="padding:9px 24px;background:#4CAF50;color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:600">Enrol Student</button>
+                </div>
+            </form>
+        </div>`;
+
+    modal.querySelector('#asm-close').onclick = () => modal.remove();
+    modal.querySelector('#asm-cancel').onclick = () => modal.remove();
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+
+    modal.querySelector('#asm-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const btn = modal.querySelector('#asm-submit');
+        btn.disabled = true; btn.textContent = 'Enrolling...';
+
+        const payload = {
+            first_name: document.getElementById('asm-first').value.trim(),
+            middle_name: document.getElementById('asm-middle').value.trim(),
+            last_name: document.getElementById('asm-last').value.trim(),
+            gender: document.getElementById('asm-gender').value,
+            date_of_birth: document.getElementById('asm-dob').value || null,
+            enrollment_date: document.getElementById('asm-enroll').value || null,
+            parent_name: document.getElementById('asm-parent').value.trim(),
+            parent_phone: document.getElementById('asm-parent-phone').value.trim(),
+            parent_email: document.getElementById('asm-parent-email').value.trim(),
+            class_key: classKey,
+            class_name: className
+        };
+
+        try {
+            const res = await fetch('/api/students', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
+            modal.remove();
+            // Show credentials
+            const credModal = document.createElement('div');
+            credModal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1001;display:flex;align-items:center;justify-content:center;padding:20px';
+            credModal.innerHTML = `
+                <div style="background:#fff;border-radius:10px;max-width:400px;width:100%;padding:28px;text-align:center">
+                    <div style="color:#4CAF50;font-size:2.5rem;margin-bottom:12px"><i class="fas fa-check-circle"></i></div>
+                    <h2 style="margin:0 0 8px">Student Enrolled!</h2>
+                    <p style="color:#666;margin:0 0 20px">${payload.first_name} ${payload.last_name} has been added to ${className}.</p>
+                    <div style="background:#f0f9f0;border:2px solid #4CAF50;border-radius:8px;padding:16px;margin-bottom:20px">
+                        <p style="margin:0 0 6px;font-weight:600">Login Credentials</p>
+                        <p style="margin:4px 0"><span style="color:#666">Username:</span> <strong>${data.student.admission_number}</strong></p>
+                        <p style="margin:4px 0"><span style="color:#666">Password:</span> <strong>${data.default_password}</strong></p>
+                        <p style="margin:10px 0 0;font-size:0.78rem;color:#888">Password is the student's date of birth (DDMMYYYY).<br>Please share with the parent/guardian.</p>
+                    </div>
+                    <button style="width:100%;padding:10px;background:#4CAF50;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:1rem" onclick="this.closest('div[style]').remove()">Done</button>
+                </div>`;
+            credModal.addEventListener('click', e => { if (e.target === credModal) credModal.remove(); });
+            document.body.appendChild(credModal);
+            await loadMyClass(currentUser);
+        } catch (err) {
+            alert('Error enrolling student: ' + err.message);
+            btn.disabled = false; btn.textContent = 'Enrol Student';
+        }
+    });
+
+    document.body.appendChild(modal);
+}
+
 async function loadMyClass(currentUser) {
     const grid = document.getElementById('classes-grid');
     const studentSection = document.getElementById('students-list-section');
@@ -914,6 +1017,14 @@ async function loadMyClass(currentUser) {
                 </div>
             </div>`;
 
+        document.getElementById('add-student-to-class-btn')?.remove();
+        const addBtn = document.createElement('button');
+        addBtn.id = 'add-student-to-class-btn';
+        addBtn.innerHTML = '<i class="fas fa-user-plus"></i> Add Student to Class';
+        addBtn.style.cssText = 'margin-top:16px;padding:10px 20px;background:#4CAF50;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.95rem;display:flex;align-items:center;gap:8px';
+        addBtn.onclick = () => buildAddStudentModal(assignedClassKey, className, currentUser);
+        grid.appendChild(addBtn);
+
         // Render students table
         if (students.length === 0) {
             studentSection.innerHTML = `
@@ -924,6 +1035,7 @@ async function loadMyClass(currentUser) {
                 </div>`;
             return;
         }
+
 
         // Inject dropdown styles into head once
         if (!document.getElementById('dropdown-styles')) {
