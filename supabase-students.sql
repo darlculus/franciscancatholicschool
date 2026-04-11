@@ -26,7 +26,7 @@ CREATE OR REPLACE FUNCTION set_admission_number()
 RETURNS TRIGGER AS $$
 BEGIN
   IF NEW.admission_number IS NULL THEN
-    NEW.admission_number := 'FCS/' || TO_CHAR(NOW(), 'YYYY') || '/' || LPAD(nextval('admission_seq')::TEXT, 3, '0');
+    NEW.admission_number := 'FCNPS/25/26/' || LPAD(nextval('admission_seq')::TEXT, 4, '0');
   END IF;
   RETURN NEW;
 END;
