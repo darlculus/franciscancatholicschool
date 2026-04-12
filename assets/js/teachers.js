@@ -135,7 +135,7 @@ async function addTeacher() {
     }
 
     try {
-        await window.api.addTeacher({
+        const result = await window.api.addTeacher({
             username: teacher.teacher_id,
             firstName: full_name,
             lastName: '',
@@ -154,6 +154,10 @@ async function addTeacher() {
             experience: teacher.experience,
             employmentType: teacher.employment_type,
         });
+        // Assign teacher to the class record if a class was selected
+        if (teacher.assigned_class && result?.id) {
+            await assignTeacherToClass(teacher.assigned_class, result.id, full_name);
+        }
         document.getElementById('add-teacher-modal').classList.remove('active');
         document.getElementById('add-teacher-form').reset();
         showNotification('Teacher added successfully!', 'success');
@@ -266,6 +270,11 @@ async function updateTeacher() {
 
     try {
         await window.api.updateTeacher(id, updates);
+        // Sync class assignment
+        if (updates.assigned_class) {
+            const t = teachers.find(x => String(x.id) === String(id));
+            await assignTeacherToClass(updates.assigned_class, id, updates.full_name || t?.full_name || '');
+        }
         document.getElementById('edit-teacher-modal')?.classList.remove('active');
         showNotification('Teacher updated successfully!', 'success');
         await loadTeachers();
@@ -276,6 +285,22 @@ async function updateTeacher() {
 }
 
 // ── Delete ────────────────────────────────────────────────────────────────────
+
+async function assignTeacherToClass(className, teacherId, teacherName) {
+    try {
+        const res = await fetch('/api/classes');
+        const data = await res.json();
+        const cls = (data.classes || []).find(c => c.name === className || c.class_key === className);
+        if (!cls) return;
+        await fetch('/api/classes', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ class_id: cls.id, teacher_id: String(teacherId), teacher_name: teacherName })
+        });
+    } catch (e) {
+        console.warn('Could not update class assignment:', e);
+    }
+}
 
 function confirmDelete(id) {
     currentTeacherId = id;
