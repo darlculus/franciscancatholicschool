@@ -211,18 +211,26 @@ function buildBiodataModal(student) {
 }
 
 // ── Subjects modal ────────────────────────────────────────────────────────────
-const ALL_SUBJECTS = [
-    'Mathematics', 'English Language', 'Science', 'Social Studies',
-    'Religious Studies', 'Physical Education', 'Art & Craft', 'Music',
-    'Phonics', 'Handwriting', 'Verbal Reasoning', 'Quantitative Reasoning',
-    'Computer Studies', 'French', 'Yoruba', 'Igbo', 'Hausa'
-];
+const CLASS_SUBJECTS = {
+    'Early Year 3': ['English Language', 'Arithmetic', 'Social Norms', 'Nature Study', 'Handwriting', 'Creative Art', 'Religion'],
+    'Early Year 2': ['Letters', 'Arithmetic', 'Social Norms', 'Nature Study', 'Religion', 'Creative Art', 'Handwriting', 'Rhyme'],
+    'Early Year 1': ['Letters', 'Numbers', 'Social Norms', 'Nature Study', 'Creative Art', 'Religion', 'Rhyme', 'Handwriting'],
+    'Creche':       ['Letters', 'Numbers', 'Social Norms', 'Nature Study', 'Religion', 'Rhyme', 'Handwriting', 'Colouring'],
+};
+
+function getSubjectsForClass(className) {
+    return CLASS_SUBJECTS[className] || CLASS_SUBJECTS['Early Year 1'];
+}
 
 function buildSubjectsModal(student) {
     const existing = document.getElementById('subjects-modal');
     if (existing) existing.remove();
 
-    let selected = Array.isArray(student.subjects) ? [...student.subjects] : [];
+    let selected = Array.isArray(student.subjects) && student.subjects.length
+        ? [...student.subjects]
+        : [...getSubjectsForClass(student.class_name)];
+
+    const classSubjects = getSubjectsForClass(student.class_name);
 
     const modal = document.createElement('div');
     modal.id = 'subjects-modal';
@@ -237,7 +245,7 @@ function buildSubjectsModal(student) {
                 </span>`).join('')
             : '<span style="color:#aaa;font-size:0.85rem">No subjects selected yet</span>';
 
-        const checkboxHtml = ALL_SUBJECTS.map(s => `
+        const checkboxHtml = classSubjects.map(s => `
             <label style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;cursor:pointer;${selected.includes(s) ? 'background:#e8eaf6' : ''}">
                 <input type="checkbox" value="${s}" ${selected.includes(s) ? 'checked' : ''} style="width:16px;height:16px;accent-color:#5c6bc0;cursor:pointer">
                 <span style="font-size:0.9rem">${s}</span>
@@ -438,7 +446,7 @@ async function buildUpdateResultModal(student, classKey) {
     if (existing) existing.remove();
 
     const subjects = Array.isArray(student.subjects) && student.subjects.length
-        ? student.subjects : ALL_SUBJECTS;
+        ? student.subjects : getSubjectsForClass(student.class_name);
 
     const midResult = (typeof student.mid_result === 'object' && student.mid_result) ? student.mid_result : {};
     const saved = (typeof student.result === 'object' && student.result) ? student.result : {};
@@ -676,7 +684,7 @@ function buildMidResultModal(student) {
 
     const subjects = Array.isArray(student.subjects) && student.subjects.length
         ? student.subjects
-        : ALL_SUBJECTS;
+        : getSubjectsForClass(student.class_name);
 
     // mid_result stored as { subjectName: { ca1, ca2 }, ... }
     const saved = (typeof student.mid_result === 'object' && student.mid_result !== null)
