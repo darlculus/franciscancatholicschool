@@ -1099,9 +1099,8 @@ async function loadMyClass(currentUser) {
                                         <a href="#" data-action="subjects" data-id="${s.id}"><i class="fas fa-book"></i> Subjects</a>
                                         <a href="#" data-action="files" data-id="${s.id}"><i class="fas fa-folder"></i> Files</a>
                                         <a href="#" data-action="club" data-id="${s.id}"><i class="fas fa-users"></i> Club</a>
-                                        <a href="#" data-action="mock-result" data-id="${s.id}"><i class="fas fa-file-alt"></i> Mock Result</a>
-                                        <a href="#" data-action="update-result" data-id="${s.id}"><i class="fas fa-pen"></i> Update Result</a>
                                         <a href="#" data-action="update-mid-result" data-id="${s.id}"><i class="fas fa-pen-square"></i> Update Mid-Result</a>
+                                        <a href="#" data-action="update-result" data-id="${s.id}"><i class="fas fa-pen"></i> Update Result</a>
                                         <a href="#" data-action="report-card" data-id="${s.id}"><i class="fas fa-id-card"></i> Report Card</a>
                                         <a href="#" data-action="result-archive" data-id="${s.id}"><i class="fas fa-archive"></i> Result Archive</a>
                                         <a href="#" data-action="delete" data-id="${s.id}" style="color:#e53935"><i class="fas fa-trash-alt" style="color:#e53935"></i> Remove Student</a>
