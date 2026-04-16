@@ -99,6 +99,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     const role = isStudent ? 'student' : isTeacher ? 'teacher' : isBursar ? 'bursar' : 'admin';
                     
                     const user = await window.api.login(userId, password, role);
+
+                    // Enforce tab/role match
+                    if (isStudent && user.role !== 'student') {
+                        alert('These are not student login details. Please use the Teacher login tab.');
+                        return;
+                    }
+                    if (isTeacher && !['teacher','coordinator','headteacher','admin'].includes(user.role)) {
+                        alert('These are not teacher login details. Please use the correct login tab.');
+                        return;
+                    }
+                    if (isBursar && user.role !== 'bursar') {
+                        alert('These are not bursar login details. Please use the correct login tab.');
+                        return;
+                    }
                     
                     const storage = rememberMe ? localStorage : sessionStorage;
                     storage.setItem('currentUser', JSON.stringify(user));
