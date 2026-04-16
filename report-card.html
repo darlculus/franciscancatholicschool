@@ -362,9 +362,9 @@ function renderReport(student, timesPresent, term, session) {
                 <div class="rc-comment-box">
                     <div class="cb-label"><i class="fas fa-user-tie"></i> Head Teacher's Comment</div>
                     <div class="cb-text">${result.head_comment || '<em style="color:#bbb">No comment recorded</em>'}</div>
-                    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:10px;border-top:1px dashed #ddd;padding-top:8px">
+                    <div style="margin-top:10px;border-top:1px dashed #ddd;padding-top:8px;position:relative">
                         <span style="font-size:0.72rem;color:#aaa">Signature: ___________________________</span>
-                        <img src="assets/img/school stamp.png" alt="School Stamp" style="width:80px;height:80px;object-fit:contain;opacity:0.85">
+                        <img src="assets/img/school stamp.png" alt="School Stamp" style="position:absolute;top:-30px;right:0;width:90px;height:90px;object-fit:contain;opacity:0.85">
                     </div>
                 </div>
             </div>
