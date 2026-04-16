@@ -174,7 +174,7 @@ const SCHOOL = {
     email: 'info@franciscancnps.org',
     website: 'www.franciscancnps.org',
     logo: 'assets/img/logo.jpg',
-    resumption: 'Sunday, 4th May 2026'
+    resumption: '4th May, 2026'
 };
 
 const GRADING = [
@@ -364,7 +364,7 @@ function renderReport(student, timesPresent, term, session) {
                     <div class="cb-text">${result.head_comment || '<em style="color:#bbb">No comment recorded</em>'}</div>
                     <div style="margin-top:10px;border-top:1px dashed #ddd;padding-top:8px;position:relative">
                         <span style="font-size:0.72rem;color:#aaa">Signature: ___________________________</span>
-                        <img src="assets/img/school stamp.png" alt="School Stamp" style="position:absolute;top:-30px;right:0;width:90px;height:90px;object-fit:contain;opacity:0.85">
+                        <img src="assets/img/school stamp.png" alt="School Stamp" style="position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:90px;height:90px;object-fit:contain;opacity:0.85">
                     </div>
                 </div>
             </div>
