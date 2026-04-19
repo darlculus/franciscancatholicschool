@@ -40,6 +40,8 @@
     { "source": "/api/admin-attendance", "destination": "/api/admin-attendance.js" },
     { "source": "/api/forgot-password", "destination": "/api/forgot-password.js" },
     { "source": "/api/reset-password", "destination": "/api/reset-password.js" },
-    { "source": "/api/messages", "destination": "/api/messages.js" }
+    { "source": "/api/messages", "destination": "/api/messages.js" },
+    { "source": "/api/contact", "destination": "/api/contact.js" },
+    { "source": "/api/appointment", "destination": "/api/appointment.js" }
   ]
 }

@@ -1,30 +1,3 @@
-document.addEventListener('DOMContentLoaded', async function () {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || JSON.parse(sessionStorage.getItem('currentUser'));
-
-    if (!currentUser) { window.location.href = 'portal.html'; return; }
-    if (currentUser.role !== 'teacher' && currentUser.role !== 'coordinator' && currentUser.role !== 'admin' && currentUser.role !== 'headteacher') {
-        window.location.href = 'portal.html'; return;
-    }
-
-    // Date
-    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    });
-
-    // Sidebar toggle
-    const sidebar = document.querySelector('.dashboard-sidebar');
-    document.getElementById('sidebar-toggle')?.addEventListener('click', () => sidebar.classList.toggle('active'));
-
-    // Logout
-    document.getElementById('logout-btn')?.addEventListener('click', e => {
-        e.preventDefault();
-        localStorage.removeItem('currentUser'); sessionStorage.removeItem('currentUser');
-        window.location.href = 'portal.html';
-    });
-
-    await loadMyClass(currentUser);
-});
-
 let _currentUser = null;
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -960,26 +933,25 @@ function buildAddStudentModal(classKey, className, currentUser) {
     document.body.appendChild(modal);
 }
 
-async function loadMyClass(currentUser) {
+async function loadMyClass(currentUser, selectedClassKey) {
     const grid = document.getElementById('classes-grid');
     const studentSection = document.getElementById('students-list-section');
 
     try {
-        // Get teacher record to find assigned_class
-        const tRes = await fetch('/api/teachers');
-        const tData = await tRes.json();
-        const teachers = tData.teachers || [];
+        const [tRes, cRes] = await Promise.all([fetch('/api/teachers'), fetch('/api/classes')]);
+        const teachers = (await tRes.json()).teachers || [];
+        const allClasses = (await cRes.json()).classes || [];
 
-        // Match by username or full_name
         const teacher = teachers.find(t =>
             t.teacher_id === currentUser.username ||
             t.full_name === currentUser.name ||
             t.email === currentUser.email
         );
 
-        const assignedClassKey = teacher?.assigned_class || currentUser.assigned_class || null;
+        const assignedRaw = teacher?.assigned_class || currentUser.assigned_class || '';
+        const classKeys = assignedRaw.split(',').map(k => k.trim()).filter(Boolean);
 
-        if (!assignedClassKey) {
+        if (!classKeys.length) {
             grid.innerHTML = `
                 <div style="grid-column:1/-1;text-align:center;padding:40px;color:#999">
                     <i class="fas fa-school" style="font-size:3rem;color:#ddd"></i>
@@ -992,48 +964,57 @@ async function loadMyClass(currentUser) {
             return;
         }
 
-        // Get class details
-        const cRes = await fetch('/api/classes');
-        const cData = await cRes.json();
-        const classInfo = (cData.classes || []).find(c => c.class_key === assignedClassKey);
-        const className = classInfo?.name || assignedClassKey;
+        // Pick which class to show
+        const activeKey = (selectedClassKey && classKeys.includes(selectedClassKey))
+            ? selectedClassKey : classKeys[0];
+        const classInfo = allClasses.find(c => c.class_key === activeKey);
+        const className = classInfo?.name || activeKey;
 
-        // Get students in this class
-        const sRes = await fetch(`/api/students?class_key=${assignedClassKey}`);
-        const sData = await sRes.json();
+        // Fetch students for active class
+        const sData = await fetch(`/api/students?class_key=${activeKey}`).then(r => r.json());
         const students = sData.students || [];
 
-        document.getElementById('total-classes').textContent = '1';
+        document.getElementById('total-classes').textContent = classKeys.length;
         document.getElementById('total-students').textContent = students.length;
 
-        // Render class card
-        grid.innerHTML = `
-            <div class="class-card">
-                <div class="class-header">
-                    <h3>${className}</h3>
-                    <span class="class-badge" style="background:#e8f5e9;color:#2e7d32">Assigned Class</span>
+        // Build class cards (one per assigned class)
+        grid.innerHTML = classKeys.map(key => {
+            const info = allClasses.find(c => c.class_key === key);
+            const name = info?.name || key;
+            const isActive = key === activeKey;
+            return `
+            <div class="class-card" data-class-key="${key}" style="cursor:pointer;${isActive ? 'border:2px solid #5c6bc0;' : 'opacity:0.7;'}">
+                <div class="class-header" style="pointer-events:none">
+                    <h3>${name}</h3>
+                    <span class="class-badge" style="background:${isActive ? '#e8eaf6' : '#e8f5e9'};color:${isActive ? '#3949ab' : '#2e7d32'}">${isActive ? 'Viewing' : 'Click to view'}</span>
                 </div>
-                <div class="class-info">
-                    <div class="info-item">
-                        <i class="fas fa-user-graduate"></i>
-                        <span>${students.length} student${students.length !== 1 ? 's' : ''}</span>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <span>${currentUser.name || 'You'}</span>
-                    </div>
+                <div class="class-info" style="pointer-events:none">
+                    <div class="info-item"><i class="fas fa-chalkboard-teacher"></i><span>${currentUser.name || 'You'}</span></div>
                 </div>
             </div>`;
+        }).join('');
 
+        // Class card click — reload with selected class
+        grid.querySelectorAll('.class-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                loadMyClass(currentUser, card.dataset.classKey);
+            });
+        });
+
+        // Add student button
         document.getElementById('add-student-to-class-btn')?.remove();
         const addBtn = document.createElement('button');
         addBtn.id = 'add-student-to-class-btn';
-        addBtn.innerHTML = '<i class="fas fa-user-plus"></i> Add Student to Class';
+        addBtn.innerHTML = `<i class="fas fa-user-plus"></i> Add Student to ${className}`;
         addBtn.style.cssText = 'margin-top:16px;padding:10px 20px;background:#4CAF50;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.95rem;display:flex;align-items:center;gap:8px';
-        addBtn.onclick = () => buildAddStudentModal(assignedClassKey, className, currentUser);
+        addBtn.onclick = () => buildAddStudentModal(activeKey, className, currentUser);
         grid.appendChild(addBtn);
 
-        // Render students table
+        // Students section header
+        const sectionHeader = document.querySelector('.upcoming-classes .section-header h2');
+        if (sectionHeader) sectionHeader.textContent = `Students in ${className}`;
+
         if (students.length === 0) {
             studentSection.innerHTML = `
                 <div style="text-align:center;padding:40px;color:#999">
@@ -1044,8 +1025,6 @@ async function loadMyClass(currentUser) {
             return;
         }
 
-
-        // Inject dropdown styles into head once
         if (!document.getElementById('dropdown-styles')) {
             const style = document.createElement('style');
             style.id = 'dropdown-styles';
@@ -1091,9 +1070,7 @@ async function loadMyClass(currentUser) {
                             <td style="padding:10px">${s.gender}</td>
                             <td style="padding:10px">
                                 <div class="dropdown-wrapper">
-                                    <button class="student-options-btn" data-id="${s.id}">
-                                        <i class="fas fa-ellipsis-v"></i> Options
-                                    </button>
+                                    <button class="student-options-btn" data-id="${s.id}"><i class="fas fa-ellipsis-v"></i> Options</button>
                                     <div class="dropdown-menu" id="drop-${s.id}">
                                         <a href="#" data-action="biodata" data-id="${s.id}"><i class="fas fa-user-edit"></i> Edit Biodata</a>
                                         <a href="#" data-action="subjects" data-id="${s.id}"><i class="fas fa-book"></i> Subjects</a>
@@ -1111,26 +1088,19 @@ async function loadMyClass(currentUser) {
                 </tbody>
             </table>`;
 
-        // Dropdown toggle logic
         studentSection.querySelectorAll('.student-options-btn').forEach(btn => {
             btn.addEventListener('click', function (e) {
                 e.stopPropagation();
-                const id = this.dataset.id;
-                const menu = document.getElementById('drop-' + id);
-                // Close all others
-                studentSection.querySelectorAll('.dropdown-menu').forEach(m => {
-                    if (m !== menu) m.classList.remove('open');
-                });
+                const menu = document.getElementById('drop-' + this.dataset.id);
+                studentSection.querySelectorAll('.dropdown-menu').forEach(m => { if (m !== menu) m.classList.remove('open'); });
                 menu.classList.toggle('open');
             });
         });
 
-        // Close dropdowns on outside click
         document.addEventListener('click', () => {
             studentSection.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
         });
 
-        // Action handler
         studentSection.querySelectorAll('.dropdown-menu a').forEach(link => {
             link.addEventListener('click', async function (e) {
                 e.preventDefault();
@@ -1139,56 +1109,26 @@ async function loadMyClass(currentUser) {
                 const student = students.find(s => s.id === sid);
                 const name = student ? `${student.first_name} ${student.last_name}` : sid;
 
-                if (action === 'subjects') {
-                    buildSubjectsModal(student);
-                    return;
-                }
-
-                if (action === 'files') {
-                    buildFilesModal(student);
-                    return;
-                }
-
-                if (action === 'update-mid-result') {
-                    buildMidResultModal(student);
-                    return;
-                }
-
-                if (action === 'update-result') {
-                    buildUpdateResultModal(student, assignedClassKey);
-                    return;
-                }
-
+                if (action === 'subjects') { buildSubjectsModal(student); return; }
+                if (action === 'files') { buildFilesModal(student); return; }
+                if (action === 'update-mid-result') { buildMidResultModal(student); return; }
+                if (action === 'update-result') { buildUpdateResultModal(student, activeKey); return; }
                 if (action === 'report-card') {
-                    const term = encodeURIComponent('2nd Term');
-                    const session = encodeURIComponent('2025/2026');
-                    window.open(`report-card.html?id=${student.id}&class_key=${assignedClassKey}&term=${term}&session=${session}`, '_blank');
+                    window.open(`report-card.html?id=${student.id}&class_key=${activeKey}&term=${encodeURIComponent('2nd Term')}&session=${encodeURIComponent('2025/2026')}`, '_blank');
                     return;
                 }
-
-                if (action === 'result-archive') {
-                    buildResultArchiveModal(student, assignedClassKey);
-                    return;
-                }
-
-                if (action === 'biodata') {
-                    buildBiodataModal(student);
-                    return;
-                }
-
+                if (action === 'result-archive') { buildResultArchiveModal(student, activeKey); return; }
+                if (action === 'biodata') { buildBiodataModal(student); return; }
                 if (action === 'delete') {
                     if (!confirm(`Remove ${name} from this class?\n\nThis will permanently delete the student record. This cannot be undone.`)) return;
                     try {
                         const res = await fetch(`/api/students?id=${sid}`, { method: 'DELETE' });
                         if (!res.ok) throw new Error((await res.json()).error);
                         alert(`${name} has been removed successfully.`);
-                        await loadMyClass(currentUser);
-                    } catch (err) {
-                        alert('Error removing student: ' + err.message);
-                    }
+                        await loadMyClass(currentUser, activeKey);
+                    } catch (err) { alert('Error removing student: ' + err.message); }
                     return;
                 }
-
                 alert(`${this.textContent.trim()} — ${name}\n\nThis feature is coming soon.`);
             });
         });
