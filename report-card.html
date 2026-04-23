@@ -314,7 +314,7 @@ function renderReport(student, timesPresent, term, session) {
                 <div class="rc-detail"><span>Class</span><span>${student.class_name || student.class_key || '—'}</span></div>
                 <div class="rc-detail"><span>Gender</span><span>${student.gender || '—'}</span></div>
                 <div class="rc-detail"><span>Age</span><span>${calcAge(student.date_of_birth)}</span></div>
-                <div class="rc-detail"><span>Admission No.</span><span>${student.admission_number || '—'}</span></div>
+                <div class="rc-detail"><span>Admission No.</span><span>${(student.admission_number || '—').replace(/^FCNPS/\d+\/\d+\//, '')}</span></div>
                 <div class="rc-detail"><span>Term / Session</span><span>${term} &nbsp;|&nbsp; ${session}</span></div>
             </div>
             <div class="rc-attendance-box">

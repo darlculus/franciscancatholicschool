@@ -33,7 +33,24 @@ module.exports = async (req, res) => {
       if (!first_name || !last_name || !gender || !class_key || !class_name)
         return res.status(400).json({ error: 'first_name, last_name, gender, class_key and class_name are required' });
 
+      // Generate next admission number in format FCNPS/25/26/00013
+      const { data: existing } = await supabase
+        .from('students')
+        .select('admission_number')
+        .like('admission_number', 'FCNPS/25/26/%')
+        .order('admission_number', { ascending: false })
+        .limit(1);
+      let nextNum = 1;
+      if (existing && existing.length) {
+        const last = existing[0].admission_number;
+        const parts = last.split('/');
+        const lastNum = parseInt(parts[parts.length - 1]);
+        if (!isNaN(lastNum)) nextNum = lastNum + 1;
+      }
+      const admission_number = `FCNPS/25/26/${String(nextNum).padStart(5, '0')}`;
+
       const { data, error } = await supabase.from('students').insert([{
+        admission_number,
         first_name, last_name, middle_name: middle_name || null, gender,
         date_of_birth: date_of_birth || null, class_key, class_name,
         enrollment_date: enrollment_date || null, parent_name, parent_phone, parent_email,
