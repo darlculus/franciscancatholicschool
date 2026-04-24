@@ -2,7 +2,6 @@
 
 const STUDENT_TERMS = [
     { term: '2nd Term', session: '2025/2026' },
-    { term: '3rd Term', session: '2025/2026' },
 ];
 
 function setStudentAvatar(el, currentUser, initials) {

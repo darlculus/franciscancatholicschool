@@ -783,7 +783,6 @@ function buildResultArchiveModal(student, classKey) {
 
     const TERMS = [
         { term: '2nd Term', session: '2025/2026' },
-        { term: '3rd Term', session: '2025/2026' },
     ];
 
     // Determine which terms have result data
