@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
             classDropdowns.forEach(dropdown => {
                 if (!dropdown) return;
                 classes.forEach(cls => {
-                    dropdown.innerHTML += `<option value="${cls.name}">${cls.name}</option>`;
+                    dropdown.innerHTML += `<option value="${cls.class_key}">${cls.name}</option>`;
                 });
             });
         } catch (e) {

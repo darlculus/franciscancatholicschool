@@ -172,13 +172,48 @@ document.addEventListener('DOMContentLoaded', async function () {
         modal.innerHTML = `
             <div style="background:#fff;border-radius:10px;width:100%;max-width:700px;max-height:90vh;overflow-y:auto;padding:28px;position:relative">
                 <button id="vcm-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
-                <h2 style="margin:0 0 4px">${className}</h2>
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:4px">
+                    <h2 style="margin:0">${className}</h2>
+                    <button id="vcm-publish-btn" style="padding:9px 20px;background:#2e7d32;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;font-weight:600">
+                        <i class="fas fa-paper-plane"></i> Publish All Results
+                    </button>
+                </div>
                 <p style="margin:0 0 18px;color:#888;font-size:0.88rem">2nd Term &mdash; 2025/2026</p>
                 <div id="vcm-body"><i class="fas fa-spinner fa-spin"></i> Loading students...</div>
             </div>`;
         modal.querySelector('#vcm-close').onclick = () => modal.remove();
         modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
         document.body.appendChild(modal);
+
+        // Publish all results for this class
+        modal.querySelector('#vcm-publish-btn').addEventListener('click', async function () {
+            if (!confirm(`Publish results for ALL students in ${className}?\n\nStudents will be able to view their report cards immediately.`)) return;
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
+            try {
+                const sRes = await fetch(`/api/students?class_key=${classKey}`);
+                const sData = await sRes.json();
+                const students = sData.students || [];
+                let done = 0;
+                for (const s of students) {
+                    const r = await fetch('/api/students', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: s.id, result_published: true })
+                    });
+                    if (r.ok) done++;
+                }
+                this.innerHTML = '<i class="fas fa-check"></i> Published!';
+                this.style.background = '#1b5e20';
+                showToast(`Published results for ${done} student${done !== 1 ? 's' : ''} in ${className}.`);
+                // Reload the table
+                await openViewClassModal(classKey, className);
+            } catch (err) {
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-paper-plane"></i> Publish All Results';
+                showToast('Failed to publish. Please try again.', 'error');
+            }
+        });
 
         try {
             const res = await fetch(`/api/students?class_key=${classKey}`);
