@@ -227,73 +227,48 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Load students based on selected class and term
-    function loadStudents() {
+    async function loadStudents() {
         const classSelect = document.getElementById('report-class');
         const termSelect = document.getElementById('report-term');
         const yearSelect = document.getElementById('report-year');
-        
-        if (!classSelect.value) {
-            alert('Please select a class');
-            return;
-        }
-        
-        if (!termSelect.value) {
-            alert('Please select a term');
-            return;
-        }
-        
-        // In a real application, you would fetch students from the server
-        // For demonstration, we'll use the sample data
+
+        if (!classSelect.value) { alert('Please select a class'); return; }
+        if (!termSelect.value) { alert('Please select a term'); return; }
+
         const studentsList = document.getElementById('students-list');
-        
-        // Clear current list
-        studentsList.innerHTML = '';
-        
-        // Filter students by class
-        const filteredStudents = sampleStudents.filter(student => student.class === classSelect.value);
-        
-        if (filteredStudents.length === 0) {
-            studentsList.innerHTML = `
-                <tr class="empty-state">
-                    <td colspan="6" class="text-center">
-                        <div class="empty-state-container">
-                            <i class="fas fa-user-graduate empty-icon"></i>
-                            <p>No students found in this class</p>
-                        </div>
+        studentsList.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>`;
+
+        try {
+            const res = await fetch(`/api/students?class_key=${encodeURIComponent(classSelect.value)}`);
+            const data = await res.json();
+            const students = data.students || [];
+
+            if (students.length === 0) {
+                studentsList.innerHTML = `<tr class="empty-state"><td colspan="6" class="text-center"><div class="empty-state-container"><i class="fas fa-user-graduate empty-icon"></i><p>No students found in this class</p></div></td></tr>`;
+                return;
+            }
+
+            studentsList.innerHTML = students.map(s => {
+                const hasResult = s.result && Object.keys(s.result).some(k => !['psd','teacher_comment','head_comment'].includes(k));
+                const status = hasResult ? 'generated' : 'pending';
+                const url = `report-card.html?id=${s.id}&class_key=${encodeURIComponent(classSelect.value)}&term=${encodeURIComponent(termSelect.value)}&session=${encodeURIComponent(yearSelect.value)}`;
+                return `
+                <tr>
+                    <td><input type="checkbox" class="student-checkbox" data-id="${s.id}"></td>
+                    <td>${s.admission_number || '—'}</td>
+                    <td>${s.first_name} ${s.middle_name || ''} ${s.last_name}</td>
+                    <td>${s.gender}</td>
+                    <td><span class="status-badge ${status}">${status}</span></td>
+                    <td>
+                        <a href="${url}" target="_blank" class="action-btn" style="text-decoration:none">
+                            <i class="fas fa-eye"></i> View Report Card
+                        </a>
                     </td>
-                </tr>
-            `;
-            return;
+                </tr>`;
+            }).join('');
+        } catch (e) {
+            studentsList.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#e53935;padding:20px">Failed to load students. Please try again.</td></tr>`;
         }
-        
-        // Populate students list
-        filteredStudents.forEach(student => {
-            const statusClass = student.reportStatus === 'pending' ? 'pending' : 
-                               student.reportStatus === 'generated' ? 'generated' : 'published';
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td><input type="checkbox" class="student-checkbox" data-id="${student.id}"></td>
-                <td>${student.id}</td>
-                <td>${student.name}</td>
-                <td>${student.gender}</td>
-                <td><span class="status-badge ${statusClass}">${student.reportStatus}</span></td>
-                <td>
-                    <button class="action-btn generate-report-btn" data-id="${student.id}">
-                        <i class="fas fa-file-alt"></i> Generate Report
-                    </button>
-                </td>
-            `;
-            studentsList.appendChild(row);
-        });
-        
-        // Add event listeners to generate report buttons
-        document.querySelectorAll('.generate-report-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const studentId = this.getAttribute('data-id');
-                openGenerateReportModal(studentId);
-            });
-        });
     }
     
     // Search reports based on filters
