@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publish Results - Franciscan Catholic School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin-dashboard.css">
+</head>
+<body>
+<div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <img src="assets/img/logo.jpg" alt="Logo" class="logo">
+            <h3>Head Teacher</h3>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="teacher-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="my-classes.html"><i class="fas fa-users"></i> My Classes</a></li>
+                <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                <li class="active"><a href="publish-results.html"><i class="fas fa-paper-plane"></i> Publish Results</a></li>
+                <li><a href="teacher-messages.html"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li><a href="teacher-settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-footer">
+            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <nav class="dashboard-nav">
+            <button id="sidebar-toggle" class="mobile-toggle"><i class="fas fa-bars"></i></button>
+            <div class="nav-right">
+                <div class="date-display"><i class="far fa-calendar-alt"></i><span id="current-date"></span></div>
+                <div class="admin-profile">
+                    <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600" id="nav-avatar"></div>
+                    <div class="admin-info"><span id="nav-name"></span><span id="nav-role">Head Teacher</span></div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard-content">
+            <div class="page-header">
+                <h1>Publish Results</h1>
+                <p>Add your comment to each student's report card, then publish for the whole class</p>
+            </div>
+
+            <!-- Class selector -->
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+                <label style="font-weight:600;color:#555">Select Class:</label>
+                <select id="class-select" style="padding:9px 14px;border:1px solid #ddd;border-radius:6px;font-family:Poppins,sans-serif;font-size:0.9rem;min-width:200px">
+                    <option value="">-- Choose a class --</option>
+                </select>
+                <select id="term-select" style="padding:9px 14px;border:1px solid #ddd;border-radius:6px;font-family:Poppins,sans-serif;font-size:0.9rem">
+                    <option value="2nd Term">2nd Term</option>
+                    <option value="3rd Term">3rd Term</option>
+                </select>
+                <button id="load-btn" style="padding:9px 20px;background:#5c6bc0;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.9rem">
+                    <i class="fas fa-search"></i> Load Students
+                </button>
+            </div>
+
+            <div id="students-section" style="display:none">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+                    <h2 id="section-title" style="font-size:1rem;color:#333;margin:0"></h2>
+                    <button id="publish-all-btn" style="padding:10px 24px;background:#2e7d32;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.9rem;font-weight:600">
+                        <i class="fas fa-paper-plane"></i> Publish All Results for This Class
+                    </button>
+                </div>
+                <div id="students-list"></div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="assets/js/teacher-nav.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async function () {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || JSON.parse(sessionStorage.getItem('currentUser'));
+    if (!currentUser || !['headteacher','admin'].includes(currentUser.role)) {
+        window.location.href = 'portal.html'; return;
+    }
+
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    document.getElementById('nav-name').textContent = currentUser.full_name || currentUser.username;
+    document.getElementById('nav-avatar').textContent = (currentUser.full_name || 'H').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+
+    document.getElementById('logout-btn').addEventListener('click', e => {
+        e.preventDefault();
+        localStorage.removeItem('currentUser'); sessionStorage.removeItem('currentUser');
+        window.location.href = 'portal.html';
+    });
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        document.querySelector('.dashboard-sidebar').classList.toggle('active');
+    });
+
+    // Load classes
+    const cRes = await fetch('/api/classes');
+    const cData = await cRes.json();
+    const classes = cData.classes || [];
+    const sel = document.getElementById('class-select');
+    classes.forEach(c => {
+        sel.innerHTML += `<option value="${c.class_key}">${c.name}</option>`;
+    });
+
+    let currentStudents = [];
+    let currentClassKey = '';
+    let currentClassName = '';
+    let currentTerm = '';
+
+    document.getElementById('load-btn').addEventListener('click', async () => {
+        currentClassKey = sel.value;
+        currentTerm = document.getElementById('term-select').value;
+        if (!currentClassKey) { alert('Please select a class'); return; }
+        const cls = classes.find(c => c.class_key === currentClassKey);
+        currentClassName = cls?.name || currentClassKey;
+
+        const sRes = await fetch(`/api/students?class_key=${currentClassKey}`);
+        const sData = await sRes.json();
+        currentStudents = sData.students || [];
+
+        document.getElementById('section-title').textContent = `${currentClassName} — ${currentTerm}, 2025/2026 (${currentStudents.length} students)`;
+        document.getElementById('students-section').style.display = 'block';
+        renderStudents();
+    });
+
+    function renderStudents() {
+        const list = document.getElementById('students-list');
+        if (!currentStudents.length) {
+            list.innerHTML = `<p style="color:#999;padding:20px 0">No students found in this class.</p>`;
+            return;
+        }
+
+        list.innerHTML = currentStudents.map((s, i) => {
+            const result = (typeof s.result === 'object' && s.result) ? s.result : {};
+            const hasResult = Object.keys(result).some(k => !['psd','teacher_comment','head_comment'].includes(k));
+            const isPublished = !!s.result_published;
+            const headComment = result.head_comment || '';
+
+            return `
+            <div id="card-${s.id}" style="background:#fff;border:1px solid ${isPublished ? '#c8e6c9' : '#e8eaf6'};border-radius:10px;padding:20px;margin-bottom:14px">
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:#f0f0f0;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #eee">
+                            ${s.photo_url ? `<img src="${s.photo_url}" style="width:100%;height:100%;object-fit:cover">` : `<i class="fas fa-user" style="color:#bbb"></i>`}
+                        </div>
+                        <div>
+                            <div style="font-weight:600;font-size:0.95rem">${s.first_name} ${s.middle_name || ''} ${s.last_name}</div>
+                            <div style="font-size:0.78rem;color:#888">${s.admission_number || ''}</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                        ${isPublished
+                            ? `<span style="background:#e8f5e9;color:#2e7d32;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:600"><i class="fas fa-check-circle"></i> Published</span>`
+                            : `<span style="background:#fff8e1;color:#f57f17;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:600"><i class="fas fa-clock"></i> Not Published</span>`}
+                        ${hasResult
+                            ? `<span style="background:#e8eaf6;color:#3949ab;padding:4px 12px;border-radius:20px;font-size:0.78rem"><i class="fas fa-file-alt"></i> Results entered</span>`
+                            : `<span style="background:#fce4ec;color:#c62828;padding:4px 12px;border-radius:20px;font-size:0.78rem"><i class="fas fa-exclamation-circle"></i> No results yet</span>`}
+                        <a href="report-card.html?id=${s.id}&class_key=${currentClassKey}&term=${encodeURIComponent(currentTerm)}&session=2025%2F2026" target="_blank"
+                            style="padding:5px 12px;background:#5c6bc0;color:#fff;border-radius:5px;font-size:0.78rem;text-decoration:none">
+                            <i class="fas fa-eye"></i> Preview
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <label style="font-size:0.82rem;font-weight:600;color:#555;display:block;margin-bottom:6px">Head Teacher's Comment</label>
+                    <textarea id="hc-${s.id}" rows="2" placeholder="Enter your comment for ${s.first_name}..."
+                        style="width:100%;padding:9px;border:1px solid #ddd;border-radius:6px;font-family:Poppins,sans-serif;font-size:0.85rem;box-sizing:border-box;resize:vertical">${headComment}</textarea>
+                    <button onclick="saveComment('${s.id}', ${i})"
+                        style="margin-top:8px;padding:7px 16px;background:#5c6bc0;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:0.82rem;font-family:Poppins,sans-serif">
+                        <i class="fas fa-save"></i> Save Comment
+                    </button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    window.saveComment = async function(studentId, idx) {
+        const comment = document.getElementById(`hc-${studentId}`).value.trim();
+        const student = currentStudents[idx];
+        const result = (typeof student.result === 'object' && student.result) ? { ...student.result } : {};
+        result.head_comment = comment;
+
+        try {
+            const res = await fetch('/api/students', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: studentId, result })
+            });
+            if (!res.ok) throw new Error((await res.json()).error);
+            student.result = result;
+            showToast(`Comment saved for ${student.first_name}.`);
+        } catch (e) {
+            alert('Error saving comment: ' + e.message);
+        }
+    };
+
+    document.getElementById('publish-all-btn').addEventListener('click', async () => {
+        if (!currentStudents.length) return;
+        if (!confirm(`Publish results for ALL ${currentStudents.length} students in ${currentClassName}?\n\nStudents will be able to view their report cards immediately.`)) return;
+
+        const btn = document.getElementById('publish-all-btn');
+        btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
+
+        let done = 0, failed = 0;
+        for (const s of currentStudents) {
+            try {
+                const res = await fetch('/api/students', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: s.id, result_published: true })
+                });
+                if (!res.ok) throw new Error();
+                s.result_published = true;
+                done++;
+            } catch { failed++; }
+        }
+
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish All Results for This Class';
+        renderStudents();
+        showToast(`Published ${done} student${done !== 1 ? 's' : ''}${failed ? `, ${failed} failed` : ''}.`, failed ? 'error' : 'success');
+    });
+
+    function showToast(msg, type = 'success') {
+        let t = document.getElementById('toast');
+        if (!t) {
+            t = document.createElement('div');
+            t.id = 'toast';
+            t.style.cssText = 'position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:8px;color:#fff;font-size:0.88rem;font-family:Poppins,sans-serif;z-index:9999;transition:opacity 0.3s';
+            document.body.appendChild(t);
+        }
+        t.style.background = type === 'error' ? '#e53935' : '#2e7d32';
+        t.textContent = msg;
+        t.style.opacity = '1';
+        setTimeout(() => t.style.opacity = '0', 3000);
+    }
+});
+</script>
+</body>
+</html>
