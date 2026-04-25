@@ -110,10 +110,10 @@
 
             <!-- Inbox / Sent tabs -->
             <div class="tabs">
-                <button class="tab-btn active" id="tab-received">
+                <button class="tab-btn active" id="tab-received" onclick="switchTab('received')">
                     <i class="fas fa-inbox"></i> Received
                 </button>
-                <button class="tab-btn" id="tab-sent">
+                <button class="tab-btn" id="tab-sent" onclick="switchTab('sent')">
                     <i class="fas fa-paper-plane"></i> Sent
                 </button>
             </div>
@@ -232,8 +232,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             document.getElementById('recipient-type').value = '';
             document.getElementById('student-field').style.display = 'none';
             showToast('Message sent successfully.');
-            loadMessages('sent');
-            document.getElementById('tab-sent').click();
+            switchTab('sent');
         } catch(e) {
             alert('Failed to send: ' + e.message);
         } finally {
@@ -241,20 +240,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
-    // Tabs
-    let activeTab = 'received';
-    document.getElementById('tab-received').addEventListener('click', () => {
-        activeTab = 'received';
-        document.getElementById('tab-received').classList.add('active');
-        document.getElementById('tab-sent').classList.remove('active');
-        loadMessages('received');
-    });
-    document.getElementById('tab-sent').addEventListener('click', () => {
-        activeTab = 'sent';
-        document.getElementById('tab-sent').classList.add('active');
-        document.getElementById('tab-received').classList.remove('active');
-        loadMessages('sent');
-    });
+    window.switchTab = function(tab) {
+        document.getElementById('tab-received').classList.toggle('active', tab === 'received');
+        document.getElementById('tab-sent').classList.toggle('active', tab === 'sent');
+        loadMessages(tab);
+    };
 
     async function loadMessages(tab) {
         const list = document.getElementById('messages-list');
@@ -265,7 +255,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             let messages;
             if (tab === 'sent') {
-                messages = all.filter(m => m.sender_name === displayName || m.sender_role === currentUser.role && m.sender_name === displayName);
+                messages = all.filter(m => m.sender_name === displayName);
             } else {
                 // Received: messages addressed to this teacher's username, all-teachers, or admin broadcasts
                 messages = all.filter(m =>
