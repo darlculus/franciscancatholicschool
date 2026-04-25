@@ -82,6 +82,8 @@
                             <option value="all">All Students</option>
                             <option value="class">A Specific Class</option>
                             <option value="student">A Specific Student</option>
+                            <option value="all-teachers">All Teachers</option>
+                            <option value="teacher">A Specific Teacher</option>
                         </select>
                     </div>
                     <div class="field" id="class-field" style="display:none">
@@ -94,6 +96,12 @@
                         <label>Select Student</label>
                         <select id="recipient-student">
                             <option value="">-- Choose student --</option>
+                        </select>
+                    </div>
+                    <div class="field" id="teacher-field" style="display:none">
+                        <label>Select Teacher</label>
+                        <select id="recipient-teacher">
+                            <option value="">-- Choose teacher --</option>
                         </select>
                     </div>
                 </div>
@@ -138,9 +146,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Load classes and students for dropdowns
     let allStudents = [];
     try {
-        const [cRes, sRes] = await Promise.all([fetch('/api/classes'), fetch('/api/students')]);
+        const [cRes, sRes, tRes] = await Promise.all([fetch('/api/classes'), fetch('/api/students'), fetch('/api/teachers', { headers: { Authorization: 'Bearer x' } })]);
         const classes = (await cRes.json()).classes || [];
         allStudents = (await sRes.json()).students || [];
+        const allTeachers = (await tRes.json()).teachers || [];
 
         const classSel = document.getElementById('recipient-class');
         classes.forEach(c => classSel.innerHTML += `<option value="${c.class_key}" data-name="${c.name}">${c.name}</option>`);
@@ -150,12 +159,18 @@ document.addEventListener('DOMContentLoaded', async function () {
             const name = [s.first_name, s.middle_name, s.last_name].filter(Boolean).join(' ');
             studentSel.innerHTML += `<option value="${s.admission_number}">${name} (${s.class_name})</option>`;
         });
+
+        const teacherSel = document.getElementById('recipient-teacher');
+        allTeachers.forEach(t => {
+            teacherSel.innerHTML += `<option value="${t.teacher_id}">${t.full_name}</option>`;
+        });
     } catch(e) { console.error(e); }
 
     // Show/hide recipient fields
     document.getElementById('recipient-type').addEventListener('change', function () {
         document.getElementById('class-field').style.display = this.value === 'class' ? 'block' : 'none';
         document.getElementById('student-field').style.display = this.value === 'student' ? 'block' : 'none';
+        document.getElementById('teacher-field').style.display = this.value === 'teacher' ? 'block' : 'none';
     });
 
     // Send message
@@ -177,6 +192,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         } else if (type === 'student') {
             const sel = document.getElementById('recipient-student');
             if (!sel.value) { alert('Please select a student.'); return; }
+            recipient = sel.value;
+            recipientLabel = sel.options[sel.selectedIndex].text;
+        } else if (type === 'all-teachers') {
+            recipient = 'all-teachers';
+            recipientLabel = 'All Teachers';
+        } else if (type === 'teacher') {
+            const sel = document.getElementById('recipient-teacher');
+            if (!sel.value) { alert('Please select a teacher.'); return; }
             recipient = sel.value;
             recipientLabel = sel.options[sel.selectedIndex].text;
         }
@@ -223,7 +246,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             list.innerHTML = messages.map(m => {
                 const date = new Date(m.sent_at).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
-                const recipientLabel = m.recipient === 'all' ? 'All Students' : m.recipient;
+                const recipientLabel = m.recipient === 'all' ? 'All Students'
+                    : m.recipient === 'all-teachers' ? 'All Teachers'
+                    : m.recipient;
                 return `
                 <div class="msg-card">
                     <div class="msg-header">

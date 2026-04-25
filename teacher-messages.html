@@ -3,218 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messages - Franciscan Catholic Nursery and Primary School</title>
+    <title>Messages - Franciscan Catholic School</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/admin-dashboard.css">
-    <link rel="stylesheet" href="assets/css/teacher-messages.css">
+    <style>
+        .compose-box { background:#fff; border:1px solid #e8eaf6; border-radius:10px; padding:24px; margin-bottom:24px; }
+        .compose-box h2 { margin:0 0 18px; font-size:1rem; color:#333; }
+        .field { margin-bottom:14px; }
+        .field label { font-size:0.82rem; font-weight:600; color:#555; display:block; margin-bottom:5px; }
+        .field input, .field select, .field textarea {
+            width:100%; padding:9px 12px; border:1px solid #ddd; border-radius:6px;
+            font-family:Poppins,sans-serif; font-size:0.88rem; box-sizing:border-box;
+        }
+        .field textarea { resize:vertical; }
+        .btn-send { padding:10px 28px; background:#5c6bc0; color:#fff; border:none; border-radius:6px; cursor:pointer; font-family:Poppins,sans-serif; font-size:0.9rem; font-weight:600; }
+        .btn-send:hover { background:#3949ab; }
+        .msg-card { background:#fff; border:1px solid #e8eaf6; border-radius:10px; padding:18px 20px; margin-bottom:12px; }
+        .msg-card.received { border-left:4px solid #5c6bc0; }
+        .msg-card.sent { border-left:4px solid #4CAF50; }
+        .msg-subject { font-weight:600; font-size:0.92rem; color:#333; }
+        .msg-meta { font-size:0.75rem; color:#aaa; }
+        .msg-from { font-size:0.78rem; color:#5c6bc0; margin:4px 0; }
+        .msg-body { font-size:0.85rem; color:#555; line-height:1.5; margin-top:6px; }
+        .section-title { font-weight:600; color:#555; font-size:0.88rem; text-transform:uppercase; letter-spacing:0.5px; margin:0 0 14px; }
+        .tabs { display:flex; gap:8px; margin-bottom:18px; }
+        .tab-btn { padding:8px 20px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer; font-family:Poppins,sans-serif; font-size:0.85rem; color:#555; }
+        .tab-btn.active { background:#5c6bc0; color:#fff; border-color:#5c6bc0; }
+    </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <aside class="dashboard-sidebar">
-            <div class="sidebar-header">
-                <img src="assets/img/logo.jpg" alt="Franciscan Catholic School" class="logo">
-                <h3>Teacher Portal</h3>
-            </div>
-            <div class="sidebar-menu">
-                <ul>
-                    <li><a href="teacher-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="my-classes.html"><i class="fas fa-users"></i> My Classes</a></li>
-                    <li><a href="assignments.html"><i class="fas fa-book"></i> Assignments</a></li>
-                    <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
-                    <li class="active"><a href="teacher-messages.html"><i class="fas fa-envelope"></i> Messages</a></li>
-                    <li><a href="teacher-settings.html"><i class="fas fa-cog"></i> Settings</a></li>
-                </ul>
-            </div>
-            <div class="sidebar-footer">
-                <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-        </aside>
-        <main class="dashboard-main">
-            <nav class="dashboard-nav">
-                <button id="sidebar-toggle" class="mobile-toggle"><i class="fas fa-bars"></i></button>
-                <div class="nav-right">
-                    <div class="date-display"><i class="far fa-calendar-alt"></i><span id="current-date">Loading...</span></div>
-                    <div class="admin-profile">
-                        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-weight:600;font-size:0.9rem;" id="nav-avatar"></div>
-                        <div class="admin-info"><span id="nav-name">Loading...</span><span id="nav-role">Teacher</span></div>
-                    </div>
-                </div>
-            </nav>
-            
-            <div class="dashboard-content">
-                <div class="page-header">
-                    <h1>Messages</h1>
-                    <p>Communicate with students, parents, and colleagues</p>
-                </div>
-                
-                <div class="messages-container">
-                    <div class="messages-sidebar">
-                        <div class="messages-actions">
-                            <button class="btn-compose" id="compose-btn">
-                                <i class="fas fa-pen"></i> Compose
-                            </button>
-                            <div class="messages-filter">
-                                <select id="message-filter">
-                                    <option value="all">All Messages</option>
-                                    <option value="unread">Unread</option>
-                                    <option value="students">From Students</option>
-                                    <option value="parents">From Parents</option>
-                                    <option value="staff">From Staff</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="messages-folders">
-                            <h3>Folders</h3>
-                            <ul>
-                                <li class="active">
-                                    <a href="#inbox">
-                                        <i class="fas fa-inbox"></i>
-                                        <span>Inbox</span>
-                                        <span class="badge">0</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#sent">
-                                        <i class="fas fa-paper-plane"></i>
-                                        <span>Sent</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#drafts">
-                                        <i class="fas fa-file"></i>
-                                        <span>Drafts</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#starred">
-                                        <i class="fas fa-star"></i>
-                                        <span>Starred</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#archived">
-                                        <i class="fas fa-archive"></i>
-                                        <span>Archived</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="messages-labels">
-                            <h3>Labels</h3>
-                            <ul>
-                                <li>
-                                    <a href="#important">
-                                        <span class="label-color" style="background-color: #dc3545;"></span>
-                                        <span>Important</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#work">
-                                        <span class="label-color" style="background-color: #4a6da7;"></span>
-                                        <span>Work</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#personal">
-                                        <span class="label-color" style="background-color: #28a745;"></span>
-                                        <span>Personal</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#events">
-                                        <span class="label-color" style="background-color: #fd7e14;"></span>
-                                        <span>Events</span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <button class="btn-add-label">
-                                <i class="fas fa-plus"></i> Add Label
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="messages-content">
-                        <div class="messages-empty-state">
-                            <div class="empty-state-icon">
-                                <i class="fas fa-envelope-open"></i>
-                            </div>
-                            <h2>No Messages Yet</h2>
-                            <p>Your inbox is empty. Messages from students, parents, and colleagues will appear here once the school year begins.</p>
-                            <p class="empty-state-tip">You can still compose messages to prepare for the upcoming school year.</p>
-                            <button class="btn-compose-empty" id="compose-empty-btn">
-                                <i class="fas fa-pen"></i> Compose a Message
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Compose Message Modal -->
-                <div class="modal" id="compose-modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2>Compose Message</h2>
-                            <button class="modal-close" id="close-modal">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="compose-form">
-                                <div class="form-group">
-                                    <label for="message-to">To:</label>
-                                    <select id="message-to" multiple>
-                                        <option value="all-students">All Students</option>
-                                        <option value="all-parents">All Parents</option>
-                                        <option value="all-staff">All Staff</option>
-                                        <option disabled>──────────</option>
-                                        <option disabled>Individual recipients will be available when school resumes</option>
-                                    </select>
-                                    <p class="help-text">Hold Ctrl (or Cmd) to select multiple recipients</p>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="message-subject">Subject:</label>
-                                    <input type="text" id="message-subject" placeholder="Enter message subject">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="message-body">Message:</label>
-                                    <textarea id="message-body" rows="8" placeholder="Type your message here..."></textarea>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>Attachments:</label>
-                                    <div class="file-upload">
-                                        <button type="button" class="btn-file-upload" id="file-upload-btn">
-                                            <i class="fas fa-paperclip"></i> Add Attachment
-                                        </button>
-                                        <input type="file" id="file-upload" multiple style="display: none;">
-                                        <span class="file-info">No files selected</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-actions">
-                                    <button type="submit" class="btn-primary">
-                                        <i class="fas fa-paper-plane"></i> Send Message
-                                    </button>
-                                    <button type="button" class="btn-outline" id="save-draft-btn">
-                                        <i class="fas fa-save"></i> Save as Draft
-                                    </button>
-                                    <button type="button" class="btn-outline" id="discard-btn">
-                                        <i class="fas fa-trash"></i> Discard
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
+<div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <img src="assets/img/logo.jpg" alt="Logo" class="logo">
+            <h3>Teacher Portal</h3>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="teacher-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="my-classes.html"><i class="fas fa-users"></i> My Classes</a></li>
+                <li><a href="assignments.html"><i class="fas fa-book"></i> Assignments</a></li>
+                <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                <li class="active"><a href="teacher-messages.html"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li><a href="teacher-settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-footer">
+            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </aside>
 
-    <script src="assets/js/teacher-nav.js"></script>
-    <script src="assets/js/teacher-messages.js"></script>
+    <main class="dashboard-main">
+        <nav class="dashboard-nav">
+            <button id="sidebar-toggle" class="mobile-toggle"><i class="fas fa-bars"></i></button>
+            <div class="nav-right">
+                <div class="date-display"><i class="far fa-calendar-alt"></i><span id="current-date"></span></div>
+                <div class="admin-profile">
+                    <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:0.9rem" id="nav-avatar"></div>
+                    <div class="admin-info"><span id="nav-name"></span><span id="nav-role">Teacher</span></div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard-content">
+            <div class="page-header">
+                <h1>Messages</h1>
+                <p>Send messages to your students, colleagues, or the admin</p>
+            </div>
+
+            <!-- Compose -->
+            <div class="compose-box">
+                <h2><i class="fas fa-pen" style="color:#5c6bc0"></i> Compose Message</h2>
+                <div class="field">
+                    <label>Send To</label>
+                    <select id="recipient-type">
+                        <option value="">-- Select recipient --</option>
+                        <option value="admin">Admin</option>
+                        <option value="teacher">A Specific Teacher</option>
+                        <option value="all-class">All Students in My Class</option>
+                        <option value="student">A Specific Student (My Class)</option>
+                    </select>
+                </div>
+                <div class="field" id="teacher-field" style="display:none">
+                    <label>Select Teacher</label>
+                    <select id="recipient-teacher">
+                        <option value="">-- Choose teacher --</option>
+                    </select>
+                </div>
+                <div class="field" id="student-field" style="display:none">
+                    <label>Select Student</label>
+                    <select id="recipient-student">
+                        <option value="">-- Choose student --</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Subject</label>
+                    <input type="text" id="msg-subject" placeholder="e.g. Homework Reminder">
+                </div>
+                <div class="field">
+                    <label>Message</label>
+                    <textarea id="msg-body" rows="4" placeholder="Type your message here..."></textarea>
+                </div>
+                <button class="btn-send" id="send-btn"><i class="fas fa-paper-plane"></i> Send Message</button>
+            </div>
+
+            <!-- Inbox / Sent tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" id="tab-received">
+                    <i class="fas fa-inbox"></i> Received
+                </button>
+                <button class="tab-btn" id="tab-sent">
+                    <i class="fas fa-paper-plane"></i> Sent
+                </button>
+            </div>
+
+            <div id="messages-list">
+                <div style="text-align:center;padding:40px;color:#aaa">
+                    <i class="fas fa-spinner fa-spin" style="font-size:1.5rem"></i>
+                    <p style="margin-top:10px">Loading messages...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="assets/js/teacher-nav.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async function () {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || JSON.parse(sessionStorage.getItem('currentUser'));
+    if (!currentUser || !['teacher','headteacher','coordinator','admin'].includes(currentUser.role)) {
+        window.location.href = 'portal.html'; return;
+    }
+
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+        weekday:'long', year:'numeric', month:'long', day:'numeric'
+    });
+    const displayName = currentUser.full_name || currentUser.name || currentUser.username;
+    document.getElementById('nav-name').textContent = displayName;
+    document.getElementById('nav-avatar').textContent = displayName.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        document.querySelector('.dashboard-sidebar').classList.toggle('active');
+    });
+    document.getElementById('logout-btn').addEventListener('click', e => {
+        e.preventDefault();
+        localStorage.removeItem('currentUser'); sessionStorage.removeItem('currentUser');
+        window.location.href = 'portal.html';
+    });
+
+    // Load students in teacher's assigned class(es)
+    let myClassKeys = [];
+    try {
+        const tRes = await fetch('/api/teachers', { headers: { Authorization: 'Bearer x' } });
+        const teachers = (await tRes.json()).teachers || [];
+        const teacher = teachers.find(t => t.teacher_id === currentUser.username || t.email === currentUser.email);
+        const assignedRaw = teacher?.assigned_class || currentUser.assigned_class || '';
+        myClassKeys = assignedRaw.split(',').map(k => k.trim()).filter(Boolean);
+
+        // Populate other teachers dropdown (exclude self)
+        const teacherSel = document.getElementById('recipient-teacher');
+        teachers.filter(t => t.teacher_id !== currentUser.username).forEach(t => {
+            teacherSel.innerHTML += `<option value="${t.teacher_id}">${t.full_name}</option>`;
+        });
+
+        // Populate students dropdown
+        if (myClassKeys.length) {
+            const studentSel = document.getElementById('recipient-student');
+            for (const key of myClassKeys) {
+                const sRes = await fetch(`/api/students?class_key=${key}`);
+                const students = (await sRes.json()).students || [];
+                students.forEach(s => {
+                    const name = [s.first_name, s.middle_name, s.last_name].filter(Boolean).join(' ');
+                    studentSel.innerHTML += `<option value="${s.admission_number}">${name}</option>`;
+                });
+            }
+        }
+    } catch(e) { console.error(e); }
+
+    // Show/hide student/teacher field
+    document.getElementById('recipient-type').addEventListener('change', function () {
+        document.getElementById('student-field').style.display = this.value === 'student' ? 'block' : 'none';
+        document.getElementById('teacher-field').style.display = this.value === 'teacher' ? 'block' : 'none';
+    });
+
+    // Send message
+    document.getElementById('send-btn').addEventListener('click', async () => {
+        const type = document.getElementById('recipient-type').value;
+        const subject = document.getElementById('msg-subject').value.trim();
+        const body = document.getElementById('msg-body').value.trim();
+
+        if (!type) { alert('Please select a recipient.'); return; }
+        if (!subject || !body) { alert('Please enter a subject and message.'); return; }
+
+        let recipient = type;
+        if (type === 'student') {
+            const sel = document.getElementById('recipient-student');
+            if (!sel.value) { alert('Please select a student.'); return; }
+            recipient = sel.value;
+        } else if (type === 'teacher') {
+            const sel = document.getElementById('recipient-teacher');
+            if (!sel.value) { alert('Please select a teacher.'); return; }
+            recipient = sel.value;
+        } else if (type === 'all-class') {
+            // Send one message per class key so all students in the class receive it
+            if (!myClassKeys.length) { alert('You have no assigned class.'); return; }
+            recipient = myClassKeys.join(',');
+        }
+
+        const btn = document.getElementById('send-btn');
+        btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+        try {
+            const res = await fetch('/api/messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sender_name: displayName,
+                    sender_role: currentUser.role,
+                    recipient,
+                    subject,
+                    body
+                })
+            });
+            if (!res.ok) throw new Error((await res.json()).error);
+            document.getElementById('msg-subject').value = '';
+            document.getElementById('msg-body').value = '';
+            document.getElementById('recipient-type').value = '';
+            document.getElementById('student-field').style.display = 'none';
+            showToast('Message sent successfully.');
+            loadMessages('sent');
+            document.getElementById('tab-sent').click();
+        } catch(e) {
+            alert('Failed to send: ' + e.message);
+        } finally {
+            btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+        }
+    });
+
+    // Tabs
+    let activeTab = 'received';
+    document.getElementById('tab-received').addEventListener('click', () => {
+        activeTab = 'received';
+        document.getElementById('tab-received').classList.add('active');
+        document.getElementById('tab-sent').classList.remove('active');
+        loadMessages('received');
+    });
+    document.getElementById('tab-sent').addEventListener('click', () => {
+        activeTab = 'sent';
+        document.getElementById('tab-sent').classList.add('active');
+        document.getElementById('tab-received').classList.remove('active');
+        loadMessages('sent');
+    });
+
+    async function loadMessages(tab) {
+        const list = document.getElementById('messages-list');
+        list.innerHTML = `<div style="text-align:center;padding:30px;color:#aaa"><i class="fas fa-spinner fa-spin"></i></div>`;
+        try {
+            const res = await fetch('/api/messages');
+            const all = (await res.json()).messages || [];
+
+            let messages;
+            if (tab === 'sent') {
+                messages = all.filter(m => m.sender_name === displayName || m.sender_role === currentUser.role && m.sender_name === displayName);
+            } else {
+                // Received: messages addressed to this teacher's username, all-teachers, or admin broadcasts
+                messages = all.filter(m =>
+                    m.recipient === currentUser.username ||
+                    m.recipient === 'all-teachers' ||
+                    (m.sender_role === 'admin' && m.recipient === 'all')
+                );
+            }
+
+            if (!messages.length) {
+                list.innerHTML = `<div style="text-align:center;padding:40px;color:#aaa"><i class="fas fa-envelope-open" style="font-size:2.5rem;color:#ddd"></i><p style="margin-top:12px">No messages here yet.</p></div>`;
+                return;
+            }
+
+            list.innerHTML = messages.map(m => {
+                const date = new Date(m.sent_at).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+                const isSent = tab === 'sent';
+                return `
+                <div class="msg-card ${isSent ? 'sent' : 'received'}">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+                        <span class="msg-subject">${m.subject}</span>
+                        <span class="msg-meta">${date}</span>
+                    </div>
+                    <div class="msg-from">${isSent ? `To: ${m.recipient}` : `From: ${m.sender_name}`}</div>
+                    <div class="msg-body">${m.body}</div>
+                </div>`;
+            }).join('');
+        } catch(e) {
+            list.innerHTML = `<p style="color:#e53935;padding:20px">Failed to load messages.</p>`;
+        }
+    }
+
+    function showToast(msg) {
+        let t = document.getElementById('toast');
+        if (!t) {
+            t = document.createElement('div');
+            t.id = 'toast';
+            t.style.cssText = 'position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:8px;background:#2e7d32;color:#fff;font-size:0.88rem;font-family:Poppins,sans-serif;z-index:9999';
+            document.body.appendChild(t);
+        }
+        t.textContent = msg; t.style.opacity = '1';
+        setTimeout(() => t.style.opacity = '0', 3500);
+    }
+
+    loadMessages('received');
+});
+</script>
 </body>
 </html>
