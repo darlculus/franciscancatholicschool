@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Logout functionality (same as in admin-dashboard.js)
     const logoutBtn = document.getElementById('logout-btn');
     
-    logoutBtn.addEventListener('click', function(e) {
+    logoutBtn?.addEventListener('click', function(e) {
         e.preventDefault();
         
         // Clear any authentication tokens/session data from localStorage
