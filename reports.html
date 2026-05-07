@@ -65,6 +65,17 @@
                 <p>Add your comment to each student's report card, then publish for the whole class</p>
             </div>
 
+            <!-- Current Term Banner -->
+            <div id="term-banner" style="background:#e8eaf6;border:1px solid #c5cae9;border-radius:10px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <i class="fas fa-calendar-alt" style="color:#5c6bc0;font-size:1.1rem"></i>
+                    <span style="font-size:0.9rem;color:#333">Current Term: <strong id="current-term-label" style="color:#1a237e"></strong></span>
+                </div>
+                <button id="new-term-btn" style="padding:8px 18px;background:#e53935;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;font-weight:600">
+                    <i class="fas fa-sync-alt"></i> Start New Term
+                </button>
+            </div>
+
             <!-- Step 1: Select class & term -->
             <div style="background:#fff;border:1px solid #e8eaf6;border-radius:10px;padding:20px;margin-bottom:20px">
                 <p style="font-weight:600;color:#555;margin:0 0 14px;font-size:0.9rem"><i class="fas fa-filter" style="color:#5c6bc0"></i> Step 1 — Select a class and term, then click Load</p>
@@ -79,7 +90,7 @@
                         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:4px">Term</label>
                         <select id="report-term" style="padding:9px 14px;border:1px solid #ddd;border-radius:6px;font-family:Poppins,sans-serif;font-size:0.88rem">
                             <option value="2nd Term" selected>2nd Term</option>
-                            <option value="3rd Term" disabled>3rd Term (not yet)</option>
+                            <option value="3rd Term">3rd Term</option>
                         </select>
                     </div>
                     <div>
@@ -145,6 +156,85 @@ document.addEventListener('DOMContentLoaded', async function () {
             sel.innerHTML += `<option value="${c.class_key}">${c.name}</option>`;
         });
     } catch (e) { console.error('Could not load classes', e); }
+
+    // Load current term from Supabase
+    let currentTerm = '2nd Term';
+    let currentSession = '2025/2026';
+    try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        currentTerm = data.settings.current_term || currentTerm;
+        currentSession = data.settings.current_session || currentSession;
+    } catch (e) { console.error('Could not load settings', e); }
+
+    document.getElementById('current-term-label').textContent = `${currentTerm} — ${currentSession}`;
+
+    // Sync dropdowns to current term
+    const termSel = document.getElementById('report-term');
+    const yearSel = document.getElementById('report-year');
+    if (termSel) termSel.value = currentTerm;
+    if (yearSel) yearSel.value = currentSession;
+
+    // Start New Term button
+    document.getElementById('new-term-btn').addEventListener('click', async () => {
+        const TERMS = ['1st Term', '2nd Term', '3rd Term'];
+        const nextTermMap = { '1st Term': '2nd Term', '2nd Term': '3rd Term', '3rd Term': '1st Term' };
+        const nextTerm = nextTermMap[currentTerm] || '2nd Term';
+        const nextSession = nextTerm === '1st Term'
+            ? (() => { const [y1, y2] = currentSession.split('/'); return `${parseInt(y1)+1}/${parseInt(y2)+1}`; })()
+            : currentSession;
+
+        if (!confirm(`Start ${nextTerm} (${nextSession})?
+
+This will:
+• Clear ALL results and mid-term results for every student
+• Clear published status
+• Set the current term to ${nextTerm}
+
+This cannot be undone.`)) return;
+
+        const btn = document.getElementById('new-term-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+        try {
+            // 1. Fetch all students
+            const sRes = await fetch('/api/students');
+            const sData = await sRes.json();
+            const students = sData.students || [];
+
+            // 2. Clear result, mid_result, result_published for each student
+            let cleared = 0;
+            for (const s of students) {
+                await fetch('/api/students', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: s.id, result: {}, mid_result: {}, result_published: false })
+                });
+                cleared++;
+            }
+
+            // 3. Update current term in Supabase
+            await fetch('/api/settings', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ current_term: nextTerm, current_session: nextSession })
+            });
+
+            currentTerm = nextTerm;
+            currentSession = nextSession;
+            document.getElementById('current-term-label').textContent = `${currentTerm} — ${currentSession}`;
+            if (termSel) termSel.value = currentTerm;
+            if (yearSel) yearSel.value = currentSession;
+
+            alert(`✓ New term started: ${nextTerm} (${nextSession})\n${cleared} student records cleared.`);
+        } catch (e) {
+            alert('Error starting new term: ' + e.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-sync-alt"></i> Start New Term';
+        }
+    });
 
     let currentStudents = [];
     let currentClassKey = '';

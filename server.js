@@ -13,7 +13,7 @@ app.use(express.static(__dirname));
 const apiHandlers = [
   'login', 'change-password', 'teachers', 'classes', 'students',
   'attendance', 'admin-attendance', 'forgot-password', 'reset-password',
-  'messages', 'contact', 'appointment'
+  'messages', 'contact', 'appointment', 'settings'
 ];
 
 apiHandlers.forEach(name => {
