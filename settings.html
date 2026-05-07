@@ -355,6 +355,31 @@
                   </button>
                   <p class="help-text">This will log you out of the admin panel and redirect you to the login page.</p>
                 </div>
+
+                <!-- New Term -->
+                <div id="new-term-section" style="margin-top:32px;padding-top:24px;border-top:2px solid #eee">
+                  <h3>Start New Term</h3>
+                  <p class="help-text" style="color:#e53935;font-weight:500">⚠️ This will clear ALL student results, mid-term results, and published flags for every student. Do this only at the start of a new term.</p>
+                  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;align-items:flex-end">
+                    <div>
+                      <label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:4px">New Term</label>
+                      <select id="new-term-select" style="padding:9px 14px;border:1px solid #ddd;border-radius:6px;font-family:Poppins,sans-serif">
+                        <option value="1st Term">1st Term</option>
+                        <option value="2nd Term">2nd Term</option>
+                        <option value="3rd Term">3rd Term</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:4px">Session</label>
+                      <input id="new-term-session" type="text" placeholder="e.g. 2025/2026" value="2025/2026"
+                        style="padding:9px 14px;border:1px solid #ddd;border-radius:6px;font-family:Poppins,sans-serif;width:140px">
+                    </div>
+                    <button id="start-new-term-btn" class="btn-danger" style="white-space:nowrap">
+                      <i class="fas fa-sync-alt"></i> Start New Term & Clear Results
+                    </button>
+                  </div>
+                  <p id="current-term-display" style="margin-top:12px;font-size:0.85rem;color:#555">Current term: loading...</p>
+                </div>
               </div>
 
               <!-- User Management (Super Admin Only) -->
@@ -388,7 +413,45 @@
             if (currentUser.role === 'admin') {
                 document.getElementById('users-tab-link').style.display = 'block';
             }
-            
+
+            // Load and display current term
+            fetch('/api/settings').then(r => r.json()).then(data => {
+                const t = data.settings?.current_term || '2nd Term';
+                const s = data.settings?.current_session || '2025/2026';
+                document.getElementById('current-term-display').textContent = `Current term: ${t}, ${s}`;
+                // Pre-select in dropdowns
+                const termSel = document.getElementById('new-term-select');
+                for (const opt of termSel.options) { if (opt.value === t) { opt.selected = true; break; } }
+                document.getElementById('new-term-session').value = s;
+            }).catch(() => {});
+
+            // Start new term
+            document.getElementById('start-new-term-btn').addEventListener('click', async function () {
+                const term = document.getElementById('new-term-select').value;
+                const session = document.getElementById('new-term-session').value.trim();
+                if (!session) { alert('Please enter a session (e.g. 2025/2026).'); return; }
+                if (!confirm(`Start ${term}, ${session}?\n\nThis will permanently clear ALL student results, mid-term results, and published flags. This cannot be undone.`)) return;
+
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                try {
+                    const res = await fetch('/api/settings', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ term, session })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error);
+                    document.getElementById('current-term-display').textContent = `Current term: ${term}, ${session}`;
+                    alert(`Done! The portal is now set to ${term}, ${session}.\nAll student results have been cleared.`);
+                } catch (e) {
+                    alert('Error: ' + e.message);
+                } finally {
+                    this.disabled = false;
+                    this.innerHTML = '<i class="fas fa-sync-alt"></i> Start New Term & Clear Results';
+                }
+            });
+
             // Logout functionality
             const logoutBtn = document.getElementById('logout-settings-btn');
             if (logoutBtn) {

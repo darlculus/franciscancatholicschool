@@ -1,8 +1,19 @@
 // Shared utilities for all student portal pages
 
-const STUDENT_TERMS = [
-    { term: '2nd Term', session: '2025/2026' },
-];
+let STUDENT_TERMS = [{ term: '2nd Term', session: '2025/2026' }];
+let _termLoaded = false;
+
+async function loadCurrentTerm() {
+    if (_termLoaded) return;
+    try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        const term = data.settings?.current_term;
+        const session = data.settings?.current_session;
+        if (term && session) STUDENT_TERMS = [{ term, session }];
+    } catch (e) { /* use default */ }
+    _termLoaded = true;
+}
 
 function setStudentAvatar(el, currentUser, initials) {
     if (!el) return;
@@ -16,6 +27,7 @@ function setStudentAvatar(el, currentUser, initials) {
 }
 
 async function openStudentReportCard(currentUser) {
+    await loadCurrentTerm();
     const studentId = currentUser.student_id;
     if (!studentId) {
         showStudentNotification('Student record not found. Please contact the school office.', 'error');

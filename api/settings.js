@@ -7,7 +7,7 @@ const supabase = createClient(
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -24,12 +24,33 @@ module.exports = async (req, res) => {
 
     // PUT - update one or more settings
     if (req.method === 'PUT') {
-      const updates = req.body; // e.g. { current_term: '3rd Term', current_session: '2025/2026' }
+      const updates = req.body;
       for (const [key, value] of Object.entries(updates)) {
         const { error } = await supabase.from('school_settings')
           .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
         if (error) throw error;
       }
+      return res.status(200).json({ success: true });
+    }
+
+    // POST - start a new term: save term/session and clear all student results
+    if (req.method === 'POST') {
+      const { term, session } = req.body;
+      if (!term || !session) return res.status(400).json({ error: 'term and session are required' });
+
+      // Save new term settings
+      for (const [key, value] of [['current_term', term], ['current_session', session]]) {
+        const { error } = await supabase.from('school_settings')
+          .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+        if (error) throw error;
+      }
+
+      // Clear result, mid_result, result_published on ALL active students
+      const { error: clearError } = await supabase.from('students')
+        .update({ result: null, mid_result: null, result_published: false })
+        .eq('status', 'active');
+      if (clearError) throw clearError;
+
       return res.status(200).json({ success: true });
     }
 

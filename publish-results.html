@@ -55,8 +55,9 @@
                     <option value="">-- Choose a class --</option>
                 </select>
                 <select id="term-select" style="padding:9px 14px;border:1px solid #ddd;border-radius:6px;font-family:Poppins,sans-serif;font-size:0.9rem">
-                    <option value="2nd Term" selected>2nd Term</option>
-                    <option value="3rd Term" disabled>3rd Term (not yet)</option>
+                    <option value="1st Term">1st Term</option>
+                    <option value="2nd Term">2nd Term</option>
+                    <option value="3rd Term">3rd Term</option>
                 </select>
                 <button id="load-btn" style="padding:9px 20px;background:#5c6bc0;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.9rem">
                     <i class="fas fa-search"></i> Load Students
@@ -97,6 +98,22 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelector('.dashboard-sidebar').classList.toggle('active');
     });
 
+    // Load current term from settings
+    try {
+        const stRes = await fetch('/api/settings');
+        const stData = await stRes.json();
+        const currentTerm = stData.settings?.current_term;
+        const currentSession = stData.settings?.current_session || '2025/2026';
+        if (currentTerm) {
+            const termSel = document.getElementById('term-select');
+            for (const opt of termSel.options) {
+                if (opt.value === currentTerm) { opt.selected = true; break; }
+            }
+        }
+        // Update the hardcoded session in section title
+        document.getElementById('term-select').dataset.session = currentSession;
+    } catch (e) { /* use default */ }
+
     // Load classes
     const cRes = await fetch('/api/classes');
     const cData = await cRes.json();
@@ -122,7 +139,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const sData = await sRes.json();
         currentStudents = sData.students || [];
 
-        document.getElementById('section-title').textContent = `${currentClassName} — ${currentTerm}, 2025/2026 (${currentStudents.length} students)`;
+        const currentSession = document.getElementById('term-select').dataset.session || '2025/2026';
+        document.getElementById('section-title').textContent = `${currentClassName} — ${currentTerm}, ${currentSession} (${currentStudents.length} students)`;
         document.getElementById('students-section').style.display = 'block';
         renderStudents();
     });
@@ -159,7 +177,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         ${hasResult
                             ? `<span style="background:#e8eaf6;color:#3949ab;padding:4px 12px;border-radius:20px;font-size:0.78rem"><i class="fas fa-file-alt"></i> Results entered</span>`
                             : `<span style="background:#fce4ec;color:#c62828;padding:4px 12px;border-radius:20px;font-size:0.78rem"><i class="fas fa-exclamation-circle"></i> No results yet</span>`}
-                        <a href="report-card.html?id=${s.id}&class_key=${currentClassKey}&term=${encodeURIComponent(currentTerm)}&session=2025%2F2026" target="_blank"
+                        <a href="report-card.html?id=${s.id}&class_key=${currentClassKey}&term=${encodeURIComponent(currentTerm)}&session=${encodeURIComponent(document.getElementById('term-select').dataset.session || '2025/2026')}" target="_blank"
                             style="padding:5px 12px;background:#5c6bc0;color:#fff;border-radius:5px;font-size:0.78rem;text-decoration:none">
                             <i class="fas fa-eye"></i> Preview
                         </a>

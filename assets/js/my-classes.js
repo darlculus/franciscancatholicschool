@@ -1,4 +1,15 @@
 let _currentUser = null;
+let _currentTerm = '2nd Term';
+let _currentSession = '2025/2026';
+
+async function loadCurrentTerm() {
+    try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        if (data.settings?.current_term) _currentTerm = data.settings.current_term;
+        if (data.settings?.current_session) _currentSession = data.settings.current_session;
+    } catch (e) { /* use defaults */ }
+}
 
 document.addEventListener('DOMContentLoaded', async function () {
     _currentUser = JSON.parse(localStorage.getItem('currentUser')) || JSON.parse(sessionStorage.getItem('currentUser'));
@@ -21,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         window.location.href = 'portal.html';
     });
 
+    await loadCurrentTerm();
     await ensureClasses();
     await loadMyClass(_currentUser);
 });
@@ -782,7 +794,7 @@ function buildResultArchiveModal(student, classKey) {
     const fullName = [student.first_name, student.middle_name, student.last_name].filter(Boolean).join(' ');
 
     const TERMS = [
-        { term: '2nd Term', session: '2025/2026' },
+        { term: _currentTerm, session: _currentSession },
     ];
 
     // Determine which terms have result data
@@ -790,7 +802,7 @@ function buildResultArchiveModal(student, classKey) {
     const hasCurrentResult = result && Object.keys(result).some(k => !['psd','teacher_comment','head_comment'].includes(k));
 
     const cardsHtml = TERMS.map(({ term, session }) => {
-        const isCurrent = term === '2nd Term' && session === '2025/2026';
+        const isCurrent = term === _currentTerm && session === _currentSession;
         const hasData = isCurrent && hasCurrentResult;
         const url = `report-card.html?id=${student.id}&class_key=${classKey}&term=${encodeURIComponent(term)}&session=${encodeURIComponent(session)}`;
 
@@ -1113,7 +1125,7 @@ async function loadMyClass(currentUser, selectedClassKey) {
                 if (action === 'update-mid-result') { buildMidResultModal(student); return; }
                 if (action === 'update-result') { buildUpdateResultModal(student, activeKey); return; }
                 if (action === 'report-card') {
-                    window.open(`report-card.html?id=${student.id}&class_key=${activeKey}&term=${encodeURIComponent('2nd Term')}&session=${encodeURIComponent('2025/2026')}`, '_blank');
+                    window.open(`report-card.html?id=${student.id}&class_key=${activeKey}&term=${encodeURIComponent(_currentTerm)}&session=${encodeURIComponent(_currentSession)}`, '_blank');
                     return;
                 }
                 if (action === 'result-archive') { buildResultArchiveModal(student, activeKey); return; }
