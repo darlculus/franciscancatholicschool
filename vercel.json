@@ -42,6 +42,7 @@
     { "source": "/api/reset-password", "destination": "/api/reset-password.js" },
     { "source": "/api/messages", "destination": "/api/messages.js" },
     { "source": "/api/contact", "destination": "/api/contact.js" },
-    { "source": "/api/appointment", "destination": "/api/appointment.js" }
+    { "source": "/api/appointment", "destination": "/api/appointment.js" },
+    { "source": "/api/settings", "destination": "/api/settings.js" }
   ]
 }
