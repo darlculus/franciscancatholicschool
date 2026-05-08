@@ -219,7 +219,8 @@ document.addEventListener('DOMContentLoaded', function() {
           preferredTime: document.getElementById('preferredTime')?.value,
           visitPurpose: document.getElementById('visitPurpose')?.value,
           additionalInfo: document.getElementById('additionalInfo')?.value?.trim() || '',
-          appointmentHp: (document.getElementById('appointmentHp')?.value || '')
+          appointmentHp: (document.getElementById('appointmentHp')?.value || ''),
+          type: 'appointment'
         };
 
         try {
