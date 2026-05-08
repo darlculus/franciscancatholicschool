@@ -856,7 +856,7 @@ img {
   /* News Section Styles */
   .news-section {
     padding: 5rem 0;
-    background-color: var(--light-gray);
+    background-color: var(--white);
   }
   
   .news-container {
