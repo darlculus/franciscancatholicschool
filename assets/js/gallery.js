@@ -146,83 +146,68 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Pagination functionality
     function setupPagination(itemsSelector, paginationSelector, itemsPerPage = 6) {
-        const items = document.querySelectorAll(itemsSelector);
+        const allItems = Array.from(document.querySelectorAll(itemsSelector));
         const pagination = document.querySelector(paginationSelector);
-        
-        if (!items.length || !pagination) return;
-        
-        const pageCount = Math.ceil(items.length / itemsPerPage);
+
+        if (!allItems.length || !pagination) return;
+
         let currentPage = 1;
-        
-        // Initial setup
-        updatePageDisplay();
-        
-        // Previous button
-        const prevButton = pagination.querySelector('.pagination-prev');
-        if (prevButton) {
-            prevButton.addEventListener('click', function() {
-                if (currentPage > 1) {
-                    currentPage--;
-                    updatePageDisplay();
-                }
-            });
+
+        function getVisibleItems() {
+            // Respect any active category filter (hidden via display:none by filter)
+            return allItems.filter(item => !item.dataset.filtered);
         }
-        
-        // Next button
-        const nextButton = pagination.querySelector('.pagination-next');
-        if (nextButton) {
-            nextButton.addEventListener('click', function() {
-                if (currentPage < pageCount) {
-                    currentPage++;
-                    updatePageDisplay();
+
+        function renderPage() {
+            const items = getVisibleItems();
+            const pageCount = Math.max(1, Math.ceil(items.length / itemsPerPage));
+            if (currentPage > pageCount) currentPage = pageCount;
+
+            // Show/hide items
+            allItems.forEach(item => item.style.display = 'none');
+            const start = (currentPage - 1) * itemsPerPage;
+            items.slice(start, start + itemsPerPage).forEach(item => item.style.display = '');
+
+            // Rebuild page number buttons
+            const numbersContainer = pagination.querySelector('.pagination-numbers');
+            if (numbersContainer) {
+                numbersContainer.innerHTML = '';
+                for (let p = 1; p <= pageCount; p++) {
+                    const btn = document.createElement('span');
+                    btn.className = 'pagination-number' + (p === currentPage ? ' active' : '');
+                    btn.textContent = p;
+                    btn.addEventListener('click', function() {
+                        currentPage = p;
+                        renderPage();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    });
+                    numbersContainer.appendChild(btn);
                 }
-            });
+            }
+
+            // Prev / Next button states
+            const prevBtn = pagination.querySelector('.pagination-prev');
+            const nextBtn = pagination.querySelector('.pagination-next');
+            if (prevBtn) prevBtn.disabled = currentPage === 1;
+            if (nextBtn) nextBtn.disabled = currentPage === pageCount;
+
+            // Hide pagination entirely if only one page
+            pagination.style.display = pageCount <= 1 ? 'none' : '';
         }
-        
-        // Page number clicks
-        const pageNumbers = pagination.querySelectorAll('.pagination-number');
-        pageNumbers.forEach(number => {
-            number.addEventListener('click', function() {
-                const pageNum = parseInt(this.textContent);
-                if (!isNaN(pageNum)) {
-                    currentPage = pageNum;
-                    updatePageDisplay();
-                }
-            });
+
+        // Prev / Next listeners
+        const prevBtn = pagination.querySelector('.pagination-prev');
+        const nextBtn = pagination.querySelector('.pagination-next');
+        if (prevBtn) prevBtn.addEventListener('click', function() {
+            if (currentPage > 1) { currentPage--; renderPage(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
         });
-        
-        function updatePageDisplay() {
-            // Update visible items
-            items.forEach((item, index) => {
-                const startIndex = (currentPage - 1) * itemsPerPage;
-                const endIndex = startIndex + itemsPerPage - 1;
-                
-                if (index >= startIndex && index <= endIndex) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-            
-            // Update active page number
-            pageNumbers.forEach(number => {
-                const pageNum = parseInt(number.textContent);
-                if (pageNum === currentPage) {
-                    number.classList.add('active');
-                } else {
-                    number.classList.remove('active');
-                }
-            });
-            
-            // Update button states
-            if (prevButton) {
-                prevButton.disabled = currentPage === 1;
-            }
-            
-            if (nextButton) {
-                nextButton.disabled = currentPage === pageCount;
-            }
-        }
+        if (nextBtn) nextBtn.addEventListener('click', function() {
+            const pageCount = Math.ceil(getVisibleItems().length / itemsPerPage);
+            if (currentPage < pageCount) { currentPage++; renderPage(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        });
+
+        renderPage();
+        return { refresh: renderPage };
     }
     
     // Set up pagination for different sections
