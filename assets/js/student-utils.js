@@ -1,6 +1,6 @@
 // Shared utilities for all student portal pages
 
-let STUDENT_TERMS = [{ term: '2nd Term', session: '2025/2026' }];
+let STUDENT_TERMS = [{ term: '3rd Term', session: '2025/2026' }];
 let _termLoaded = false;
 
 async function loadCurrentTerm() {
@@ -53,7 +53,7 @@ async function openStudentReportCard(currentUser) {
 
     const cardsHtml = STUDENT_TERMS.map(({ term, session }) => {
         // Only the current term can ever be published at this stage
-        const isCurrent = term === '2nd Term' && session === '2025/2026';
+        const isCurrent = term === '3rd Term' && session === '2025/2026';
         const available = isCurrent && isPublished;
         const url = `report-card.html?id=${student.id}&class_key=${student.class_key}&term=${encodeURIComponent(term)}&session=${encodeURIComponent(session)}`;
 

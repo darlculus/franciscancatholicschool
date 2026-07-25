@@ -417,7 +417,7 @@
 
             // Load and display current term
             fetch('/api/settings').then(r => r.json()).then(data => {
-                const t = data.settings?.current_term || '2nd Term';
+                const t = data.settings?.current_term || '3rd Term';
                 const s = data.settings?.current_session || '2025/2026';
                 document.getElementById('current-term-display').textContent = `Current term: ${t}, ${s}`;
                 // Pre-select in dropdowns

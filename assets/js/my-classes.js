@@ -1,5 +1,5 @@
 let _currentUser = null;
-let _currentTerm = '2nd Term';
+let _currentTerm = '3rd Term';
 let _currentSession = '2025/2026';
 
 async function loadCurrentTerm() {

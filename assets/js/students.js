@@ -349,7 +349,7 @@ function showNotification(message, type = 'info') {
 }
 
 // ── Admin Report Modal ───────────────────────────────────────────────────────
-const TERM = '2nd Term';
+const TERM = '3rd Term';
 const SESSION = '2025/2026';
 
 function openAdminReportModal(id) {
