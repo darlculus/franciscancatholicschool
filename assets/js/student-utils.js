@@ -45,44 +45,73 @@ async function openStudentReportCard(currentUser) {
         return;
     }
 
-    // Build the term picker modal
+    // Fetch archived results
+    let archives = [];
+    try {
+        const aRes = await fetch(`/api/archive?student_id=${studentId}`);
+        const aData = await aRes.json();
+        archives = aData.archives || [];
+    } catch (e) { /* ignore */ }
+
     const existing = document.getElementById('report-picker-modal');
     if (existing) existing.remove();
 
     const isPublished = !!student.result_published;
 
-    const cardsHtml = STUDENT_TERMS.map(({ term, session }) => {
-        // Only the current term can ever be published at this stage
-        const isCurrent = term === '3rd Term' && session === '2025/2026';
-        const available = isCurrent && isPublished;
-        const url = `report-card.html?id=${student.id}&class_key=${student.class_key}&term=${encodeURIComponent(term)}&session=${encodeURIComponent(session)}`;
-
-        return `
-        <div style="border:1px solid ${available ? '#c5cae9' : '#eee'};border-radius:10px;padding:18px 20px;
+    // Current term card
+    const { term, session } = STUDENT_TERMS[0];
+    const currentUrl = `report-card.html?id=${student.id}&class_key=${student.class_key}&term=${encodeURIComponent(term)}&session=${encodeURIComponent(session)}`;
+    const currentCard = `
+        <div style="border:1px solid ${isPublished ? '#c5cae9' : '#eee'};border-radius:10px;padding:18px 20px;
             display:flex;align-items:center;justify-content:space-between;gap:12px;
-            background:${available ? '#f5f6ff' : '#fafafa'}">
+            background:${isPublished ? '#f5f6ff' : '#fafafa'}">
             <div style="display:flex;align-items:center;gap:14px">
-                <div style="width:44px;height:44px;border-radius:10px;background:${available ? '#e8eaf6' : '#f0f0f0'};
+                <div style="width:44px;height:44px;border-radius:10px;background:${isPublished ? '#e8eaf6' : '#f0f0f0'};
                     display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                    <i class="fas fa-file-alt" style="color:${available ? '#5c6bc0' : '#ccc'};font-size:1.1rem"></i>
+                    <i class="fas fa-file-alt" style="color:${isPublished ? '#5c6bc0' : '#ccc'};font-size:1.1rem"></i>
                 </div>
                 <div>
-                    <div style="font-weight:600;font-size:0.92rem;color:${available ? '#333' : '#aaa'}">${term} &mdash; ${session}</div>
-                    <div style="font-size:0.78rem;margin-top:3px;color:${available ? '#5c6bc0' : '#f57f17'}">
-                        ${available
+                    <div style="font-weight:600;font-size:0.92rem;color:${isPublished ? '#333' : '#aaa'}">${term} &mdash; ${session} <span style="font-size:0.72rem;background:#e8eaf6;color:#3949ab;padding:2px 8px;border-radius:10px;margin-left:4px">Current</span></div>
+                    <div style="font-size:0.78rem;margin-top:3px;color:${isPublished ? '#5c6bc0' : '#f57f17'}">
+                        ${isPublished
                             ? '<i class="fas fa-check-circle"></i> Result published &mdash; ready to view'
                             : '<i class="fas fa-clock"></i> Result not yet published'}
                     </div>
                 </div>
             </div>
-            ${available
-                ? `<a href="${url}" target="_blank"
+            ${isPublished
+                ? `<a href="${currentUrl}" target="_blank"
                     style="padding:8px 18px;background:#5c6bc0;color:#fff;border-radius:6px;font-size:0.82rem;
                     text-decoration:none;white-space:nowrap;font-weight:500">
                     <i class="fas fa-eye"></i> View
                    </a>`
                 : `<span style="font-size:0.78rem;color:#ccc;font-style:italic;white-space:nowrap">Not available</span>`
             }
+        </div>`;
+
+    // Archived term cards
+    const archiveCards = archives.map(a => {
+        const url = `report-card.html?id=${student.id}&class_key=${a.class_key || student.class_key}&term=${encodeURIComponent(a.term)}&session=${encodeURIComponent(a.session)}&archived=1`;
+        return `
+        <div style="border:1px solid #c8e6c9;border-radius:10px;padding:18px 20px;
+            display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f9fff9">
+            <div style="display:flex;align-items:center;gap:14px">
+                <div style="width:44px;height:44px;border-radius:10px;background:#e8f5e9;
+                    display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <i class="fas fa-archive" style="color:#2e7d32;font-size:1.1rem"></i>
+                </div>
+                <div>
+                    <div style="font-weight:600;font-size:0.92rem;color:#333">${a.term} &mdash; ${a.session}</div>
+                    <div style="font-size:0.78rem;margin-top:3px;color:#2e7d32">
+                        <i class="fas fa-check-circle"></i> Archived result
+                    </div>
+                </div>
+            </div>
+            <a href="${url}" target="_blank"
+                style="padding:8px 18px;background:#2e7d32;color:#fff;border-radius:6px;font-size:0.82rem;
+                text-decoration:none;white-space:nowrap;font-weight:500">
+                <i class="fas fa-eye"></i> View
+            </a>
         </div>`;
     }).join('');
 
@@ -94,7 +123,10 @@ async function openStudentReportCard(currentUser) {
             <button id="rp-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
             <h2 style="margin:0 0 4px;font-size:1.1rem">My Report Cards</h2>
             <p style="margin:0 0 20px;color:#888;font-size:0.88rem">${currentUser.name || currentUser.full_name || ''} &mdash; ${currentUser.class_name || ''}</p>
-            <div style="display:flex;flex-direction:column;gap:12px">${cardsHtml}</div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+                ${currentCard}
+                ${archiveCards}
+            </div>
             <p style="margin-top:16px;font-size:0.75rem;color:#bbb;text-align:center">
                 Results are published by the head teacher at the end of each term.
             </p>

@@ -43,6 +43,7 @@
     { "source": "/api/messages", "destination": "/api/messages.js" },
     { "source": "/api/contact", "destination": "/api/contact.js" },
     { "source": "/api/appointment", "destination": "/api/contact.js" },
-    { "source": "/api/settings", "destination": "/api/settings.js" }
+    { "source": "/api/settings", "destination": "/api/settings.js" },
+    { "source": "/api/archive", "destination": "/api/archive.js" }
   ]
 }

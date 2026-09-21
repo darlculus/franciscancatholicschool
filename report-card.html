@@ -209,6 +209,7 @@ async function loadReport() {
     const classKey  = params.get('class_key');
     const term      = params.get('term') || '1st Term';
     const session   = params.get('session') || '2025/2026';
+    const archived  = params.get('archived') === '1';
 
     if (!studentId) {
         document.getElementById('loading-state').innerHTML =
@@ -217,11 +218,24 @@ async function loadReport() {
     }
 
     try {
-        // Fetch student
+        // Fetch student biodata
         const sRes = await fetch(`/api/students`);
         const sData = await sRes.json();
         const student = (sData.students || []).find(s => s.id === studentId);
         if (!student) throw new Error('Student not found');
+
+        // If archived, overlay the archived result/mid_result onto the student object
+        if (archived) {
+            try {
+                const aRes = await fetch(`/api/archive?student_id=${studentId}`);
+                const aData = await aRes.json();
+                const record = (aData.archives || []).find(a => a.term === term && a.session === session);
+                if (record) {
+                    student.result = record.result;
+                    student.mid_result = record.mid_result;
+                }
+            } catch(e) {}
+        }
 
         // Fetch attendance
         let timesPresent = '—';

@@ -33,19 +33,49 @@ module.exports = async (req, res) => {
       return res.status(200).json({ success: true });
     }
 
-    // POST - start a new term: save term/session and clear all student results
+    // POST - start a new term: archive current results, save term/session, then clear
     if (req.method === 'POST') {
       const { term, session } = req.body;
       if (!term || !session) return res.status(400).json({ error: 'term and session are required' });
 
-      // Save new term settings
+      // 1. Get current term so we know what label to archive under
+      const { data: settingsRows } = await supabase.from('school_settings').select('*');
+      const currentSettings = {};
+      (settingsRows || []).forEach(r => { currentSettings[r.key] = r.value; });
+      const currentTerm = currentSettings.current_term;
+      const currentSession = currentSettings.current_session;
+
+      // 2. Archive all student results under the CURRENT term before clearing
+      if (currentTerm && currentSession) {
+        const { data: students } = await supabase
+          .from('students')
+          .select('id, class_key, class_name, result, mid_result')
+          .eq('status', 'active');
+        for (const s of (students || [])) {
+          const hasResult = s.result && Object.keys(s.result).length > 0;
+          const hasMid = s.mid_result && Object.keys(s.mid_result).length > 0;
+          if (!hasResult && !hasMid) continue;
+          await supabase.from('student_results_archive').upsert({
+            student_id: s.id,
+            term: currentTerm,
+            session: currentSession,
+            class_key: s.class_key,
+            class_name: s.class_name,
+            result: s.result || {},
+            mid_result: s.mid_result || {},
+            archived_at: new Date().toISOString()
+          }, { onConflict: 'student_id,term,session' });
+        }
+      }
+
+      // 3. Save new term settings
       for (const [key, value] of [['current_term', term], ['current_session', session]]) {
         const { error } = await supabase.from('school_settings')
           .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
         if (error) throw error;
       }
 
-      // Clear result, mid_result, result_published on ALL active students
+      // 4. Clear result, mid_result, result_published on ALL active students
       const { error: clearError } = await supabase.from('students')
         .update({ result: null, mid_result: null, result_published: false })
         .eq('status', 'active');

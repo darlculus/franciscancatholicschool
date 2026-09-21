@@ -787,43 +787,13 @@ function buildMidResultModal(student) {
 }
 
 // ── Result Archive modal ─────────────────────────────────────────────────────
-function buildResultArchiveModal(student, classKey) {
+async function buildResultArchiveModal(student, classKey) {
     const existing = document.getElementById('archive-modal');
     if (existing) existing.remove();
 
     const fullName = [student.first_name, student.middle_name, student.last_name].filter(Boolean).join(' ');
 
-    const TERMS = [
-        { term: _currentTerm, session: _currentSession },
-    ];
-
-    // Determine which terms have result data
-    const result = (typeof student.result === 'object' && student.result) ? student.result : null;
-    const hasCurrentResult = result && Object.keys(result).some(k => !['psd','teacher_comment','head_comment'].includes(k));
-
-    const cardsHtml = TERMS.map(({ term, session }) => {
-        const isCurrent = term === _currentTerm && session === _currentSession;
-        const hasData = isCurrent && hasCurrentResult;
-        const url = `report-card.html?id=${student.id}&class_key=${classKey}&term=${encodeURIComponent(term)}&session=${encodeURIComponent(session)}`;
-
-        return `
-        <div style="border:1px solid ${hasData ? '#c5cae9' : '#eee'};border-radius:8px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;background:${hasData ? '#f5f6ff' : '#fafafa'}">
-            <div style="display:flex;align-items:center;gap:14px">
-                <div style="width:40px;height:40px;border-radius:8px;background:${hasData ? '#e8eaf6' : '#f0f0f0'};display:flex;align-items:center;justify-content:center">
-                    <i class="fas fa-file-alt" style="color:${hasData ? '#5c6bc0' : '#ccc'};font-size:1.1rem"></i>
-                </div>
-                <div>
-                    <div style="font-weight:600;font-size:0.9rem;color:${hasData ? '#333' : '#aaa'}">${term} &mdash; ${session}</div>
-                    <div style="font-size:0.78rem;color:${hasData ? '#5c6bc0' : '#bbb'};margin-top:2px">${hasData ? 'Report card available' : 'No record yet'}</div>
-                </div>
-            </div>
-            ${hasData
-                ? `<a href="${url}" target="_blank" style="padding:7px 16px;background:#5c6bc0;color:#fff;border-radius:5px;font-size:0.82rem;text-decoration:none;white-space:nowrap"><i class="fas fa-eye"></i> View</a>`
-                : `<span style="font-size:0.78rem;color:#ccc;font-style:italic">Not available</span>`
-            }
-        </div>`;
-    }).join('');
-
+    // Show loading state immediately
     const modal = document.createElement('div');
     modal.id = 'archive-modal';
     modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px';
@@ -832,13 +802,69 @@ function buildResultArchiveModal(student, classKey) {
             <button id="archive-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#999">&times;</button>
             <h2 style="margin:0 0 4px">Result Archive</h2>
             <p style="margin:0 0 20px;color:#888;font-size:0.88rem">${fullName} &mdash; ${student.class_name || classKey}</p>
-            <div style="display:flex;flex-direction:column;gap:10px">${cardsHtml}</div>
-            <p style="margin-top:18px;font-size:0.78rem;color:#bbb;text-align:center">Report cards are generated from saved term results. Past terms will appear here once results are recorded.</p>
+            <div id="archive-cards"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
         </div>`;
-
     modal.querySelector('#archive-close').onclick = () => modal.remove();
     modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
     document.body.appendChild(modal);
+
+    // Fetch archived results for this student
+    let archives = [];
+    try {
+        const res = await fetch(`/api/archive?student_id=${student.id}`);
+        const data = await res.json();
+        archives = data.archives || [];
+    } catch (e) { /* ignore */ }
+
+    // Current term result
+    const result = (typeof student.result === 'object' && student.result) ? student.result : null;
+    const hasCurrentResult = result && Object.keys(result).some(k => !['psd','teacher_comment','head_comment'].includes(k));
+
+    // Build cards — current term first, then archived terms
+    const currentCard = (() => {
+        const url = `report-card.html?id=${student.id}&class_key=${classKey}&term=${encodeURIComponent(_currentTerm)}&session=${encodeURIComponent(_currentSession)}`;
+        const hasData = hasCurrentResult;
+        return `
+        <div style="border:1px solid ${hasData ? '#c5cae9' : '#eee'};border-radius:8px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;background:${hasData ? '#f5f6ff' : '#fafafa'}">
+            <div style="display:flex;align-items:center;gap:14px">
+                <div style="width:40px;height:40px;border-radius:8px;background:${hasData ? '#e8eaf6' : '#f0f0f0'};display:flex;align-items:center;justify-content:center">
+                    <i class="fas fa-file-alt" style="color:${hasData ? '#5c6bc0' : '#ccc'};font-size:1.1rem"></i>
+                </div>
+                <div>
+                    <div style="font-weight:600;font-size:0.9rem;color:${hasData ? '#333' : '#aaa'}">${_currentTerm} &mdash; ${_currentSession} <span style="font-size:0.72rem;background:#e8eaf6;color:#3949ab;padding:2px 8px;border-radius:10px;margin-left:4px">Current</span></div>
+                    <div style="font-size:0.78rem;color:${hasData ? '#5c6bc0' : '#bbb'};margin-top:2px">${hasData ? 'Report card available' : 'No result recorded yet'}</div>
+                </div>
+            </div>
+            ${hasData
+                ? `<a href="${url}" target="_blank" style="padding:7px 16px;background:#5c6bc0;color:#fff;border-radius:5px;font-size:0.82rem;text-decoration:none;white-space:nowrap"><i class="fas fa-eye"></i> View</a>`
+                : `<span style="font-size:0.78rem;color:#ccc;font-style:italic">Not available</span>`
+            }
+        </div>`;
+    })();
+
+    const archiveCards = archives.map(a => {
+        const url = `report-card.html?id=${student.id}&class_key=${a.class_key || classKey}&term=${encodeURIComponent(a.term)}&session=${encodeURIComponent(a.session)}&archived=1`;
+        return `
+        <div style="border:1px solid #c8e6c9;border-radius:8px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;background:#f9fff9">
+            <div style="display:flex;align-items:center;gap:14px">
+                <div style="width:40px;height:40px;border-radius:8px;background:#e8f5e9;display:flex;align-items:center;justify-content:center">
+                    <i class="fas fa-archive" style="color:#2e7d32;font-size:1.1rem"></i>
+                </div>
+                <div>
+                    <div style="font-weight:600;font-size:0.9rem;color:#333">${a.term} &mdash; ${a.session}</div>
+                    <div style="font-size:0.78rem;color:#2e7d32;margin-top:2px"><i class="fas fa-check-circle"></i> Archived result</div>
+                </div>
+            </div>
+            <a href="${url}" target="_blank" style="padding:7px 16px;background:#2e7d32;color:#fff;border-radius:5px;font-size:0.82rem;text-decoration:none;white-space:nowrap"><i class="fas fa-eye"></i> View</a>
+        </div>`;
+    }).join('');
+
+    document.getElementById('archive-cards').innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:10px">
+            ${currentCard}
+            ${archiveCards || ''}
+        </div>
+        ${!archives.length ? '<p style="margin-top:14px;font-size:0.78rem;color:#bbb;text-align:center">No archived terms yet. Past terms will appear here after using Start New Term.</p>' : ''}`;
 }
 
 // ── Add Student modal (teacher) ─────────────────────────────────────────────
